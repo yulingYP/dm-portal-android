@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_view_ti"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp">
+        <TextView
+            android:id="@+id/title1_view_ti"
+            android:text="title1"
+            android:textColor="@color/color_white"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <TextView
+            android:id="@+id/title2_view_ti"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="title2"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/title1_view_ti" />
+    </android.support.constraint.ConstraintLayout>
+    <View
+        android:id="@+id/indicator_view_ti"
+        android:layout_width="20dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/style_indicator"/>
+</LinearLayout>

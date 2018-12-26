@@ -1,0 +1,184 @@
+apply plugin: 'com.android.application'
+
+android {
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:27.1.1'
+    }
+
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    useLibrary 'org.apache.http.legacy'
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    defaultConfig {
+        applicationId "com.last.design.dmportal"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+        multiDexEnabled true
+        //信鸽官网上注册的包名.注意application ID 和当前的应用包名以及 信鸽官网上注册应用的包名必须一致。
+        ndk {
+            //根据需要 自行选择添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+
+                XG_ACCESS_ID : "2100308655",
+                XG_ACCESS_KEY: "A4I29JV3VA9D",
+        ]
+    }
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "USE_CANARY", "true"
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+//    signingConfigs {
+//        debug {
+//            storeFile file('../smec-take-sie.keystore')
+//            storePassword "smecsmec"
+//            keyAlias "smec"
+//            keyPassword "smecsmec"
+//        }
+//    }
+
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        abortOnError false
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    buildToolsVersion '27.0.3'
+}
+
+apply plugin: 'org.greenrobot.greendao'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+    }
+}
+
+greendao {
+    schemaVersion 1  //版本
+    daoPackage 'com.definesys.dmportal.appstore.dao' // 一般为app包名+生成文件的文件夹名
+    targetGenDir 'src/main/java' //生成文件路径
+}
+
+// ATTENTION!!! Must be PLACED AFTER "android{}" to read the applicationId
+apply plugin: 'replugin-host-gradle'
+
+repluginHostConfig {
+    /**
+     * 是否使用 AppCompat 库
+     * 不需要个性化配置时，无需添加
+     */
+    useAppCompat = true
+    /**
+     * 背景不透明的坑的数量
+     * 不需要个性化配置时，无需添加
+     */
+//    countNotTranslucentStandard = 6
+//    countNotTranslucentSingleTop = 2
+//    countNotTranslucentSingleTask = 3
+//    countNotTranslucentSingleInstance = 2
+}
+
+dependencies {
+    //下拉刷新、上拉加载
+    implementation rootProject.ext.dependencies['smart-refresh']
+    //状态刷新kprogresshud
+    implementation rootProject.ext.dependencies['k-progress-hud']
+    //滑动删除swipeLayout
+    implementation rootProject.ext.dependencies['swipe-layout']
+    //地址滚轮选择器
+    implementation rootProject.ext.dependencies['picker-view']
+    //multidex
+    implementation rootProject.ext.dependencies['multidex']
+    //图片选择器
+    implementation rootProject.ext.dependencies['picture-selector']
+    //信鸽推送
+    implementation rootProject.ext.dependencies['xg-xinge']
+    implementation rootProject.ext.dependencies['xg-jg']
+    implementation rootProject.ext.dependencies['xg-wup']
+    implementation rootProject.ext.dependencies['xg-mid']
+    //圆角
+    implementation rootProject.ext.dependencies['roundedimageview']
+
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["constraint-layout"]
+    implementation rootProject.ext.dependencies["replugin"]
+    //view
+    implementation rootProject.ext.dependencies['tabbar']
+    implementation rootProject.ext.dependencies["butterknife"]
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation rootProject.ext.dependencies['xsnow']
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation rootProject.ext.dependencies["arouter"]
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    //    implementation rootProject.ext.dependencies['agentweb']
+    //    implementation rootProject.ext.dependencies['agentwebDownload']
+    //    implementation rootProject.ext.dependencies['agentwebFilechooser']
+    implementation rootProject.ext.dependencies['glide']
+    annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
+        exclude module: 'support-annotations'
+    }
+    implementation('com.hwangjr.rxbus:rxbus:2.0.0') {
+        exclude group: 'com.jakewharton.timber', module: 'timber'
+    }
+    implementation rootProject.ext.dependencies['rxjava2']
+    //test
+    debugImplementation rootProject.ext.dependencies["canary-debug"]
+    releaseImplementation rootProject.ext.dependencies["canary-release"]
+    testImplementation rootProject.ext.dependencies["canary-release"]
+    testImplementation rootProject.ext.dependencies["junit"]
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation project(':commonttilebar')
+    implementation project(':primwebcore')
+    implementation rootProject.ext.dependencies["rxbinding2"]
+    implementation rootProject.ext.dependencies["rxbinding2-v4"]
+    implementation rootProject.ext.dependencies["rxbinding2-v7"]
+    implementation rootProject.ext.dependencies["rxbinding2-recyclerview-v7"]
+    implementation 'com.android.support:design:27.1.1'
+    implementation rootProject.ext.dependencies["greendao"]
+    implementation rootProject.ext.dependencies["greendao-generator"]
+    implementation rootProject.ext.dependencies["update-app"]
+
+
+    implementation rootProject.ext.dependencies["xedittext"]
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+}

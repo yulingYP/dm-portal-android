@@ -1,0 +1,41 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="radius_10dp">10dp</dimen>
+    <dimen name="radius_2dp">2dp</dimen>
+
+    <dimen name="item_height_70dp">70dp</dimen>
+    <dimen name="item_height_50dp">50dp</dimen>
+    <dimen name="item_margin_42dp">42dp</dimen>
+    <dimen name="item_margin_40dp">40dp</dimen>
+    <dimen name="item_margin_35dp">35dp</dimen>
+    <dimen name="item_margin_30dp">30dp</dimen>
+    <dimen name="item_margin_20dp">20dp</dimen>
+    <dimen name="item_margin_15dp">15dp</dimen>
+    <dimen name="item_margin_10dp">10dp</dimen>
+    <dimen name="item_margin_border_10dp">10dp</dimen>
+    <dimen name="item_margin_8dp">8dp</dimen>
+    <dimen name="item_margin_1dp">1dp</dimen>
+    <dimen name="input_text_margin_left">20dp</dimen>
+    <dimen name="btn_send_text_height">25dp</dimen>
+
+    <dimen name="msg_margin_top">15dp</dimen>
+    <dimen name="msg_height">50dp</dimen>
+    <dimen name="msg_icon_size">80dp</dimen>
+    <dimen name="msg_img_height">200dp</dimen>
+
+    <dimen name="user_img_size">50dp</dimen>
+    <dimen name="user_img_radius">25dp</dimen>
+
+    <dimen name="user_main_img_size">80dp</dimen>
+    <dimen name="user_mian_img_radius">40dp</dimen>
+
+    <dimen name="icon_size">25dp</dimen>
+
+    <dimen name="alert_12sp">12sp</dimen>
+    <dimen name="input_text_size">14sp</dimen>
+    <!--统一提示文字大小-->
+    <dimen name="universal_toast_text_size">12sp</dimen>
+    <dimen name="customer_height">44dp</dimen>
+</resources>

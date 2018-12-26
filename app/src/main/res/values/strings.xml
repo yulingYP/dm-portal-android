@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">快捷校园</string>
+    <string name="tab1">请假</string>
+    <string name="tab2">消息</string>
+    <string name="tab3">社团</string>
+    <string name="tab4">我的</string>
+    <string name="submit">提交</string>
+    <string name="cancel">取消</string>
+    <string name="reason_des">请假类型</string>
+    <string-array name="leave_reason">
+        <item>实习</item>
+        <item>出差</item>
+        <item>住院</item>
+        <item>身体欠佳</item>
+        <item>出国交流</item>
+        <item>家庭原因</item>
+        <item>其他</item>
+    </string-array>
+    <string name="img_count">%1$d/3</string>
+    <integer name="code_send_time">60</integer>
+    <integer name="max_name_length">20</integer>
+    <integer name="max_psw_length">16</integer>
+    <integer name="max_phone_length">11</integer>
+    <integer name="max_code_length">6</integer>
+    <string name="text_after_send_code">重新获取验证码</string>
+    <!--TUT倒计时提示文字-->
+    <string name="tut_toast_text_time">已发送(%1$ds)</string>
+    <string name="phone_regex">^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$</string>
+    <string name="message">消息</string>
+    <string name="trends">动态</string>
+    <string name="exit_en">exit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="date_type">yyyy年MM月dd日 HH时</string>
+    <string name="leave_off">请假</string>
+    <string name="time_fail_tip">结束时间不能小于开始时间</string>
+    <string name="off_day">%d天</string>
+    <string name="off_hour">%d小时</string>
+    <string name="img_tip">相关截图或照片</string>
+    <string name="reason_detail_txt">具体原因</string>
+    <string name="reson_detail_tip">请填写具体原因</string>
+    <string name="word_count">%d/150</string>
+    <string name="name">姓名</string>
+    <string name="type">请假类型</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="time_long">时长</string>
+    <string name="submit_persion">审批人</string>
+    <string name="time_table">课表</string>
+</resources>

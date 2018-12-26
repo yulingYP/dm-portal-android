@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3f475a</color>
+    <color name="colorPrimaryDark">#3f475a</color>
+    <color name="colorAccent">#3f475a</color>
+    <color name="color_light_blue">#1E90FF</color>
+    <color name="color_75_white">#C0FFFFFF</color>
+    <color name="color_50_white">#80FFFFFF</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_bgd_grey">#F2F2F2</color>
+    <color name="color_gradient_line1">#f6f6f6</color>
+    <color name="color_gradient_line2">#f4f4f4</color>
+    <color name="color_gradient_line3">#e7e7e7</color>
+    <color name="color_gray">#dddddd</color>
+    <color name="color_bdg_gray">#d8d8d8</color>
+    <color name="color_bdg_gray2">#d6d6d6</color>
+    <color name="color_light_gray">#cccccc</color>
+    <color name="color_layout_gray">#44000000</color>
+    <color name="color_text_gray">#8A000000</color>
+    <color name="color_deep_gray">#666666</color>
+    <color name="color_bg_black">#555757</color>
+    <color name="color_black">#000000</color>
+    <color name="color_red">#F00000</color>
+    <color name="color_red_2">#f65447</color>
+    <color name="color_light_pink">#fca9a1</color>
+    <color name="color_light_pink_2">#fca9a1</color>
+    <color name="color_light_pink_3">#faa69b</color>
+    <color name="color_light_green">#00FF7F</color>
+    <color name="color_green">#008B00</color>
+    <color name="progress_bg">#fff2c0</color>
+
+
+    <color name="blue_pressed">#7cb342</color>
+    <color name="blue_normal">#ffffbb33</color>
+    <color name="green_complete">#ff99cc00</color>
+    <color name="purple_progress">#03a9f4</color>
+    <color name="red_error">#ffff4444</color>
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_orange_light">#ffffbb33</color>
+    <color name="holo_red_light">#ffff4444</color>
+    <color name="gay_progress">#9e9e9e</color>
+
+    <color name="colorCc">#37a0d2</color>
+    <color name="colorDd">#e62a4d</color>
+    <color name="colorEe">#6ab56c</color>
+    <color name="colorFf">#474646</color>
+    <color name="colorGg">#f7f7f7</color>
+    <color name="colorWaring">#ffb81e</color>
+    <color name="colorGrey">#657b92</color>
+    <color name="background_user">#F2F2F2</color><!--主色 按住蓝 -->
+
+    <color name="customLightGray">#EDF2F6</color>
+    <color name="customLightSplitGray">#E0E7ED</color>
+    <color name="customLightLineGray">#DDE6F7</color>
+    <color name="customGray">#687D90</color>
+    <color name="customBlack">#14344B</color>
+    <color name="customBlue">#2647C6</color>
+    <color name="customExplainBlue">#55ACEE</color>
+    <color name="gainsboro">#DCDCDC</color><!--淡灰色 -->
+    <color name="customOrange">#FE8649</color>
+    <color name="customWhite">#FFFFFF</color>
+    <color name="customTextColor">#13334d</color>
+    <color name="customLightYellowColor">#FAFFBD</color>
+    <color name="customBgGray">#666666</color>
+    <color name="customGreen">#55C45A</color>
+    <color name="customTanslate">#00000000</color>
+
+    <color name="loginText">#999</color>
+    <color name="bg_gray">#EDF2F6</color>
+    <color name="bg_blue">#A1B9E7</color>
+    <color name="order_color">#57ABF1</color>
+    <color name="projects_change">#DDE5F7</color>
+    <color name="details_font_gray">#6A7C90</color>
+    <color name="date_font_color">#FE8649</color>
+    <color name="submit_selected">#EF642E</color>
+    <color name="ele_back_bg">#FFF7F8</color>
+    <color name="green">#54C45A</color>
+    <color name="addChangeSelected">#32A532</color>
+    <color name="buttonBlue">#547FD5</color>
+    <color name="accessDebug">#417AD6</color>
+    <color name="space">#EDF1F6</color>
+    <color name="deleteRed">#FF0000</color>
+    <color name="readonly">#DEDEDE</color>
+    <color name="datePickerDialog">#3c5697</color>
+    <color name="clearColor">#00000000</color>
+    <color name="reportChartOne">#F66236</color>
+    <color name="reportChartTwo">#2EA337</color>
+    <color name="reportChartThree">#4854B5</color>
+    <color name="reportChartFour">#4566FE</color>
+    <color name="reportChartFif">#F7474D</color>
+    <color name="PaleGodenrod">#EEE8AA</color>
+    <color name="CadetBlue">#237777</color>
+    <color name="LightSeaGreen">#20B2AA</color>
+
+
+    <color name="smec_gray">#EFEFEF</color>
+    <color name="text_gray">#C6C7C8</color>
+    <color name="top_bar">#1980E5</color>
+    <color name="main_un_click">#DDDDDD</color>
+    <color name="waring">#FF9A00</color>
+    <color name="already_solve">#00B535</color>
+
+    <color name="login_back">#F7F7F7</color>
+    <color name="login_font">#B2B5B9</color>
+    <color name="login_font_version">#73818E</color>
+    <color name="login_border">#DBDEDC</color>
+
+    <color name="real_round">#58636A</color>
+    <color name="main_font_color">#546775</color>
+    <color name="main_tab">#FFFFFF</color>
+    <color name="real_time_line">#ECEEEF</color>
+    <color name="backgroundGray">#99000000</color>
+
+    <color name="monthForm_backgroundGray">#D8D9DA</color>
+    <color name="monthForm_line">#D8D9DA</color>
+    <color name="monthForm_green">#63a132</color>
+    <color name="monthForm_line_background">#F0F2F5</color>
+    <color name="monthForm_head_background">#ffffff</color>
+    <color name="monthForm_popWindow_background">#F2F3F4</color>
+    <color name="monthForm_popWindow_text">#C6C7C8</color>
+    <color name="monthForm_item_number">#f80000</color>
+    <color name="monthForm_popWindow_number">#DF4832</color>
+    <color name="monthForm_fault_log">#9928353d</color>
+    <color name="monthForm_text">#000000</color>
+    <color name="monthForm_title">#58636A</color>
+    <color name="monthForm_line_grey">#F6F5FA</color>
+    <color name="nav_back">#282B32</color>
+    <color name="nav_line">#4A4B46</color>
+
+    <color name="smec_back">#ECEDEE</color>
+
+    <color name="smec_real_back">#263A48</color>
+    <color name="login_line">#535358</color>
+    <color name="navi_font">#7B8591</color>
+    <color name="smec_toast">#88000000</color>
+    <color name="smec_gray_bottom">#55333333</color>
+    <color name="smec_null_data">#77ffffff</color>
+    <color name="item_back">#EBECED</color>
+    <color name="item_line">#213F42</color>
+    <color name="smec_email">#EE7484</color>
+    <color name="customer_title1">#3f475a</color>
+    <color name="activity_bg">#778899</color>
+    <color name="site_detail_bg">#D8D9DA</color>
+
+    <color name="text_black">#141414</color>
+    <color name="text_red">#CF4531</color>
+
+    <color name="transparent_white_1">#10ffffff</color>
+    <color name="transparent_white_5">#50ffffff</color>
+    <color name="transparent_white_9">#90ffffff</color>
+    <color name="transparent_black_1">#10000000</color>
+    <color name="transparent_black_5">#50000000</color>
+    <color name="transparent_black_9">#90000000</color>
+    <color name="layout_bg">#3e3e3e</color>
+    <color name="activity_bg_color">#282828</color>
+    <color name="layout_bg_1">#44546c</color>
+    <color name="alert_grey_small">#90ffffff</color>
+    <color name="color_flow_light_gray_bg">#80cccccc</color>
+    <color name="edit_background_color">#B0000000</color>
+    <color name="main_text_des_color">#507EAC</color>
+    <color name="confirm_text_des_color">#385571</color>
+    <color name="theme_color">#3F475A</color>
+    <color name="btn_floor_bgd">#FF304362</color>
+    <color name="customer_title">#555757</color>
+    <color name="text_color">#ffffff</color>
+    <color name="text_noable">#afafaf</color>
+    <color name="news_font">#8e8e8e</color>
+    <color name="back_gray">#eaeaea</color>
+    <color name="stroke_text">#cccccc</color>
+    <color name="text_noselect">#9f9f9f</color>
+    <color name="des_color">#B5B5B6</color>
+    <color name="smec_text">#101010</color>
+    <color name="two_code_des">#385571</color>
+    <color name="text_color_2">#303030</color>
+
+    <color name="login_btn">#a1886a</color>
+    <color name="login_btn1">#ebd49f</color>
+    <color name="tab_bar_color">#ebd49f</color>
+    <color name="gold">#ebd49f</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+</resources>

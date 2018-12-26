@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/back_gray"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+   >
+    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+        android:id="@+id/cus_title_bar"
+        android:layout_width="match_parent"
+        app:titlebar_bg_color="@color/customer_title"
+        app:titlebar_title_text_size="18sp"
+        android:layout_height="44dp">
+    </com.definesys.dmportal.commontitlebar.CustomTitleBar>
+    <ScrollView
+        android:id="@+id/scoll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_marginTop="1px"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="50dp"
+                android:gravity="center">
+
+                <TextView
+                    android:text="@string/name"
+                    android:padding="12dp"
+                    android:textColor="@color/black"
+                    android:gravity="center|left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_name" />
+                <TextView
+                    android:text="马一平"
+                    android:padding="12dp"
+                    android:gravity="center|right"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_light_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="2px"
+                android:id="@+id/type_layout"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="50dp">
+                <TextView
+                    android:padding="12dp"
+                    android:text="@string/type"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:id="@+id/type_text"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:text="身体欠佳"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center|right"
+                    android:layout_height="wrap_content"
+                    />
+
+                <ImageView
+                    android:layout_marginRight="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/time_table_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="2px"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="12dp"
+                    android:text="@string/time_table"
+                    android:textColor="@color/black" />
+                <ImageView
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/leave_start_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_marginTop="2px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/start_des_text"
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:text="@string/start_time"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/start_time_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center"
+                    android:text="2018年11月24日 18时"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:textColor="@color/black" />
+                <ImageView
+                    android:layout_marginRight="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/leave_end_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginTop="2px"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/end_des_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="@string/end_time"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/end_time_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center"
+                    android:text="2018年12月24日 18时"
+                    android:padding="8dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    />
+                <ImageView
+                    android:layout_marginRight="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_marginTop="2px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:text="@string/time_long"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/leave_day_count_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
+                    android:gravity="right|center"
+                    android:padding="8dp"
+                    android:text="1天"
+                    android:textColor="@color/color_light_gray"
+                     />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginTop="2px"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="@string/submit_persion"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center"
+                    android:text="审批人"
+                    android:padding="8dp"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/color_light_gray"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/reason_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="2px"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="12dp"
+                    android:layout_weight="1"
+                    android:text="@string/reason_detail_txt"
+                    android:textColor="@color/black" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/ed_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@null"
+                        android:gravity="left|top"
+                        android:hint="@string/reson_detail_tip"
+                        android:maxLength="150"
+                        android:minLines="8"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/config_color_gray_4"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/count_word_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/config_color_gray_4"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="2px"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/img_tip"
+                    android:textColor="@color/config_color_gray_4"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycle_view"
+                        android:layout_width="match_parent"
+                        android:overScrollMode="never"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/img_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/config_color_gray_4"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
