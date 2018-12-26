@@ -47,4 +47,5 @@
     <string name="time_long">时长</string>
     <string name="submit_persion">审批人</string>
     <string name="time_table">课表</string>
+    <string name="subject_table">课表</string>
 </resources>

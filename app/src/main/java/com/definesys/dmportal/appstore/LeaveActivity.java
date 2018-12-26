@@ -3,10 +3,8 @@ package com.definesys.dmportal.appstore;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -19,7 +17,6 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -38,7 +35,6 @@ import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -57,8 +53,8 @@ import io.reactivex.functions.Consumer;
 
 @Route(path = ARouterConstants.LeaveActivity)
 public class LeaveActivity extends BaseActivity {
-    @BindView(R.id.cus_title_bar)
-    CustomTitleBar customTitleBar;
+    @BindView(R.id.title_bar)
+    CustomTitleBar titleBar;
 
     @BindView(R.id.type_text)
     TextView tv_type;
@@ -67,7 +63,7 @@ public class LeaveActivity extends BaseActivity {
     RecyclerView recyclerView;
 
     @BindView(R.id.img_count)
-    TextView imgCount;
+    TextView tv_imgCount;
 
     @BindView(R.id.leave_start_layout)
     LinearLayout lg_leaveStart;
@@ -132,10 +128,10 @@ public class LeaveActivity extends BaseActivity {
     }
 
     private void initView() {
-        customTitleBar.setTitle(getString(R.string.leave_off));
-        customTitleBar.setBackgroundDividerEnabled(false);
-        //customTitleBar.setBackground(null);
-        RxView.clicks(customTitleBar.addLeftBackImageButton())
+        titleBar.setTitle(getString(R.string.leave_off));
+        titleBar.setBackgroundDividerEnabled(false);
+        //titleBar.setBackground(null);
+        RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -145,7 +141,7 @@ public class LeaveActivity extends BaseActivity {
                         finish();
                     }
                 });
-        Button button = customTitleBar.addRightTextButton(getString(R.string.submit),R.layout.activity_leave_off);
+        Button button = titleBar.addRightTextButton(getString(R.string.submit),R.layout.activity_leave_off);
         button.setTextSize(16);
         RxView.clicks(button)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
@@ -210,7 +206,7 @@ public class LeaveActivity extends BaseActivity {
         selectImages = new ArrayList<>();
         ViewImages = new ArrayList<>();
         ViewImages.add(0,new LocalMedia(" ",100,2,""));
-        imgCount.setText(getString(R.string.img_count, 0));
+        tv_imgCount.setText(getString(R.string.img_count, 0));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
 
@@ -239,7 +235,7 @@ public class LeaveActivity extends BaseActivity {
                 selectImages.remove(position-1);
                 ViewImages.remove(position);
                 fedbkImgAdapter.notifyDataSetChanged();
-                imgCount.setText(getString(R.string.img_count, fedbkImgAdapter.getItemCount()-1));
+                tv_imgCount.setText(getString(R.string.img_count, fedbkImgAdapter.getItemCount()-1));
             }
         });
     }
@@ -408,7 +404,7 @@ public class LeaveActivity extends BaseActivity {
                     // 3.media.getCompressPath();为压缩后 path，需判断 media.isCompressed();是否为 true
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
                     // 更新图片数量
-                    imgCount.setText(getString(R.string.img_count, selectImages.size()));
+                    tv_imgCount.setText(getString(R.string.img_count, selectImages.size()));
                     // 更新显示图片
                     fedbkImgAdapter.setImages(ViewImages);
                     fedbkImgAdapter.notifyDataSetChanged();
