@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@color/back_gray"
+    android:fitsSystemWindows="true"
+    >
+    <LinearLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:background="@color/customer_title"
+        android:orientation="horizontal">
+        <com.definesys.dmportal.appstore.customViews.SearchBox
+            android:id="@+id/search_box"
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+        </com.definesys.dmportal.appstore.customViews.SearchBox>
+        <TextView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
+            android:text="@string/cancel" />
+    </LinearLayout>
+    <TextView
+        android:textColor="@color/black"
+        android:text="@string/type_search"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/type_view"
+        android:background="@color/white"
+        android:overScrollMode="never"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/group_view"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>
+    <!--<TextView-->
+    <!--android:textColor="@color/black"-->
+    <!--android:text="@string/history_search"-->
+    <!--android:paddingLeft="12dp"-->
+    <!--android:layout_marginTop="6dp"-->
+    <!--android:background="@color/white"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/history_view"-->
+    <!--android:background="@color/white"-->
+    <!--android:overScrollMode="never"-->
+    <!--android:padding="8dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+    <!--</android.support.v7.widget.RecyclerView>-->

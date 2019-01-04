@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/back_gray"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
 <ImageView
     android:id="@+id/main_image"
@@ -17,12 +16,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.definesys.dmportal.appstore.customViews.RCImageView
         android:id="@+id/app_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        app:round_as_circle="true"
         android:src="@mipmap/app_icon" />
     <LinearLayout
         android:orientation="vertical"
@@ -50,9 +52,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_view"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/main_image">
     </android.support.v7.widget.RecyclerView>

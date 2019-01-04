@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -50,42 +51,38 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     @BindView(R.id.mViewPager)
     NoScrollViewPager mViewPager ;
 
-    @BindView(R.id.search_box)
-    LinearLayout lg_search;
-
-    //搜索框
-    @BindView(R.id.et_search)
-    EditText ed_search;
-
-    @BindView(R.id.cancel_button)
-    TextView tv_cancel;
-
     CustomTitleIndicator titleIndicator;
-    int currentPosition=0;
+    private int currentPosition=1;
 
-    ContactFragment contactFragment ;
-    HomeAppFragment homeAppFragment ;
-    GroupFragment groupFragment ;
-    MyFragment myFragment ;
-
+    private ContactFragment contactFragment ;
+    private HomeAppFragment homeAppFragment ;
+    private MyFragment myFragment ;
+    public static int screenWith;//手机屏幕的宽度
+    public static int screenHeight;//手机屏幕的高度
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         RxBus.get().register(this);
+        //获取手机宽高
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        screenHeight = dm.heightPixels;
+        screenWith = dm.widthPixels;
+        Log.d("myWidth", "" + screenWith + "  " + screenHeight);
         initView();
 
     }
 
     private void initView() {
-        mTitlebar.setTitle("请假");
-        mTabbar.setTitles(R.string.tab1, R.string.tab2, R.string.tab3, R.string.tab4)
-                .setNormalIcons(R.mipmap.tab1_normal, R.mipmap.tab3_normal, R.mipmap.tab2_normal ,R.mipmap.tab4_normal)
-                .setSelectedIcons(R.mipmap.tab1_selected, R.mipmap.tab3_selected, R.mipmap.tab2_selected ,R.mipmap.tab4_selected)
+        mTitlebar.setTitle(R.string.tab3);
+        mTitlebar.setBackgroundDividerEnabled(false);
+        mTitlebar.showTitleView(true);
+        mTabbar.setTitles( R.string.tab2, R.string.tab3, R.string.tab4)
+                .setNormalIcons(R.mipmap.tab3_normal, R.mipmap.tab1_normal ,R.mipmap.tab4_normal)
+                .setSelectedIcons( R.mipmap.tab3_selected, R.mipmap.tab1_selected ,R.mipmap.tab4_selected)
                 .generate();
         mTabbar.setSelectTab(currentPosition);
-        setGone();
         mTabbar.setSelectedColor(Color.parseColor("#3f475a"));
         mTabbar.setTabListener(new OnTabSelectListener() {
             @Override
@@ -105,13 +102,12 @@ public class MainActivity extends BaseActivity<MainPresenter> {
 
         myFragment = MyFragment.newInstance("","");
         contactFragment = ContactFragment.newInstance("","");
-        groupFragment= GroupFragment.newInstance("","");
+       // groupFragment= GroupFragment.newInstance("","");
         homeAppFragment = HomeAppFragment.newInstance();
-
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(homeAppFragment);
         fragmentList.add(contactFragment);
-        fragmentList.add(groupFragment);
+        fragmentList.add(homeAppFragment);
+        //fragmentList.add(groupFragment);
         fragmentList.add(myFragment);
 
         mViewPager.setScroll(false);
@@ -137,7 +133,7 @@ public class MainActivity extends BaseActivity<MainPresenter> {
             @Override
             public void onPageSelected(int position) {
                 currentPosition = position;
-                if (position == 1) {
+                if (position == 0) {
                     mTitlebar.setTitle("");
                     mTitlebar.setCenterView(titleIndicator);
                     titleIndicator.setVisibility(View.VISIBLE);
@@ -147,14 +143,10 @@ public class MainActivity extends BaseActivity<MainPresenter> {
                 } else {
                     titleIndicator.setVisibility(View.GONE);
                     mTitlebar.showTitleView(true);
-                    if(position==0)mTitlebar.setTitle(R.string.tab1);
-                    if(position==2)mTitlebar.setTitle("");
-                    else if(position==3)mTitlebar.setTitle(R.string.tab4);
+                    if(position==1)mTitlebar.setTitle(R.string.tab3);
+                    else if(position==2)mTitlebar.setTitle(R.string.tab4);
                 }
-                if(position!=2)
-                    setGone();
-                else
-                   setVisible();
+
             }
 
             @Override
@@ -208,17 +200,5 @@ public class MainActivity extends BaseActivity<MainPresenter> {
             return fragmentList.get(position);
         }
 
-    }
-    //隐藏搜索框
-    public void setGone(){
-        tv_cancel.setVisibility(View.GONE);
-        ed_search.setVisibility(View.GONE);
-        lg_search.setVisibility(View.GONE);
-    }
-    //显示搜索框
-    public void setVisible(){
-        tv_cancel.setVisibility(View.VISIBLE);
-        ed_search.setVisibility(View.VISIBLE);
-        lg_search.setVisibility(View.VISIBLE);
     }
 }

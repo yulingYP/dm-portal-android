@@ -36,7 +36,7 @@ public class TypeListAdapter extends RecyclerView.Adapter<TypeListAdapter.ViewHo
 
     public TypeListAdapter(List<String> typeList) {
         this.typeList = typeList;
-        oldPosition=-1;
+        oldPosition=0;
     }
 
     @NonNull

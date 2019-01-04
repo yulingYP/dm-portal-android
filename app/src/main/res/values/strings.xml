@@ -2,7 +2,7 @@
     <string name="app_name">快捷校园</string>
     <string name="tab1">请假</string>
     <string name="tab2">消息</string>
-    <string name="tab3">社团</string>
+    <string name="tab3">主页</string>
     <string name="tab4">我的</string>
     <string name="submit">提交</string>
     <string name="cancel">取消</string>
@@ -46,7 +46,9 @@
     <string name="end_time">结束时间</string>
     <string name="time_long">时长</string>
     <string name="submit_persion">审批人</string>
-    <string name="time_table">课表</string>
     <string name="subject_table">课表</string>
+    <string name="group_des">社团</string>
     <string name="school_des">哈工大(威海)快捷校园</string>
+    <string name="type_search">种类</string>
+    <string name="history_search">搜索历史</string>
 </resources>

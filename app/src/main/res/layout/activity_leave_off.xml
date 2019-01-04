@@ -99,7 +99,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:padding="12dp"
-                    android:text="@string/time_table"
+                    android:text="@string/subject_table"
                     android:textColor="@color/black" />
                 <ImageView
                     android:layout_marginEnd="12dp"

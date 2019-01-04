@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.scwang.smartrefresh.layout.header.ClassicsHeader
-        app:srlAccentColor="@color/white"
+        app:srlAccentColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <android.support.constraint.ConstraintLayout
@@ -51,7 +51,7 @@
             app:layout_constraintVertical_bias="0.1" />
     </android.support.constraint.ConstraintLayout>
     <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-        app:srlAccentColor="@color/white"
+        app:srlAccentColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
