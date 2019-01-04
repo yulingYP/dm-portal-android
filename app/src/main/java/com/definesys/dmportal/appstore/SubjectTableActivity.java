@@ -40,8 +40,6 @@ public class SubjectTableActivity extends BaseActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
-                        Intent intent = new Intent();
-                        setResult(RESULT_CANCELED,intent);
                         finish();
                     }
                 });

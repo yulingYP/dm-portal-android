@@ -46,9 +46,7 @@ public class MainApplication extends Application {
     private DaoSession mDaoSession;
 
     private String url = "http://wcpublic.smec-cn.com:7777/simp/simp/TEISService/";
-    private long appDownloadId;
     private boolean hasNewMessage;
-
     public static MainApplication instances;
     //保存用户信息
     public static User user;
@@ -61,22 +59,7 @@ public class MainApplication extends Application {
         this.user = user;
     }
 
-    public String getUrl() {
-        return url;
-    }
 
-    public void setUrl(String url) {
-        this.url = url;
-        ViseHttp.CONFIG().baseUrl(url);
-    }
-
-    public long getAppDownloadId() {
-        return appDownloadId;
-    }
-
-    public void setAppDownloadId(long appDownloadId) {
-        this.appDownloadId = appDownloadId;
-    }
 
     public boolean isHasNewMessage() {
         return hasNewMessage;
@@ -277,7 +260,6 @@ public class MainApplication extends Application {
     @Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
-
         /* Not need to be called if your application's minSdkVersion > = 14 */
         RePlugin.App.onConfigurationChanged(config);
     }

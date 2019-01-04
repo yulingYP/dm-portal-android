@@ -65,7 +65,8 @@
         </activity>
         <activity android:name=".webview.ui.WebViewActivity" />
         <activity android:name=".appstore.LeaveActivity" />
-        <activity android:name=".appstore.SubjectTableActivity"></activity>
+        <activity android:name=".appstore.SubjectTableActivity" />
+        <activity android:name=".appstore.ui.LeaveMainActivity"></activity>
     </application>
 
 </manifest>

@@ -93,7 +93,7 @@ public class MyDatePick extends LinearLayout {
                     }
                 });
         tv_date.setText((new SimpleDateFormat(getContext().getString(R.string.date_type)).format(new Date())));
-        datePicker.setMinDate(0);
+        //datePicker.setMinDate(0);
         datePicker.setMinDate(System.currentTimeMillis());
         setNumberPickerTextSize(timePicker);
         setNumberPickerTextSize(datePicker);
@@ -126,7 +126,6 @@ public class MyDatePick extends LinearLayout {
                         tv_date.setText(initDate(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour()));
                     }
                 });
-
             }
         }
     }

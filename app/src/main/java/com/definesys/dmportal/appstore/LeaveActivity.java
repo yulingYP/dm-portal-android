@@ -30,6 +30,7 @@ import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
 import com.definesys.dmportal.appstore.customViews.MyDatePick;
+import com.definesys.dmportal.appstore.customViews.MyDatePicker;
 import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
@@ -107,7 +108,7 @@ public class LeaveActivity extends BaseActivity {
     private boolean isVisible =false;//光标是否可见
     private boolean isStart;//用户点击的是开始日期还是结束日期
     private Dialog dateDialog;//日期选择提示框
-    private MyDatePick datePick;//日期选择Picker
+    private MyDatePicker datePick;//日期选择Picker
     private Dialog reasonDialog;//请假类型提示框
     private SimpleDateFormat df;
     //班长、班主任、导员、导师、教务处、任课老师
@@ -142,7 +143,7 @@ public class LeaveActivity extends BaseActivity {
                     }
                 });
         Button button = titleBar.addRightTextButton(getString(R.string.submit),R.layout.activity_leave_off);
-        button.setTextSize(16);
+        button.setTextSize(14);
         RxView.clicks(button)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
@@ -298,9 +299,9 @@ public class LeaveActivity extends BaseActivity {
     private void initDialog(boolean flag) {
         isStart = flag;
         if(dateDialog==null) {
-            datePick = new MyDatePick(this, null);
+            datePick = new MyDatePicker(this, null);
             dateDialog = new Dialog(this, R.style.BottomDialog);
-            datePick.setMyListener(new MyDatePick.onClickEventListener() {
+            datePick.setMyListener(new MyDatePicker.onClickEventListener() {
                 @Override
                 public void onCancel() {
                     dateDialog.dismiss();
