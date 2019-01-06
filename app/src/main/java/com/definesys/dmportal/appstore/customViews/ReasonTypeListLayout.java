@@ -33,8 +33,8 @@ public class ReasonTypeListLayout extends LinearLayout {
     private Context mContext;
     @BindView(R.id.reason_view)
     RecyclerView recyclerView;
-    List<String> reasonlist;
-    MyClickListener myClickListener;
+    private List<String> reasonlist;
+    private MyClickListener myClickListener;
     public ReasonTypeListLayout(Context context) {
         super(context);
         initView(context);

@@ -51,7 +51,7 @@
     <string name="school_des">哈工大(威海)快捷校园</string>
     <string name="type_search">种类</string>
     <string name="history_search">搜索历史</string>
-    <string name="table_hello_tip">你好 %s %s,以下是您的课表</string>
+    <string name="table_hello_tip">你好 %s %s,以下是您的课表,点击课程可以获取课程详细信息</string>
     <string name="lesson">节次</string>
     <string name="Monday">周一</string>
     <string name="Tuesday">周二</string>
@@ -80,5 +80,14 @@
     <string name="alread_first_week">已经是第一周</string>
     <string name="already_last_week">已经是最后一周</string>
     <string name="ed_search_tip">请输入种类或社团名称</string>
+    <string name="net_work_error">网络请求出错</string>
+    <string name="current_week">本周为第%d周</string>
+    <string name="confirm">确定</string>
+    <string name="cursor_name">课程名：%s</string>
+    <string name="teacher_name">授课教师：%s</string>
+    <string name="location">授课地点：%s</string>
+    <string name="week_number">周数：第%d周</string>
+    <string name="pitch_number">节数：周%d 第%d大节</string>
+    <string name="unknow">未知</string>
 
 </resources>

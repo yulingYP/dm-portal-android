@@ -24,9 +24,6 @@
     <color name="color_black">#000000</color>
     <color name="color_red">#F00000</color>
     <color name="color_red_2">#f65447</color>
-    <color name="color_light_pink">#fca9a1</color>
-    <color name="color_light_pink_2">#fca9a1</color>
-    <color name="color_light_pink_3">#faa69b</color>
     <color name="color_light_green">#00FF7F</color>
     <color name="color_green">#008B00</color>
     <color name="progress_bg">#fff2c0</color>
@@ -37,25 +34,18 @@
     <color name="green_complete">#ff99cc00</color>
     <color name="purple_progress">#03a9f4</color>
     <color name="red_error">#ffff4444</color>
-    <color name="holo_blue_bright">#ff00ddff</color>
     <color name="holo_green_light">#ff99cc00</color>
     <color name="holo_orange_light">#ffffbb33</color>
     <color name="holo_red_light">#ffff4444</color>
     <color name="gay_progress">#9e9e9e</color>
 
-    <color name="colorCc">#37a0d2</color>
+    <color name="blue">#37a0d2</color>
+    <color name="populor">#7D7DFF</color>
     <color name="colorDd">#e62a4d</color>
     <color name="colorEe">#6ab56c</color>
     <color name="colorFf">#474646</color>
     <color name="colorGg">#f7f7f7</color>
     <color name="colorWaring">#ffb81e</color>
-    <color name="colorGrey">#657b92</color>
-    <color name="background_user">#F2F2F2</color><!--主色 按住蓝 -->
-
-    <color name="customLightGray">#EDF2F6</color>
-    <color name="customLightSplitGray">#E0E7ED</color>
-    <color name="customLightLineGray">#DDE6F7</color>
-    <color name="customGray">#687D90</color>
     <color name="customBlack">#14344B</color>
     <color name="customBlue">#2647C6</color>
     <color name="customExplainBlue">#55ACEE</color>
