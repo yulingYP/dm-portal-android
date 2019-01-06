@@ -66,4 +66,15 @@ public class DensityUtil {
         float scale = context.getResources().getDisplayMetrics().density;
         return  (pxValue / scale + 0.5f);
     }
+
+    /**
+     * 获取当前数的2进制形式
+     * @param item 16进制
+     * @return
+     */
+    public static String getPitchString(char item){
+        String [] allresults = {"0000","0001","0010","0011","0100","0101",
+                "0110","0111","1000","1001","1010","1011","1100","1101","1110","1111"};
+        return allresults [Integer.parseInt(String.valueOf(item),16)].trim();
+    }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="200dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:paddingLeft="12dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/image_icon"
+        android:src="@drawable/create_group_icon"
+        android:layout_gravity="center"
+        android:layout_width="24dp"
+        android:layout_height="24dp" />
+    <TextView
+        android:id="@+id/text_icon_name"
+        android:text="菜单名称"
+        android:layout_marginLeft="12dp"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

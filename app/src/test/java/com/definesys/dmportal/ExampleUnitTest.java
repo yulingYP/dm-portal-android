@@ -1,5 +1,7 @@
 package com.definesys.dmportal;
 
+import com.definesys.dmportal.appstore.utils.DensityUtil;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,6 +14,9 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
+        String aa = "0809";
+        String result = DensityUtil.getPitchString(aa.charAt(3))+DensityUtil.getPitchString(aa.charAt(2));
+        System.out.println(result);
         assertEquals(4, 2 + 2);
     }
 }

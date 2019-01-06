@@ -29,7 +29,6 @@ import com.definesys.base.BaseActivity;
 import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
-import com.definesys.dmportal.appstore.customViews.MyDatePick;
 import com.definesys.dmportal.appstore.customViews.MyDatePicker;
 import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
@@ -51,6 +50,8 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
+
+import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
 
 @Route(path = ARouterConstants.LeaveActivity)
 public class LeaveActivity extends BaseActivity {
@@ -104,7 +105,6 @@ public class LeaveActivity extends BaseActivity {
 
     private Date startDate;
     private Date endDate;
-    private int tempDay = 1000*60*60*24;//天
     private boolean isVisible =false;//光标是否可见
     private boolean isStart;//用户点击的是开始日期还是结束日期
     private Dialog dateDialog;//日期选择提示框
@@ -144,45 +144,29 @@ public class LeaveActivity extends BaseActivity {
                 });
         Button button = titleBar.addRightTextButton(getString(R.string.submit),R.layout.activity_leave_off);
         button.setTextSize(14);
+        //提交
         RxView.clicks(button)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        checkSelect();
-                    }
-                });
+                .subscribe(obj-> checkSelect());
+        //请假类型
         RxView.clicks(lg_type)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        initReasonDialog();
-                    }
-                });
+                .subscribe(obj-> initReasonDialog());
+        //课表
         RxView.clicks(lg_table)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
+                .subscribe(obj->
                         ARouter.getInstance()
-                                .build(ARouterConstants.SubjectTableActivity)
-                                .navigation(LeaveActivity.this);
-
-                    }
-                });
+                        .build(ARouterConstants.SubjectTableActivity)
+                        .navigation(LeaveActivity.this));
     }
     private void initEdit() {
         tv_count.setText(getString(R.string.word_count, 0));
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        isVisible = true;
-                        ed_reason.setCursorVisible(true);
-                        // sc_scoll.scrollTo(0,ed_reason.getBottom()+100);
-                    }
+                .subscribe(obj->{
+                    isVisible = true;
+                    ed_reason.setCursorVisible(true);
                 });
         /*
         监听输入框内容 《==》 获取输入长度显示到界面
@@ -248,20 +232,10 @@ public class LeaveActivity extends BaseActivity {
         tv_dayOffCount.setText(getString(R.string.off_day,0)+getString(R.string.off_hour,0));
         RxView.clicks(lg_leaveEnd)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        initDialog(false);
-                    }
-                });
+                .subscribe(obj-> initDialog(false));
         RxView.clicks(lg_leaveStart)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        initDialog(true);
-                    }
-                });
+                .subscribe(obj->  initDialog(true));
     }
     //请假类型选择
     private void initReasonDialog() {
@@ -348,8 +322,8 @@ public class LeaveActivity extends BaseActivity {
             e.printStackTrace();
         }
         long time = endDate.getTime() - startDate.getTime();
-        int day = (int)(time/tempDay);
-        int hour = (int)(time/(tempDay/24))-day*24;
+        int day = (int)(time/oneDay );
+        int hour = (int)(time/(oneDay /24))-day*24;
         tv_dayOffCount.setText((day>0?getString(R.string.off_day,day):"")+(day>0&&hour==0?"":getString(R.string.off_hour,hour)));
         System.gc();
     }
@@ -372,6 +346,9 @@ public class LeaveActivity extends BaseActivity {
         return startDate.before(endDate);
     }
 
+    /**
+     * 提交合法性检查
+     */
     private void checkSelect() {
     }
     @Override

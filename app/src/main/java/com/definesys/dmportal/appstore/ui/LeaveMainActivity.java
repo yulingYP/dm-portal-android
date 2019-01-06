@@ -45,27 +45,22 @@ public class LeaveMainActivity extends AppCompatActivity {
         titleBar.setTitle(getString(R.string.leave_off));
         titleBar.setBackgroundDividerEnabled(false);
         //titleBar.setBackground(null);
+        //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        Intent intent = new Intent();
-                        setResult(RESULT_CANCELED,intent);
-                        finish();
-                    }
+                .subscribe(obj->{
+                    Intent intent = new Intent();
+                    setResult(RESULT_CANCELED,intent);
+                    finish();
                 });
 
+        //请假
         RxView.clicks(lg_leave)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
+                .subscribe(obj ->
                         ARouter.getInstance()
-                                .build(ARouterConstants.LeaveActivity)
-                                .navigation();
-                    }
-                });
+                        .build(ARouterConstants.LeaveActivity)
+                        .navigation());
     }
 
 }

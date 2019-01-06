@@ -94,10 +94,11 @@ public class HomeAppFragment extends BaseFragment<HomeAppPresenter> {
     private void initList() {
         mainIconList = new ArrayList<>();
         mainIconList.add(new MainIcon("请假",R.drawable.leave_icon,ARouterConstants.LeaveMainActivity));
+        mainIconList.add(new MainIcon("课表",R.drawable.table_icon,ARouterConstants.SubjectTableActivity));
         mainIconList.add(new MainIcon("社团",R.drawable.group_icon,ARouterConstants.GroupMainActivity));
-        mainIconAdapter = new MainIconAdapter(getContext(),mainIconList);
-        GridLayoutManager staggeredGridLayoutManager = new GridLayoutManager(getContext(),3);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        mainIconAdapter = new MainIconAdapter(getContext(),mainIconList,true,R.layout.item_main_icon);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(mainIconAdapter);
 
     }

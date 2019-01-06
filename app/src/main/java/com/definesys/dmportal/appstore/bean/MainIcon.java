@@ -7,7 +7,7 @@ package com.definesys.dmportal.appstore.bean;
 import java.net.URI;
 
 /**
- * 主页功能图标
+ * 功能图标
  */
 public class MainIcon {
     private String name;//功能名称

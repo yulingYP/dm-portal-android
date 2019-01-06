@@ -29,7 +29,7 @@ import static com.vise.xsnow.http.ViseHttp.getContext;
 /**
  * Created by 羽翎 on 2018/8/24.
  */
-
+//社团类型
 public class TypeListAdapter extends RecyclerView.Adapter<TypeListAdapter.ViewHolder> {
     private List<String> typeList;
     private int oldPosition;
@@ -60,17 +60,15 @@ public class TypeListAdapter extends RecyclerView.Adapter<TypeListAdapter.ViewHo
         holder.typeText.setText(typeList.get(position));
         RxView.clicks( holder.typeText)
                 .throttleFirst(Constants.clickdelay , TimeUnit.MILLISECONDS)   //两秒钟之内只取一个点击事件，防抖操作
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        if(oldPosition!=-1){
-                            notifyItemChanged(oldPosition);
-                        }
-                        holder.typeText.setTextColor(Color.WHITE);
-                        holder.typeText.setBackgroundResource(R.drawable.type_text_is_select);
-                        oldPosition=position;
-                       // SmecRxBus.get().post(getContext().getString(R.string.rxbus_tag_type),holder.typeText.getText().toString());
-                        Toast.makeText(getContext(),typeList.get(position),Toast.LENGTH_SHORT).show();              }
+                .subscribe(obj ->{
+                    if(oldPosition!=-1){
+                        notifyItemChanged(oldPosition);
+                    }
+                    holder.typeText.setTextColor(Color.WHITE);
+                    holder.typeText.setBackgroundResource(R.drawable.type_text_is_select);
+                    oldPosition=position;
+                    // SmecRxBus.get().post(getContext().getString(R.string.rxbus_tag_type),holder.typeText.getText().toString());
+                    Toast.makeText(getContext(),typeList.get(position),Toast.LENGTH_SHORT).show();
                 });
     }
 

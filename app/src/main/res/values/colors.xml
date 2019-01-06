@@ -3,10 +3,12 @@
     <color name="colorPrimary">#3f475a</color>
     <color name="colorPrimaryDark">#3f475a</color>
     <color name="colorAccent">#3f475a</color>
+    <color name="half_transparent">#80000000</color>
     <color name="color_light_blue">#1E90FF</color>
     <color name="color_75_white">#C0FFFFFF</color>
     <color name="color_50_white">#80FFFFFF</color>
     <color name="color_white">#FFFFFF</color>
+
     <color name="color_bgd_grey">#F2F2F2</color>
     <color name="color_gradient_line1">#f6f6f6</color>
     <color name="color_gradient_line2">#f4f4f4</color>

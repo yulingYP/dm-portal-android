@@ -26,7 +26,7 @@ import io.reactivex.functions.Consumer;
 /**
  * Created by 羽翎 on 2018/11/21.
  */
-
+//请假类型
 public class TypeReasonAdapter extends BaseAdapter {
     List <String> list;
     Context mContext;

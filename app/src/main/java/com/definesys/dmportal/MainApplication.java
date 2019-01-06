@@ -16,6 +16,7 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.dao.DaoMaster;
 import com.definesys.dmportal.appstore.dao.DaoSession;
 import com.definesys.dmportal.main.bean.User;
+import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.util.SSLSocketClient;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
@@ -45,7 +46,6 @@ public class MainApplication extends Application {
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
 
-    private String url = "http://wcpublic.smec-cn.com:7777/simp/simp/TEISService/";
     private boolean hasNewMessage;
     public static MainApplication instances;
     //保存用户信息
@@ -122,7 +122,7 @@ public class MainApplication extends Application {
         ViseHttp.init(this);
         ViseHttp.CONFIG()
                 //配置请求主机地址
-                .baseUrl(url)
+                .baseUrl(HttpConst.url)
                 //配置全局请求头
                 .globalHeaders(new HashMap<>())
                 //配置全局请求参数

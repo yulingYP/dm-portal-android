@@ -31,16 +31,20 @@ import io.reactivex.functions.Consumer;
 public class MainIconAdapter extends RecyclerView.Adapter<MainIconAdapter.ViewHolder> {
     private Context mContext;
     private List<MainIcon> mainIconList;
+    private boolean isMain;//是不是主页图标
+    private int layoutId;
 
-    public MainIconAdapter(Context mContext, List<MainIcon> mainIconList) {
+    public MainIconAdapter(Context mContext, List<MainIcon> mainIconList, boolean isMain, int layoutId) {
         this.mContext = mContext;
         this.mainIconList = mainIconList;
+        this.isMain = isMain;
+        this.layoutId = layoutId;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_main_icon,parent,false));
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(layoutId,parent,false));
     }
 
     @Override
@@ -49,15 +53,16 @@ public class MainIconAdapter extends RecyclerView.Adapter<MainIconAdapter.ViewHo
         holder.tv_name.setText(mainIconList.get(position).getName());
         RxView.clicks(holder.itemView)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        ARouter.getInstance().build(mainIconList.get(position).getaRounterPath()).navigation();
-                    }
-                });
-        ViewGroup.LayoutParams layoutParams=holder.itemView.getLayoutParams();
-        layoutParams.height= (MainActivity.screenWith-100)/3;
-        holder.itemView.setLayoutParams(layoutParams);
+                .subscribe(obj->
+                        ARouter.getInstance()
+                                .build(mainIconList.get(position).getaRounterPath())
+                                .navigation());
+        if(isMain) {//主页图标
+            //宽高一致
+            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+            layoutParams.height = (MainActivity.screenWith - 100) / 3;
+            holder.itemView.setLayoutParams(layoutParams);
+        }
     }
 
     @Override
@@ -66,8 +71,6 @@ public class MainIconAdapter extends RecyclerView.Adapter<MainIconAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.item_layout)
-        RelativeLayout lg_item;
         @BindView(R.id.image_icon)
         ImageView img_icon;
         @BindView(R.id.text_icon_name)

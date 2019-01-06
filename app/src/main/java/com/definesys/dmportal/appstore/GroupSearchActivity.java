@@ -13,11 +13,14 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.TypeListAdapter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.main.adapter.GruopInfoRecycleViewAdapter;
 import com.definesys.dmportal.main.bean.GroupInfo;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +31,7 @@ public class GroupSearchActivity extends AppCompatActivity {
     @BindView(R.id.et_search)
     EditText ed_search;
 
-    @BindView(R.id.cancel_button)
+    @BindView(R.id.cancel_text)
     TextView tv_cancel;
 
     //种类列表
@@ -49,9 +52,21 @@ public class GroupSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_search);
         ButterKnife.bind(this);
+        initSerachView();//搜索框相关
         initTpyeList();//种类标签
         initGroupList();//社团标签
     }
+
+    private void initSerachView() {
+        //获取搜索框焦点
+        ed_search.setFocusable(true);
+        ed_search.setFocusableInTouchMode(true);
+        ed_search.requestFocus();
+        RxView.clicks(tv_cancel)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj ->finish());
+    }
+
     private void initTpyeList() {
         typeList = new ArrayList<>();
         typeList.add("全部");

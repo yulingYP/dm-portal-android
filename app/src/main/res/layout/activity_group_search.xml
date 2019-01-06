@@ -23,7 +23,7 @@
             android:layout_height="wrap_content">
         </com.definesys.dmportal.appstore.customViews.SearchBox>
         <TextView
-            android:id="@+id/cancel_button"
+            android:id="@+id/cancel_text"
             android:layout_width="wrap_content"
             android:layout_marginRight="4dp"
             android:layout_gravity="center"
