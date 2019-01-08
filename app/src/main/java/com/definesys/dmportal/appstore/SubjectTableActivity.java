@@ -23,20 +23,26 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.definesys.base.BaseActivity;
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.CursorArg;
 import com.definesys.dmportal.appstore.bean.SubjectTable;
 import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
 import com.definesys.dmportal.appstore.customViews.SelectWeekView;
 import com.definesys.dmportal.appstore.customViews.SubjectDetailDialog;
+import com.definesys.dmportal.appstore.presenter.GetTableInfoPresenter;
 import com.definesys.dmportal.appstore.ui.GroupMainActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.HttpConst;
+import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.ui.MainActivity;
 import com.google.gson.Gson;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
+import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
@@ -54,7 +60,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
 @Route(path = ARouterConstants.SubjectTableActivity)
-public class SubjectTableActivity extends BaseActivity {
+public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
     @BindView(R.id.pre_week)
@@ -89,6 +95,7 @@ public class SubjectTableActivity extends BaseActivity {
     private SubjectDetailDialog subjectDetailDialog;//提示框里的详细内容
     private SelectWeekView selectWeekView;//选择周数界面
     private PopupWindow popupWindow;//选择周数的提示框
+    private GetTableInfoPresenter getTableInfoPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,7 +158,7 @@ public class SubjectTableActivity extends BaseActivity {
                 });
         tv_hello.setText(getString(R.string.table_hello_tip,"马一平","151110414"));
         tv_current_week.setText(getString(R.string.current_week,0));
-        tv_show.setText("");
+        tv_show.setText(getString(R.string.current_show_week,0));
         textViewList = new ArrayList<>();
         getTextView(lg_first,1);
         getTextView(lg_second,2);
@@ -165,6 +172,9 @@ public class SubjectTableActivity extends BaseActivity {
         httpPost();//网络请求
     }
 
+    /**
+     * 手动选择第几周
+     */
     private void initSelectWeek() {
         if(subjectTable==null){
             httpPost();
@@ -214,32 +224,46 @@ public class SubjectTableActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * 获取课表信息失败
+     * @param msg
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.ERROR_NETWORK)
+    }, thread = EventThread.MAIN_THREAD)
+    public void netWorkError(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            Toast.makeText(SubjectTableActivity.this, R.string.net_work_error,Toast.LENGTH_SHORT).show();
+            progressHUD.dismiss();
+        }
+    }
+
+    /**
+     * 获取课表信息成功
+     * @param data
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_TABLE_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getTableInfo(BaseResponse<SubjectTable> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            subjectTable = data.getData();
+            if(System.currentTimeMillis()<=subjectTable.getEndDate().getTime()) {//当前时间《=本学期结课时间
+                currentShowWeek = (int) Math.ceil((System.currentTimeMillis() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay));
+            }
+            //当前周数
+            tv_current_week.setText(getString(R.string.current_week,currentShowWeek));
+            //本学期总周数
+            subjectTable.setSumWeek((int)Math.ceil((subjectTable.getEndDate().getTime()-subjectTable.getStartDate().getTime())/(7*Constants.oneDay)));
+            initTable();
+            initSelectWeek();
+            progressHUD.dismiss();
+        }
+    }
     //网络请求
     private void httpPost() {
-        Map map = new HashMap();
-        map.put("stuId",151110401);
-        map.put("facultyId","111");
-        ViseHttp.POST(HttpConst.getTable)
-                .setJson(new Gson().toJson(map))
-                .request(new ACallback<BaseResponse<SubjectTable>>() {
-                    @Override
-                    public void onSuccess(BaseResponse<SubjectTable> data) {
-                        subjectTable = data.getData();
-                        if(System.currentTimeMillis()<=subjectTable.getEndDate().getTime())
-                            currentShowWeek = (int)Math.ceil((System.currentTimeMillis()-subjectTable.getStartDate().getTime())/(7*Constants.oneDay));
-                        //当前周数
-                        tv_current_week.setText(getString(R.string.current_week,currentShowWeek));
-                        //本学期总周数
-                        subjectTable.setSumWeek((int)Math.ceil((subjectTable.getEndDate().getTime()-subjectTable.getStartDate().getTime())/(7*Constants.oneDay)));
-                        initTable();
-                        initSelectWeek();
-                    }
-
-                    @Override
-                    public void onFail(int errCode, String errMsg) {
-                    Toast.makeText(SubjectTableActivity.this, R.string.net_work_error,Toast.LENGTH_SHORT).show();
-                    }
-                });
+        progressHUD.show();
+        getPersenter().getTableInfo(151110401,"111");
     }
 
     /**
@@ -333,6 +357,7 @@ public class SubjectTableActivity extends BaseActivity {
         }
     }
 
+
     /**
      * 课表置空
      * 清除点击事件
@@ -343,13 +368,24 @@ public class SubjectTableActivity extends BaseActivity {
             textViewList.get(i).setOnClickListener(null);
         }
     }
+
     @Override
-    public BasePresenter getPersenter() {
-        return new BasePresenter(this) {
-            @Override
-            public void subscribe() {
-                super.subscribe();
-            }
-        };
+    protected void onStop() {
+        super.onStop();
+        getPersenter().unsubscribe();
+
+    }
+
+    @Override
+    public  GetTableInfoPresenter getPersenter() {
+        if (getTableInfoPresenter == null) {
+            return new GetTableInfoPresenter(this) {
+                @Override
+                public void subscribe() {
+                    super.subscribe();
+                }
+            };
+        }
+        return getTableInfoPresenter;
     }
 }

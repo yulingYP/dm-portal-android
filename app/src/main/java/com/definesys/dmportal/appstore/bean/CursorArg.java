@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class CursorArg  {
 
-    private Short id;//授课id
+    private String id;//授课id
 
     private String classroom;//上课教室
 
@@ -27,12 +27,19 @@ public class CursorArg  {
 
     private String teacherName; //授课老师姓名
 
+    private Long teacherId; //授课老师id
 
-    public Short getId() {
+    private short credit;//学分
+
+    private short cursorHour;//学时
+
+    private String cursorType;//课程类型
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -90,5 +97,37 @@ public class CursorArg  {
 
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
+    }
+
+    public short getCredit() {
+        return credit;
+    }
+
+    public void setCredit(short credit) {
+        this.credit = credit;
+    }
+
+    public short getCursorHour() {
+        return cursorHour;
+    }
+
+    public void setCursorHour(short cursorHour) {
+        this.cursorHour = cursorHour;
+    }
+
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getCursorType() {
+        return cursorType;
+    }
+
+    public void setCursorType(String cursorType) {
+        this.cursorType = cursorType;
     }
 }

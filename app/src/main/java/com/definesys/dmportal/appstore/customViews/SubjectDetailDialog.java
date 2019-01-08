@@ -25,6 +25,10 @@ public class SubjectDetailDialog extends LinearLayout {
     private Context mContext;
     @BindView(R.id.cusor_name_text)
     TextView tv_cursor_name;
+    @BindView(R.id.cusor_hour_text)
+    TextView tv_cursor_hour;
+    @BindView(R.id.credit_text)
+    TextView tv_credit;
     @BindView(R.id.teacher_name_text)
     TextView tv_teacher;
     @BindView(R.id.location_text)
@@ -71,7 +75,9 @@ public class SubjectDetailDialog extends LinearLayout {
      * @param pitch 第几节
      */
     public void updateData(CursorArg cursorArg,int currentWeek,int weekDay,int pitch){
-        tv_cursor_name.setText(mContext.getString(R.string.cursor_name,cursorArg.getCursorName()));
+        tv_cursor_name.setText(mContext.getString(R.string.cursor_name,cursorArg.getCursorName(),cursorArg.getCursorType()));
+        tv_credit.setText(mContext.getString(R.string.credit_tip,cursorArg.getCredit()));
+        tv_cursor_hour.setText(mContext.getString(R.string.cursor_hour_tip,cursorArg.getCursorHour()));
         tv_teacher.setText(mContext.getString(R.string.teacher_name,checkString(cursorArg.getTeacherName())));
         tv_location.setText(mContext.getString(R.string.location,checkString(cursorArg.getClassroom())));
         tv_week.setText(mContext.getString(R.string.week_number,currentWeek));

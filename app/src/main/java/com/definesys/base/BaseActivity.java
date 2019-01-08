@@ -15,6 +15,7 @@ import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import static android.os.Build.VERSION.SDK;
 
@@ -25,7 +26,7 @@ import static android.os.Build.VERSION.SDK;
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
 
     public static final String ACTIVITY_FINISH = "BaseActivity.finishActivity";
-
+    public KProgressHUD progressHUD;
     protected T mPersenter ;
 
 //    protected KeyboardWatcher keyboardWatcher ;
@@ -40,7 +41,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
         mPersenter = getPersenter();
         SmecRxBus.get().register(this);
-
+        progressHUD = KProgressHUD.create(this).setLabel("loading...")
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setAnimationSpeed(1)
+                .setDimAmount(0.5f);
 //        keyboardWatcher = new KeyboardWatcher(this);
 //        keyboardWatcher.setListener(this);
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

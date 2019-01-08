@@ -83,11 +83,13 @@
     <string name="net_work_error">网络请求出错</string>
     <string name="current_week">本周为第%d周</string>
     <string name="confirm">确定</string>
-    <string name="cursor_name">课程名：%s</string>
-    <string name="teacher_name">授课教师：%s</string>
-    <string name="location">授课地点：%s</string>
+    <string name="cursor_name">%s(%s)</string>
+    <string name="teacher_name">老师：%s</string>
+    <string name="location">教室：%s</string>
     <string name="week_number">周数：第%d周</string>
     <string name="pitch_number">节数：周%d 第%d大节</string>
     <string name="unknow">未知</string>
+    <string name="credit_tip">学分：%d</string>
+    <string name="cursor_hour_tip">学时：%d</string>
 
 </resources>
