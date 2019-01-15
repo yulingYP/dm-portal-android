@@ -48,32 +48,31 @@ public class ReasonImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((ViewHolder) holder).bgd.setImageResource(R.drawable.add);
             ((ViewHolder) holder).frd.setVisibility(View.GONE);
         }else {
-            if (bgds.get(position).isCut()) {
-                Glide.with(context).load(bgds.get(position).getCutPath()).into(viewHolder.bgd);
+            if (bgds.get(position-1).isCut()) {
+                Glide.with(context).load(bgds.get(position-1).getCutPath()).into(viewHolder.bgd);
                 ((ViewHolder) holder).frd.setVisibility(View.VISIBLE);
             } else {
-                Glide.with(context).load(bgds.get(position).getPath()).into(viewHolder.bgd);
+                Glide.with(context).load(bgds.get(position-1).getPath()).into(viewHolder.bgd);
                 ((ViewHolder) holder).frd.setVisibility(View.VISIBLE);
             }
         }
 
-        if (onClickListener != null) {
-
-            //  背景图点击事件《==》对应显示部分
-            RxView.clicks(viewHolder.bgd)
-                    .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                    .subscribe(object ->{
+        //  背景图点击事件《==》对应显示部分
+        RxView.clicks(viewHolder.bgd)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(object ->{
+                    if (onClickListener != null)
                         onClickListener.onBackgroundClick(position);
-                    });
+                });
 
-
-            //  前景图点击事件《==》对应小x
-            RxView.clicks(viewHolder.frd)
-                    .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                    .subscribe(object ->{
+        //  前景图点击事件《==》对应小x
+        RxView.clicks(viewHolder.frd)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(object ->{
+                    if (onClickListener != null)
                         onClickListener.onForegroundClick(position);
-                    });
-        }
+                });
+
     }
 
     public void setImages(List<LocalMedia> images) {
@@ -82,11 +81,7 @@ public class ReasonImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return bgds == null ? 1 : bgds.size();
-    }
-
-    public void removeItem(int position) {
-        bgds.remove(position);
+        return bgds == null ? 1 : bgds.size()+1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

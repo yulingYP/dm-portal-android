@@ -59,9 +59,9 @@ public class MyDatePicker extends LinearLayout {
 
     @BindView(R.id.date_text)
     TextView tv_date;
-    int currentYear;
-    int currentMonth;
-    int currentDay;
+    private int currentYear;
+    private int currentMonth;
+    private int currentDay;
     private Calendar cal = Calendar.getInstance();
     private onClickEventListener myListener;
 

@@ -100,7 +100,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
 
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             requestPage = 1;
-            mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserCode(), requestPage,1);
+            mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserId().toString(), requestPage,1);
             Observable
                     .timer(5, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
@@ -114,7 +114,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
         });
         refreshLayout.setOnLoadMoreListener(refreshLayout -> {
             if (!isLastPage) {
-                mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserCode(), requestPage,2);
+                mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserId().toString(), requestPage,2);
                 Observable
                         .timer(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())

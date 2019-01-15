@@ -6,14 +6,13 @@ import android.content.SharedPreferences;
 import com.definesys.dmportal.main.bean.User;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFaculty;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFileName;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spToken;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserAddress;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserDistrict;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserId;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserImage;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserLocalimg;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserName;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserOption;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserPhone;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSex;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserUrl;
@@ -47,12 +46,8 @@ public class SharedPreferencesUtil {
     public User getUser(){
         User user = new User();
         user.setUserName(getUserName());
-        user.setUserCode(getUserCode());
+        user.setUserId(getUserId());
         user.setUserSex(getUserSex());
-        user.setUserDetailAddress(getUserDistrict());
-        user.setUserAddress(getUserAddress());
-        user.setAttachmentId(getUserImage());
-        user.setUseroption(getuseeroption());
 
         user.setUrl(getUserUrl());
         user.setLocalimg(getUserLocal());
@@ -63,20 +58,12 @@ public class SharedPreferencesUtil {
         return sp.getString(spUserName, "");
     }
 
-    public String getUserCode() {
-        return sp.getString(spUserPhone, "");
+    public Number getUserId() {
+        return sp.getInt(spUserId, 0);
     }
 
     public String getUserSex() {
         return sp.getString(spUserSex, "");
-    }
-
-    public String getUserDistrict() {
-        return sp.getString(spUserDistrict, "");
-    }
-
-    public String getUserAddress() {
-        return sp.getString(spUserAddress, "");
     }
 
     public String getUserImage() {
@@ -85,7 +72,7 @@ public class SharedPreferencesUtil {
 
     public String getToken() {   return sp.getString(spToken,"");}
 
-    public String getuseeroption() {   return sp.getString(spUserOption,"");}
+    public String getFaculty() {   return sp.getString(spFaculty,"");}
 
     public String getUserUrl() {   return sp.getString(spUserUrl,"");}
 
@@ -95,10 +82,14 @@ public class SharedPreferencesUtil {
     //-----------------------SET-------------------
     public SharedPreferences.Editor setUser(User user) {
         if(user!=null) {
-            SharedPreferences.Editor editor = getSpWithEdit().putString(spUserName, user.getUserName()).putString(spUserPhone, user.getUserCode())
-                    .putString(spUserSex, user.getUserSex()).putString(spUserDistrict, user.getUserDetailAddress())
-                    .putString(spUserAddress, user.getUserAddress()).putString(spUserImage, user.getAttachmentId())
-                    .putString(spUserUrl,user.getUrl()).putString(spUserLocalimg,user.getLocalimg());
+            SharedPreferences.Editor editor = getSpWithEdit()
+                    .putInt(spUserId, (Integer) user.getUserId())
+                    .putString(spUserName, user.getUserName())
+                    .putString(spUserPhone, user.getUserPhone())
+                    .putString(spUserSex, user.getUserSex())
+                    .putString(spFaculty,user.getFaculty())
+                    .putString(spUserUrl,user.getUrl())
+                    .putString(spUserLocalimg,user.getLocalimg());
             editor.apply();
             return editor;
         }
@@ -121,17 +112,6 @@ public class SharedPreferencesUtil {
         return editor;
     }
 
-    public SharedPreferences.Editor setUserDistrict(String userDistrict) {
-        SharedPreferences.Editor editor =  getSpWithEdit().putString(spUserDistrict, userDistrict);
-        editor.apply();
-        return editor;
-    }
-
-    public SharedPreferences.Editor setUserAddress(String userAddress) {
-         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserAddress, userAddress);
-         editor.apply();
-         return editor;
-    }
 
     public SharedPreferences.Editor setUserImage(String userImage) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserImage, userImage);
@@ -141,12 +121,6 @@ public class SharedPreferencesUtil {
 
     public SharedPreferences.Editor setToken(String sptoken) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spToken, sptoken);
-        editor.apply();
-        return editor;
-    }
-
-    public SharedPreferences.Editor setUserOption(String userOption) {
-        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserOption, userOption);
         editor.apply();
         return editor;
     }

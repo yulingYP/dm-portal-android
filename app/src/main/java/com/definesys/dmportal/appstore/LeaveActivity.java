@@ -18,33 +18,50 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
-import com.definesys.base.BasePresenter;
+import com.definesys.base.BaseResponse;
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
+import com.definesys.dmportal.appstore.bean.SubjectTable;
+import com.definesys.dmportal.appstore.bean.SubmitLeaveInfo;
 import com.definesys.dmportal.appstore.customViews.MyDatePicker;
 import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
+import com.definesys.dmportal.appstore.customViews.SubjectTableView;
+import com.definesys.dmportal.appstore.customViews.SubmitLeaveInfoView;
+import com.definesys.dmportal.appstore.presenter.GetTableInfoPresenter;
+import com.definesys.dmportal.appstore.presenter.SubjectLeaveRequest;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
+import com.definesys.dmportal.main.presenter.HttpConst;
+import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
+import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.vise.xsnow.http.ViseHttp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -54,12 +71,21 @@ import io.reactivex.functions.Consumer;
 import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
 
 @Route(path = ARouterConstants.LeaveActivity)
-public class LeaveActivity extends BaseActivity {
+public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
 
+    @BindView(R.id.subject_select_info)
+    ImageView img_subIcon;
+
     @BindView(R.id.type_text)
     TextView tv_type;
+
+    @BindView(R.id.type_reason_text)
+    TextView tv_typeReason;
+
+    @BindView(R.id.text_name)
+    TextView tv_name;
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
@@ -79,8 +105,15 @@ public class LeaveActivity extends BaseActivity {
     @BindView(R.id.reason_layout)
     LinearLayout lg_reason;
 
-    @BindView(R.id.time_table_layout)
+    @BindView(R.id.type_reason_layout)
+    LinearLayout lg_typeReason;
+
+    @BindView(R.id.subject_table_layout)
     LinearLayout lg_table;
+
+    @BindView(R.id.leave_day_count_layout)
+    LinearLayout lg_timeCount;
+
    @BindView(R.id.scoll_view)
     ScrollView sc_scoll;
 
@@ -99,18 +132,28 @@ public class LeaveActivity extends BaseActivity {
     @BindView(R.id.count_word_text)
     TextView tv_count;
 
-    private ReasonImageAdapter fedbkImgAdapter;
-    private List<LocalMedia> selectImages;
-    private List<LocalMedia> ViewImages;
+    private ReasonImageAdapter fedbkImgAdapter;//图片适配器
+    private List<LocalMedia> selectImages;//选择的图片
 
     private Date startDate;
     private Date endDate;
+    private SimpleDateFormat df;
     private boolean isVisible =false;//光标是否可见
+    private boolean isScroll;//是否滑动页面
     private boolean isStart;//用户点击的是开始日期还是结束日期
     private Dialog dateDialog;//日期选择提示框
     private MyDatePicker datePick;//日期选择Picker
-    private Dialog reasonDialog;//请假类型提示框
-    private SimpleDateFormat df;
+    private Dialog typeDialog;//请假类型提示框
+    private Dialog reasonDialog;//请假原因提示框
+    private Dialog subjectDialog;//课程选择提示框
+    private Dialog subjectelectDialog;//查看已选择请假的课程列表提示框
+    private int selectTypePosition=1;//请假类型 0：课假 1.短假 2.长假
+    private ReasonTypeListLayout reasonListView;//请假原因视图
+    private ReasonTypeListLayout selectedSubjectView;//查看已选择请假的课程列表视图
+    private SubjectTableView subjectTableView;//课表视图
+    private SubjectTable subjectTableInfo;//课表信息
+    private HashMap<Integer,String> hashMap;//选择的课程 xxik 第xx周,星期i，第k节课
+
     //班长、班主任、导员、导师、教务处、任课老师
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,16 +162,17 @@ public class LeaveActivity extends BaseActivity {
         ButterKnife.bind(this);
         buttonBeyondKeyboardLayout(lg_reason,ed_reason);
         df = new SimpleDateFormat(getString(R.string.date_type));
-
         initView();
         initEdit();//编辑框
-        initList();//添加图片的列表
-        initDate();//日期dialog
-        initReasonDialog();//初始化请假类型提示框
-        initDialog(false);//初始化日期选择提示框
+        initPictureList();//添加图片的列表
+        initTypeDialog();//初始化请假类型提示框
+        initDateDialog(false);//初始化日期选择提示框
+        setLatoutVisibility();//根据请假类型设定显示的内容
+        isScroll=true;
     }
 
     private void initView() {
+        tv_name.setText(SharedPreferencesUtil.getInstance().getUserName());
         titleBar.setTitle(getString(R.string.leave_off));
         titleBar.setBackgroundDividerEnabled(false);
         //titleBar.setBackground(null);
@@ -151,20 +195,45 @@ public class LeaveActivity extends BaseActivity {
         //请假类型
         RxView.clicks(lg_type)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj-> initReasonDialog());
-        //课表
+                .subscribe(obj-> typeDialog.show());
+        //请假原因
+        RxView.clicks(lg_typeReason)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj-> {
+                    reasonListView.setReasonlist(getResources().getStringArray(selectTypePosition <=1 ? R.array.leave_short_reason : R.array.leave_long_reason));
+                    reasonDialog.show();
+                });
+        //课程选择
         RxView.clicks(lg_table)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->
-                        ARouter.getInstance()
-                        .build(ARouterConstants.SubjectTableActivity)
-                        .navigation(LeaveActivity.this));
+                .subscribe(obj-> initSubjectDialog(true));
+        //请假结束时间
+        RxView.clicks(lg_leaveEnd)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj -> initDateDialog(false));
+        //请假开始时间
+        RxView.clicks(lg_leaveStart)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj -> initDateDialog(true));
+        //时长
+        RxView.clicks(lg_timeCount)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj -> {
+                    if(img_subIcon.getVisibility()==View.VISIBLE&&subjectelectDialog!=null){
+                        subjectelectDialog.show();
+                    }
+                });
+        //默认请假类型
+        setTypeText(getResources().getStringArray(R.array.leave_type)[selectTypePosition]);
     }
+
+    //具体原因编辑框设置
     private void initEdit() {
         tv_count.setText(getString(R.string.word_count, 0));
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
+                    isScroll = true;
                     isVisible = true;
                     ed_reason.setCursorVisible(true);
                 });
@@ -187,15 +256,14 @@ public class LeaveActivity extends BaseActivity {
             }
         });
     }
-    private void initList() {
+    //照片列表
+    private void initPictureList() {
         selectImages = new ArrayList<>();
-        ViewImages = new ArrayList<>();
-        ViewImages.add(0,new LocalMedia(" ",100,2,""));
         tv_imgCount.setText(getString(R.string.img_count, 0));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
 
-        fedbkImgAdapter = new ReasonImageAdapter(this, ViewImages);
+        fedbkImgAdapter = new ReasonImageAdapter(this, selectImages);
         recyclerView.setAdapter(fedbkImgAdapter);
 
         // 自定义图片控件的点击事件
@@ -205,7 +273,9 @@ public class LeaveActivity extends BaseActivity {
                 if(position == 0){
                     //打开相册·拍摄照片
                     PictureSelector.create(LeaveActivity.this)
-                            .openGallery(PictureMimeType.ofImage()).maxSelectNum(3).compress(true)
+                            .openGallery(PictureMimeType.ofImage())
+                            .maxSelectNum(3)
+                            .compress(true)
                             .selectionMedia(selectImages)
                             .forResult(PictureConfig.CHOOSE_REQUEST);
                 }else {
@@ -214,63 +284,60 @@ public class LeaveActivity extends BaseActivity {
                             externalPicturePreview(position-1, selectImages);
                 }
             }
+
             @Override
             public void onForegroundClick(int position) {
                 // 删除选中的图片
                 selectImages.remove(position-1);
-                ViewImages.remove(position);
                 fedbkImgAdapter.notifyDataSetChanged();
                 tv_imgCount.setText(getString(R.string.img_count, fedbkImgAdapter.getItemCount()-1));
             }
         });
     }
+
+    /**
+     * 初始化开始日期、结束日期
+     */
     private void initDate() {
         startDate = new Date(System.currentTimeMillis());
-        endDate = new Date(System.currentTimeMillis());
+        endDate = new Date(System.currentTimeMillis()+Constants.oneDay*7);
         tv_timeEnd.setText(df.format(endDate));
         tv_timeStart.setText(df.format(startDate));
-        tv_dayOffCount.setText(getString(R.string.off_day,0)+getString(R.string.off_hour,0));
-        RxView.clicks(lg_leaveEnd)
-                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj-> initDialog(false));
-        RxView.clicks(lg_leaveStart)
-                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->  initDialog(true));
     }
     //请假类型选择
-    private void initReasonDialog() {
-        if(reasonDialog==null) {
-            reasonDialog = new Dialog(this);
-            ReasonTypeListLayout reasonTypeListLayout = new ReasonTypeListLayout(this);
-            reasonTypeListLayout.setReasonlist(getData());
-            reasonTypeListLayout.setMyClickListener(new ReasonTypeListLayout.MyClickListener() {
-                @Override
-                public void onClick(String type) {
-                    tv_type.setText(type);
-                    reasonDialog.dismiss();
+    private void initTypeDialog() {
+        typeDialog = new Dialog(this);
+        ReasonTypeListLayout reasonTypeListLayout = new ReasonTypeListLayout(this);
+        reasonTypeListLayout.getTitleText().setText(R.string.reason_des);
+        reasonTypeListLayout.setReasonlist(getResources().getStringArray(R.array.leave_type));
+        reasonTypeListLayout.setMyClickListener(new ReasonTypeListLayout.MyClickListener() {
+            @Override
+            public void onClick(String type,int position) {
+                setTypeText(type);
+                if(selectTypePosition!=position) {
+                    selectTypePosition = position;
+                    setLatoutVisibility();
                 }
-            });
-            reasonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            reasonDialog.setContentView(reasonTypeListLayout);
-            reasonDialog.setCancelable(true);
-            reasonDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        }else
-            reasonDialog.show();
+                typeDialog.dismiss();
+            }
+        });
+        typeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        typeDialog.setContentView(reasonTypeListLayout);
+        typeDialog.setCancelable(true);
+        typeDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
-    private List<String> getData() {
-        // 数据源
-        List<String> dataList = new ArrayList<String>();
-        dataList.add("实习");
-        dataList.add("出差");
-        dataList.add("住院");
-        dataList.add("身体欠佳");
-        dataList.add("出国交流");
-        dataList.add("家庭原因");
-        dataList.add("其他");
-        return dataList;
+
+    /**
+     * 设置请假类型
+     * @param type
+     */
+    private void setTypeText(String type) {
+        int hasPostion = type.indexOf("(");//是否包含括号
+        tv_type.setText(hasPostion>=0?type.substring(0,hasPostion):type);
     }
+
     //日期选择提示框
-    private void initDialog(boolean flag) {
+    private void initDateDialog(boolean flag) {
         isStart = flag;
         if(dateDialog==null) {
             datePick = new MyDatePicker(this, null);
@@ -285,15 +352,20 @@ public class LeaveActivity extends BaseActivity {
                 public void onConfirm(String date) {
                     dateDialog.dismiss();
                     boolean isBefore = checkDate(isStart, date);
-                    if (isStart && isBefore)
-                        tv_timeStart.setText(date);
-                    else if (!isStart && isBefore)
-                        tv_timeEnd.setText(date);
-                    else
+                    if(!isBefore){
                         Toast.makeText(LeaveActivity.this, R.string.time_fail_tip, Toast.LENGTH_SHORT).show();
-                    if ((isStart && isBefore) || (!isStart && isBefore)) {
-                        initTime();
+                        return;
                     }
+                    if(selectTypePosition==1&&(endDate.getTime()-startDate.getTime())/Constants.oneDay>7){//短假不在1-7天以内
+                        Toast.makeText(LeaveActivity.this, R.string.time_fail_tip_2, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (isStart)
+                        tv_timeStart.setText(date);
+                    else
+                        tv_timeEnd.setText(date);
+                    initTime();//更新开始、结束时间
+
                 }
             });
             dateDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -325,7 +397,6 @@ public class LeaveActivity extends BaseActivity {
         int day = (int)(time/oneDay );
         int hour = (int)(time/(oneDay /24))-day*24;
         tv_dayOffCount.setText((day>0?getString(R.string.off_day,day):"")+(day>0&&hour==0?"":getString(R.string.off_hour,hour)));
-        System.gc();
     }
 
     /**
@@ -350,6 +421,254 @@ public class LeaveActivity extends BaseActivity {
      * 提交合法性检查
      */
     private void checkSelect() {
+        if(selectTypePosition==0){//课假
+            if(hashMap==null||hashMap.size()==0) {//未选择课程
+                Toast.makeText(this, R.string.no_subject_select,Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        if("".equals(ed_reason.getText().toString())){
+            Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(selectTypePosition==2&&(endDate.getTime()-startDate.getTime())/Constants.oneDay<=7){
+            Toast.makeText(this, R.string.data_fail,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        initSubmitDialog();
+    }
+
+    /**
+     * 提交的确认提示框
+     */
+    private void initSubmitDialog() {
+        String name = SharedPreferencesUtil.getInstance().getUserName();
+        Number id = SharedPreferencesUtil.getInstance().getUserId();
+        String type=tv_type.getText().toString();
+        String title = tv_typeReason.getText().toString();
+        String startTime = selectTypePosition==0?"":tv_timeStart.getText().toString();
+        String endTime = selectTypePosition==0?"":tv_timeEnd.getText().toString();
+        String sumTime = tv_dayOffCount.getText().toString();
+        String content = "\n"+ed_reason.getText().toString();
+        String selectedSubject="<br />";
+        if(selectTypePosition!=0)
+            selectedSubject="";
+        else {
+            int i=1;
+            for(Map.Entry<Integer, String> entry : hashMap.entrySet()){
+                int week= entry.getKey()/100;//第几周
+                int day = entry.getKey()%100/10;//星期几
+                int pitch = entry.getKey()%10;//第几节课
+                selectedSubject +="<br />"+ "<font color='#37a0d2'>"+getString(R.string.subject_count_tip,i)+"</font>" + entry.getValue()+"<br />"+"&nbsp;&nbsp;&nbsp;"+getString(R.string.selected_subject_info,week,day,pitch);
+                ++i;
+            }
+        }
+
+        //(Number id,String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject)
+        SubmitLeaveInfo submitLeaveInfo = new SubmitLeaveInfo(id,name,content,startTime,endTime,type,title,sumTime,selectedSubject,selectTypePosition);
+
+        Dialog dialog = new Dialog(this);
+        SubmitLeaveInfoView submitLeaveInfoView = new SubmitLeaveInfoView(this);
+        submitLeaveInfoView.setDate(submitLeaveInfo,selectImages);
+        //设置确定、取消点击事件
+        submitLeaveInfoView .setOnClickListener(new SubmitLeaveInfoView.OnClickListener() {
+            @Override
+            public void onClickConfirm() {
+                dialog.dismiss();
+                mPersenter.getRequestResult(submitLeaveInfo,selectImages);
+                progressHUD.show();
+            }
+
+            @Override
+            public void onCancelClick() {
+                dialog.dismiss();
+            }
+        });
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(submitLeaveInfoView);
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+    }
+
+    /**
+     * 根据请假类型设置接下来要进行设置的选项
+     */
+    private void setLatoutVisibility(){
+        isScroll = false;
+        ViseHttp.cancelTag(HttpConst.getTable);//停止申请课表的网络请求
+        if(selectTypePosition==0){//课假
+            lg_table.setVisibility(View.VISIBLE);
+            lg_leaveEnd.setVisibility(View.GONE);
+            lg_leaveStart.setVisibility(View.GONE);
+            tv_dayOffCount.setText(getString(R.string.off_suject,0));
+            img_subIcon.setVisibility(View.GONE);
+            if(subjectTableView!=null)
+                subjectTableView.clearHashSet();
+            initSubjectDialog(false);
+        }else {//短假或长假
+            lg_table.setVisibility(View.GONE);
+            img_subIcon.setVisibility(View.GONE);
+            lg_leaveEnd.setVisibility(View.VISIBLE);
+            lg_leaveStart.setVisibility(View.VISIBLE);
+            tv_dayOffCount.setText(getString(R.string.off_day,7));
+            initDate();//初始化日期
+        }
+        tv_typeReason.setText(getResources().getStringArray(selectTypePosition <=1 ? R.array.leave_short_reason : R.array.leave_long_reason)[0]);
+        initTypeReasonDialog();
+    }
+
+    /**
+     * 获取课表信息失败
+     * @param msg
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.ERROR_NETWORK)
+    }, thread = EventThread.MAIN_THREAD)
+    public void netWorkError(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            Toast.makeText(LeaveActivity.this, R.string.net_work_error,Toast.LENGTH_SHORT).show();
+            progressHUD.dismiss();
+        }
+    }
+
+    /**
+     * 获取课表信息成功
+     * @param data
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_TABLE_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getTableInfo(BaseResponse<SubjectTable> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            subjectTableInfo = data.getData();
+            //设置开始时间为00时00分00秒
+            subjectTableInfo.setStartDate(DensityUtil.setDate(subjectTableInfo.getStartDate(),true));
+            //设置开始时间为23时59分59秒
+            subjectTableInfo.setEndDate(DensityUtil.setDate(subjectTableInfo.getEndDate(),false));
+            //本学期总周数
+            subjectTableInfo.setSumWeek((int)Math.ceil((float)(subjectTableInfo.getEndDate().getTime()-subjectTableInfo.getStartDate().getTime())/(7*Constants.oneDay)));
+            initSubjectDialog(progressHUD.isShowing());
+            progressHUD.dismiss();
+
+        }
+    }
+
+    /**
+     * 提交请假申请成功
+     * @param msg
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getLeaveRequest(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            Toast.makeText(this, R.string.submit_success,Toast.LENGTH_SHORT).show();
+            progressHUD.dismiss();
+            finish();
+
+        }
+    }
+    /**
+     * 课表提示框
+     * @param isShow 是否显示加载动画
+     */
+    private void initSubjectDialog(boolean isShow) {
+        if(subjectTableInfo==null){//获取课表信息
+            if(isShow)
+                progressHUD.show();
+            new GetTableInfoPresenter(this).getTableInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getFaculty());
+            return;
+        }
+        if(subjectDialog==null) {
+            subjectDialog = new Dialog(this);
+            subjectTableView = new SubjectTableView(this);
+            subjectTableView.setData(subjectTableInfo,(int) ((System.currentTimeMillis() - subjectTableInfo.getStartDate().getTime()) / (7 * Constants.oneDay)));
+            //设置确定、取消点击事件
+            subjectTableView.setMyOnClickListener(new SubjectTableView.MyOnClickListener() {
+                @Override
+                public void onConfirmClick(HashMap<Integer,String> hashMap) {
+                    tv_dayOffCount.setText(getString(R.string.off_suject,hashMap.size()*2));
+                    LeaveActivity.this.hashMap=hashMap;
+                    if(hashMap.size()>0) {
+                        img_subIcon.setVisibility(View.VISIBLE);
+                        initSelectedSubjectDialog();
+                    }
+                    else
+                        img_subIcon.setVisibility(View.GONE);
+                    subjectDialog.dismiss();
+                }
+
+                @Override
+                public void onCancelClick() {
+                    subjectDialog.dismiss();
+                }
+            });
+            subjectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            subjectDialog.setContentView(subjectTableView);
+            subjectDialog.setCancelable(true);
+            subjectDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        if(isShow)
+            subjectDialog.show();
+    }
+
+    /**
+     * 请假原因提示框
+     *
+     */
+    private void initTypeReasonDialog() {
+        if(reasonDialog==null) {
+            reasonDialog = new Dialog(this);
+            reasonListView = new ReasonTypeListLayout(this);
+            reasonListView.getTitleText().setText(R.string.type_reason);
+            reasonListView.setReasonlist(getResources().getStringArray(selectTypePosition == 1 ? R.array.leave_short_reason : R.array.leave_long_reason));
+            reasonListView.setMyClickListener(new ReasonTypeListLayout.MyClickListener() {
+                @Override
+                public void onClick(String type, int position) {
+                    tv_typeReason.setText(type);
+                    reasonDialog.dismiss();
+                }
+            });
+            reasonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            reasonDialog.setContentView(reasonListView);
+            reasonDialog.setCancelable(true);
+            reasonDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+    }
+
+    /**
+     * 查看选择的请假的课程
+     */
+    private void initSelectedSubjectDialog() {
+        String [] arr = new String[hashMap.size()];
+        int i=0;
+        for(Map.Entry<Integer, String> entry : hashMap.entrySet()){
+            int week= entry.getKey()/100;//第几周
+            int day = entry.getKey()%100/10;//星期几
+            int pitch = entry.getKey()%10;//第几节课
+            arr[i]=getString(R.string.selected_subject_info,week,day,pitch)+"+"+entry.getValue();
+            ++i;
+        }
+        if(subjectelectDialog==null) {
+            subjectelectDialog = new Dialog(this);
+            selectedSubjectView = new ReasonTypeListLayout(this);
+            selectedSubjectView.getTitleText().setText(R.string.select_subject);
+            selectedSubjectView.setSelectSubject(arr);
+            selectedSubjectView.setMyOnConfirmClickListener(new ReasonTypeListLayout.MyOnConfirmClickListener() {
+                @Override
+                public void onClick() {
+                    subjectelectDialog.dismiss();
+                }
+            });
+            subjectelectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            subjectelectDialog.setContentView(selectedSubjectView);
+            subjectelectDialog.setCancelable(true);
+            subjectelectDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }else {
+            selectedSubjectView.setSelectSubject(arr);
+        }
+
     }
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -359,6 +678,7 @@ public class LeaveActivity extends BaseActivity {
                 inputMethodManager.hideSoftInputFromWindow(LeaveActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
             ed_reason.setCursorVisible(false);
+            isVisible = false;
             return true;
         }
         return super.dispatchKeyEvent(event);
@@ -371,11 +691,8 @@ public class LeaveActivity extends BaseActivity {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
                     selectImages.clear();
-                    ViewImages.clear();
-                    ViewImages.add(0,new LocalMedia(" ",100,2,""));
                     // 图片选择结果回调
                     selectImages.addAll(PictureSelector.obtainMultipleResult(data));
-                    ViewImages.addAll(PictureSelector.obtainMultipleResult(data));
                     // 例如 LocalMedia 里面返回三种 path
                     // 1.media.getPath(); 为原图 path
                     // 2.media.getCutPath();为裁剪后 path，需判断 media.isCut();是否为 true
@@ -384,7 +701,7 @@ public class LeaveActivity extends BaseActivity {
                     // 更新图片数量
                     tv_imgCount.setText(getString(R.string.img_count, selectImages.size()));
                     // 更新显示图片
-                    fedbkImgAdapter.setImages(ViewImages);
+                    fedbkImgAdapter.setImages(selectImages);
                     fedbkImgAdapter.notifyDataSetChanged();
                     break;
             }
@@ -392,13 +709,21 @@ public class LeaveActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter getPersenter() {
-        return new BasePresenter(this) {
-            @Override
-            public void subscribe() {
-                super.subscribe();
-            }
-        };
+    protected void onStop() {
+        super.onStop();
+        isVisible = ed_reason.isFocused();
+        ed_reason.setCursorVisible(ed_reason.isFocused());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPersenter.unsubscribe();
+    }
+
+    @Override
+    public SubjectLeaveRequest getPersenter() {
+        return new SubjectLeaveRequest(this);
     }
     int count=0;
     private void buttonBeyondKeyboardLayout(final View root, final View button) {
@@ -407,24 +732,27 @@ public class LeaveActivity extends BaseActivity {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (ed_reason.isCursorVisible()&&isVisible) {
-                            sc_scoll.scrollTo(0,(int)lg_reason.getY());
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    sc_scoll.scrollTo(0,(int)lg_reason.getY());
-                                }
-                            }, 300);
+                        if (isScroll) {
+                            if (ed_reason.isCursorVisible() && isVisible) {
+                                sc_scoll.scrollTo(0, (int) lg_reason.getY());
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sc_scoll.scrollTo(0, (int) lg_reason.getY());
+                                    }
+                                }, 300);
 
-                        } else {
-                            // 键盘隐藏
-                            root.scrollTo(0, 0);
-                            if(!isVisible&&++count>1) {
-                                isVisible = true;
+                            } else {
+                                // 键盘隐藏
+                                root.scrollTo(0, 0);
+                                if (!isVisible && ++count > 1) {
+                                    isVisible = true;
+                                }
                             }
                         }
                     }
                 });
     }
+
 
 }

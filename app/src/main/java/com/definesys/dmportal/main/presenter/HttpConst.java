@@ -2,10 +2,16 @@ package com.definesys.dmportal.main.presenter;
 
 public interface HttpConst {
     //主机地址 端口号等
-    String url = "http://192.168.31.73:9001/last_design/user/";
+    String url = "http://192.168.199.170:9001/last_design/";
 
     //获取课表
     String getTable = "listCurArg";
+
+    //提交请假请求
+    String submitLeaveRequest="submitLeaveRequest";
+
+    //上传图片
+    String uploadLeaveImg="uploadLeavePicture";
 
     //1.登陆
      String userLogin = "userLogin";

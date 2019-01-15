@@ -14,535 +14,610 @@
         app:titlebar_bg_color="@color/customer_title"
         android:layout_height="44dp">
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
-<ScrollView
-    android:layout_below="@+id/title_bar"
-    android:background="@color/white"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-      <TextView
-          android:id="@+id/hello_text"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="10dp"
-          android:background="@drawable/table_hello_text_drawable"
-          android:layout_marginTop="20dp"
-          android:layout_marginLeft="24dp"
-          android:layout_marginRight="24dp"
-          android:layout_marginBottom="10dp"
-          android:text="@string/table_hello_tip"
-          android:textColor="@color/black"
-          />
-      <TextView
-          android:id="@+id/current_week_text"
-          android:text="@string/current_week"
-          android:paddingBottom="4dp"
-          android:textColor="@color/buttonBlue"
-          android:layout_marginLeft="24dp"
-          android:layout_marginRight="24dp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-      <LinearLayout
-          android:layout_marginLeft="24dp"
-          android:layout_marginRight="24dp"
-          android:orientation="horizontal"
-          android:background="@color/back_gray"
-          android:padding="4px"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-          <TextView
-              android:id="@+id/pre_week"
-              android:text="@string/pre_week"
-              android:padding="6dp"
-              android:background="@color/white"
-              android:textColor="@color/blue"
-              android:gravity="center"
-              android:layout_weight="1"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content" />
-          <LinearLayout
-              android:layout_width="wrap_content"
-              android:orientation="horizontal"
-              android:padding="6dp"
-              android:gravity="center"
-              android:layout_weight="1"
-              android:layout_marginLeft="4px"
-              android:id="@+id/current_show_layout"
-              android:background="@color/white"
-              android:layout_height="wrap_content">
-              <TextView
-                  android:id="@+id/cur_show"
-                  android:textColor="@color/blue"
-                  android:gravity="center"
-                  android:text="@string/current_show_week"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" />
-              <ImageView
-                  android:src="@drawable/down"
-                  android:layout_width="10dp"
-                  android:layout_marginLeft="4dp"
-                  android:layout_height="10dp" />
-          </LinearLayout>
 
-          <TextView
-              android:id="@+id/next_week"
-              android:text="@string/next_week"
-              android:layout_marginLeft="4px"
-              android:padding="6dp"
-              android:background="@color/white"
-              android:textColor="@color/blue"
-              android:gravity="center"
-              android:layout_weight="1"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content" />
-      </LinearLayout>
-      <TableLayout
-          android:stretchColumns="*"
-          android:layout_marginLeft="24dp"
-          android:layout_marginRight="24dp"
-          android:layout_marginTop="10dp"
-          android:background="@color/back_gray"
-          android:layout_width="320dp"
-          android:id="@+id/subject_table"
-          android:layout_height="match_parent">
-          <TableRow
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <LinearLayout
-                  android:layout_marginTop="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_marginLeft="4px"
-                  android:orientation="horizontal"
-                  android:layout_width="0dp"
-                  android:layout_weight="1"
-                  android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:background="@color/white">
 
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/lesson"
-                      android:gravity="center"
-                      android:paddingTop="12dp"
-                      android:paddingBottom="12dp"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/Monday"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/Tuesday"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/Wednesday"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/Thursday"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/Friday"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/Saturday"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-                  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_weight="1"
-                      android:text="@string/Sunday"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:layout_marginRight="4px"
-                      android:textColor="@color/black" />
-              </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-          </TableRow>
-          <TableRow
-              android:layout_weight="1"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <include
-                  android:layout_width="0dp"
-                  android:id="@+id/first_layout"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_height="match_parent"
-                  layout="@layout/item_table_subject_row">
-              </include>
-          </TableRow>
-          <TableRow
-              android:layout_weight="1"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <include
-                  android:layout_width="0dp"
-                  android:id="@+id/second_layout"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_height="match_parent"
-                  layout="@layout/item_table_subject_row">
-              </include>
-          </TableRow>
-          <TableRow
-              android:layout_weight="1"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <include
-                  android:layout_width="0dp"
-                  android:id="@+id/third_layout"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_height="match_parent"
-                  layout="@layout/item_table_subject_row">
-              </include>
-          </TableRow>
-          <TableRow
-              android:layout_weight="1"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <include
-                  android:layout_width="0dp"
-                  android:id="@+id/fourth_layout"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_height="match_parent"
-                  layout="@layout/item_table_subject_row">
-              </include>
-          </TableRow>
-          <TableRow
-              android:layout_weight="1"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <include
-                  android:layout_width="0dp"
-                  android:id="@+id/fifth_layout"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_height="match_parent"
-                  layout="@layout/item_table_subject_row">
-              </include>
-          </TableRow>
-          <TableRow
-              android:layout_weight="1"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <include
-                  android:layout_width="0dp"
-                  android:id="@+id/sixth_layout"
-                  android:layout_weight="1"
-                  android:layout_marginLeft="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_height="match_parent"
-                  layout="@layout/item_table_subject_row">
-              </include>
-          </TableRow>
+            <TextView
+                android:id="@+id/hello_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/table_hello_text_drawable"
+                android:padding="10dp"
+                android:text="@string/table_hello_tip"
+                android:textColor="@color/black" />
 
-      </TableLayout>
-      <TableLayout
-          android:layout_width="match_parent"
-          android:stretchColumns="*"
-          android:layout_margin="24dp"
-          android:background="@color/back_gray"
-          android:layout_height="match_parent">
-          <TableRow
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:layout_margin="4px"
-              android:layout_width="match_parent">
-              <TextView
-                  android:text="@string/learn_tiem"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  android:padding="4dp"
-                  android:textStyle="bold"
-                  android:textColor="@color/black"
-                  android:layout_height="match_parent"
-                  android:layout_width="match_parent">
-              </TextView>
-          </TableRow>
-          <TableRow
-              android:layout_height="match_parent"
-              android:layout_width="match_parent">
-              <LinearLayout
-                  android:orientation="horizontal"
-                  android:layout_height="match_parent"
-                  android:layout_width="match_parent">
-                  <TextView
-                      android:text="@string/lesson"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginRight="4px"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginLeft="4px"
-                      android:layout_width="100dp"/>
-                  <TextView
-                      android:text="@string/time"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginRight="4px"
-                      android:layout_width="match_parent">
-                  </TextView>
-              </LinearLayout>
-          </TableRow>
-          <TableRow
-              android:layout_height="match_parent"
-              android:layout_width="match_parent">
-              <LinearLayout
-                  android:orientation="horizontal"
-                  android:layout_height="match_parent"
-                  android:layout_width="match_parent">
-                  <TextView
-                      android:text="@string/first_lesson"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginRight="4px"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginLeft="4px"
-                      android:layout_width="100dp"/>
-                  <TextView
-                      android:text="@string/first_lesson_time"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginRight="4px"
-                      android:layout_width="match_parent">
-                  </TextView>
-              </LinearLayout>
-          </TableRow>
-          <TableRow
-              android:layout_height="match_parent"
-              android:layout_width="match_parent">
-              <LinearLayout
-                  android:orientation="horizontal"
-                  android:layout_height="match_parent"
-                  android:layout_width="match_parent">
-                  <TextView
-                      android:text="@string/second_lesson"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginRight="4px"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginLeft="4px"
-                      android:layout_width="100dp"/>
-                  <TextView
-                      android:text="@string/second_lesson_time"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginRight="4px"
-                      android:layout_width="match_parent">
-                  </TextView>
-              </LinearLayout>
-          </TableRow>
-          <TableRow
-              android:layout_height="match_parent"
-              android:layout_width="match_parent">
-              <LinearLayout
-                  android:orientation="horizontal"
-                  android:layout_height="match_parent"
-                  android:layout_width="match_parent">
-                  <TextView
-                      android:text="@string/third_lesson"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginRight="4px"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginLeft="4px"
-                      android:layout_width="100dp"/>
-                  <TextView
-                      android:text="@string/third_lesson_time"
-                      android:gravity="center"
-                      android:background="@color/white"
-                      android:textColor="@color/black"
-                      android:layout_height="match_parent"
-                      android:paddingTop="4dp"
-                      android:paddingBottom="4dp"
-                      android:layout_marginBottom="4px"
-                      android:layout_marginRight="4px"
-                      android:layout_width="match_parent">
-                  </TextView>
-              </LinearLayout>
-          </TableRow>
-          <TableRow
-          android:layout_height="match_parent"
-          android:layout_width="match_parent">
-          <LinearLayout
-              android:orientation="horizontal"
-              android:layout_height="match_parent"
-              android:layout_width="match_parent">
-              <TextView
-                  android:text="@string/fourth_lesson"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  android:textColor="@color/black"
-                  android:layout_height="match_parent"
-                  android:paddingTop="4dp"
-                  android:paddingBottom="4dp"
-                  android:layout_marginRight="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_marginLeft="4px"
-                  android:layout_width="100dp"/>
-              <TextView
-                  android:text="@string/fourth_lesson_time"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  android:textColor="@color/black"
-                  android:layout_height="match_parent"
-                  android:paddingTop="4dp"
-                  android:paddingBottom="4dp"
-                  android:layout_marginBottom="4px"
-                  android:layout_marginRight="4px"
-                  android:layout_width="match_parent">
-              </TextView>
-          </LinearLayout>
-      </TableRow>
-          <TableRow
-          android:layout_height="match_parent"
-          android:layout_width="match_parent">
-          <LinearLayout
-              android:orientation="horizontal"
-              android:layout_height="match_parent"
-              android:layout_width="match_parent">
-              <TextView
-                  android:text="@string/fifth_lesson"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  android:textColor="@color/black"
-                  android:layout_height="match_parent"
-                  android:paddingTop="4dp"
-                  android:paddingBottom="4dp"
-                  android:layout_marginRight="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_marginLeft="4px"
-                  android:layout_width="100dp"/>
-              <TextView
-                  android:text="@string/fifth_lesson_time"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  android:textColor="@color/black"
-                  android:layout_height="match_parent"
-                  android:paddingTop="4dp"
-                  android:paddingBottom="4dp"
-                  android:layout_marginBottom="4px"
-                  android:layout_marginRight="4px"
-                  android:layout_width="match_parent">
-              </TextView>
-          </LinearLayout>
-      </TableRow>
-          <TableRow
-          android:layout_height="match_parent"
-          android:layout_width="match_parent">
-          <LinearLayout
-              android:orientation="horizontal"
-              android:layout_height="match_parent"
-              android:layout_width="match_parent">
-              <TextView
-                  android:text="@string/sixth_lesson"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  android:textColor="@color/black"
-                  android:layout_height="match_parent"
-                  android:paddingTop="4dp"
-                  android:paddingBottom="4dp"
-                  android:layout_marginRight="4px"
-                  android:layout_marginBottom="4px"
-                  android:layout_marginLeft="4px"
-                  android:layout_width="100dp"/>
-              <TextView
-                  android:text="@string/sixth_lesson_time"
-                  android:gravity="center"
-                  android:background="@color/white"
-                  android:textColor="@color/black"
-                  android:layout_height="match_parent"
-                  android:paddingTop="4dp"
-                  android:paddingBottom="4dp"
-                  android:layout_marginBottom="4px"
-                  android:layout_marginRight="4px"
-                  android:layout_width="match_parent">
-              </TextView>
-          </LinearLayout>
-      </TableRow>
+            <TextView
+                android:id="@+id/current_week_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:paddingBottom="4dp"
+                android:text="@string/current_week"
+                android:textColor="@color/buttonBlue" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/back_gray"
+                android:orientation="horizontal"
+                android:padding="4px">
+
+                <TextView
+                    android:id="@+id/pre_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="@string/pre_week"
+                    android:textColor="@color/blue" />
+
+                <LinearLayout
+                    android:id="@+id/current_show_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4px"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:id="@+id/cur_show"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/current_show_week"
+                        android:textColor="@color/blue" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/down" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/next_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4px"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="@string/next_week"
+                    android:textColor="@color/blue" />
+            </LinearLayout>
+
+            <TableLayout
+                android:id="@+id/subject_table"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/back_gray"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4px"
+                        android:layout_marginStart="4px"
+                        android:layout_marginTop="4px"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="12dp"
+                            android:paddingTop="12dp"
+                            android:text="@string/lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/Monday"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/Tuesday"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/Wednesday"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/Thursday"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/Friday"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/Saturday"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4px"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/Sunday"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <include
+                        android:id="@+id/first_layout"
+                        layout="@layout/item_table_subject_row"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4px"
+                        android:layout_marginStart="4px"
+                        android:layout_weight="1">
+
+                    </include>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <include
+                        android:id="@+id/second_layout"
+                        layout="@layout/item_table_subject_row"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4px"
+                        android:layout_marginStart="4px"
+                        android:layout_weight="1">
+
+                    </include>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <include
+                        android:id="@+id/third_layout"
+                        layout="@layout/item_table_subject_row"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4px"
+                        android:layout_marginStart="4px"
+                        android:layout_weight="1">
+
+                    </include>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <include
+                        android:id="@+id/fourth_layout"
+                        layout="@layout/item_table_subject_row"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4px"
+                        android:layout_marginStart="4px"
+                        android:layout_weight="1">
+
+                    </include>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <include
+                        android:id="@+id/fifth_layout"
+                        layout="@layout/item_table_subject_row"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4px"
+                        android:layout_marginStart="4px"
+                        android:layout_weight="1">
+
+                    </include>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <include
+                        android:id="@+id/sixth_layout"
+                        layout="@layout/item_table_subject_row"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4px"
+                        android:layout_marginStart="4px"
+                        android:layout_weight="1">
+                        
+                    </include>
+                </TableRow>
+
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="24dp"
+                android:id="@+id/subject_time_table"
+                android:background="@color/back_gray"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4px"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/learn_tiem"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+                        
+                    </TextView>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginStart="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/time"
+                            android:textColor="@color/black">
+                            
+                        </TextView>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginStart="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/first_lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/first_lesson_time"
+                            android:textColor="@color/black">
+                            
+                        </TextView>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginStart="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/second_lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/second_lesson_time"
+                            android:textColor="@color/black">
+                            
+                        </TextView>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginStart="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/third_lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/third_lesson_time"
+                            android:textColor="@color/black">
+                            
+                        </TextView>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginStart="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/fourth_lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/fourth_lesson_time"
+                            android:textColor="@color/black">
+                            
+                        </TextView>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginStart="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/fifth_lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/fifth_lesson_time"
+                            android:textColor="@color/black">
+                            
+                        </TextView>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginStart="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/sixth_lesson"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="4px"
+                            android:layout_marginEnd="4px"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:paddingBottom="4dp"
+                            android:paddingTop="4dp"
+                            android:text="@string/sixth_lesson_time"
+                            android:textColor="@color/black">
+                            
+                        </TextView>
+                    </LinearLayout>
+                </TableRow>
 
 
+            </TableLayout>
+        </LinearLayout>
 
-      </TableLayout>
-  </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
 
 
 </LinearLayout>

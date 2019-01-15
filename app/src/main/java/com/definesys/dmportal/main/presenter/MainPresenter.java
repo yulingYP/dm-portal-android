@@ -16,6 +16,8 @@ public class MainPresenter extends BasePresenter {
     public static final String ERROR_NETWORK="ERROR_NETWORK";
     //获取课表信息成功
     public static final String SUCCESSFUL_GET_TABLE_INFO="SUCCESSFUL_GET_TABLE_INFO";
+    //获取提交请假请求
+    public static final String SUCCESSFUL_GET_LEAVE_REQUEST="SUCCESSFUL_GET_LEAVE_REQUEST";
     //获取消息成功
     public static final String SUCCESSFUL_GET_MESSAGE = "SUCCESSFUL_GET_MESSAGE";
     //获取消息失败

@@ -42,7 +42,7 @@
                 android:layout_marginRight="10dp"
                 android:padding="10dp"
                 android:text="@string/confirm"
-                android:textColor="@color/date_font_color" />
+                android:textColor="@color/blue" />
         </LinearLayout>
     </LinearLayout>
     <TextView

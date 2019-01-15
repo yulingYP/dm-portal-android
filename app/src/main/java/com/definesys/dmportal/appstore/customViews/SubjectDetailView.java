@@ -18,10 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * 课程详细信息
  * Created by 羽翎 on 2019/1/6.
  */
-
-public class SubjectDetailDialog extends LinearLayout {
+public class SubjectDetailView extends LinearLayout {
     private Context mContext;
     @BindView(R.id.cusor_name_text)
     TextView tv_cursor_name;
@@ -40,18 +40,18 @@ public class SubjectDetailDialog extends LinearLayout {
     @BindView(R.id.confirm_text)
     TextView tv_confirm;
     private OnClickConfirmListener onClickConfirmListener;
-    public SubjectDetailDialog(Context context) {
+    public SubjectDetailView(Context context) {
         super(context);
         initView(context);
     }
 
 
-    public SubjectDetailDialog(Context context, @Nullable AttributeSet attrs) {
+    public SubjectDetailView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
 
-    public SubjectDetailDialog(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SubjectDetailView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
     }
@@ -74,14 +74,14 @@ public class SubjectDetailDialog extends LinearLayout {
      * @param weekDay 星期几
      * @param pitch 第几节
      */
-    public void updateData(CursorArg cursorArg,int currentWeek,int weekDay,int pitch){
+    public void updateData(CursorArg cursorArg,int currentWeek,int weekDay,int pitch,String classRoom){
         tv_cursor_name.setText(mContext.getString(R.string.cursor_name,cursorArg.getCursorName(),cursorArg.getCursorType()));
         tv_credit.setText(mContext.getString(R.string.credit_tip,cursorArg.getCredit()));
         tv_cursor_hour.setText(mContext.getString(R.string.cursor_hour_tip,cursorArg.getCursorHour()));
         tv_teacher.setText(mContext.getString(R.string.teacher_name,checkString(cursorArg.getTeacherName())));
-        tv_location.setText(mContext.getString(R.string.location,checkString(cursorArg.getClassroom())));
+        tv_location.setText(mContext.getString(R.string.location,checkString(classRoom)));
         tv_week.setText(mContext.getString(R.string.week_number,currentWeek));
-        tv_pitch.setText(mContext.getString(R.string.pitch_number,weekDay,pitch));
+        tv_pitch.setText(mContext.getString(R.string.pitch_number,mContext.getResources().getStringArray(R.array.week)[weekDay],pitch));
     }
 
     /**

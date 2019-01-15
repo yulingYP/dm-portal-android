@@ -1,8 +1,14 @@
 package com.definesys.dmportal;
 
+import android.animation.IntArrayEvaluator;
+
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 
 import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 
 import static org.junit.Assert.*;
 
@@ -14,9 +20,18 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        String aa = "0809";
-        String result = DensityUtil.getPitchString(aa.charAt(3))+DensityUtil.getPitchString(aa.charAt(2));
-        System.out.println(result);
+        HashSet<Integer> hashSet = new HashSet<>();
+        hashSet.add(1);
+        hashSet.add(2);
+        hashSet.add(11);
+        System.out.println(hashSet.contains(1));
+        hashSet.remove(1);
+        String aa="01234";
+        for(int i = 0 ; i <aa.length();i++){
+            System.out.println(aa.substring(i));
+        }
+        ;
+//        System.out.println(DensityUtil.getFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",new Date()).toString());
         assertEquals(4, 2 + 2);
     }
 }

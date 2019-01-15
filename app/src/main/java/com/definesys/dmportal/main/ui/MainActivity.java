@@ -15,16 +15,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.definesys.base.BaseActivity;
+import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
+import com.definesys.dmportal.main.bean.User;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.ui.fragment.ContactFragment;
 import com.definesys.dmportal.appstore.ui.fragment.HomeAppFragment;
 import com.definesys.dmportal.main.ui.fragment.GroupFragment;
 import com.definesys.dmportal.main.ui.fragment.MsgFragment;
 import com.definesys.dmportal.main.ui.fragment.MyFragment;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -65,6 +68,9 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         RxBus.get().register(this);
+        //测试用
+        MainApplication.getInstances().setUser(new User());
+        SharedPreferencesUtil.getInstance().setUser(MainApplication.getInstances().getUser());
         //获取手机宽高
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels;

@@ -1,31 +1,34 @@
 package com.definesys.dmportal.main.bean;
 
 public class User{
-    private String userName;
-    private String userCode;
-    private String userSex;
-    private String userAddress;
-    private String userDetailAddress;
-    private String userPassword;
-    private String attachmentId;
-    private String agreementId;
-    private String groupRegion;
-    private String useroption;
-    private String url;
-    private String localimg;
+    private String userName;//姓名
+    private Number userId;//编号
+    private String userPhone;//用户手机
+    private String faculty;//院系编号
+    private String userSex;//性别
+    private String userPassword;//密码
+    private String url;//头像url
+    private String localimg;//本地头像url
 
     public User() {
-        userName = "";
-        userCode = "";
-        userSex = "";
-        userAddress = "";
-        userDetailAddress = "";
+        userName = "小白";
+        userId = 151110401;
+        userSex = "男";
+        faculty="111";
         userPassword = "";
-        attachmentId = "";
-        agreementId = "";
-        groupRegion = "";
+        userPhone="17863136613";
         url = "";
         localimg = "";
+    }
+
+    public User(String userName, Number userId, String factyId, String userSex, String userPassword, String url, String localimg) {
+        this.userName = userName;
+        this.userId = userId;
+        this.faculty = factyId;
+        this.userSex = userSex;
+        this.userPassword = userPassword;
+        this.url = url;
+        this.localimg = localimg;
     }
 
     public String getUserName() {
@@ -36,12 +39,20 @@ public class User{
         this.userName = userName;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public Number getUserId() {
+        return userId;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setUserId(Number userId) {
+        this.userId = userId;
+    }
+
+    public String getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(String factyId) {
+        this.faculty = factyId;
     }
 
     public String getUserSex() {
@@ -52,60 +63,12 @@ public class User{
         this.userSex = userSex;
     }
 
-    public String getUserAddress() {
-        return userAddress;
-    }
-
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
-    }
-
-    public String getUserDetailAddress() {
-        return userDetailAddress;
-    }
-
-    public void setUserDetailAddress(String userDetailAddress) {
-        this.userDetailAddress = userDetailAddress;
-    }
-
     public String getUserPassword() {
         return userPassword;
     }
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
-    }
-
-    public String getAttachmentId() {
-        return attachmentId;
-    }
-
-    public void setAttachmentId(String attachmentId) {
-        this.attachmentId = attachmentId;
-    }
-
-    public String getAgreementId() {
-        return agreementId;
-    }
-
-    public void setAgreementId(String agreementId) {
-        this.agreementId = agreementId;
-    }
-
-    public String getGroupRegion() {
-        return groupRegion;
-    }
-
-    public void setGroupRegion(String groupRegion) {
-        this.groupRegion = groupRegion;
-    }
-
-    public String getUseroption() {
-        return useroption;
-    }
-
-    public void setUseroption(String useroption) {
-        this.useroption = useroption;
     }
 
     public String getUrl() {
@@ -124,21 +87,11 @@ public class User{
         this.localimg = localimg;
     }
 
-    public User(String userName, String userCode, String userSex,
-                String userAddress, String userDetailAddress, String userPassword,
-                String attachmentId, String agreementId, String groupRegion, String useroption,
-                String url,String localimg) {
-        this.userName = userName;
-        this.userCode = userCode;
-        this.userSex = userSex;
-        this.userAddress = userAddress;
-        this.userDetailAddress = userDetailAddress;
-        this.userPassword = userPassword;
-        this.attachmentId = attachmentId;
-        this.agreementId = agreementId;
-        this.groupRegion = groupRegion;
-        this.useroption = useroption;
-        this.url = url;
-        this.localimg = localimg;
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 }

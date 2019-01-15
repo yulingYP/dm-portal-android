@@ -2,57 +2,39 @@ package com.definesys.dmportal.appstore;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.widget.PopupWindowCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.definesys.base.BaseActivity;
-import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.CursorArg;
 import com.definesys.dmportal.appstore.bean.SubjectTable;
-import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
 import com.definesys.dmportal.appstore.customViews.SelectWeekView;
-import com.definesys.dmportal.appstore.customViews.SubjectDetailDialog;
+import com.definesys.dmportal.appstore.customViews.SubjectDetailView;
 import com.definesys.dmportal.appstore.presenter.GetTableInfoPresenter;
-import com.definesys.dmportal.appstore.ui.GroupMainActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
-import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
-import com.definesys.dmportal.main.ui.MainActivity;
-import com.google.gson.Gson;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.vise.xsnow.http.ViseHttp;
-import com.vise.xsnow.http.callback.ACallback;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
@@ -88,14 +70,14 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     @BindView(R.id.current_show_layout)
     LinearLayout lg_current_week;
 
-    private List<TextView> textViewList;
+    private List<TextView> textViewList;//周一到周日每节课的textView
     private SubjectTable subjectTable;//课表信息
     private int currentShowWeek=1;//当前显示的周数
     private Dialog dialog;//课程详细信息提示框
-    private SubjectDetailDialog subjectDetailDialog;//提示框里的详细内容
+    private SubjectDetailView subjectDetailDialog;//提示框里的详细内容
     private SelectWeekView selectWeekView;//选择周数界面
     private PopupWindow popupWindow;//选择周数的提示框
-    private GetTableInfoPresenter getTableInfoPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,7 +138,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                 .subscribe(obj->{
                     initSelectWeek();
                 });
-        tv_hello.setText(getString(R.string.table_hello_tip,"马一平","151110414"));
+        tv_hello.setText(getString(R.string.table_hello_tip,SharedPreferencesUtil.getInstance().getUserName(),SharedPreferencesUtil.getInstance().getUserId()));
         tv_current_week.setText(getString(R.string.current_week,0));
         tv_show.setText(getString(R.string.current_show_week,0));
         textViewList = new ArrayList<>();
@@ -248,13 +230,17 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     public void getTableInfo(BaseResponse<SubjectTable> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             subjectTable = data.getData();
+            //设置开始时间为00时00分00秒
+            subjectTable.setStartDate(DensityUtil.setDate(subjectTable.getStartDate(),true));
+            //设置开始时间为23时59分59秒
+            subjectTable.setEndDate(DensityUtil.setDate(subjectTable.getEndDate(),false));
             if(System.currentTimeMillis()<=subjectTable.getEndDate().getTime()) {//当前时间《=本学期结课时间
-                currentShowWeek = (int) Math.ceil((System.currentTimeMillis() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay));
+                currentShowWeek = (int) ((System.currentTimeMillis() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay));
             }
             //当前周数
             tv_current_week.setText(getString(R.string.current_week,currentShowWeek));
             //本学期总周数
-            subjectTable.setSumWeek((int)Math.ceil((subjectTable.getEndDate().getTime()-subjectTable.getStartDate().getTime())/(7*Constants.oneDay)));
+            subjectTable.setSumWeek((int)Math.ceil((float)(subjectTable.getEndDate().getTime()-subjectTable.getStartDate().getTime())/(7*Constants.oneDay)));
             initTable();
             initSelectWeek();
             progressHUD.dismiss();
@@ -263,7 +249,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     //网络请求
     private void httpPost() {
         progressHUD.show();
-        getPersenter().getTableInfo(151110401,"111");
+        mPersenter.getTableInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getFaculty());
     }
 
     /**
@@ -289,14 +275,14 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                             for(int k = result.length()-1 ; k>=2;k--){
                                 if(result.charAt(k)=='1'){
                                     //第currentShowWeek周的星期7-j的第8-k节有i课
-                                    textViewList.get(6-j+(7-k)*7).setText(list.get(i).getCursorName()+"\n"+(list.get(i).getClassroom()==null?"":list.get(i).getClassroom()));
+                                    textViewList.get(6-j+(7-k)*7).setText(list.get(i).getCursorName()+"\n"+DensityUtil.checkClassRoom(7-j,list.get(i).getClassroom()));
                                     int finalI = i;
                                     int finalJ = j;
                                     int finalK = k;
                                     RxView.clicks(textViewList.get(6-j+(7-k)*7))
                                             .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                                             .subscribe(obj->{
-                                                initDialog(list.get(finalI),7- finalJ,8- finalK,textViewList.get(6-finalJ+(7-finalK)*7));
+                                                initDialog(list.get(finalI),6- finalJ,8- finalK,textViewList.get(6-finalJ+(7-finalK)*7));
                                             });
                                 }
                             }
@@ -317,8 +303,8 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     private void initDialog(CursorArg cursorArg,int weekDay,int pitch,TextView tv_temp) {
         if(dialog==null||tv_temp==null) {
             dialog = new Dialog(this);
-            subjectDetailDialog = new SubjectDetailDialog(this);
-            subjectDetailDialog.setOnClickConfirmListener(new SubjectDetailDialog.OnClickConfirmListener() {
+            subjectDetailDialog = new SubjectDetailView(this);
+            subjectDetailDialog.setOnClickConfirmListener(new SubjectDetailView.OnClickConfirmListener() {
                 @Override
                 public void onClickConfirm() {
                     dialog.dismiss();
@@ -331,7 +317,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
         }else {
             tv_temp.setBackgroundColor(getResources().getColor(R.color.bg_gray));
             tv_temp.setTextColor(getResources().getColor(R.color.buttonBlue));
-            subjectDetailDialog.updateData(cursorArg,currentShowWeek,weekDay,pitch);
+            subjectDetailDialog.updateData(cursorArg,currentShowWeek,weekDay,pitch,DensityUtil.checkClassRoom(weekDay,cursorArg.getClassroom()));
             dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -378,14 +364,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
 
     @Override
     public  GetTableInfoPresenter getPersenter() {
-        if (getTableInfoPresenter == null) {
-            return new GetTableInfoPresenter(this) {
-                @Override
-                public void subscribe() {
-                    super.subscribe();
-                }
-            };
-        }
-        return getTableInfoPresenter;
+
+        return new GetTableInfoPresenter(this);
     }
 }

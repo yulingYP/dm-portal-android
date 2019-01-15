@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="leave_type">
+        <item>课假</item>
+        <item>短假(1&#8211;7天)</item>
+        <item>长假(多于7天)</item>
+    </string-array>
+
+    <string-array name="leave_short_reason">
+        <item>身体欠佳</item>
+        <item>家庭原因</item>
+        <item>住院</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="leave_long_reason">
+        <item>住院</item>
+        <item>实习</item>
+        <item>身体欠佳</item>
+        <item>出国交流</item>
+        <item>家庭原因</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="week">
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周日</item>
+    </string-array>
+</resources>

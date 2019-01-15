@@ -7,15 +7,6 @@
     <string name="submit">提交</string>
     <string name="cancel">取消</string>
     <string name="reason_des">请假类型</string>
-    <string-array name="leave_reason">
-        <item>实习</item>
-        <item>出差</item>
-        <item>住院</item>
-        <item>身体欠佳</item>
-        <item>出国交流</item>
-        <item>家庭原因</item>
-        <item>其他</item>
-    </string-array>
     <string name="img_count">%1$d/3</string>
     <integer name="code_send_time">60</integer>
     <integer name="max_name_length">20</integer>
@@ -34,6 +25,7 @@
     <string name="date_type">yyyy年MM月dd日 HH时</string>
     <string name="leave_off">请假</string>
     <string name="time_fail_tip">结束时间不能小于开始时间</string>
+    <string name="time_fail_tip_2">短假最多只能请7天假</string>
     <string name="off_day">%d天</string>
     <string name="off_hour">%d小时</string>
     <string name="img_tip">相关截图或照片</string>
@@ -47,11 +39,13 @@
     <string name="time_long">时长</string>
     <string name="submit_persion">审批人</string>
     <string name="subject_table">课表</string>
+    <string name="select_subject_table">课程选择</string>
     <string name="group_des">社团</string>
     <string name="school_des">哈工大(威海)快捷校园</string>
     <string name="type_search">种类</string>
     <string name="history_search">搜索历史</string>
     <string name="table_hello_tip">你好 %s %s,以下是您的课表,点击课程可以获取课程详细信息</string>
+    <string name="help_tip">请点击要请假的课程,只能选择本周与下周的课程,最多可选择6节课</string>
     <string name="lesson">节次</string>
     <string name="Monday">周一</string>
     <string name="Tuesday">周二</string>
@@ -63,17 +57,17 @@
     <string name="learn_tiem">上课时间</string>
     <string name="time">时间</string>
     <string name="first_lesson">第1大节</string>
-    <string name="first_lesson_time">08:00-08:50，08:55-09:45</string>
+    <string name="first_lesson_time">08:00&#8211;08:50，08:55&#8211;09:45</string>
     <string name="second_lesson">第2大节</string>
-    <string name="second_lesson_time">10:05-10:55，11:00-11:50</string>
+    <string name="second_lesson_time">10:05&#8211;10:55，11:00&#8211;11:50</string>
     <string name="third_lesson">第3大节</string>
-    <string name="third_lesson_time">14:00-14:50，14:55-15:45</string>
+    <string name="third_lesson_time">14:00&#8211;14:50，14:55&#8211;15:45</string>
     <string name="fourth_lesson">第4大节</string>
-    <string name="fourth_lesson_time">16:05-16:55，17:00-17:50</string>
+    <string name="fourth_lesson_time">16:05&#8211;16:55，17:00&#8211;17:50</string>
     <string name="fifth_lesson">第5大节</string>
-    <string name="fifth_lesson_time">18:45-20:15</string>
+    <string name="fifth_lesson_time">18:45&#8211;20:15</string>
     <string name="sixth_lesson">第6大节</string>
-    <string name="sixth_lesson_time">20:30-22:00</string>
+    <string name="sixth_lesson_time">20:30&#8211;22:00</string>
     <string name="pre_week">上一周</string>
     <string name="next_week">下一周</string>
     <string name="current_show_week">当前显示:第%d周</string>
@@ -82,14 +76,36 @@
     <string name="ed_search_tip">请输入种类或社团名称</string>
     <string name="net_work_error">网络请求出错</string>
     <string name="current_week">本周为第%d周</string>
+    <string name="select_subject_count">已选择%d节课</string>
     <string name="confirm">确定</string>
     <string name="cursor_name">%s(%s)</string>
     <string name="teacher_name">老师：%s</string>
     <string name="location">教室：%s</string>
     <string name="week_number">周数：第%d周</string>
-    <string name="pitch_number">节数：周%d 第%d大节</string>
+    <string name="pitch_number">节数：%s 第%d大节</string>
     <string name="unknow">未知</string>
     <string name="credit_tip">学分：%d</string>
     <string name="cursor_hour_tip">学时：%d</string>
+    <string name="off_suject">%d课时</string>
+    <string name="type_reason">请假原因</string>
+    <string name="select_fail_tip_1">不能选择今天之前的课程</string>
+    <string name="select_fail_tip_2">最多只能选择6节课</string>
+    <string name="select_fail_tip_3">只能选择本周和下一周的课程</string>
+    <string name="select_subject">请假课程</string>
+    <string name="selected_subject_info">第%d周 周%d 第%d大节</string>
+    <string name="subject_count_tip">%d.</string>
+    <string name="no_subject_select">请选择要请假的课程</string>
+    <string name="no_reason_des">请填写请假的具体原因</string>
+    <string name="data_fail">长假的天数要多于7天</string>
+    <string name="confirm_info_tip">请确认信息是否正确,确认无误后点击确定提交申请</string>
+    <string name="name_tip">姓名:%s</string>
+    <string name="type_tip">请假类型:%s</string>
+    <string name="leave_title">请假原因:%s</string>
+    <string name="start_time_tip">开始时间:%s</string>
+    <string name="end_time_tip">结束时间:%s</string>
+    <string name="sum_time_tip">时长:%s</string>
+    <string name="selected_subject_tip">请假课程:%s</string>
+    <string name="content_tip">具体原因:%s</string>
+    <string name="submit_success">提交成功</string>
 
 </resources>
