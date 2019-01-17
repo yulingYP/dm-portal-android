@@ -27,7 +27,7 @@
             android:id="@+id/textView" />
         <TextView
             android:text="未请假"
-            android:textColor="@color/blue_pressed"
+            android:textColor="@color/green"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

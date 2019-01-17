@@ -28,8 +28,6 @@
     <color name="color_green">#008B00</color>
     <color name="progress_bg">#fff2c0</color>
 
-
-    <color name="blue_pressed">#7cb342</color>
     <color name="blue_normal">#ffffbb33</color>
     <color name="green_complete">#ff99cc00</color>
     <color name="purple_progress">#03a9f4</color>
@@ -67,7 +65,7 @@
     <color name="date_font_color">#FE8649</color>
     <color name="submit_selected">#EF642E</color>
     <color name="ele_back_bg">#FFF7F8</color>
-    <color name="green">#54C45A</color>
+    <color name="green">#7cb342</color>
     <color name="addChangeSelected">#32A532</color>
     <color name="buttonBlue">#547FD5</color>
     <color name="accessDebug">#417AD6</color>

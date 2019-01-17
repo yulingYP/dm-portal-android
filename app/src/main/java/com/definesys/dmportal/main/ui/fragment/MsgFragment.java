@@ -222,8 +222,8 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
         recyclerView.setVisibility(View.GONE);
         ivNomessage.setVisibility(View.VISIBLE);
         if(i == 1 )
-            tvNomessage.setText("暂无动态");
+            tvNomessage.setText(R.string.no_msg_tip);
         else
-            tvNomessage.setText("暂无网络");
+            tvNomessage.setText(R.string.no_net_tip);
     }
 }

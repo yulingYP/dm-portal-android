@@ -130,7 +130,7 @@ public class MainApplication extends Application {
                 //配置读取超时时间，单位秒
                 .readTimeout(6)
                 //配置写入超时时间，单位秒
-                .writeTimeout(6)
+                .writeTimeout(18)
                 //配置连接超时时间，单位秒
                // .connectTimeout(3)
                 //配置请求失败重试次数
@@ -204,7 +204,6 @@ public class MainApplication extends Application {
 
         // 尽可能早，推荐在Application中初始化
         ARouter.init(this);
-        ARouter.getInstance();
 
         instances = this;
         SharedPreferencesUtil.setContext(this);

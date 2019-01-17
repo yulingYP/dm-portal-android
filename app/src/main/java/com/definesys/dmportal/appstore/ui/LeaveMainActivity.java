@@ -15,6 +15,7 @@ import com.definesys.dmportal.appstore.bean.MainIcon;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.List;
@@ -29,10 +30,13 @@ public class LeaveMainActivity extends AppCompatActivity {
      CustomTitleBar titleBar;
 
     @BindView(R.id.leave_layout)
-    LinearLayout lg_leave;
+    LinearLayout lg_leave;//请假
 
     @BindView(R.id.confirm_layout)
-    LinearLayout lg_confirm;
+    LinearLayout lg_confirm;//审批处理
+
+    @BindView(R.id.my_leave_history_layout)
+    LinearLayout lg_leaveHistory;//请假记录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,15 @@ public class LeaveMainActivity extends AppCompatActivity {
                         ARouter.getInstance()
                         .build(ARouterConstants.LeaveActivity)
                         .navigation());
+        //请假记录
+        RxView.clicks(lg_leaveHistory)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj ->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.LeaveHistoryActivity)
+                                .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
+                                .withInt("type", 0)
+                                .navigation());
     }
 
 }

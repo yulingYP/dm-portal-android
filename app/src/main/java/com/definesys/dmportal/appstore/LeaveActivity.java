@@ -223,8 +223,8 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
                         subjectelectDialog.show();
                     }
                 });
-        //默认请假类型
-        setTypeText(getResources().getStringArray(R.array.leave_type)[selectTypePosition]);
+        //默认请假类型 短假
+        tv_type.setText(DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[selectTypePosition]));
     }
 
     //具体原因编辑框设置
@@ -313,7 +313,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         reasonTypeListLayout.setMyClickListener(new ReasonTypeListLayout.MyClickListener() {
             @Override
             public void onClick(String type,int position) {
-                setTypeText(type);
+                tv_type.setText(DensityUtil.setTypeText(type));
                 if(selectTypePosition!=position) {
                     selectTypePosition = position;
                     setLatoutVisibility();
@@ -327,14 +327,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         typeDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
-    /**
-     * 设置请假类型
-     * @param type
-     */
-    private void setTypeText(String type) {
-        int hasPostion = type.indexOf("(");//是否包含括号
-        tv_type.setText(hasPostion>=0?type.substring(0,hasPostion):type);
-    }
+
 
     //日期选择提示框
     private void initDateDialog(boolean flag) {
@@ -431,7 +424,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
             Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
             return;
         }
-        if(selectTypePosition==2&&(endDate.getTime()-startDate.getTime())/Constants.oneDay<=7){
+        if(selectTypePosition==2&&(Math.ceil(endDate.getTime()-startDate.getTime())/Constants.oneDay)<=7){
             Toast.makeText(this, R.string.data_fail,Toast.LENGTH_SHORT).show();
             return;
         }
@@ -715,11 +708,6 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         ed_reason.setCursorVisible(ed_reason.isFocused());
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPersenter.unsubscribe();
-    }
 
     @Override
     public SubjectLeaveRequest getPersenter() {

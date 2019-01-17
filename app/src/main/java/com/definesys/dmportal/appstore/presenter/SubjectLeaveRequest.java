@@ -50,8 +50,6 @@ public class SubjectLeaveRequest extends BasePresenter {
         submitLeaveInfo.setId(submitLeaveInfo.getUserId().toString() + System.currentTimeMillis());
         //减少传输的数据
         submitLeaveInfo.setSubTime(null);
-        submitLeaveInfo.setLeaveTitle(null);
-
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         RequestBody requestBody=null;
         //上传图片文件

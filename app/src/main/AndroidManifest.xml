@@ -68,7 +68,9 @@
         <activity android:name=".appstore.SubjectTableActivity" />
         <activity android:name=".appstore.ui.LeaveMainActivity" />
         <activity android:name=".appstore.ui.GroupMainActivity" />
-        <activity android:name=".appstore.GroupSearchActivity"></activity>
+        <activity android:name=".appstore.GroupSearchActivity" />
+        <activity android:name=".appstore.LeaveHistoryActivity" />
+        <activity android:name=".appstore.LeaveInfoDetailActivity"></activity>
     </application>
 
 </manifest>

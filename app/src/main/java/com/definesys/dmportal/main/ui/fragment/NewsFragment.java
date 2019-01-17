@@ -229,9 +229,9 @@ public class NewsFragment extends BaseFragment<NewsPresenter> {
 
     private void hide(int i){
         if(i == 1 )
-        tvNodynamic.setText("暂无动态");
+        tvNodynamic.setText(R.string.no_dyn_tip);
         else
-        tvNodynamic.setText("暂无网络");
+        tvNodynamic.setText(R.string.no_net_tip);
         tvNodynamic.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         ivNodynamic.setVisibility(View.VISIBLE);

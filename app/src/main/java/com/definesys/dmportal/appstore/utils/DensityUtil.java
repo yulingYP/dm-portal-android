@@ -134,4 +134,25 @@ public class DensityUtil {
         return classRooms[i].substring(1);
     }
 
+    /**
+     * 返回指定格式的日期
+     * @param type 格式
+     * @param date 日期
+     * @return
+     */
+    public static String dateTypeToString(String type,Date date){
+        if(date==null)
+            return "";
+        SimpleDateFormat sDateFormat=new SimpleDateFormat(type);
+        return sDateFormat.format(date);
+    }
+
+    /**
+     * 设置请假类型
+     * @param type
+     */
+    public static String setTypeText(String type) {
+        int hasPostion = type.indexOf("(");//是否包含括号
+        return hasPostion>=0?type.substring(0,hasPostion):type;
+    }
 }

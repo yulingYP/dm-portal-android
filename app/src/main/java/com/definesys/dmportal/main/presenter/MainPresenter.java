@@ -14,16 +14,25 @@ public class MainPresenter extends BasePresenter {
 
     //网络请求失败
     public static final String ERROR_NETWORK="ERROR_NETWORK";
+
     //获取课表信息成功
     public static final String SUCCESSFUL_GET_TABLE_INFO="SUCCESSFUL_GET_TABLE_INFO";
+
     //获取提交请假请求
     public static final String SUCCESSFUL_GET_LEAVE_REQUEST="SUCCESSFUL_GET_LEAVE_REQUEST";
+
+    //获取请假记成功
+    public static final String SUCCESSFUL_GET_LEAVE_HISTORY="SUCCESSFUL_GET_LEAVE_HISTORY";
+
     //获取消息成功
     public static final String SUCCESSFUL_GET_MESSAGE = "SUCCESSFUL_GET_MESSAGE";
+
     //获取消息失败
     public static final String ERROR_GET_MESSAGE="ERROR_GET_MESSAGE";
+
     //获取新闻成功
     public static final String SUCCESSFUL_GET_NEWS = "SUCCESSFUL_GET_NEWS";
+
     //获取新闻失败
     public static final String ERROR_GET_NEWS="ERROR_GET_NEWS";
 

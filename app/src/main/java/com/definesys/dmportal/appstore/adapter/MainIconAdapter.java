@@ -75,6 +75,7 @@ public class MainIconAdapter extends RecyclerView.Adapter<MainIconAdapter.ViewHo
         ImageView img_icon;
         @BindView(R.id.text_icon_name)
         TextView tv_name;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

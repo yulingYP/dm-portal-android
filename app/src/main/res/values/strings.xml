@@ -107,5 +107,22 @@
     <string name="selected_subject_tip">请假课程:%s</string>
     <string name="content_tip">具体原因:%s</string>
     <string name="submit_success">提交成功</string>
+    <string name="current_status">当前状态</string>
+    <string name="report_back">销假</string>
+    <string name="approval_processing">审批处理</string>
+    <string name="check_progress">进度查询</string>
+    <string name="approval_history">审批记录</string>
+    <string name="my_leave_off_list">我的请假记录</string>
+    <string name="leave_history">请假记录</string>
+    <string name="leave_detail">请假详情页</string>
+    <string name="no_msg_tip">暂无消息</string>
+    <string name="no_net_tip">暂无网络</string>
+    <string name="no_dyn_tip">暂无动态</string>
+    <string name="no_history_tip">暂无记录</string>
+    <string name="userId_tip">学号/工号:%d</string>
+    <string name="date_type_2">yyyy-MM-dd HH:mm</string>
+    <string name="status_tip_1">正在审批</string>
+    <string name="status_tip_2">已批准</string>
+    <string name="status_tip_3">已拒绝</string>
 
 </resources>
