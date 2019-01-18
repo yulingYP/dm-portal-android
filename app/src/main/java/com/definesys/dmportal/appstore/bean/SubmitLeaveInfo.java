@@ -21,6 +21,8 @@ public class SubmitLeaveInfo {
     int type;//0.课假 1.短假 2.长假
     public Date submitDate;//提交日期
     public String picUrl;//图片url用*号隔开
+    public Date updateDate;//更新日期
+
 
     public SubmitLeaveInfo() {
     }
@@ -149,5 +151,13 @@ public class SubmitLeaveInfo {
 
     public void setApprovalStatus(Short approvalStatus) {
         this.approvalStatus = approvalStatus;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

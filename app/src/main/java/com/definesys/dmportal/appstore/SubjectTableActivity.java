@@ -215,7 +215,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            Toast.makeText(SubjectTableActivity.this, R.string.net_work_error,Toast.LENGTH_SHORT).show();
+            Toast.makeText(SubjectTableActivity.this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
         }
     }
@@ -235,7 +235,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
             //设置开始时间为23时59分59秒
             subjectTable.setEndDate(DensityUtil.setDate(subjectTable.getEndDate(),false));
             if(System.currentTimeMillis()<=subjectTable.getEndDate().getTime()) {//当前时间《=本学期结课时间
-                currentShowWeek = (int) ((System.currentTimeMillis() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay));
+                currentShowWeek = (int) Math.ceil((float)(System.currentTimeMillis() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay));
             }
             //当前周数
             tv_current_week.setText(getString(R.string.current_week,currentShowWeek));

@@ -4,9 +4,15 @@ import android.content.Context;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,5 +160,51 @@ public class DensityUtil {
     public static String setTypeText(String type) {
         int hasPostion = type.indexOf("(");//是否包含括号
         return hasPostion>=0?type.substring(0,hasPostion):type;
+    }
+
+    /**
+     * 返回排序后的list
+     * @param hashMap 待排序map
+     * @return
+     */
+    public static List<Map.Entry<Integer,String>> sort(HashMap<Integer,String> hashMap) {
+        List<Map.Entry<Integer,String>> list = new ArrayList<Map.Entry<Integer,String>>(hashMap.entrySet());
+        //然后通过比较器来实现排序
+        Collections.sort(list,new Comparator<Map.Entry<Integer,String>>() {
+            //升序排序
+            public int compare(Map.Entry<Integer, String> o1,
+                               Map.Entry<Integer, String> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+        return list;
+    }
+
+    /**
+     * 设置课假开始时间和结束时间
+     * @param startDate 学期开始时间
+     * @param time xxik 第xx周,星期i，第k节课
+     * @param isEnd 是不是设置结束日期
+     * @return 选择的这节课的时间
+     */
+    public static Date initSujectTime(Date startDate, int time,boolean isEnd) {
+        int week = time / 100;//第几周
+        int day = time % 100 / 10;//星期几
+        int pitch = time % 10;//第几节课
+        long pitchTime=isEnd?Constants.oneDay/3:Constants.oneDay/4;//isEnd 初试时间为8点 否则初试时间为6点
+        if(pitch==1||pitch==2){//第一二大节
+            pitchTime+=pitch*2*3600*1000;//每节2小时
+        }else if(pitch==3||pitch==4){//第三四大节
+            pitch/=2;
+            pitchTime+=6*3600*1000;//初试时间为14点
+            pitchTime+=pitch*2*3600*1000;//每节2小时
+        }else {//第五六大节
+            pitchTime+=9*3600*1000;//初试时间为17点
+            pitch/=3;
+            pitchTime+=pitch*15*3600*100;//每节1.5小时
+        }
+        Date date = new Date();
+        date.setTime(startDate.getTime()+(long)(week-1)*Constants.oneDay*7+(long)(day-1)*Constants.oneDay+pitchTime);
+        return date;
     }
 }

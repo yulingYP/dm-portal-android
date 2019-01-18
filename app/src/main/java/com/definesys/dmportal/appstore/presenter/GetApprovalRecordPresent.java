@@ -41,7 +41,7 @@ public class GetApprovalRecordPresent extends BasePresenter {
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPRVAL_RECORD,  data);
                                 break;
                             default:
-                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
                                 break;
 
                         }
@@ -50,7 +50,7 @@ public class GetApprovalRecordPresent extends BasePresenter {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
                     }
                 });
     }

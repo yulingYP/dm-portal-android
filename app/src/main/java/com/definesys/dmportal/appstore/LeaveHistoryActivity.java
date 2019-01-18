@@ -81,19 +81,8 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
     int userId;//要查询的id
     @Autowired(name = "type")
     int type;//适配器的类型
-
     private int requestPage;//请求的页码
 
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-           switch (msg.what){
-               case 0://数据获取失败
-//                   ViseHttp.cancelTag(HttpConst.getLeaveInfoById);
-                   break;
-           }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +139,6 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
             setNoLayout(2);
             return;
         }
-        handler.sendEmptyMessageDelayed(0,Constants.delaytime);
         mPersenter.getTableInfo(userId,requestPage);
     }
 
@@ -167,6 +155,7 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
                 smartRefreshLayout.finishRefresh(false);
                 smartRefreshLayout.finishLoadMore(false);
             }
+            Toast.makeText(this,("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
             setNoLayout(1);
         }
     }
@@ -180,8 +169,6 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
     }, thread = EventThread.MAIN_THREAD)
     public void getTableInfo(BaseResponse<List<SubmitLeaveInfo>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            //Toast.makeText(LeaveHistoryActivity.this,"获取成功",Toast.LENGTH_SHORT).show();
-            handler.removeMessages(0);
             if(requestPage==1)//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
             else//加载更多

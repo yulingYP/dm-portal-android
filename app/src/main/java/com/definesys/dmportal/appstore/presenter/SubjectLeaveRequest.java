@@ -121,7 +121,7 @@ public class SubjectLeaveRequest extends BasePresenter {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
                     }
                 });
     }

@@ -289,7 +289,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     }, thread = EventThread.MAIN_THREAD)
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            Toast.makeText(LeaveInfoDetailActivity.this, R.string.net_work_error,Toast.LENGTH_SHORT).show();
+            Toast.makeText(LeaveInfoDetailActivity.this,("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
         }
     }

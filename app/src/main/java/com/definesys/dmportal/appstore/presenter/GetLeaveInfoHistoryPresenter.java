@@ -53,7 +53,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_HISTORY,  data);
                                 break;
                             default:
-                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
                                 break;
                         }
 
@@ -61,7 +61,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
                     @Override
                     public void onFail(int errCode, String errMsg) {
                         Log.d("myMap","fail");
-                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
                     }
                 });
     }

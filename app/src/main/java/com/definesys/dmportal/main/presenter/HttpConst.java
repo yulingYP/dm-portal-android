@@ -16,12 +16,14 @@ public interface HttpConst {
     //根据Id获取请假记录
     String getLeaveInfoById = "getLeaveInfoById";
 
-
     //根据请假Id获取审批记录
     String getApprovalRecordById = "getApprovalRecordById";
 
     //获取图片
     String showImage = "http://192.168.43.248:9001/last_design/showImage?name=";
+
+    //获取当前请假状态
+    String getCurrentApprovalStatus = "getCurrentApprovalStatusById";
 
     //1.登陆
      String userLogin = "userLogin";

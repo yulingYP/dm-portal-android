@@ -271,13 +271,19 @@ public class SubjectTableView extends LinearLayout {
             Toast.makeText(mContext, R.string.select_fail_tip_1, Toast.LENGTH_SHORT).show();
             return;
         }
-        int position = currentShowWeek*100+weekDay*10+pitch;//xxik 第xx周星期i，第k节课
+        int position = currentShowWeek*100+weekDay*10+pitch; //xxik 第xx周星期i，第k节课
         //是否包含此元素
         if(hashMap.get(position)!=null)
             hashMap.remove(position);
         else {
             if(hashMap.size()>=6) {//是否已选择6节课
                 Toast.makeText(mContext, R.string.select_fail_tip_2, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Date date = new Date();
+            //当前时间大于请假课程的结束时间
+            if(date.getTime()> DensityUtil.initSujectTime(subjectTable.getStartDate(),position,true).getTime()){
+                Toast.makeText(mContext, R.string.select_fail_tip_4, Toast.LENGTH_SHORT).show();
                 return;
             }
             hashMap.put(position,cursorName);

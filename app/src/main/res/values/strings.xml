@@ -91,6 +91,7 @@
     <string name="select_fail_tip_1">不能选择今天之前的课程</string>
     <string name="select_fail_tip_2">最多只能选择6节课</string>
     <string name="select_fail_tip_3">只能选择本周和下一周的课程</string>
+    <string name="select_fail_tip_4">不能选择已经上完的节次</string>
     <string name="select_subject">请假课程</string>
     <string name="selected_subject_info">第%d周 周%d 第%d大节</string>
     <string name="subject_count_tip">%d.</string>
@@ -124,6 +125,8 @@
     <string name="status_tip_1">正在审批</string>
     <string name="status_tip_2">已批准</string>
     <string name="status_tip_3">已拒绝</string>
+    <string name="status_tip_4">未销假</string>
+    <string name="status_tip_5">已销假</string>
     <string name="check_approval_record">查看审批记录</string>
     <string name="approval_record">审批记录</string>
     <string name="submit_time">提交时间:%s</string>
@@ -132,5 +135,7 @@
     <string name="approval_result_text">审批结果:%s</string>
     <string name="approval_time_text">审批时间:%s</string>
     <string name="no_net_tip_2">请先连接网络</string>
+    <string name="status_tip_6">获取失败</string>
+
 
 </resources>

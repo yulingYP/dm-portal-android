@@ -6,16 +6,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.definesys.base.BaseActivity;
+import com.definesys.base.BaseResponse;
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.SubjectTableActivity;
 import com.definesys.dmportal.appstore.adapter.MainIconAdapter;
 import com.definesys.dmportal.appstore.bean.MainIcon;
+import com.definesys.dmportal.appstore.bean.SubjectTable;
+import com.definesys.dmportal.appstore.presenter.GetCurrentApprovalStatusPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
+import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
+import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.List;
@@ -25,9 +39,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
 @Route(path = ARouterConstants.LeaveMainActivity)
-public class LeaveMainActivity extends AppCompatActivity {
+public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPresenter> {
     @BindView(R.id.title_bar)
      CustomTitleBar titleBar;
+
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @BindView(R.id.leave_layout)
     LinearLayout lg_leave;//请假
@@ -38,6 +55,9 @@ public class LeaveMainActivity extends AppCompatActivity {
     @BindView(R.id.my_leave_history_layout)
     LinearLayout lg_leaveHistory;//请假记录
 
+    @BindView(R.id.current_status)
+    TextView tv_currentStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +65,7 @@ public class LeaveMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initView();
     }
+
     private void initView() {
         titleBar.setTitle(getString(R.string.leave_off));
         titleBar.setBackgroundDividerEnabled(false);
@@ -74,6 +95,64 @@ public class LeaveMainActivity extends AppCompatActivity {
                                 .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
                                 .withInt("type", 0)
                                 .navigation());
+    }
+
+    /**
+     * 获取当前请假状态失败
+     * @param msg
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.ERROR_NETWORK)
+    }, thread = EventThread.MAIN_THREAD)
+    public void netWorkError(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            Toast.makeText(LeaveMainActivity.this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
+            tv_currentStatus.setText(R.string.status_tip_6);
+            setTVcolor(getString(R.string.status_tip_6));
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 获取当前请假状态成功
+     * @param data
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_CURRENT_STATUS)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getTableInfo(BaseResponse<String> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            tv_currentStatus.setText(data.getData());
+            setTVcolor(data.getData());
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private void setTVcolor(String data) {
+        if(getString(R.string.status_tip_1).equals(data))
+            tv_currentStatus.setTextColor(getResources().getColor(R.color.blue));
+        else if(getString(R.string.status_tip_2).equals(data))
+            tv_currentStatus.setTextColor(getResources().getColor(R.color.green));
+        else if(getString(R.string.status_tip_3).equals(data))
+            tv_currentStatus.setTextColor(getResources().getColor(R.color.red_error));
+        else if(getString(R.string.status_tip_4).equals(data))
+            tv_currentStatus.setTextColor(getResources().getColor(R.color.customOrange));
+        else if(getString(R.string.status_tip_5).equals(data))
+            tv_currentStatus.setTextColor(getResources().getColor(R.color.green));
+        else
+            tv_currentStatus.setTextColor(getResources().getColor(R.color.buttonBlue));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.VISIBLE);
+        mPersenter.getCurrentStatus(SharedPreferencesUtil.getInstance().getUserId());
+    }
+
+    @Override
+    public GetCurrentApprovalStatusPresenter getPersenter() {
+        return new GetCurrentApprovalStatusPresenter(this);
     }
 
 }

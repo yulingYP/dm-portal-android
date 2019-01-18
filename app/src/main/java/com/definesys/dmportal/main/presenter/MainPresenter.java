@@ -27,6 +27,9 @@ public class MainPresenter extends BasePresenter {
     //获取审批记录成功
     public static final String SUCCESSFUL_GET_APPRVAL_RECORD="SUCCESSFUL_GET_APPRVAL_RECORD";
 
+    //获取当前请假状态成功
+    public static final String SUCCESSFUL_GET_CURRENT_STATUS="SUCCESSFUL_GET_CURRENT_STATUS";
+
     //获取消息成功
     public static final String SUCCESSFUL_GET_MESSAGE = "SUCCESSFUL_GET_MESSAGE";
 

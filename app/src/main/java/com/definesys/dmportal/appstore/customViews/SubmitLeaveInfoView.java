@@ -108,7 +108,7 @@ public class SubmitLeaveInfoView extends LinearLayout {
         tv_title.setText(mContext.getString(R.string.leave_title,submitLeaveInfo.getLeaveTitle()));
         tv_sumTime.setText(mContext.getString(R.string.sum_time_tip,submitLeaveInfo.getSubTime()));
         tv_content.setText(mContext.getString(R.string.content_tip,submitLeaveInfo.getLeaveReason()));
-        if("".equals(submitLeaveInfo.getStartTime())){
+        if(!"".equals(submitLeaveInfo.getSelectedSubject())){
             tv_startTime.setVisibility(GONE);
             tv_endTime.setVisibility(GONE);
             tv_selectedSubject.setText(Html.fromHtml(mContext.getString(R.string.selected_subject_tip,submitLeaveInfo.getSelectedSubject())));

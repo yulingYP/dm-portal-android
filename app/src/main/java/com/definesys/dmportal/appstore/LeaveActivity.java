@@ -59,6 +59,8 @@ import com.vise.xsnow.http.ViseHttp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -443,17 +445,24 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         String startTime = selectTypePosition==0?"":tv_timeStart.getText().toString();
         String endTime = selectTypePosition==0?"":tv_timeEnd.getText().toString();
         String sumTime = tv_dayOffCount.getText().toString();
-        String content = "\n"+ed_reason.getText().toString();
+        String content = "\n  "+ed_reason.getText().toString();
         String selectedSubject="";
         if(selectTypePosition==0) {
+            //对hashMap排序
+            //这里将map.entrySet()转换成list
+            List<Map.Entry<Integer,String>> list = DensityUtil.sort(hashMap);
             int i = 1;
-            for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
+            for (Map.Entry<Integer, String> entry :list) {
                 int week = entry.getKey() / 100;//第几周
                 int day = entry.getKey() % 100 / 10;//星期几
                 int pitch = entry.getKey() % 10;//第几节课
                 selectedSubject += "<br />" + "<font color='#37a0d2'>" + getString(R.string.subject_count_tip, i) + "</font>" + entry.getValue() + "<br />" + "&nbsp;&nbsp;&nbsp;" + getString(R.string.selected_subject_info, week, day, pitch);
                 ++i;
             }
+            //结束时间
+            endTime=df.format(DensityUtil.initSujectTime(subjectTableInfo.getStartDate(),list.get(list.size()-1).getKey(),true));
+            //开始时间
+            startTime=df.format(DensityUtil.initSujectTime(subjectTableInfo.getStartDate(),list.get(0).getKey(),false));
         }
 
         //(Number id,String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject)
@@ -519,7 +528,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
     }, thread = EventThread.MAIN_THREAD)
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            Toast.makeText(LeaveActivity.this, R.string.net_work_error,Toast.LENGTH_SHORT).show();
+            Toast.makeText(LeaveActivity.this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
         }
     }
@@ -576,7 +585,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         if(subjectDialog==null) {
             subjectDialog = new Dialog(this);
             subjectTableView = new SubjectTableView(this);
-            subjectTableView.setData(subjectTableInfo,(int) ((System.currentTimeMillis() - subjectTableInfo.getStartDate().getTime()) / (7 * Constants.oneDay)));
+            subjectTableView.setData(subjectTableInfo,(int) Math.ceil((float)(System.currentTimeMillis() - subjectTableInfo.getStartDate().getTime()) / (7 * Constants.oneDay)));
             //设置确定、取消点击事件
             subjectTableView.setMyOnClickListener(new SubjectTableView.MyOnClickListener() {
                 @Override
@@ -635,8 +644,10 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
      */
     private void initSelectedSubjectDialog() {
         String [] arr = new String[hashMap.size()];
+        //对hashmap排序
+        List<Map.Entry<Integer,String>> list=DensityUtil.sort(hashMap);
         int i=0;
-        for(Map.Entry<Integer, String> entry : hashMap.entrySet()){
+        for(Map.Entry<Integer, String> entry : list){
             int week= entry.getKey()/100;//第几周
             int day = entry.getKey()%100/10;//星期几
             int pitch = entry.getKey()%10;//第几节课
