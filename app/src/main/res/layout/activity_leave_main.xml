@@ -14,7 +14,7 @@
         app:titlebar_bg_color="@color/customer_title"
         android:layout_height="44dp">
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
-    <LinearLayout
+    <RelativeLayout
         android:layout_marginTop="1px"
         android:layout_width="match_parent"
         android:focusable="true"
@@ -29,17 +29,24 @@
             android:padding="12dp"
             android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/textView" />
         <TextView
             android:text="未请假"
             android:textColor="@color/green"
             android:gravity="center"
+            android:layout_below="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:id="@+id/current_status" />
-    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+             />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/leave_layout"

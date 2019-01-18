@@ -33,7 +33,17 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         map.put("userId",userId);
         map.put("page",page);
         Log.d("myMap",new Gson().toJson(map).toString());
+
+        ViseHttp.CONFIG()
+                //配置读取超时时间，单位秒
+                .readTimeout(5)
+                //配置写入超时时间，单位秒
+                .writeTimeout(5)
+                //配置连接超时时间，单位秒
+                .connectTimeout(5);
+
         ViseHttp.POST(HttpConst.getLeaveInfoById)
+                .tag(HttpConst.getLeaveInfoById)
                 .setJson(new Gson().toJson(map))
                 .request(new ACallback<BaseResponse<List<SubmitLeaveInfo>>>() {
                     @Override

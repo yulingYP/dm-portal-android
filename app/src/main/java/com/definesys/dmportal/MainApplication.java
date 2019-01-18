@@ -80,43 +80,8 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-//            @Override
-//            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-//
-//            }
-//
-//            @Override
-//            public void onActivityStarted(Activity activity) {
-//
-//            }
-//
-//            @Override
-//            public void onActivityResumed(Activity activity) {
-//                MyActivityManager.getInstance().setCurrentActivity(activity);
-//            }
-//
-//            @Override
-//            public void onActivityPaused(Activity activity) {
-//
-//            }
-//
-//            @Override
-//            public void onActivityStopped(Activity activity) {
-//
-//            }
-//
-//            @Override
-//            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-//
-//            }
-//
-//            @Override
-//            public void onActivityDestroyed(Activity activity) {
-//
-//            }
-//        });
         XGPushManager.registerPush(getApplicationContext());
+
         RePlugin.App.onCreate();
 
         ViseHttp.init(this);
@@ -128,15 +93,15 @@ public class MainApplication extends Application {
                 //配置全局请求参数
                 .globalParams(new HashMap<>())
                 //配置读取超时时间，单位秒
-                .readTimeout(6)
+                .readTimeout(5)
                 //配置写入超时时间，单位秒
-                .writeTimeout(18)
+                .writeTimeout(5)
                 //配置连接超时时间，单位秒
-               // .connectTimeout(3)
+                .connectTimeout(5)
                 //配置请求失败重试次数
-                .retryCount(0)
+//                .retryCount(0)
                 //配置请求失败重试间隔时间，单位毫秒
-                // .retryDelayMillis(1000)
+//                 .retryDelayMillis(1000)
                 //配置HTTPS协议
                 .SSLSocketFactory(SSLSocketClient.getSSLSocketFactory())
                 .hostnameVerifier(SSLSocketClient.getHostnameVerifier())

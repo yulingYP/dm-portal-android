@@ -8,13 +8,20 @@ public interface HttpConst {
     String getTable = "listCurArg";
 
     //提交请假请求
-    String submitLeaveRequest="submitLeaveRequest";
+    String submitLeaveRequest = "submitLeaveRequest";
 
     //上传图片
-    String uploadLeaveImg="uploadLeavePicture";
+    String uploadLeaveImg = "uploadLeavePicture";
 
     //根据Id获取请假记录
-    String getLeaveInfoById="getLeaveInfoById";
+    String getLeaveInfoById = "getLeaveInfoById";
+
+
+    //根据请假Id获取审批记录
+    String getApprovalRecordById = "getApprovalRecordById";
+
+    //获取图片
+    String showImage = "http://192.168.43.248:9001/last_design/showImage?name=";
 
     //1.登陆
      String userLogin = "userLogin";

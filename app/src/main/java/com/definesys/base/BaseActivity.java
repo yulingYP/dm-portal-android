@@ -17,6 +17,7 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.vise.xsnow.http.ViseHttp;
 
 import static android.os.Build.VERSION.SDK;
 
@@ -46,9 +47,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
-//        keyboardWatcher = new KeyboardWatcher(this);
-//        keyboardWatcher.setListener(this);
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
     }
 
     @Override
@@ -67,12 +66,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onStart() {
         super.onStart();
         mPersenter.subscribe();
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mPersenter.unsubscribe();
+
     }
 
     @Override

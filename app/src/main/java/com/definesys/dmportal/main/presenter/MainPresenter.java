@@ -21,8 +21,11 @@ public class MainPresenter extends BasePresenter {
     //获取提交请假请求
     public static final String SUCCESSFUL_GET_LEAVE_REQUEST="SUCCESSFUL_GET_LEAVE_REQUEST";
 
-    //获取请假记成功
+    //获取请假记录成功
     public static final String SUCCESSFUL_GET_LEAVE_HISTORY="SUCCESSFUL_GET_LEAVE_HISTORY";
+
+    //获取审批记录成功
+    public static final String SUCCESSFUL_GET_APPRVAL_RECORD="SUCCESSFUL_GET_APPRVAL_RECORD";
 
     //获取消息成功
     public static final String SUCCESSFUL_GET_MESSAGE = "SUCCESSFUL_GET_MESSAGE";

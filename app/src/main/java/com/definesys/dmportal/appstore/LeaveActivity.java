@@ -53,6 +53,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.tools.PictureFileUtils;
 import com.vise.xsnow.http.ViseHttp;
 
 import java.text.ParseException;
@@ -443,16 +444,14 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         String endTime = selectTypePosition==0?"":tv_timeEnd.getText().toString();
         String sumTime = tv_dayOffCount.getText().toString();
         String content = "\n"+ed_reason.getText().toString();
-        String selectedSubject="<br />";
-        if(selectTypePosition!=0)
-            selectedSubject="";
-        else {
-            int i=1;
-            for(Map.Entry<Integer, String> entry : hashMap.entrySet()){
-                int week= entry.getKey()/100;//第几周
-                int day = entry.getKey()%100/10;//星期几
-                int pitch = entry.getKey()%10;//第几节课
-                selectedSubject +="<br />"+ "<font color='#37a0d2'>"+getString(R.string.subject_count_tip,i)+"</font>" + entry.getValue()+"<br />"+"&nbsp;&nbsp;&nbsp;"+getString(R.string.selected_subject_info,week,day,pitch);
+        String selectedSubject="";
+        if(selectTypePosition==0) {
+            int i = 1;
+            for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
+                int week = entry.getKey() / 100;//第几周
+                int day = entry.getKey() % 100 / 10;//星期几
+                int pitch = entry.getKey() % 10;//第几节课
+                selectedSubject += "<br />" + "<font color='#37a0d2'>" + getString(R.string.subject_count_tip, i) + "</font>" + entry.getValue() + "<br />" + "&nbsp;&nbsp;&nbsp;" + getString(R.string.selected_subject_info, week, day, pitch);
                 ++i;
             }
         }
@@ -558,6 +557,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             Toast.makeText(this, R.string.submit_success,Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
+            PictureFileUtils.deleteCacheDirFile(this);
             finish();
 
         }

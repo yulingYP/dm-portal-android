@@ -79,10 +79,10 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
         if(submitLeaveInfoList.get(position).getApprovalStatus()<10){//正在审批
             tv_status.setText(R.string.status_tip_1);
             tv_status.setTextColor(mContext.getResources().getColor(R.color.blue));
-        }else if (submitLeaveInfoList.get(position).getApprovalStatus()==10){
+        }else if (submitLeaveInfoList.get(position).getApprovalStatus()==10){//已批准
             tv_status.setText(R.string.status_tip_2);
             tv_status.setTextColor(mContext.getResources().getColor(R.color.green));
-        }else if (submitLeaveInfoList.get(position).getApprovalStatus()==11){
+        }else if (submitLeaveInfoList.get(position).getApprovalStatus()==11){//已拒绝
             tv_status.setText(R.string.status_tip_3);
             tv_status.setTextColor(mContext.getResources().getColor(R.color.red_error));
         }

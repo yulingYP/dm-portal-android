@@ -31,4 +31,10 @@
         <item>周六</item>
         <item>周日</item>
     </string-array>
+    <string-array name="approverType">
+        <item>寝室长</item>
+        <item>班长</item>
+        <item>班主任</item>
+        <item>辅导员</item>
+    </string-array>
 </resources>

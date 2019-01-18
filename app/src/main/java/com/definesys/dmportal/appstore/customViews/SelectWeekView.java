@@ -35,6 +35,10 @@ public class SelectWeekView extends LinearLayout {
     RecyclerView recyclerView;
     @BindView(R.id.view_layout)
     LinearLayout lg_view;
+    @BindView(R.id.title_text)
+    TextView tv_title;
+    @BindView(R.id.confirm_text)
+    TextView tv_confirm;
     private int maxWeek;//最大周
     private int currentWeek;//当前周
     private MyClickListener myClickListener;
@@ -50,6 +54,8 @@ public class SelectWeekView extends LinearLayout {
         setFocusable(true);
         LayoutInflater.from(context).inflate(R.layout.customer_reson_type_layout,this);
         ButterKnife.bind(this);
+        tv_title.setVisibility(GONE);
+        tv_confirm.setVisibility(GONE);
         lg_view.setBackground(mContext.getResources().getDrawable(R.drawable.week_select_view_back_ground));
 
     }

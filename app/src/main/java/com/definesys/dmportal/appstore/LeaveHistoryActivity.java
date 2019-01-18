@@ -1,6 +1,8 @@
 package com.definesys.dmportal.appstore;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,6 +84,16 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
 
     private int requestPage;//请求的页码
 
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+           switch (msg.what){
+               case 0://数据获取失败
+//                   ViseHttp.cancelTag(HttpConst.getLeaveInfoById);
+                   break;
+           }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,32 +144,14 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
     //清空记录，发送网络请求
     private void httpPost() {
 
-        if(!PermissionsUtil.isNetworkConnected(this)){
+        if(!PermissionsUtil.isNetworkConnected(this)){//网络检测
+            Toast.makeText(this, R.string.no_net_tip_2,Toast.LENGTH_SHORT).show();
             smartRefreshLayout.finishRefresh(false);
             setNoLayout(2);
             return;
         }
+        handler.sendEmptyMessageDelayed(0,Constants.delaytime);
         mPersenter.getTableInfo(userId,requestPage);
-    }
-
-    /**
-     *  设置暂无类页面
-     * @param type 0.隐藏暂无页面 1.暂无记录 2.暂无网络
-     */
-    private void setNoLayout(int type) {
-       if(type==0) {
-           lg_no.setVisibility(View.GONE);
-       }
-       else if(type==1){
-           lg_no.setVisibility(View.VISIBLE);
-           img_no.setImageResource(R.mipmap.no_history);
-           tv_no.setText(R.string.no_history_tip);
-       }
-       else if(type==2){
-           lg_no.setVisibility(View.VISIBLE);
-           img_no.setImageResource(R.mipmap.nointernet);
-           tv_no.setText(R.string.no_net_tip);
-       }
     }
 
     /**
@@ -187,6 +181,7 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
     public void getTableInfo(BaseResponse<List<SubmitLeaveInfo>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             //Toast.makeText(LeaveHistoryActivity.this,"获取成功",Toast.LENGTH_SHORT).show();
+            handler.removeMessages(0);
             if(requestPage==1)//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
             else//加载更多
@@ -220,6 +215,25 @@ public class LeaveHistoryActivity extends BaseActivity<GetLeaveInfoHistoryPresen
         recyclerView.setAdapter(leaveInfoListAdapter);
     }
 
+    /**
+     *  设置暂无类页面
+     * @param type 0.隐藏暂无页面 1.暂无记录 2.暂无网络
+     */
+    private void setNoLayout(int type) {
+        if(type==0) {
+            lg_no.setVisibility(View.GONE);
+        }
+        else if(type==1&&submitLeaveInfoList.size()==0){
+            lg_no.setVisibility(View.VISIBLE);
+            img_no.setImageResource(R.mipmap.no_history);
+            tv_no.setText(R.string.no_history_tip);
+        }
+        else if(type==2&&submitLeaveInfoList.size()==0){
+            lg_no.setVisibility(View.VISIBLE);
+            img_no.setImageResource(R.mipmap.nointernet);
+            tv_no.setText(R.string.no_net_tip);
+        }
+    }
     @Override
     public GetLeaveInfoHistoryPresenter getPersenter() {
         return new GetLeaveInfoHistoryPresenter(this);

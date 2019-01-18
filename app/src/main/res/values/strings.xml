@@ -124,5 +124,13 @@
     <string name="status_tip_1">正在审批</string>
     <string name="status_tip_2">已批准</string>
     <string name="status_tip_3">已拒绝</string>
+    <string name="check_approval_record">查看审批记录</string>
+    <string name="approval_record">审批记录</string>
+    <string name="submit_time">提交时间:%s</string>
+    <string name="approver_text">审批人:%s</string>
+    <string name="approval_content_text">审批内容:%s</string>
+    <string name="approval_result_text">审批结果:%s</string>
+    <string name="approval_time_text">审批时间:%s</string>
+    <string name="no_net_tip_2">请先连接网络</string>
 
 </resources>
