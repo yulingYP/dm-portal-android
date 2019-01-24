@@ -57,7 +57,7 @@
     </style>
 
     <style name="Main_AppTheme.Splash" parent="Main_AppTheme.Full">
-        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowBackground">@drawable/x_splash</item>
     </style>
 
     <style name="MySwitch" parent="Theme.AppCompat.Light">
@@ -71,10 +71,22 @@
         <!--使用方法：
         在布局文件中给需要自定义控件中增加app:theme="@style/MySwitch"-->
     </style>
+    <style name="Anim_translate" parent="Main_AppTheme">  
+               <item name="android:windowAnimationStyle">@style/translate</item>  
+           </style>
+       
+        <style name="translate" parent="@android:style/Animation.Activity">  
+           <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>  
+           <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>  
+           <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>  
+           <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>  
+       </style>
+
 
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="colorControlActivated">@color/color_light_blue</item>
     </style>
     <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>

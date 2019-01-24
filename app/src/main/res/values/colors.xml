@@ -171,4 +171,6 @@
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="gold_text">#ffc894</color>
+    <color name="hint_gray">#8e8e8e</color>
 </resources>

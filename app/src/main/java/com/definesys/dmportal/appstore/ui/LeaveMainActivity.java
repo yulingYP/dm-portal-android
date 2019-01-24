@@ -1,5 +1,6 @@
 package com.definesys.dmportal.appstore.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,11 +50,17 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
     @BindView(R.id.leave_layout)
     LinearLayout lg_leave;//请假
 
-    @BindView(R.id.confirm_layout)
-    LinearLayout lg_confirm;//审批处理
+    @BindView(R.id.approval_layout)
+    LinearLayout lg_approval;//审批处理
 
     @BindView(R.id.my_leave_history_layout)
     LinearLayout lg_leaveHistory;//请假记录
+
+    @BindView(R.id.progress_layout)
+    LinearLayout lg_progress;//进度查询
+
+    @BindView(R.id.approval_history_layout)
+    LinearLayout lg_approvalHistory;//审批历史记录
 
     @BindView(R.id.current_status)
     TextView tv_currentStatus;
@@ -91,9 +98,40 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj ->
                         ARouter.getInstance()
-                                .build(ARouterConstants.LeaveHistoryActivity)
+                                .build(ARouterConstants.LeaveListActivity)
                                 .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
-                                .withInt("type", 0)
+                                .withInt("type", 0)//列表类型
+                                .withString("ARouterPath",ARouterConstants.LeaveInFoDetailActivity)//点击列表跳转的页面
+                                .navigation());
+        //审批处理
+        RxView.clicks(lg_approval)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj ->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.LeaveListActivity)
+                                .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
+                                .withInt("type", 1)//列表类型
+                                .withString("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity)//点击列表跳转的页面
+                                .navigation());
+        //审批处理
+        RxView.clicks(lg_approvalHistory)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj ->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.LeaveListActivity)
+                                .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
+                                .withInt("type", 2)//列表类型
+                                .withString("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity)//点击列表跳转的页面
+                                .navigation());
+
+        //进度查询
+        RxView.clicks(lg_progress)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj ->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.LeaveInFoDetailActivity)
+                                .withObject("leaveInfo",null)
+                                .withInt("title",1)
                                 .navigation());
     }
 
@@ -107,8 +145,8 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             Toast.makeText(LeaveMainActivity.this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
-            tv_currentStatus.setText(R.string.status_tip_6);
-            setTVcolor(getString(R.string.status_tip_6));
+            tv_currentStatus.setText(R.string.status_tip_7);
+            DensityUtil.setTVcolor(getString(R.string.status_tip_7),tv_currentStatus,this);
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -123,30 +161,16 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
     public void getTableInfo(BaseResponse<String> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             tv_currentStatus.setText(data.getData());
-            setTVcolor(data.getData());
+            DensityUtil.setTVcolor(data.getData(),tv_currentStatus,this);
             progressBar.setVisibility(View.GONE);
         }
-    }
-
-    private void setTVcolor(String data) {
-        if(getString(R.string.status_tip_1).equals(data))
-            tv_currentStatus.setTextColor(getResources().getColor(R.color.blue));
-        else if(getString(R.string.status_tip_2).equals(data))
-            tv_currentStatus.setTextColor(getResources().getColor(R.color.green));
-        else if(getString(R.string.status_tip_3).equals(data))
-            tv_currentStatus.setTextColor(getResources().getColor(R.color.red_error));
-        else if(getString(R.string.status_tip_4).equals(data))
-            tv_currentStatus.setTextColor(getResources().getColor(R.color.customOrange));
-        else if(getString(R.string.status_tip_5).equals(data))
-            tv_currentStatus.setTextColor(getResources().getColor(R.color.green));
-        else
-            tv_currentStatus.setTextColor(getResources().getColor(R.color.buttonBlue));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.VISIBLE);
+        tv_currentStatus.setText("");
         mPersenter.getCurrentStatus(SharedPreferencesUtil.getInstance().getUserId());
     }
 

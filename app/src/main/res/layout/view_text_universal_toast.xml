@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:id="@+id/toast_layout"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/universal_toast_style">
     <TextView
         android:id="@+id/text_view_tut"
         android:textSize="@dimen/universal_toast_text_size"
-        android:text=""
+        android:text="@string/send_code"
         android:textColor="@color/color_white"
         android:gravity="center"
         android:layout_width="wrap_content"

@@ -5,39 +5,29 @@ import android.util.Log;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
-import com.definesys.dmportal.appstore.bean.SubjectTable;
-import com.definesys.dmportal.appstore.bean.SubmitLeaveInfo;
-import com.definesys.dmportal.appstore.utils.DensityUtil;
+import com.definesys.dmportal.appstore.bean.LeaveInfo;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.vise.xsnow.http.ViseHttp;
-import com.vise.xsnow.http.body.UploadProgressRequestBody;
 import com.vise.xsnow.http.callback.ACallback;
-import com.vise.xsnow.http.callback.UCallback;
-import com.vise.xsnow.http.request.PostRequest;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.HTTP;
 
 /**
  * Created by 羽翎 on 2019/1/10.
  */
 
-public class SubjectLeaveRequest extends BasePresenter {
-    public SubjectLeaveRequest(Context context) {
+public class LeaveRequestPresenter extends BasePresenter {
+    public LeaveRequestPresenter(Context context) {
         super(context);
     }
 
@@ -45,7 +35,7 @@ public class SubjectLeaveRequest extends BasePresenter {
      * 提交请假请求
      * @param selectImages 选择的图片
      */
-    public void getRequestResult (SubmitLeaveInfo submitLeaveInfo,List<LocalMedia> selectImages){
+    public void getRequestResult (LeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
         //设置请假id
         submitLeaveInfo.setId(submitLeaveInfo.getUserId().toString() + System.currentTimeMillis());
         //减少传输的数据

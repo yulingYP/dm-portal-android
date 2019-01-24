@@ -45,6 +45,7 @@
     <string name="type_search">种类</string>
     <string name="history_search">搜索历史</string>
     <string name="table_hello_tip">你好 %s %s,以下是您的课表,点击课程可以获取课程详细信息</string>
+    <string name="table_hello_tip_2">以下是 %d 的课表,点击课程可以获取课程详细信息</string>
     <string name="help_tip">请点击要请假的课程,只能选择本周与下周的课程,最多可选择6节课</string>
     <string name="lesson">节次</string>
     <string name="Monday">周一</string>
@@ -115,7 +116,7 @@
     <string name="approval_history">审批记录</string>
     <string name="my_leave_off_list">我的请假记录</string>
     <string name="leave_history">请假记录</string>
-    <string name="leave_detail">请假详情页</string>
+    <string name="leave_detail">请假详情</string>
     <string name="no_msg_tip">暂无消息</string>
     <string name="no_net_tip">暂无网络</string>
     <string name="no_dyn_tip">暂无动态</string>
@@ -127,7 +128,10 @@
     <string name="status_tip_3">已拒绝</string>
     <string name="status_tip_4">未销假</string>
     <string name="status_tip_5">已销假</string>
+    <string name="status_tip_6">未请假</string>
+    <string name="status_tip_7">获取失败</string>
     <string name="check_approval_record">查看审批记录</string>
+    <string name="check_approval_record_2">查看其他人的审批意见</string>
     <string name="approval_record">审批记录</string>
     <string name="submit_time">提交时间:%s</string>
     <string name="approver_text">审批人:%s</string>
@@ -135,7 +139,33 @@
     <string name="approval_result_text">审批结果:%s</string>
     <string name="approval_time_text">审批时间:%s</string>
     <string name="no_net_tip_2">请先连接网络</string>
-    <string name="status_tip_6">获取失败</string>
-
-
+    <string name="leave_progress">进度查询</string>
+    <string name="no_current_leave_info">暂无请假信息</string>
+    <string name="approval_leave_info">审批请假信息</string>
+    <string name="approval_leave_info_2">审批记录详情</string>
+    <string name="approval_addvise">审批意见</string>
+    <string name="approval_addvise_tip">请填写审批意见</string>
+    <string name="refuse_tip">拒绝</string>
+    <string name="agree_tip">同意</string>
+    <string name="approval_addvise_tip_2">请输入审批意见</string>
+    <string name="approval_addvise_tip_3">审批内容如下,确认要提交该审批结果吗?</string>
+    <string name="approval_result_des">审批结果:</string>
+    <string name="shixi">实习</string>
+    <string name="subject_show_tip">点击查看他的课表及课程成绩</string>
+    <string name="leaver_name">请假人姓名:%s</string>
+    <string name="green_agree"><![CDATA[<font color=\'#7cb342\'>同意</font>]]></string>
+    <string name="red_refuse"><![CDATA[<font color=\'#ffff4444\'>不同意</font>]]></string>
+    <string name="click_close">点击关闭(%ds)</string>
+    <string name="login">登陆</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="login_text_code">短信验证码登录</string>
+    <string name="copyright">哈尔滨工业大学(威海) 版权所有</string>
+    <string name="msg_pls_input_userId">输入学号或工号</string>
+    <string name="msg_pls_input_psw">输入密码</string>
+    <string name="login_text_pwd">账号密码登录</string>
+    <string name="msg_pls_input_code">输入验证码</string>
+    <string name="msg_err_phone">请输入正确的手机号</string>
+    <string name="msg_pls_input_phone">请输入手机号</string>
+    <string name="send_verify_code">发送验证码</string>
+    <string name="send_code">发送验证码</string>
 </resources>

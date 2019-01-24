@@ -1,6 +1,7 @@
 package com.definesys.dmportal.appstore.presenter;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.definesys.base.BasePresenter;
@@ -32,6 +33,7 @@ public class GetTableInfoPresenter extends BasePresenter {
         Map map = new HashMap();
         map.put("stuId",stuID);
         map.put("facultyId",facultyId);
+        Log.d("myMap",new Gson().toJson(map).toString());
         ViseHttp.POST(HttpConst.getTable)
                 .tag(HttpConst.getTable)
                 .setJson(new Gson().toJson(map))

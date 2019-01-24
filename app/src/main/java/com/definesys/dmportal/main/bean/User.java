@@ -9,6 +9,8 @@ public class User{
     private String userPassword;//密码
     private String url;//头像url
     private String localimg;//本地头像url
+    private int userType;//用户类型 0.学生 1.教师
+    private int userAuthority;//权限
 
     public User() {
         userName = "小白";
@@ -19,6 +21,10 @@ public class User{
         userPhone="17863136613";
         url = "";
         localimg = "";
+        userType=0;
+        userAuthority=1;
+
+
     }
 
     public User(String userName, Number userId, String factyId, String userSex, String userPassword, String url, String localimg) {
@@ -32,7 +38,7 @@ public class User{
     }
 
     public String getUserName() {
-        return userName;
+        return userName==null?"":userName;
     }
 
     public void setUserName(String userName) {
@@ -48,7 +54,7 @@ public class User{
     }
 
     public String getFaculty() {
-        return faculty;
+        return faculty==null?"":faculty;
     }
 
     public void setFaculty(String factyId) {
@@ -56,7 +62,7 @@ public class User{
     }
 
     public String getUserSex() {
-        return userSex;
+        return userSex==null?"":userSex;
     }
 
     public void setUserSex(String userSex) {
@@ -64,7 +70,7 @@ public class User{
     }
 
     public String getUserPassword() {
-        return userPassword;
+        return userPassword==null?"":userPassword;
     }
 
     public void setUserPassword(String userPassword) {
@@ -72,7 +78,7 @@ public class User{
     }
 
     public String getUrl() {
-        return url;
+        return url==null?"":url;
     }
 
     public void setUrl(String url) {
@@ -80,7 +86,7 @@ public class User{
     }
 
     public String getLocalimg() {
-        return localimg;
+        return localimg==null?"":localimg;
     }
 
     public void setLocalimg(String localimg) {
@@ -88,10 +94,26 @@ public class User{
     }
 
     public String getUserPhone() {
-        return userPhone;
+        return userPhone==null?"":userPhone;
     }
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public int getUserAuthority() {
+        return userAuthority;
+    }
+
+    public void setUserAuthority(int userAuthority) {
+        this.userAuthority = userAuthority;
     }
 }

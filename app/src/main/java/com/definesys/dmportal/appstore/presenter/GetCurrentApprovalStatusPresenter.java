@@ -1,11 +1,10 @@
 package com.definesys.dmportal.appstore.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
-import com.definesys.dmportal.appstore.bean.SubjectTable;
-import com.definesys.dmportal.appstore.bean.SubmitLeaveInfo;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.google.gson.Gson;
@@ -29,6 +28,7 @@ public class GetCurrentApprovalStatusPresenter extends BasePresenter {
     public void getCurrentStatus(Number userId){
         Map map = new HashMap();
         map.put("userId",userId);
+        Log.d("myMap",new Gson().toJson(map).toString());
         ViseHttp.POST(HttpConst.getCurrentApprovalStatus)
                 .tag(HttpConst.getCurrentApprovalStatus)
                 .setJson(new Gson().toJson(map))

@@ -22,7 +22,7 @@ public class MainIcon {
     }
 
     public String getName() {
-        return name;
+        return name==null?"":name;
     }
 
     public void setName(String name) {
@@ -30,7 +30,7 @@ public class MainIcon {
     }
 
     public String getIconUrl() {
-        return iconUrl;
+        return iconUrl==null?"":iconUrl;
     }
 
     public void setIconUrl(String iconUrl) {
@@ -46,7 +46,7 @@ public class MainIcon {
     }
 
     public String getaRounterPath() {
-        return aRounterPath;
+        return aRounterPath==null?"":aRounterPath;
     }
 
     public void setaRounterPath(String aRounterPath) {

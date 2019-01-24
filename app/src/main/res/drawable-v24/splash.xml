@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/x_open_back" />
+        <!--背景-->
+    <item android:drawable="@drawable/x_splash" />
     <item>
+        <!--顶部-->
         <bitmap
             android:gravity="top|fill_horizontal"
-            android:src="@drawable/x_open_0"/>
+            android:src="@drawable/x_splash"/>
     </item>
     <item>
+        <!--底部-->
         <bitmap
             android:gravity="fill_horizontal|bottom"
-            android:src="@drawable/x_open_2"/>
+            android:src="@drawable/x_splash"/>
     </item>
 </layer-list>

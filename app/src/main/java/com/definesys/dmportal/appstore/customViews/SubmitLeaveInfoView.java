@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.LeaveActivity;
-import com.definesys.dmportal.appstore.bean.SubmitLeaveInfo;
+import com.definesys.dmportal.appstore.bean.LeaveInfo;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.luck.picture.lib.PictureSelector;
@@ -102,20 +102,18 @@ public class SubmitLeaveInfoView extends LinearLayout {
      * @param selectImages
      *
      */
-    public void setDate(SubmitLeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
+    public void setDate(LeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
         tv_name.setText(mContext.getString(R.string.name_tip,submitLeaveInfo.getName()));
         tv_type.setText(mContext.getString(R.string.type_tip,submitLeaveInfo.getLeaveType()));
         tv_title.setText(mContext.getString(R.string.leave_title,submitLeaveInfo.getLeaveTitle()));
         tv_sumTime.setText(mContext.getString(R.string.sum_time_tip,submitLeaveInfo.getSubTime()));
         tv_content.setText(mContext.getString(R.string.content_tip,submitLeaveInfo.getLeaveReason()));
+        tv_startTime.setText(mContext.getString(R.string.start_time_tip,submitLeaveInfo.getStartTime()));
+        tv_endTime.setText(mContext.getString(R.string.end_time_tip,submitLeaveInfo.getEndTime()));
         if(!"".equals(submitLeaveInfo.getSelectedSubject())){
-            tv_startTime.setVisibility(GONE);
-            tv_endTime.setVisibility(GONE);
             tv_selectedSubject.setText(Html.fromHtml(mContext.getString(R.string.selected_subject_tip,submitLeaveInfo.getSelectedSubject())));
         }else {
             tv_selectedSubject.setVisibility(GONE);
-            tv_startTime.setText(mContext.getString(R.string.start_time_tip,submitLeaveInfo.getStartTime()));
-            tv_endTime.setText(mContext.getString(R.string.end_time_tip,submitLeaveInfo.getEndTime()));
         }
         if(selectImages==null||selectImages.size()==0)
             lg_img.setVisibility(GONE);

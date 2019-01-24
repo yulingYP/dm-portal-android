@@ -45,19 +45,20 @@ public class MainApplication extends Application {
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
+    public static float scale;
 
     private boolean hasNewMessage;
     public static MainApplication instances;
-    //保存用户信息
-    private static User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    //保存用户信息
+//    private static User user;
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
 
 
@@ -80,6 +81,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        scale = getResources().getDisplayMetrics().density;
         XGPushManager.registerPush(getApplicationContext());
 
         RePlugin.App.onCreate();

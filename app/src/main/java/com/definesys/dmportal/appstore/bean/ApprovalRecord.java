@@ -21,6 +21,8 @@ public class ApprovalRecord {
     private Short approverType;//审批人类型
     //0.寝室长 1.班长 2.班主任 3.辅导员
 
+    private String leaverName;//请假人姓名
+
     public ApprovalRecord() {
 
     }
@@ -35,7 +37,7 @@ public class ApprovalRecord {
     }
 
     public String getLeaveInfoId() {
-        return leaveInfoId;
+        return leaveInfoId==null?"":leaveInfoId;
     }
 
     public void setLeaveInfoId(String leaveInfoId) {
@@ -51,7 +53,7 @@ public class ApprovalRecord {
     }
 
     public String getApprovalContent() {
-        return approvalContent;
+        return approvalContent==null?"":approvalContent;
     }
 
     public void setApprovalContent(String approvalContent) {
@@ -80,5 +82,13 @@ public class ApprovalRecord {
 
     public void setApproverType(Short approverType) {
         this.approverType = approverType;
+    }
+
+    public String getLeaverName() {
+        return leaverName;
+    }
+
+    public void setLeaverName(String leaverName) {
+        this.leaverName = leaverName;
     }
 }

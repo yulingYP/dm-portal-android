@@ -12,7 +12,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
@@ -78,11 +80,16 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     private SelectWeekView selectWeekView;//选择周数界面
     private PopupWindow popupWindow;//选择周数的提示框
 
+    private int checkId;//要查询的用户id
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_table);
         ButterKnife.bind(this);
+        ARouter.getInstance().inject(this);
+        checkId=getIntent().getIntExtra("checkId",-1);
+        if(checkId==-1)
+            checkId = SharedPreferencesUtil.getInstance().getUserId().intValue();
         initView();
         initDialog(null,0,0,null);//初始化课程详情对话框
     }
@@ -138,7 +145,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                 .subscribe(obj->{
                     initSelectWeek();
                 });
-        tv_hello.setText(getString(R.string.table_hello_tip,SharedPreferencesUtil.getInstance().getUserName(),SharedPreferencesUtil.getInstance().getUserId()));
+        tv_hello.setText(setHello());
         tv_current_week.setText(getString(R.string.current_week,0));
         tv_show.setText(getString(R.string.current_show_week,0));
         textViewList = new ArrayList<>();
@@ -152,6 +159,12 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
 //            textViewList.get(i).setText(""+i);
 //        }
         httpPost();//网络请求
+    }
+
+    private String setHello() {
+        if(checkId==SharedPreferencesUtil.getInstance().getUserId().intValue())
+            return getString(R.string.table_hello_tip,SharedPreferencesUtil.getInstance().getUserName(),SharedPreferencesUtil.getInstance().getUserId());
+        return getString(R.string.table_hello_tip_2,checkId);
     }
 
     /**
@@ -249,7 +262,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     //网络请求
     private void httpPost() {
         progressHUD.show();
-        mPersenter.getTableInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getFaculty());
+        mPersenter.getTableInfo(checkId,SharedPreferencesUtil.getInstance().getFaculty());
     }
 
     /**

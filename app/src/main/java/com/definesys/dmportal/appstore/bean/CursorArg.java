@@ -35,8 +35,12 @@ public class CursorArg  {
 
     private String cursorType;//课程类型
 
+    public CursorArg() {
+
+    }
+
     public String getId() {
-        return id;
+        return id==null?"":id;
     }
 
     public void setId(String id) {
@@ -44,7 +48,7 @@ public class CursorArg  {
     }
 
     public String getClassroom() {
-        return classroom;
+        return classroom==null?"":classroom;
     }
 
     public void setClassroom(String classroom) {
@@ -52,7 +56,7 @@ public class CursorArg  {
     }
 
     public String getWeekDay() {
-        return weekDay;
+        return weekDay==null?"":weekDay;
     }
 
     public void setWeekDay(String weekDay) {
@@ -60,7 +64,7 @@ public class CursorArg  {
     }
 
     public String getPitch() {
-        return pitch;
+        return pitch==null?"":pitch;
     }
 
     public void setPitch(String pitch) {
@@ -84,7 +88,7 @@ public class CursorArg  {
     }
 
     public String getCursorName() {
-        return cursorName;
+        return cursorName==null?"":cursorName;
     }
 
     public void setCursorName(String cursorName) {
@@ -92,7 +96,7 @@ public class CursorArg  {
     }
 
     public String getTeacherName() {
-        return teacherName;
+        return teacherName==null?"":teacherName;
     }
 
     public void setTeacherName(String teacherName) {
@@ -124,7 +128,7 @@ public class CursorArg  {
     }
 
     public String getCursorType() {
-        return cursorType;
+        return cursorType==null?"":cursorType;
     }
 
     public void setCursorType(String cursorType) {

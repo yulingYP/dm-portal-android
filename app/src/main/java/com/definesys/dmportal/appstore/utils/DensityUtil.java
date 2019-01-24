@@ -1,7 +1,12 @@
 package com.definesys.dmportal.appstore.utils;
 
 import android.content.Context;
+import android.widget.TextView;
 
+import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.bean.LeaveInfo;
+
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -206,5 +211,61 @@ public class DensityUtil {
         Date date = new Date();
         date.setTime(startDate.getTime()+(long)(week-1)*Constants.oneDay*7+(long)(day-1)*Constants.oneDay+pitchTime);
         return date;
+    }
+    /**
+     * 返回该请假信息的审批状态
+     * @param leaveInfo
+     * @param isMain 是不是请假主页
+     * @return
+     */
+    public static String getApprovalStatus(LeaveInfo leaveInfo,Context context,boolean isMain){
+        if(leaveInfo==null)//没有请假记录
+            return context.getString(R.string.status_tip_6);
+
+        Date date=null;//请假结束日期
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(context.getString(R.string.date_type));
+            date = simpleDateFormat.parse(leaveInfo.getEndTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(leaveInfo.getApprovalStatus()<10)//正在审批
+            return context.getString(R.string.status_tip_1);
+        else if(leaveInfo.getApprovalStatus()==11&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)<1)//审批未通过且时间未超过一天
+            return context.getString(R.string.status_tip_3);
+        else if(leaveInfo.getApprovalStatus()==11&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)>=1)//审批未通过且时间超过一天
+            return isMain?context.getString(R.string.status_tip_6):context.getString(R.string.status_tip_3);
+        else if(leaveInfo.getApprovalStatus()==12&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)<1)//已销假且时间未超过一天
+            return context.getString(R.string.status_tip_5);
+        else if(leaveInfo.getApprovalStatus()==12&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)>=1)//已销假通过且时间超过一天
+            return isMain?context.getString(R.string.status_tip_6):context.getString(R.string.status_tip_5);
+        if(date!=null) {//长短假
+            if (leaveInfo.getApprovalStatus() == 10 && date.getTime() - System.currentTimeMillis() >= 0)//已批准假期且未到请假结束日期
+                return context.getString(R.string.status_tip_2);
+            else if (leaveInfo.getApprovalStatus() == 10 && date.getTime() - System.currentTimeMillis() < 0)//已批准假期且已到请假结束日期
+                return context.getString(R.string.status_tip_4);
+        }
+        return context.getString(R.string.status_tip_7);
+    }
+
+    /**
+     * 根据内容设置textView的颜色
+     * @param data
+     * @param tv
+     * @param context
+     */
+    public static void setTVcolor(String data, TextView tv, Context context) {
+        if(context.getString(R.string.status_tip_1).equals(data))
+            tv.setTextColor(context.getResources().getColor(R.color.blue));
+        else if(context.getString(R.string.status_tip_2).equals(data))
+            tv.setTextColor(context.getResources().getColor(R.color.green));
+        else if(context.getString(R.string.status_tip_3).equals(data))
+            tv.setTextColor(context.getResources().getColor(R.color.red_error));
+        else if(context.getString(R.string.status_tip_4).equals(data))
+            tv.setTextColor(context.getResources().getColor(R.color.customOrange));
+        else if(context.getString(R.string.status_tip_5).equals(data))
+            tv.setTextColor(context.getResources().getColor(R.color.green));
+        else
+            tv.setTextColor(context.getResources().getColor(R.color.buttonBlue));
     }
 }

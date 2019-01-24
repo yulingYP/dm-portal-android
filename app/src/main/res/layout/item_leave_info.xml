@@ -25,8 +25,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_alignParentEnd="true"
-        android:text="已审批"
-        android:textColor="@color/green"
+        android:textColor="@color/blue"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/name_text"

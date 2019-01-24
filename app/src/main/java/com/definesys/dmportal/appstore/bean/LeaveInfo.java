@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by 羽翎 on 2019/1/10.
  */
 
-public class SubmitLeaveInfo {
+public class LeaveInfo {
     public String id;//请假编号
     public Number userId;//用户id
     public String userName;//姓名
@@ -18,16 +18,16 @@ public class SubmitLeaveInfo {
     public String subTime;//时长
     public String selectedSubject;//选择课表
     Short approvalStatus;//审批状态 1.正在审批 10.已批准 11.已拒绝
-    int type;//0.课假 1.短假 2.长假
+    int type;//0.课假 1.短假 2.长假 3.实习
     public Date submitDate;//提交日期
     public String picUrl;//图片url用*号隔开
     public Date updateDate;//更新日期
 
 
-    public SubmitLeaveInfo() {
+    public LeaveInfo() {
     }
 
-    public SubmitLeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject, int type) {
+    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject, int type) {
         this.userId = id;
         this.userName = name;
         this.leaveReason = content;
@@ -42,7 +42,7 @@ public class SubmitLeaveInfo {
 
 
     public String getLeaveReason() {
-        return leaveReason;
+        return leaveReason==null?"":leaveReason;
     }
 
     public void setLeaveReason(String content) {
@@ -50,7 +50,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getStartTime() {
-        return startTime;
+        return startTime==null?"":startTime;
     }
 
     public void setStartTime(String startTime) {
@@ -58,7 +58,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getEndTime() {
-        return endTime;
+        return endTime==null?"":endTime;
     }
 
     public void setEndTime(String endTime) {
@@ -66,7 +66,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getLeaveType() {
-        return leaveType;
+        return leaveType==null?"":leaveType;
     }
 
     public void setLeaveType(String leaveType) {
@@ -74,7 +74,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getLeaveTitle() {
-        return leaveTitle;
+        return leaveTitle==null?"":leaveTitle;
     }
 
     public void setLeaveTitle(String leaveTitle) {
@@ -90,7 +90,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getSelectedSubject() {
-        return selectedSubject;
+        return selectedSubject==null?"":selectedSubject;
     }
 
     public void setSelectedSubject(String selectedSubject) {
@@ -106,7 +106,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getName() {
-        return userName;
+        return userName==null?"":userName;
     }
 
     public void setName(String name) {
@@ -130,7 +130,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getPicUrl() {
-        return picUrl;
+        return picUrl==null?"":picUrl;
     }
 
     public void setPicUrl(String picUrl) {
@@ -138,7 +138,7 @@ public class SubmitLeaveInfo {
     }
 
     public String getId() {
-        return id;
+        return id==null?"":id;
     }
 
     public void setId(String d) {

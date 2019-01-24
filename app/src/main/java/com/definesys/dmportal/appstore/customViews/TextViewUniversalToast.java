@@ -2,9 +2,11 @@ package com.definesys.dmportal.appstore.customViews;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.definesys.dmportal.R;
@@ -22,7 +24,8 @@ public class TextViewUniversalToast extends ConstraintLayout {
 
     @BindView(R.id.text_view_tut)
     TextView textView;
-
+    @BindView(R.id.toast_layout)
+    LinearLayout toastLayout;
 
     private int msgTime;
     private Boolean threadFlag;
@@ -111,8 +114,8 @@ public class TextViewUniversalToast extends ConstraintLayout {
     /*
         设置FLag
      */
-    public void setFlag(Boolean stop) {
-        this.threadFlag = stop;
+    public void stopCount(Boolean stop) {
+        this.threadFlag = !stop;
     }
 
     /*
@@ -128,6 +131,14 @@ public class TextViewUniversalToast extends ConstraintLayout {
     public void setTextDisplayed(String textDisplayed) {
         this.textDisplayed = textDisplayed;
         textView.setText(textDisplayed);
+    }
+
+    public void setTextColorBlack(){
+        textView.setTextColor(Color.BLACK);
+        toastLayout.setBackgroundResource(R.drawable.toast_back);
+    }
+    public void setTextBackNull(){
+        toastLayout.setBackground(null);
     }
 
 }

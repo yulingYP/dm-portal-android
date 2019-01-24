@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,14 +31,14 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
+import com.definesys.dmportal.appstore.bean.LeaveInfo;
 import com.definesys.dmportal.appstore.bean.SubjectTable;
-import com.definesys.dmportal.appstore.bean.SubmitLeaveInfo;
 import com.definesys.dmportal.appstore.customViews.MyDatePicker;
 import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
 import com.definesys.dmportal.appstore.customViews.SubjectTableView;
 import com.definesys.dmportal.appstore.customViews.SubmitLeaveInfoView;
 import com.definesys.dmportal.appstore.presenter.GetTableInfoPresenter;
-import com.definesys.dmportal.appstore.presenter.SubjectLeaveRequest;
+import com.definesys.dmportal.appstore.presenter.LeaveRequestPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
@@ -59,8 +60,6 @@ import com.vise.xsnow.http.ViseHttp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +73,7 @@ import io.reactivex.functions.Consumer;
 import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
 
 @Route(path = ARouterConstants.LeaveActivity)
-public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
+public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
 
@@ -120,9 +119,6 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
    @BindView(R.id.scoll_view)
     ScrollView sc_scoll;
 
-    @BindView(R.id.ed_reason)
-    EditText ed_reason;
-
     @BindView(R.id.end_time_text)
     TextView tv_timeEnd;
 
@@ -134,6 +130,9 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
 
     @BindView(R.id.count_word_text)
     TextView tv_count;
+
+    @BindView(R.id.ed_reason)
+    EditText ed_reason;
 
     private ReasonImageAdapter fedbkImgAdapter;//图片适配器
     private List<LocalMedia> selectImages;//选择的图片
@@ -240,6 +239,23 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
                     isVisible = true;
                     ed_reason.setCursorVisible(true);
                 });
+        //获取焦点
+        ed_reason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    ed_reason.setCursorVisible(true);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            isScroll = true;
+                            isVisible = true;
+                            ed_reason.setCursorVisible(true);
+                        }
+                    }, Constants.scrollDelay);
+                }
+            }
+        });
         /*
         监听输入框内容 《==》 获取输入长度显示到界面
          */
@@ -356,6 +372,10 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
                         Toast.makeText(LeaveActivity.this, R.string.time_fail_tip_2, Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if(selectTypePosition==2&&(endDate.getTime()-startDate.getTime())/Constants.oneDay<=7){
+                        Toast.makeText(LeaveActivity.this, R.string.data_fail, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if (isStart)
                         tv_timeStart.setText(date);
                     else
@@ -440,14 +460,17 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
     private void initSubmitDialog() {
         String name = SharedPreferencesUtil.getInstance().getUserName();
         Number id = SharedPreferencesUtil.getInstance().getUserId();
-        String type=tv_type.getText().toString();
+        String leaveType=tv_type.getText().toString();
         String title = tv_typeReason.getText().toString();
         String startTime = selectTypePosition==0?"":tv_timeStart.getText().toString();
         String endTime = selectTypePosition==0?"":tv_timeEnd.getText().toString();
         String sumTime = tv_dayOffCount.getText().toString();
         String content = "\n  "+ed_reason.getText().toString();
         String selectedSubject="";
-        if(selectTypePosition==0) {
+        int type = selectTypePosition;
+        if(selectTypePosition>1&&getString(R.string.shixi).equals(tv_typeReason.getText().toString()))
+            type=3;
+        if(type==0) {
             //对hashMap排序
             //这里将map.entrySet()转换成list
             List<Map.Entry<Integer,String>> list = DensityUtil.sort(hashMap);
@@ -466,7 +489,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
         }
 
         //(Number id,String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject)
-        SubmitLeaveInfo submitLeaveInfo = new SubmitLeaveInfo(id,name,content,startTime,endTime,type,title,sumTime,selectedSubject,selectTypePosition);
+        LeaveInfo submitLeaveInfo = new LeaveInfo(id,name,content,startTime,endTime,leaveType,title,sumTime,selectedSubject,type);
 
         Dialog dialog = new Dialog(this);
         SubmitLeaveInfoView submitLeaveInfoView = new SubmitLeaveInfoView(this);
@@ -721,8 +744,8 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
 
 
     @Override
-    public SubjectLeaveRequest getPersenter() {
-        return new SubjectLeaveRequest(this);
+    public LeaveRequestPresenter getPersenter() {
+        return new LeaveRequestPresenter(this);
     }
     int count=0;
     private void buttonBeyondKeyboardLayout(final View root, final View button) {
@@ -739,7 +762,7 @@ public class LeaveActivity extends BaseActivity<SubjectLeaveRequest> {
                                     public void run() {
                                         sc_scoll.scrollTo(0, (int) lg_reason.getY());
                                     }
-                                }, 300);
+                                }, Constants.scrollDelay);
 
                             } else {
                                 // 键盘隐藏

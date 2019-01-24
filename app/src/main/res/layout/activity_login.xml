@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back"
+    android:fitsSystemWindows="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/app_img_att_login"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/ed_layout"
+        android:layout_marginStart="12dp"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/app_icon" />
+
+    <TextView
+        android:id="@+id/app_name_att_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/app_img_att_login"
+        android:layout_marginTop="12dp"
+        android:layout_toEndOf="@+id/app_img_att_login"
+        android:text="@string/app_name"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/gold"
+        android:textSize="18sp" />
+    <LinearLayout
+        android:id="@+id/ed_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+        <com.definesys.dmportal.appstore.customViews.EditDeleteText
+            android:id="@+id/tel_edit_att_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height_50dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:inputType="number|phone"
+            android:maxLength="@integer/max_phone_length"
+            />
+
+        <com.definesys.dmportal.appstore.customViews.EditSendText
+            android:id="@+id/pwd_edit_att_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height_50dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp" >
+        </com.definesys.dmportal.appstore.customViews.EditSendText>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/login_btn_att_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_login_style"
+                android:text="@string/login"
+                android:textColor="@color/color_white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_reg_att_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/login_btn_att_log"
+                android:layout_below="@+id/login_btn_att_log"
+                android:layout_marginTop="8dp"
+                android:text="@string/forget_password"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:id="@+id/text_log_att_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/login_btn_att_log"
+                android:layout_below="@+id/login_btn_att_log"
+                android:layout_marginTop="8dp"
+                android:text="@string/login_text_code"
+                android:textColor="@color/color_white" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/copyrt_att_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/copyright"
+        android:textColor="@color/white" />
+
+
+</RelativeLayout>

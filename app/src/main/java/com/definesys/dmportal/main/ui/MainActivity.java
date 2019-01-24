@@ -14,11 +14,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
+import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.bean.User;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -42,6 +44,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Route(path = ARouterConstants.MainActivity)
 public class MainActivity extends BaseActivity<MainPresenter> {
 
 
@@ -68,9 +71,8 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         RxBus.get().register(this);
-        //测试用
-        MainApplication.getInstances().setUser(new User());
-        SharedPreferencesUtil.getInstance().setUser(MainApplication.getInstances().getUser());
+
+        SharedPreferencesUtil.getInstance().setUser(new User());
         //获取手机宽高
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels;
