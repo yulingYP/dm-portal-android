@@ -1,32 +1,82 @@
 package com.definesys.dmportal.main.ui.fragment;
 
-import android.app.Activity;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
+import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.Key;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.definesys.dmportal.MainApplication;
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.main.bean.User;
+import com.definesys.dmportal.appstore.LeaveInfoDetailActivity;
+import com.definesys.dmportal.appstore.customViews.BottomDialog;
+import com.definesys.dmportal.appstore.customViews.RCImageView;
+import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.appstore.utils.DensityUtil;
+import com.definesys.dmportal.appstore.utils.ImageUntil;
+import com.definesys.dmportal.appstore.utils.PermissionsUtil;
+import com.definesys.dmportal.main.presenter.ChangeUserImagePresenter;
+import com.definesys.dmportal.main.presenter.LogoutPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.ui.MainActivity;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.tools.PictureFileUtils;
+import com.vise.xsnow.permission.Permission;
+import com.vise.xsnow.permission.RxPermissions;
+
+import java.io.File;
+import java.security.MessageDigest;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,17 +95,29 @@ public class MyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    public static final int SETTING_CODE = 2101;
-
-    @BindView(R.id.main_fragment_my)
-    View top;
 
     private Unbinder unbinder;
-    private ImageView userImage;
-    private TextView userName;
-    private TextView welcomeText;
-    private MainApplication application;
-    RequestOptions option = new RequestOptions().centerCrop().placeholder(R.drawable.my).error(R.drawable.my);
+
+    @BindView(R.id.head_item_uc)
+    RCImageView userImage;
+    @BindView(R.id.name_item_uc)
+    TextView userName;
+    @BindView(R.id.hello_item_uc)
+    TextView welcomeText;
+
+    @BindView(R.id.logout_layout)
+    LinearLayout lg_logout;
+
+    // 用户已选择的图片
+    private List<LocalMedia> selectImages;
+    private String pathName = "";
+
+    RequestOptions option = new RequestOptions()
+            .centerCrop()
+            .signature(new ObjectKey(UUID.randomUUID().toString()))
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .placeholder(R.drawable.my);
 
     public MyFragment() {
         // Required empty public constructor
@@ -99,7 +161,9 @@ public class MyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+        SmecRxBus.get().register(this);
         initView();
+        requestPermissions();
         refreshUserImage();
         refreshUserInformation();
     }
@@ -107,20 +171,40 @@ public class MyFragment extends Fragment {
 
     //初始化界面
     private void initView() {
-        application = (MainApplication) getActivity().getApplication();
+       updateShowInfo();
+//        top.setOnClickListener((view) ->
+//                ARouter.getInstance().build("/dmportal/usercenter/UserInformationActivity").navigation());
 
-        userImage = top.findViewById(R.id.head_item_uc);
+        RxView.clicks(userImage).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    List<String> photoStyles = new ArrayList<>();
+                    photoStyles.add(getString(R.string.ui_photo));
+                    photoStyles.add(getString(R.string.ui_galary));
+                    photoStyles.add(getString(R.string.ui_check_head));
+                    show(photoStyles, 2);
+                });
 
-        userName = top.findViewById(R.id.name_item_uc);
+        RxView.clicks(lg_logout).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o ->
+                        new AlertDialog.Builder(getContext())
+                        .setMessage(R.string.logout_msg)
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                        .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
+                            new LogoutPresenter(getContext()).logout( SharedPreferencesUtil.getInstance().getUserId());
+                            SmecRxBus.get().post("exitActivity",true);
+
+                        }).create().show()
+                );
 
 
-        welcomeText = top.findViewById(R.id.hello_item_uc);
-
-
-        top.setOnClickListener((view) ->
-                ARouter.getInstance().build("/dmportal/usercenter/UserInformationActivity").navigation());
-
-
+    }
+    //更新姓名和院系
+    public void updateShowInfo() {
+        userName.setText(SharedPreferencesUtil.getInstance().getUserName());
+        String des = SharedPreferencesUtil.getInstance().getFacultyName();
+        welcomeText.setText("".equals(des)?getString(R.string.scool_name):des);
     }
 
     /**
@@ -129,10 +213,35 @@ public class MyFragment extends Fragment {
     public void refreshUserImage() {
         String str = SharedPreferencesUtil.getInstance().getUserLocal();
         if("".equals(str)){
-            str = SharedPreferencesUtil.getInstance().getUser().getUrl();
+            str = getString(R.string.get_image,SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
         }
-        Glide.with(this).load(str).apply(option).into(userImage);
+
+        Glide.with(this)
+                .asBitmap()
+                .load(str)
+                .apply(option)
+                .into(new SimpleTarget<Bitmap>() {
+                    //得到图片
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        userImage.setImageBitmap(resource);
+                        try {
+                           SharedPreferencesUtil.getInstance().setUserLocal(ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),0));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        SharedPreferencesUtil.getInstance().setUserLocal("");
+                        userImage.setImageResource(R.drawable.my);
+                    }
+                });
+
     }
+
+
 
     /**
      * 更新完成刷新显示用户其他信息（姓名、称呼）
@@ -152,6 +261,52 @@ public class MyFragment extends Fragment {
 //        }
 
     }
+    private void show(List<String> list, int type) {
+
+        BottomDialog bottomDialog = new BottomDialog(getContext(),list);
+        if (type == 2) {
+            bottomDialog.setOnOptionClickListener(position -> {
+                if(position==2){
+                    try {
+                        String path = SharedPreferencesUtil.getInstance().getUserLocal();
+                        if("".equals(path)){
+                            Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
+                            path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
+                        }
+                        LocalMedia localMedia = new LocalMedia();
+                        localMedia.setPath(path);
+                        localMedia.setPosition(0);
+                        List<LocalMedia> localMedias = new ArrayList<>();
+                        localMedias.add(localMedia);
+                        PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
+                                .openExternalPreview(0, localMedias);
+                    } catch (ParseException e) {
+                        Toast.makeText(getContext(), R.string.get_head_fail,Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+
+                }
+                if (position == 1) {
+                    PictureSelector.create(this)
+                            .openGallery(PictureMimeType.ofImage())
+                            .maxSelectNum(1).enableCrop(true).compress(true)
+                            .withAspectRatio(1, 1)
+                            .forResult(PictureConfig.CHOOSE_REQUEST);
+                }
+                if(position == 0)
+                {
+                    PictureSelector.create(this)
+                            .openCamera(PictureMimeType.ofImage())
+                            .maxSelectNum(1).enableCrop(true).compress(true)
+                            .withAspectRatio(1, 1)
+                            .forResult(PictureConfig.CHOOSE_REQUEST);
+                }
+                bottomDialog.dismiss();
+            });
+        }
+
+        bottomDialog.setOnCancelButtonClickListener(view -> bottomDialog.dismiss()).show();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -166,6 +321,71 @@ public class MyFragment extends Fragment {
     @Override
     public void onDestroyView() {
         unbinder.unbind();
+        SmecRxBus.get().unregister(this);
         super.onDestroyView();
+    }
+
+    /*
+      修改头像成功
+      */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
+    }, thread = EventThread.MAIN_THREAD)
+    public void successfulUploadUserImage(String newUrl) {
+
+        Toast.makeText(getContext(), R.string.msg_success_upload_image, Toast.LENGTH_SHORT).show();
+        Glide.with(this).load(pathName).apply(option).into(userImage);
+        //更新本地头像信息
+        SharedPreferencesUtil.getInstance().setUserLocal(pathName);
+    }
+
+    //申请权限
+    private void requestPermissions() {
+        RxPermissions rxPermission = new RxPermissions(getActivity());
+        rxPermission
+                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(Permission permission) throws Exception {
+                        if (permission.granted) {
+                            // 用户已经同意该权限
+                            Log.d("mydemo", permission.name + " is granted.");
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                            Log.d("mydemo", permission.name + " is denied. More info should be provided.");
+                        } else {
+                            // 用户拒绝了该权限，并且选中『不再询问』
+                            Log.d("mydemo", permission.name + " is denied.");
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    if(!PermissionsUtil.isNetworkConnected(getContext())){//网络检测
+                        Toast.makeText(getContext(), R.string.no_net_tip_2,Toast.LENGTH_SHORT).show();
+                        //updateImg(path);
+                        return;
+                    }
+                    // 图片选择结果回调
+                    selectImages = PictureSelector.obtainMultipleResult(data);
+                    // 例如 LocalMedia 里面返回三种 path
+                    // 1.media.getPath(); 为原图 path
+                    // 2.media.getCutPath();为裁剪后 path，需判断 media.isCut();是否为 true
+                    // 3.media.getCompressPath();为压缩后 path，需判断 media.isCompressed();是否为 true
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+
+                    pathName = selectImages.get(0).getCompressPath();
+                    File file = new File(pathName);
+                    new ChangeUserImagePresenter(getContext()).uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file);
+                    break;
+
+            }
+        }
     }
 }

@@ -4,6 +4,9 @@ public interface HttpConst {
     //主机地址 端口号等
     String url = "http://192.168.43.248:9001/last_design/";
 
+    //获取用户信息
+    String getUserInfo = "getUserInfo";
+
     //获取课表
     String getTable = "listCurArg";
 
@@ -31,9 +34,6 @@ public interface HttpConst {
     //根据请假Id更新审批状态，并插入审批记录
     String updateApprovalStatusById = "updateApprovalStatusById";
 
-    //获取图片
-    String showImage = "http://192.168.43.248:9001/last_design/showImage?name=";
-
     //获取当前请假状态
     String getCurrentApprovalStatus = "getCurrentApprovalStatusById";
 
@@ -43,6 +43,9 @@ public interface HttpConst {
 
     //1.登陆
      String userLogin = "userLogin";
+
+    //退出
+    String userLogout = "userLogout";
 
     //2.注册
      String userInsert = "userRegister";
@@ -57,4 +60,5 @@ public interface HttpConst {
     //22.获取新闻
      String getNews = "getNews";
 
+    String uploadUserHeadPicture="uploadUserHeadPicture";
 }

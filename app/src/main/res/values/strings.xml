@@ -14,6 +14,7 @@
     <integer name="max_phone_length">11</integer>
     <integer name="max_code_length">6</integer>
     <string name="text_after_send_code">重新获取验证码</string>
+    <string name="get_image">"http://192.168.43.248:9001/last_design/showImage?name=%s&amp;type=%d"</string>
     <!--TUT倒计时提示文字-->
     <string name="tut_toast_text_time">已发送(%1$ds)</string>
     <string name="phone_regex">^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$</string>
@@ -168,4 +169,15 @@
     <string name="msg_pls_input_phone">请输入手机号</string>
     <string name="send_verify_code">发送验证码</string>
     <string name="send_code">发送验证码</string>
+    <string name="exit_des">退出登录</string>
+    <string name="logout_msg">确定要退出吗</string>
+    <string name="no_one_tip">你的帐号已在其他设备登录，如非本人操作，请及时修改密码</string>
+    <string name="sex_male">男</string>
+    <string name="ui_photo">拍照</string>
+    <string name="ui_galary">从相册选择</string>
+    <string name="ui_check_head">查看当前头像</string>
+    <string name="get_head_fail">获取头像失败</string>
+    <string name="update_head_fail">头像上传失败</string>
+    <string name="msg_success_upload_image">头像上传成功</string>
+    <string name="scool_name">哈尔滨工业大学(威海)</string>
 </resources>

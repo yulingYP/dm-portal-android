@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/layout_options_bottom_dialog"
+        android:orientation="vertical"
+        android:background="@drawable/radius_10dp_bgd_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </LinearLayout>
+    <Button
+        android:id="@+id/cancel_bottom_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:background="@drawable/radius_10dp_bgd_white"
+        android:text="@string/cancel"
+        android:textColor="@color/config_color_blue"
+        android:textSize="20sp"/>
+</LinearLayout>

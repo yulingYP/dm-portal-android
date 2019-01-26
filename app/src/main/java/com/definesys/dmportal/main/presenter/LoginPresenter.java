@@ -33,10 +33,10 @@ public class LoginPresenter extends BasePresenter {
         loginMap.put("userId", userId);
         if (loginType == EditSendText.PASSWORD) {
             loginMap.put("password", MD5Util.string2MD5(psw));
-            loginMap.put("loginType", "mpl");
+            loginMap.put("loginType", 0);
         } else {
             loginMap.put("verificationCode", psw);
-            loginMap.put("loginType", "mcl");
+            loginMap.put("loginType", 1);
             loginMap.put("phone", phone);
         }
 
@@ -44,13 +44,14 @@ public class LoginPresenter extends BasePresenter {
                 .setJson(new Gson().toJson(loginMap))
                 .tag(HttpConst.userLogin);
 
-        postRequest.request(new ACallback<BaseResponse<String>>() {
+        postRequest.request(new ACallback<BaseResponse<HashMap<String,Object>>>() {
             @Override
-            public void onSuccess(BaseResponse<String> data) {
+            public void onSuccess(BaseResponse<HashMap<String,Object>> data) {
                 switch (data.getCode()) {
                     case "200":
                         SharedPreferencesUtil.getInstance().setUserId(userId);
-                        SharedPreferencesUtil.getInstance().setToken(data.getData());
+                        SharedPreferencesUtil.getInstance().setToken(data.getData().get("token").toString());
+                        SharedPreferencesUtil.getInstance().setUserType((Number) data.getData().get("userType"));
                         SmecRxBus.get().post(MainPresenter.SUCCESSFUL_LOGIN_USER, data.getMsg());
                         break;
                     default:

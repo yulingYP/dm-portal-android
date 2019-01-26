@@ -11,8 +11,6 @@ public interface SharedPreferencesParams {
     String spUserPhone = "u_phone";
     //sp文件中用户性别的对应字段
     String spUserSex = "u_sex";
-    //sp文件中用户头像的对应字段
-    String spUserImage = "u_image";
 
     //sp文件中token所用的对应的字段
     String spToken = "sp_token";
@@ -33,4 +31,10 @@ public interface SharedPreferencesParams {
 
     //sp文件中院系id
     String spFaculty = "u_faculty";
+
+    //sp文件中院系name
+    String spFacultyName = "u_faculty_name";
+
+    //sp文件中班级id
+    String spClass = "u_class";
 }

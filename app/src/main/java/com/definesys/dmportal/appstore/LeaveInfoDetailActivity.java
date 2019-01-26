@@ -247,7 +247,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     private void initImg(ImageView img, String picUrl,int position) {
         Glide.with(this)
              .asBitmap()
-             .load(HttpConst.showImage+picUrl)
+             .load(getString(R.string.get_image,picUrl,0))
              .into(new SimpleTarget<Bitmap>() {
                  //得到图片
                  @Override

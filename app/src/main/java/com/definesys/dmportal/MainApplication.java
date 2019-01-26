@@ -1,6 +1,5 @@
 package com.definesys.dmportal;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
@@ -8,14 +7,14 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.dao.DaoMaster;
 import com.definesys.dmportal.appstore.dao.DaoSession;
-import com.definesys.dmportal.main.bean.User;
+import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.util.SSLSocketClient;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
@@ -23,7 +22,6 @@ import com.google.gson.Gson;
 import com.qihoo360.replugin.RePlugin;
 import com.tencent.android.tpush.XGPushManager;
 import com.vise.xsnow.event.Subscribe;
-import com.vise.xsnow.event.inner.ThreadMode;
 import com.vise.xsnow.http.ViseHttp;
 
 import java.nio.charset.Charset;
@@ -47,6 +45,7 @@ public class MainApplication extends Application {
     private DaoSession mDaoSession;
     public static float scale;
 
+    private AlertDialog alert;//单机登陆提示框
     private boolean hasNewMessage;
     public static MainApplication instances;
 //    //保存用户信息
@@ -111,7 +110,8 @@ public class MainApplication extends Application {
                 .interceptor(chain -> {
                     Request request = chain.request()
                             .newBuilder()
-                            .addHeader("token", "kSzLxTJAUlRUuLSuemTfnygwJOHHAzZm" /*SharedPreferencesUtil.getInstance().getToken()*/)
+                            .addHeader("userId", String.valueOf(SharedPreferencesUtil.getInstance().getUserId()))
+                            .addHeader("token", SharedPreferencesUtil.getInstance().getToken())
                             .build();
                     Response response = chain.proceed(request);
                     ResponseBody responseBody = response.body();
@@ -130,32 +130,10 @@ public class MainApplication extends Application {
                         string = buffer.clone().readString(charset);
                     }
 
-                    Gson gson = new Gson();
-                    BaseResponse resultBean = gson.fromJson(string, BaseResponse.class);
+                    BaseResponse resultBean = (new Gson()).fromJson(string, BaseResponse.class);
+                    Log.d("mydemo",resultBean.toString());
                     if(("600".equals(resultBean.getCode()))){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MyActivityManager.getInstance().getCurrentActivity());
-                        builder.setMessage("登陆过期")
-                                .setCancelable(false)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        ARouter.getInstance().build("/dmportal/MainActivity").withBoolean(getString(R.string.exit_en), true).navigation(MyActivityManager.getInstance().getCurrentActivity());
-                                        dialog.cancel();
-                                    }
-                                });
-                        new AsyncTask<String, String, String>() {
-                            @Override
-                            protected String doInBackground(String... voids) {
-                                return null;
-                            }
-
-                            @Override
-                            protected void onPostExecute(String aVoid) {
-                                AlertDialog alert = builder.create();
-                                alert.setCancelable(false);
-                                alert.show();
-                            }
-                        }.execute("");
-
+                        showDialog();
                     }
                     return response;
                 });
@@ -179,6 +157,43 @@ public class MainApplication extends Application {
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
 
+    }
+
+    private synchronized void showDialog() {
+        if(alert!=null&&alert.isShowing())
+            return;
+//        SharedPreferencesUtil.getInstance().setToken("");
+
+        //信鸽解绑
+//        XGPushManager.unregisterPush(this);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyActivityManager.getInstance().getCurrentActivity());
+        builder.setMessage(R.string.no_one_tip)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean(getString(R.string.exit_en), true).navigation(MyActivityManager.getInstance().getCurrentActivity());
+                        dialog.cancel();
+                    }
+                });
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... voids) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String aVoid) {
+                alert = builder.create();
+                alert.setCancelable(false);
+                alert.show();
+            }
+        }.execute("");
+    }
+
+    public void disMissDialog(){
+        if(alert!=null&&alert.isShowing())
+            alert.dismiss();
     }
 
     public static MainApplication getInstances() {

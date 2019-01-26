@@ -65,8 +65,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     Button btn;
 
     String userPhoneNumber;
-
     Number userId;
+
     @BindView(R.id.mainview)
     View main;
 
@@ -103,9 +103,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     public void errorSendCode(String msg) {
         progressHUD.dismiss();
         inputPwd.stopCount(false);
-        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, "".equals(msg)?getString(R.string.net_work_error):msg, Toast.LENGTH_SHORT).show();
     }
-
     /*
         登录成功
      */
@@ -115,7 +114,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     )
     public void successfulLogin(String msg) {
         progressHUD.dismiss();
-        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
         ARouter.getInstance().build(ARouterConstants.MainActivity).withString("phone", inputTel.getText())
                 .navigation(this, new NavCallback() {
                     @Override
@@ -189,14 +188,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                 .subscribe(o -> {
                     if (imm != null)
                         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-
-                    if ("".equals(userPhoneNumber)) {
+                    int type = inputPwd.getLoginType();
+                    if (type==EditSendText.VERIFY_CODE&&"".equals(userPhoneNumber)) {
                         Toast.makeText(LoginActivity.this, getString(R.string.msg_pls_input_phone), Toast.LENGTH_SHORT).show();
-                    } else if (!inputPwd.checkPhoneNum(userPhoneNumber, LoginActivity.this)) {
+                    } else if (type==EditSendText.VERIFY_CODE&&!inputPwd.checkPhoneNum(userPhoneNumber, LoginActivity.this)) {
                         Toast.makeText(LoginActivity.this, getString(R.string.msg_err_phone), Toast.LENGTH_SHORT).show();
                     } else {
                         String pwd = inputPwd.getText();
-                        int type = inputPwd.getLoginType();
+
                         if (pwd.equals("")) {
                             if (type == EditSendText.PASSWORD) {
                                 Toast.makeText(LoginActivity.this, getString(R.string.msg_pls_input_psw), Toast.LENGTH_SHORT).show();

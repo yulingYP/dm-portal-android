@@ -18,6 +18,12 @@ public class MainPresenter extends BasePresenter {
     //登陆成功
     public static final String SUCCESSFUL_LOGIN_USER = "SUCCESSFUL_LOGIN_USER" ;
 
+    //获取用户信息成功
+    public static final String SUCCESSFUL_GET_USER_INFO="SUCCESSFUL_GET_USER_INFO";
+
+    //
+    public static final String SUCCESSFUL_UPLOAD_USER_IMAGE="SUCCESSFUL_UPLOAD_USER_IMAGE";
+
     //获取课表信息成功
     public static final String SUCCESSFUL_GET_TABLE_INFO="SUCCESSFUL_GET_TABLE_INFO";
 
@@ -73,6 +79,7 @@ public class MainPresenter extends BasePresenter {
     public MainPresenter(Context context) {
         super(context);
     }
+
 
     @Override
     public void unsubscribe() {

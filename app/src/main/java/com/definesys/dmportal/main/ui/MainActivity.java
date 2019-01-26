@@ -1,46 +1,40 @@
 package com.definesys.dmportal.main.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
+import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
-import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
-import com.definesys.dmportal.main.bean.User;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.presenter.UserInfoPresent;
 import com.definesys.dmportal.main.ui.fragment.ContactFragment;
 import com.definesys.dmportal.appstore.ui.fragment.HomeAppFragment;
-import com.definesys.dmportal.main.ui.fragment.GroupFragment;
-import com.definesys.dmportal.main.ui.fragment.MsgFragment;
 import com.definesys.dmportal.main.ui.fragment.MyFragment;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.RxBus;
-import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.OnTabSelectListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -72,7 +66,8 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         ButterKnife.bind(this);
         RxBus.get().register(this);
 
-        SharedPreferencesUtil.getInstance().setUser(new User());
+        //获取用户信息
+        (new UserInfoPresent(this)).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
         //获取手机宽高
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels;
@@ -162,6 +157,9 @@ public class MainActivity extends BaseActivity<MainPresenter> {
 
             }
         });
+
+        RxView.clicks(mTitlebar)
+                .subscribe(obj->myFragment.refreshUserImage());
     }
 
     @Override
@@ -187,7 +185,20 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         titleIndicator.setSelectItem(Integer.valueOf(position));
         titleIndicator.setFocus(Integer.valueOf(position));
     }
-
+    /**
+     * 获取网络头像成功
+     * @param str
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_USER_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getUserUrl(String str) {
+       if(myFragment!=null) {
+           SharedPreferencesUtil.getInstance().setUserLocal("");
+           myFragment.refreshUserImage();
+           myFragment.updateShowInfo();
+       }
+    }
     class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
         //存储所有的fragment
@@ -209,4 +220,37 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         }
 
     }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);// 信鸽必须要调用这句
+        //点击通知进入主页进行的操作
+//        if( intent.getBooleanExtra("hasMessage",false)){
+//            isTop = true;
+//            mTabbar.setSelectTab(0);
+//            if(contactFragment!=null&& contactFragment.getmViewpager()!=null&&contactFragment.getMsgFragment()!= null) {
+//                contactFragment.getmViewpager().setCurrentItem(0);
+//                contactFragment.getMsgFragment().refresh();
+//            }
+//        }
+        singleLogout(intent!=null&&intent.getBooleanExtra(getString(R.string.exit_en), false));
+    }
+    /**
+     * 退出登录
+     */
+    @Subscribe(tags = {
+            @Tag("exitActivity")
+    }, thread = EventThread.MAIN_THREAD)
+    public void singleLogout(Boolean isExit) {
+        if (isExit) {
+            SharedPreferencesUtil.getInstance().clearUser();
+            ARouter.getInstance().build(ARouterConstants.LoginAcitvity).navigation(this, new NavCallback() {
+                @Override
+                public void onArrival(Postcard postcard) {
+                    MainActivity.this.finish();
+                }
+            });
+        }
+    }
+
 }

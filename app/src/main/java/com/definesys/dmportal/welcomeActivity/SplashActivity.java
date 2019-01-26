@@ -14,9 +14,11 @@ import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.base.BasePresenter;
+import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.main.ui.MainActivity;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 
 import butterknife.BindView;
@@ -50,7 +52,7 @@ public class SplashActivity extends BaseActivity {
         // 如果是第一次启动，则先进入功能引导页
         if (isFirstOpen) {
             SharedPreferencesUtil.getInstance().disableFirstOpen();
-            entryActivity(ARouterConstants.LeaveMainActivity);
+            entryActivity(ARouterConstants.LoginAcitvity);
             return;
         }
 
@@ -99,6 +101,12 @@ public class SplashActivity extends BaseActivity {
                 SplashActivity.this.finish();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        MainApplication.getInstances().disMissDialog();
+        super.onDestroy();
     }
 
     @Override

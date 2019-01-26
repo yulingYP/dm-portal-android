@@ -83,7 +83,7 @@ public class ImageUntil {
             scaleBmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
             bmp = null;
 
-            path = saveBitmap(scaleBmp, picName, context, mode);
+            path = saveBitmap(scaleBmp, picName+".jpg", context, mode);
 
             scaleBmp.recycle();
             scaleBmp = null;
@@ -109,7 +109,7 @@ public class ImageUntil {
  */
 
     private static String saveBitmap(Bitmap bitmap, String bitName, Context context, int  mode){
-        String fileName =null ;
+        String fileName ="" ;
         File file ;
         if( mode==0)
             fileName=context.getCacheDir()+"/"+bitName;
@@ -129,30 +129,34 @@ public class ImageUntil {
         }
 
         file = new File(fileName);
-        int i = 0;
-        if(!file.exists()) {
-           FileOutputStream out;
-           try {
-               out = new FileOutputStream(file);
-               // 格式为 JPEG，照相机拍出的图片为JPEG格式的，PNG格式的不能显示在相册中
-               if (bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)) {
-                   out.flush();
-                   out.close();
-                   // 插入图库
-                   if (mode != 0)
-                       MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), bitName, null);
+        boolean isDelete=true;
+        if(file.exists()) {
+            context.getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA + "=?", new String[]{fileName});//删除系统缩略图
+            isDelete = file.delete();//删除SD中图片
+        }
+        if(isDelete) {
+            FileOutputStream out;
+            try {
+                out = new FileOutputStream(file);
+                // 格式为 JPEG，照相机拍出的图片为JPEG格式的，PNG格式的不能显示在相册中
+                if (bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)) {
+                    out.flush();
+                    out.close();
+                    // 插入图库
+                    if (mode != 0)
+                        MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), bitName, null);
 
-               }
-           } catch (FileNotFoundException e) {
-               e.printStackTrace();
-           } catch (IOException e) {
-               e.printStackTrace();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
 
-           }
-            if(mode!=0)// 发送广播，通知刷新图库的显示
+            }
+            if (mode != 0)// 发送广播，通知刷新图库的显示
                 context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + fileName)));
-       }
 
+        }
         return file.getPath();
     }
 
