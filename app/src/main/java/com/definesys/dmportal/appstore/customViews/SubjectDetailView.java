@@ -77,7 +77,7 @@ public class SubjectDetailView extends LinearLayout {
     public void updateData(CursorArg cursorArg,int currentWeek,int weekDay,int pitch,String classRoom){
         tv_cursor_name.setText(mContext.getString(R.string.cursor_name,cursorArg.getCursorName(),cursorArg.getCursorType()));
         tv_credit.setText(mContext.getString(R.string.credit_tip,cursorArg.getCredit()));
-        tv_cursor_hour.setText(mContext.getString(R.string.cursor_hour_tip,cursorArg.getCursorHour()));
+        tv_cursor_hour.setText(mContext.getString(R.string.cursor_hour_tip,2));
         tv_teacher.setText(mContext.getString(R.string.teacher_name,checkString(cursorArg.getTeacherName())));
         tv_location.setText(mContext.getString(R.string.location,checkString(classRoom)));
         tv_week.setText(mContext.getString(R.string.week_number,currentWeek));

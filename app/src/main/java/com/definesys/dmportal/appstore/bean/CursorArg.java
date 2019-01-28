@@ -5,6 +5,7 @@ package com.definesys.dmportal.appstore.bean;
  */
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 授课列表
@@ -34,6 +35,8 @@ public class CursorArg  {
     private short cursorHour;//学时
 
     private String cursorType;//课程类型
+
+    private List<String> classId;//参加本节课的学生所在的班级
 
     public CursorArg() {
 
@@ -133,5 +136,13 @@ public class CursorArg  {
 
     public void setCursorType(String cursorType) {
         this.cursorType = cursorType;
+    }
+
+    public List<String> getClassId() {
+        return classId;
+    }
+
+    public void setClassId(List<String> classId) {
+        this.classId = classId;
     }
 }

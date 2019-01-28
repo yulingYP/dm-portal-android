@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.bean.CursorArg;
 import com.definesys.dmportal.appstore.bean.LeaveInfo;
 
 import java.text.ParseException;
@@ -102,6 +103,8 @@ public class DensityUtil {
      * @return
      */
     public static Date setDate(Date date,boolean isStart){
+        if(date==null)
+            return new Date();
         Calendar calendar = new GregorianCalendar();
         calendar.add(Calendar.DAY_OF_MONTH,-1);
         calendar.setTime(date);
@@ -267,5 +270,24 @@ public class DensityUtil {
             tv.setTextColor(context.getResources().getColor(R.color.green));
         else
             tv.setTextColor(context.getResources().getColor(R.color.buttonBlue));
+    }
+
+    /**
+     * 获取上课的所有班级的id
+     * @param cursorArg
+     * @return
+     */
+    public static String getClassLisId(CursorArg cursorArg) {
+        if(cursorArg==null)
+            return "";
+        List<String> classList = cursorArg.getClassId();//上课的班级id
+        if(classList==null)
+            return "";
+        String classId = "";
+        for (int m = 0; m < classList.size(); m++) {
+            if (m > 0) classId += "、" + classList.get(m);
+            else classId += classList.get(m);
+        }
+        return  classId;
     }
 }

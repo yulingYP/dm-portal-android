@@ -22,12 +22,12 @@ public class LeaveInfo {
     public Date submitDate;//提交日期
     public String picUrl;//图片url用*号隔开
     public Date updateDate;//更新日期
-
+    public int userType;//用户类型
 
     public LeaveInfo() {
     }
 
-    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject, int type) {
+    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject, int type,int userType) {
         this.userId = id;
         this.userName = name;
         this.leaveReason = content;
@@ -38,6 +38,7 @@ public class LeaveInfo {
         this.subTime = subTime;
         this.selectedSubject = selectedSubject;
         this.type = type;
+        this.userType = userType;
     }
 
 
@@ -159,5 +160,21 @@ public class LeaveInfo {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 }

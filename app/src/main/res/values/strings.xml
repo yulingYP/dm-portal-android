@@ -14,6 +14,7 @@
     <integer name="max_phone_length">11</integer>
     <integer name="max_code_length">6</integer>
     <string name="text_after_send_code">重新获取验证码</string>
+    <string name="send_verify_code">获取验证码</string>
     <string name="get_image">"http://192.168.43.248:9001/last_design/showImage?name=%s&amp;type=%d"</string>
     <!--TUT倒计时提示文字-->
     <string name="tut_toast_text_time">已发送(%1$ds)</string>
@@ -84,6 +85,7 @@
     <string name="teacher_name">老师：%s</string>
     <string name="location">教室：%s</string>
     <string name="week_number">周数：第%d周</string>
+    <string name="week_number_2">周数：%d-%d周</string>
     <string name="pitch_number">节数：%s 第%d大节</string>
     <string name="unknow">未知</string>
     <string name="credit_tip">学分：%d</string>
@@ -124,6 +126,7 @@
     <string name="no_history_tip">暂无记录</string>
     <string name="userId_tip">学号/工号:%d</string>
     <string name="date_type_2">yyyy-MM-dd HH:mm</string>
+    <string name="date_type_3">MMDDHHmmss</string>
     <string name="status_tip_1">正在审批</string>
     <string name="status_tip_2">已批准</string>
     <string name="status_tip_3">已拒绝</string>
@@ -167,8 +170,7 @@
     <string name="msg_pls_input_code">输入验证码</string>
     <string name="msg_err_phone">请输入正确的手机号</string>
     <string name="msg_pls_input_phone">请输入手机号</string>
-    <string name="send_verify_code">发送验证码</string>
-    <string name="send_code">发送验证码</string>
+
     <string name="exit_des">退出登录</string>
     <string name="logout_msg">确定要退出吗</string>
     <string name="no_one_tip">你的帐号已在其他设备登录，如非本人操作，请及时修改密码</string>
@@ -180,4 +182,17 @@
     <string name="update_head_fail">头像上传失败</string>
     <string name="msg_success_upload_image">头像上传成功</string>
     <string name="scool_name">哈尔滨工业大学(威海)</string>
+    <string name="teacher_cursor_table">%s\n(%s)\n(%d-%d)周</string>
+    <string name="currentWeek">本周</string>
+    <string name="class_des">班级：</string>
+    <string name="email_model">您的验证码是%s，在5分钟内有效。如非本人操作请忽略本短信。</string>
+    <string name="pwd_model">E102BD00000000tJmB40%s</string>
+    <string name="eamil_user">E102BD</string>
+    <string name="send_email_fail">短信发送失败请重试</string>
+    <string name="send_email_fail_1">用户欠费</string>
+    <string name="send_email_fail_4">端口绑定失败</string>
+    <string name="send_email_fail_2">手机号不合法</string>
+    <string name="send_email_fail_3">手机号码超过最大支持数</string>
+    <string name="send_email_fail_5">平台数据库内部错误</string>
+    <string name="send_email_fail_6">内部错误,请联系我们</string>
 </resources>

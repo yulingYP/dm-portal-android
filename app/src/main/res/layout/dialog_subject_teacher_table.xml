@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/main_layout"
+    android:layout_gravity="center"
+    android:scrollbars="none"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.definesys.dmportal.appstore.customViews.RCLinearLayout
+        android:orientation="vertical"
+        app:round_corner="8dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/subject_layout"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+        <TextView
+            android:id="@+id/confirm_text"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:text="@string/confirm"
+            android:layout_gravity="end"
+            android:padding="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </com.definesys.dmportal.appstore.customViews.RCLinearLayout>
+</ScrollView>

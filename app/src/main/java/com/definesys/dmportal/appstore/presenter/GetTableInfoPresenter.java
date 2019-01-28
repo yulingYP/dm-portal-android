@@ -12,6 +12,7 @@ import com.definesys.dmportal.appstore.bean.SubjectTable;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
@@ -29,9 +30,10 @@ public class GetTableInfoPresenter extends BasePresenter {
         super(context);
     }
 
-    public void getTableInfo (Number stuID,String facultyId){
+    public void getTableInfo (Number userId, int userType,String facultyId ){
         Map map = new HashMap();
-        map.put("stuId",stuID);
+        map.put("userId",userId);
+        map.put("userType",userType);
         map.put("facultyId",facultyId);
         Log.d("myMap",new Gson().toJson(map).toString());
         ViseHttp.POST(HttpConst.getTable)

@@ -42,8 +42,8 @@ public class EditSendText extends ConstraintLayout {
             其他  验证码登录《==》 按钮出现，输入类型为text
         */
     private int loginType;
-    public static int PASSWORD = 1;
-    public static int VERIFY_CODE = 2;
+    public static int PASSWORD = 0;
+    public static int VERIFY_CODE = 1;
 
 
     public EditSendText(Context context, AttributeSet attrs) {

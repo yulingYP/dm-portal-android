@@ -40,7 +40,8 @@ public class SelectWeekView extends LinearLayout {
     @BindView(R.id.confirm_text)
     TextView tv_confirm;
     private int maxWeek;//最大周
-    private int currentWeek;//当前周
+    private int currentShowWeek;//当前显示周
+    private int currentWeek;//本周
     private MyClickListener myClickListener;
     private TextView tv_temp;
     private SelectWeekAdapter selectWeekAdapter;
@@ -61,6 +62,7 @@ public class SelectWeekView extends LinearLayout {
     }
     public void setReasonlist(int maxWeek,int currentWeek) {
         this.maxWeek = maxWeek;
+        this.currentShowWeek =currentWeek;
         this.currentWeek =currentWeek;
         selectWeekAdapter= new SelectWeekAdapter();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
@@ -69,7 +71,7 @@ public class SelectWeekView extends LinearLayout {
     }
 
     public void setCurrentWeek(int currentWeek) {
-        this.currentWeek = currentWeek;
+        this.currentShowWeek = currentWeek;
         selectWeekAdapter.notifyDataSetChanged();
 
     }
@@ -86,9 +88,12 @@ public class SelectWeekView extends LinearLayout {
 
         @Override
         public void onBindViewHolder(@NonNull SelectWeekAdapter.ViewHolder holder, int position) {
-            holder.tv_week.setText(""+(position+1));
+
+            if(position==currentWeek-1)
+                holder.tv_week.setText(R.string.currentWeek);
+            else holder.tv_week.setText(""+(position+1));
             holder.tv_week.setGravity(Gravity.END|Gravity.CENTER);
-            if(position==currentWeek-1) {
+            if(position==currentShowWeek-1) {
                 holder.tv_week.setTextColor(mContext.getResources().getColor(R.color.blue));
                 tv_temp = holder.tv_week;
             }
@@ -103,7 +108,7 @@ public class SelectWeekView extends LinearLayout {
                     .subscribe(obj-> {
                             if(myClickListener!=null)
                                 myClickListener.onClick(position+1);
-                            currentWeek = position+1;
+                            currentShowWeek = position+1;
                             if(tv_temp!=null)
                                 tv_temp.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.tv_week.setTextColor(mContext.getResources().getColor(R.color.blue));

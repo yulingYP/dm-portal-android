@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/text_view_tut"
         android:textSize="@dimen/universal_toast_text_size"
-        android:text="@string/send_code"
+        android:text="@string/send_verify_code"
         android:textColor="@color/color_white"
         android:gravity="center"
         android:layout_width="wrap_content"

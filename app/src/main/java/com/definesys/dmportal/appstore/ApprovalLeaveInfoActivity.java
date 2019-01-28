@@ -220,6 +220,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                   ARouter.getInstance()
                           .build(ARouterConstants.SubjectTableActivity)
                           .withInt("checkId",submitLeaveInfo.getUserId().intValue())
+                          .withInt("userType",submitLeaveInfo.getUserType())
                           .navigation();
                 });
         if(approvalRecord==null) {
