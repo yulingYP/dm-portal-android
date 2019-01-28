@@ -186,8 +186,6 @@
     <string name="currentWeek">本周</string>
     <string name="class_des">班级：</string>
     <string name="email_model">您的验证码是%s，在5分钟内有效。如非本人操作请忽略本短信。</string>
-    <string name="pwd_model">E102BD00000000tJmB40%s</string>
-    <string name="eamil_user">E102BD</string>
     <string name="send_email_fail">短信发送失败请重试</string>
     <string name="send_email_fail_1">用户欠费</string>
     <string name="send_email_fail_4">端口绑定失败</string>
