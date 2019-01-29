@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -108,6 +109,12 @@ public class MyFragment extends Fragment {
     @BindView(R.id.logout_layout)
     LinearLayout lg_logout;
 
+    @BindView(R.id.change_pwd_layout)
+    LinearLayout lg_pwd;
+
+    @BindView(R.id.bind_phone_layout)
+    LinearLayout lg_phone;
+
     // 用户已选择的图片
     private List<LocalMedia> selectImages;
     private String pathName = "";
@@ -185,6 +192,24 @@ public class MyFragment extends Fragment {
                     show(photoStyles, 2);
                 });
 
+        //手机绑定
+        RxView.clicks(lg_phone)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o ->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.PhoneBindActivity)
+                                .withBoolean("isBind",!"".equals(SharedPreferencesUtil.getInstance().getUserPhone()))
+                                .navigation()
+                );
+
+        //修改密码
+        RxView.clicks(lg_pwd)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o ->
+                       ARouter.getInstance().build(ARouterConstants.ChangePwdActivity).navigation()
+                );
         //退出
         RxView.clicks(lg_logout).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -208,4 +208,10 @@
     <string name="send_code_err">请先获取验证码</string>
     <string name="pwd_tip">提示:初始密码为身份证后六位,如:12345x</string>
     <string name="change_pwd_success">修改密码成功</string>
+    <string name="about_our">关于我们</string>
+    <string name="bind_phone_tip">请先去绑定手机</string>
+    <string name="unbind_phone">手机解绑</string>
+    <string name="bind_phone">手机绑定</string>
+    <string name="unbind_success">解绑成功</string>
+    <string name="bind_success">绑定成功</string>
 </resources>

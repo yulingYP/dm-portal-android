@@ -40,10 +40,12 @@ public class SendCodePresenter extends BasePresenter {
      * @param phone 电话
      * @param emailType 验证码类型 1.登陆验证 2.修改密码 3.手机绑定验证 4.手机解绑解绑
      */
-    public void sendVerifyCode(String phone,int emailType) {
+    public void sendVerifyCode(String phone,int emailType,Number userId) {
         Map<String,Object> map = new HashMap<>();
         map.put("phone", phone);
         map.put("emailType", emailType);
+        if(emailType==3||emailType==4)
+            map.put("userId", userId);
         PostRequest postRequest = ViseHttp.POST(HttpConst.getEmailCode)
                 .setJson(new Gson().toJson(map))
                 .tag(HttpConst.getEmailCode);
@@ -52,7 +54,6 @@ public class SendCodePresenter extends BasePresenter {
             public void onSuccess(BaseResponse<HashMap<String,String>> data) {
                 switch (data.getCode()) {
                     case "200":
-
                             sendEmail(data.getData().get("code"),phone,data.getData().get("data1"),data.getData().get("data2"));
                         break;
                     default:

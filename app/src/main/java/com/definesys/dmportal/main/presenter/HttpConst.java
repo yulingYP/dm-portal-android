@@ -59,9 +59,11 @@ public interface HttpConst {
      //修改密码
      String changePassword = "changePassword";
 
+     //绑定或解绑手机
+     String bindPhone = "bindPhone";
+
      //获取消息列表
      String getStaticMessage = "getStaticMessage";
-
 
     //获取新闻
      String getNews = "getNews";

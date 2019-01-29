@@ -180,7 +180,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                     String phoneNum = inputTel.getText();
                     if (inputPwd.checkPhoneNum(phoneNum, LoginActivity.this)) {
                         progressHUD.show();
-                        new SendCodePresenter(LoginActivity.this).sendVerifyCode(phoneNum,1);
+                        new SendCodePresenter(LoginActivity.this).sendVerifyCode(phoneNum,1,null);
                     } else {
                         Toast.makeText(inputPwd.getContext(), R.string.msg_err_phone, Toast.LENGTH_SHORT).show();
                     }

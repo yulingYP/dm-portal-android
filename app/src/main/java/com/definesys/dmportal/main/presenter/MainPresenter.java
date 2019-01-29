@@ -21,6 +21,9 @@ public class MainPresenter extends BasePresenter {
     //短信修改密码成功
     public static final String SUCCESSFUL_CHANGE_PASSWORD = "SUCCESSFUL_CHANGE_PASSWORD";
 
+    //绑定或解绑手机成功
+    public static final String SUCCESSFUL_BIND_PHONE = "SUCCESSFUL_BIND_PHONE";
+
     //获取用户信息成功
     public static final String SUCCESSFUL_GET_USER_INFO="SUCCESSFUL_GET_USER_INFO";
 
