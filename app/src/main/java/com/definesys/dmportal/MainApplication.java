@@ -20,7 +20,7 @@ import com.definesys.dmportal.main.util.SSLSocketClient;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.qihoo360.replugin.RePlugin;
-import com.tencent.android.tpush.XGPushManager;
+//import com.tencent.android.tpush.XGPushManager;
 import com.vise.xsnow.event.Subscribe;
 import com.vise.xsnow.http.ViseHttp;
 
@@ -48,17 +48,6 @@ public class MainApplication extends Application {
     private AlertDialog alert;//单机登陆提示框
     private boolean hasNewMessage;
     public static MainApplication instances;
-//    //保存用户信息
-//    private static User user;
-//
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-
 
 
     public boolean isHasNewMessage() {
@@ -81,7 +70,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         scale = getResources().getDisplayMetrics().density;
-        XGPushManager.registerPush(getApplicationContext());
+//        XGPushManager.registerPush(getApplicationContext());
 
         RePlugin.App.onCreate();
 

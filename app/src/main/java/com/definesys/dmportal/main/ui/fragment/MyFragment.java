@@ -185,6 +185,7 @@ public class MyFragment extends Fragment {
                     show(photoStyles, 2);
                 });
 
+        //退出
         RxView.clicks(lg_logout).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o ->

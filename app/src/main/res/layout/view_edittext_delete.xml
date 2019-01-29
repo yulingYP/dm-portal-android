@@ -29,6 +29,7 @@
         android:textColorHint="@color/hint_gray"
         android:textCursorDrawable="@null"
         android:textSize="14sp"
+        android:theme="@style/MyEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

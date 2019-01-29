@@ -38,9 +38,9 @@ public class SendCodePresenter extends BasePresenter {
     /**
      * 获取验证码
      * @param phone 电话
-     * @param emailType 验证码类型 1.登陆验证 2.忘记密码 3.手机绑定验证 4.手机解绑解绑
+     * @param emailType 验证码类型 1.登陆验证 2.修改密码 3.手机绑定验证 4.手机解绑解绑
      */
-    public void sendVerifyCodeForLogin(String phone,int emailType) {
+    public void sendVerifyCode(String phone,int emailType) {
         Map<String,Object> map = new HashMap<>();
         map.put("phone", phone);
         map.put("emailType", emailType);
@@ -138,7 +138,7 @@ public class SendCodePresenter extends BasePresenter {
                         Map result = gson.fromJson(responseDate, type);
                         double resultCode = (double)result.get("result");
                         if(resultCode==0)//成功
-                          SmecRxBus.get().post(MainPresenter.SUCCESSFUL_SEND_CODE_LOGIN, "");
+                          SmecRxBus.get().post(MainPresenter.SUCCESSFUL_SEND_CODE, "");
                         else if(resultCode==-100003){
                           SmecRxBus.get().post(MainPresenter.ERROR_NETWORK,mContext.getString(R.string.send_email_fail_1));
                         }

@@ -18,10 +18,13 @@ public class MainPresenter extends BasePresenter {
     //登陆成功
     public static final String SUCCESSFUL_LOGIN_USER = "SUCCESSFUL_LOGIN_USER" ;
 
+    //短信修改密码成功
+    public static final String SUCCESSFUL_CHANGE_PASSWORD_BY_CODE = "SUCCESSFUL_CHANGE_PASSWORD_BY_CODE";
+
     //获取用户信息成功
     public static final String SUCCESSFUL_GET_USER_INFO="SUCCESSFUL_GET_USER_INFO";
 
-    //
+    //修改头像成功
     public static final String SUCCESSFUL_UPLOAD_USER_IMAGE="SUCCESSFUL_UPLOAD_USER_IMAGE";
 
     //获取课表信息成功
@@ -66,8 +69,8 @@ public class MainPresenter extends BasePresenter {
     //获取新闻失败
     public static final String ERROR_GET_NEWS="ERROR_GET_NEWS";
 
-    //发送验证码登录账号
-    public static final String SUCCESSFUL_SEND_CODE_LOGIN = "SUCCESSFUL_SEND_CODE_LOGIN";
+    //发送验证码成功
+    public static final String SUCCESSFUL_SEND_CODE= "SUCCESSFUL_SEND_CODE";
 
     //发送验证码注册账号
     public static final String SUCCESSFUL_SEND_CODE_REGISTER = " String SUCCESSFUL_SEND_CODE_REGISTER";

@@ -3,6 +3,7 @@ package com.definesys.dmportal.main.ui;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 
 import android.annotation.SuppressLint;
@@ -57,8 +58,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     EditDeleteText inputTel;
     @BindView(R.id.pwd_edit_att_login)
     EditSendText inputPwd;
-    @BindView(R.id.text_reg_att_log)
-    TextView textReg;
+    @BindView(R.id.text_forget_att_log)
+    TextView textForget;
     @BindView(R.id.text_log_att_log)
     TextView textLogin;
     @BindView(R.id.login_btn_att_log)
@@ -85,12 +86,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         验证码发送成功
      */
     @Subscribe(tags = {
-            @Tag(MainPresenter.SUCCESSFUL_SEND_CODE_LOGIN)
+            @Tag(MainPresenter.SUCCESSFUL_SEND_CODE)
     }, thread = EventThread.MAIN_THREAD
     )
     public void successfulSendCode(String msg) {
-        inputPwd.startCount();
-        progressHUD.dismiss();
+        if(MyActivityManager.getInstance().getCurrentActivity()==this) {
+            inputPwd.startCount();
+            progressHUD.dismiss();
+        }
     }
 
     /*
@@ -101,9 +104,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     }, thread = EventThread.MAIN_THREAD
     )
     public void errorSendCode(String msg) {
-        progressHUD.dismiss();
-        inputPwd.stopCount(false);
-        Toast.makeText(LoginActivity.this, "".equals(msg)?getString(R.string.net_work_error):msg, Toast.LENGTH_SHORT).show();
+        if(MyActivityManager.getInstance().getCurrentActivity()==this) {
+            progressHUD.dismiss();
+            inputPwd.stopCount(false);
+            Toast.makeText(LoginActivity.this, "".equals(msg) ? getString(R.string.net_work_error) : msg, Toast.LENGTH_SHORT).show();
+        }
     }
     /*
         登录成功
@@ -148,19 +153,21 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                 inputTel.setText(userPhoneNumber);
                 inputPwd.setLoginType(EditSendText.VERIFY_CODE);
                 inputPwd.setHint(R.string.msg_pls_input_code);
+                inputPwd.setIcon_head(resources.getDrawable(R.drawable.code));
             } else {
                 textLogin.setText(R.string.login_text_code);
                 inputTel.setText(userId.intValue()>0?""+userId:"");
                 inputTel.setHint(R.string.msg_pls_input_userId);
                 inputPwd.setLoginType(EditSendText.PASSWORD);
                 inputPwd.setHint(R.string.msg_pls_input_psw);
+                inputPwd.setIcon_head(resources.getDrawable(R.drawable.pwd));
             }
         });
 
-//      ”注册“点击事件
-//        RxView.clicks(textReg).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(o -> ARouter.getInstance().build(ARouterConstants.RegisterActivity).navigation());
+//      ”忘记密码“点击事件
+        RxView.clicks(textForget).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> ARouter.getInstance().build(ARouterConstants.ForgetPwdActivity).withInt("type",1).navigation());
 
         /*
         ”发送验证码“按钮的点击事件
@@ -173,7 +180,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                     String phoneNum = inputTel.getText();
                     if (inputPwd.checkPhoneNum(phoneNum, LoginActivity.this)) {
                         progressHUD.show();
-                        new SendCodePresenter(LoginActivity.this).sendVerifyCodeForLogin(phoneNum,1);
+                        new SendCodePresenter(LoginActivity.this).sendVerifyCode(phoneNum,1);
                     } else {
                         Toast.makeText(inputPwd.getContext(), R.string.msg_err_phone, Toast.LENGTH_SHORT).show();
                     }
@@ -216,7 +223,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         inputTel.setText(userId.intValue()>0?""+userId:"");
         inputPwd.getSendVerifyCodeButton().setTextBackNull();
         // 防遮挡
-        new HddLayoutHeight().addLayoutListener(main, textReg);
+        new HddLayoutHeight().addLayoutListener(main, textForget);
     }
 
     //TODO 为方便调试设置的点击自动登录

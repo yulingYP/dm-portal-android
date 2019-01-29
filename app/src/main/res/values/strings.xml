@@ -169,8 +169,15 @@
     <string name="login_text_pwd">账号密码登录</string>
     <string name="msg_pls_input_code">输入验证码</string>
     <string name="msg_err_phone">请输入正确的手机号</string>
+    <string name="msg_err_phone_2">手机号发生改变,请重新获取验证码</string>
     <string name="msg_pls_input_phone">请输入手机号</string>
-
+    <string name="psw_input_hint_origin">输入原密码</string>
+    <string name="psw_input_hint_new_confirm">再次输入新密码</string>
+    <string name="psw_input_hint">输入 6～16 位密码</string>
+    <string name="psw_input_hint_confirm">再次输入密码</string>
+    <string name="msg_pls_input_required">请填写所有必填项</string>
+    <string name="msg_err_input_psw">密码输入不一致，请重新输入</string>
+    <string name="psw_input_hint_new">输入 6~16 位新密码</string>
     <string name="exit_des">退出登录</string>
     <string name="logout_msg">确定要退出吗</string>
     <string name="no_one_tip">你的帐号已在其他设备登录，如非本人操作，请及时修改密码</string>
@@ -193,4 +200,10 @@
     <string name="send_email_fail_3">手机号码超过最大支持数</string>
     <string name="send_email_fail_5">平台数据库内部错误</string>
     <string name="send_email_fail_6">内部错误,请联系我们</string>
+    <string name="msg_pls_input_address">请选择地址</string>
+    <string name="msg_err_psw">密码错误</string>
+    <string name="msg_err_psw_origin">原密码错误</string>
+    <string name="changepsw">修改密码</string>
+    <string name="send_code_err">请先获取验证码</string>
+    <string name="pwd_tip">提示：初始密码为身份证后六位,如：12345x</string>
 </resources>

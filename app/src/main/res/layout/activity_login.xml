@@ -70,7 +70,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/text_reg_att_log"
+                android:id="@+id/text_forget_att_log"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/login_btn_att_log"

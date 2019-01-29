@@ -66,7 +66,7 @@
         <activity
             android:name=".main.ui.MainActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustNothing"></activity>
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".webview.ui.WebViewActivity" />
         <activity android:name=".appstore.LeaveActivity" />
         <activity android:name=".appstore.SubjectTableActivity" />
@@ -76,7 +76,8 @@
         <activity android:name=".appstore.LeaveListActivity" />
         <activity android:name=".appstore.LeaveInfoDetailActivity" />
         <activity android:name=".appstore.ApprovalLeaveInfoActivity" />
-        <activity android:name=".main.ui.LoginActivity"></activity>
+        <activity android:name=".main.ui.LoginActivity" />
+        <activity android:name=".main.userSettingActivity.ForgetPwdActivity"></activity>
     </application>
 
 </manifest>

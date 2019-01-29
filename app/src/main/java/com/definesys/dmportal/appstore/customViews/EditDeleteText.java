@@ -125,10 +125,17 @@ public class EditDeleteText extends ConstraintLayout {
         }
         editText.setEnabled(!disabled);
     }
+    public void setEditTextColor(int color) {
+        editText.setTextColor(color);
+    }
     /**
      * 设置底部线条颜色
      */
     public void setLineColor(int color){
         line.setBackgroundColor(color);
+    }
+
+    public void setIcon_delete(Drawable icon_delete) {
+        this.icon_delete.setImageDrawable(icon_delete);
     }
 }

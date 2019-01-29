@@ -190,4 +190,15 @@ public class EditSendText extends ConstraintLayout {
     public void setInputLength(int length){
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(length)});
     }
+
+    public void setIcon_delete(Drawable icon_delete) {
+        this.icon_delete.setImageDrawable(icon_delete);
+    }
+
+    public void setBottomLineBackColor(int color) {
+        this.line.setBackgroundColor(color);
+    }
+    public void setSeparateLineBackColor(int color) {
+        this.separateLine.setBackgroundColor(color);
+    }
 }
