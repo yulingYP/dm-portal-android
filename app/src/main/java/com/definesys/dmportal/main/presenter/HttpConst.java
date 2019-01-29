@@ -44,23 +44,26 @@ public interface HttpConst {
     //获取最近一次请假状态
     String getCurrentLeaveInfoById = "getCurrentLeaveInfoById";
 
-    //1.登陆
+    //登陆
      String userLogin = "userLogin";
 
     //退出
     String userLogout = "userLogout";
 
-    //2.注册
+    //注册
      String userInsert = "userRegister";
 
-    //3.获取验证码
+    //获取验证码
      String getEmailCode = "getEmailCode";
 
-    //4.获取消息列表
+     //修改密码
+     String changePassword = "changePassword";
+
+     //获取消息列表
      String getStaticMessage = "getStaticMessage";
 
 
-    //22.获取新闻
+    //获取新闻
      String getNews = "getNews";
 
     String uploadUserHeadPicture="uploadUserHeadPicture";

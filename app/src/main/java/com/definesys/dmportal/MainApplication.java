@@ -121,8 +121,10 @@ public class MainApplication extends Application {
 
                     BaseResponse resultBean = (new Gson()).fromJson(string, BaseResponse.class);
                     Log.d("mydemo",resultBean.toString());
-                    if(("600".equals(resultBean.getCode()))){
-                        showDialog();
+                    if("600".equals(resultBean.getCode())){
+                        showDialog(R.string.no_one_tip);
+                    }else if("601".equals(resultBean.getCode())) {
+                        showDialog(R.string.no_use_tip);
                     }
                     return response;
                 });
@@ -148,7 +150,7 @@ public class MainApplication extends Application {
 
     }
 
-    private synchronized void showDialog() {
+    private synchronized void showDialog(int msgId) {
         if(alert!=null&&alert.isShowing())
             return;
 //        SharedPreferencesUtil.getInstance().setToken("");
@@ -157,7 +159,7 @@ public class MainApplication extends Application {
 //        XGPushManager.unregisterPush(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MyActivityManager.getInstance().getCurrentActivity());
-        builder.setMessage(R.string.no_one_tip)
+        builder.setMessage(msgId)
                 .setCancelable(false)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

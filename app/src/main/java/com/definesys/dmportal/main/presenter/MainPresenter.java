@@ -19,7 +19,7 @@ public class MainPresenter extends BasePresenter {
     public static final String SUCCESSFUL_LOGIN_USER = "SUCCESSFUL_LOGIN_USER" ;
 
     //短信修改密码成功
-    public static final String SUCCESSFUL_CHANGE_PASSWORD_BY_CODE = "SUCCESSFUL_CHANGE_PASSWORD_BY_CODE";
+    public static final String SUCCESSFUL_CHANGE_PASSWORD = "SUCCESSFUL_CHANGE_PASSWORD";
 
     //获取用户信息成功
     public static final String SUCCESSFUL_GET_USER_INFO="SUCCESSFUL_GET_USER_INFO";

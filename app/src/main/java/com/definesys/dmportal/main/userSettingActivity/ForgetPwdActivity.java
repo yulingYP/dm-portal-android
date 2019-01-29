@@ -100,7 +100,7 @@ public class ForgetPwdActivity extends BaseActivity<ChangePswPresenter> {
         pwd.setInputPasswordWithLength(resources.getInteger(R.integer.max_psw_length));
         pwd2.setInputPasswordWithLength(resources.getInteger(R.integer.max_psw_length));
 
-        titleBar.setTitle(R.string.changepsw);
+        titleBar.setTitle(R.string.change_pwd);
         //titleBar.setBackground(null);
 
         if(type==2) {
@@ -171,7 +171,7 @@ public class ForgetPwdActivity extends BaseActivity<ChangePswPresenter> {
                         Toast.makeText(code.getContext(), R.string.msg_err_phone_2, Toast.LENGTH_SHORT).show();
                     } else {
                         progressHUD.show();
-                        mPersenter.changePswByCode(temp_phone, "", temp_pwd, temp_code);
+                        mPersenter.changePswByCode(null,temp_phone, "", temp_pwd, temp_code,1);
                     }
                 });
     }
@@ -192,12 +192,12 @@ public class ForgetPwdActivity extends BaseActivity<ChangePswPresenter> {
      修改密码成功
   */
     @Subscribe(tags = {
-            @Tag(MainPresenter.SUCCESSFUL_CHANGE_PASSWORD_BY_CODE)
+            @Tag(MainPresenter.SUCCESSFUL_CHANGE_PASSWORD)
     }, thread = EventThread.MAIN_THREAD
     )
     public void successfulChangePsw(String msg) {
         progressHUD.dismiss();
-        Toast.makeText(ForgetPwdActivity.this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ForgetPwdActivity.this, R.string.change_pwd_success, Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
         finish();
     }
