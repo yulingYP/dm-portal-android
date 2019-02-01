@@ -53,40 +53,57 @@ import io.reactivex.functions.Consumer;
 public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
+
     @BindView(R.id.pre_week)
     TextView tv_pre;
+
     @BindView(R.id.next_week)
     TextView tv_next;
+
     @BindView(R.id.cur_show)
     TextView tv_show;
+
     @BindView(R.id.hello_text)
     TextView tv_hello;
+
     @BindView(R.id.first_layout)
     LinearLayout lg_first;
+
     @BindView(R.id.second_layout)
     LinearLayout lg_second;
+
     @BindView(R.id.third_layout)
     LinearLayout lg_third;
+
     @BindView(R.id.fourth_layout)
     LinearLayout lg_fourth;
+
     @BindView(R.id.fifth_layout)
     LinearLayout lg_fifth;
+
     @BindView(R.id.sixth_layout)
     LinearLayout lg_sixth;
+
     @BindView(R.id.move_week_layout)
     LinearLayout lg_move;
+
     @BindView(R.id.current_show_layout)
     LinearLayout lg_current_week;
+
     @BindView(R.id.table_text)
     TextView tv_table;
     @BindView(R.id.score_text)
+
     TextView tv_score;
     @BindView(R.id.type_layout)
     LinearLayout lg_type;
-    @BindView(R.id.subject_table)
+
+   @BindView(R.id.subject_table)
     TableLayout tb_sub;
-    @BindView(R.id.subject_time_table)
+
+   @BindView(R.id.subject_time_table)
     TableLayout tb_time;
+
     @BindView(R.id.score_table)
     TableLayout tb_score;
 
