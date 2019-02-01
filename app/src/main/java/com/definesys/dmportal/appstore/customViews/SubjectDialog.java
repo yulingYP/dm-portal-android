@@ -66,7 +66,7 @@ public class SubjectDialog extends Dialog {
             ((TextView)view.findViewById(R.id.credit_text)).setText(mContext.getString(R.string.credit_tip,cursorArg.getCredit()));
             ((TextView)view.findViewById(R.id.cusor_hour_text)).setText(mContext.getString(R.string.cursor_hour_tip,2));
             ((TextView)view.findViewById(R.id.location_text)).setText(mContext.getString(R.string.location,checkString(DensityUtil.checkClassRoom(weekDay+1,cursorArg.getClassroom()))));
-            ((TextView)view.findViewById(R.id.week_text)).setText(mContext.getString(R.string.week_number_2,cursorArg.getStartWeek(),cursorArg.getEndWeek()));
+            ((TextView)view.findViewById(R.id.week_text)).setText(mContext.getString(R.string.week_number_2,cursorArg.getResultWeek()));
             ((TextView)view.findViewById(R.id.pitch_text)).setText(mContext.getString(R.string.pitch_number,mContext.getResources().getStringArray(R.array.week)[weekDay],pitch));
             ((TextView)view.findViewById(R.id.class_id_text)).setText(checkString(DensityUtil.getClassLisId(cursorArg)));
             lg_item.addView(view);

@@ -38,6 +38,7 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
@@ -72,8 +73,8 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     LinearLayout lg_sixth;
     @BindView(R.id.move_week_layout)
     LinearLayout lg_move;
-    @BindView(R.id.current_week_text)
-    TextView tv_current_week;
+//    @BindView(R.id.current_week_text)
+//    TextView tv_current_week;
     @BindView(R.id.current_show_layout)
     LinearLayout lg_current_week;
 
@@ -131,7 +132,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
 
     private void initTeacherView() {
         lg_move.setVisibility(View.GONE);
-        tv_current_week.setVisibility(View.GONE);
+//        tv_current_week.setVisibility(View.GONE);
     }
 
     private void initStudentView() {
@@ -181,7 +182,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                     initSelectWeek();
                 });
 
-        tv_current_week.setText(getString(R.string.current_week,0));
+//        tv_current_week.setText(getString(R.string.current_week,0));
         tv_show.setText(getString(R.string.current_show_week,0));
     }
 
@@ -210,7 +211,11 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                 public void onClick(int week) {
                     popupWindow.dismiss();
                     currentShowWeek = week;
-                    initTable();
+                    try {
+                        initTable();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             popupWindow.getContentView().measure(0,0);
@@ -269,17 +274,30 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
             subjectTable = data.getData();
             progressHUD.dismiss();
             initDate();
-            initTable();
+            try {
+                initTable();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void initTable() {
+    private void initTable() throws CloneNotSupportedException {
         tv_show.setText(getString(R.string.current_show_week,currentShowWeek));
         clearTable();
         if(subjectTable.getCursorArgList()==null||subjectTable.getCursorArgList().size()==0)
             return;
         else {
+
             List<CursorArg> list=subjectTable.getCursorArgList();
+            HashMap<Integer,List<CursorArg>> listMap=null;
+            if(userType==1){
+                listMap = new HashMap<>();
+                for(int i = 0;i<list.size();i++){
+                    list.get(i).setResultWeek(""+list.get(i).getStartWeek()+"-"+list.get(i).getEndWeek());
+                }
+            }
+
             for(int i = 0 ; i <list.size();i++){
                 if((currentShowWeek>=list.get(i).getStartWeek()&&currentShowWeek<=list.get(i).getEndWeek()&&list.get(i).getCursorName()!=null&&!"".equals(list.get(i).getCursorName()))||userType==1) {//当前周有课或者是老师
                     String weekDay = list.get(i).getWeekDay();//星期几上课
@@ -304,16 +322,34 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                                                     initStudentDialog(list.get(finalI), 6 - finalJ, 8 - finalK, textViewList.get(6 - finalJ + (7 - finalK) * 7));
                                                 });
                                     } else if (userType == 1) {//教师
-                                        String classId= DensityUtil.getClassLisId(list.get(i));//上课的班级id
                                         //第currentShowWeek周的星期7-j的第8-k节有i课
-                                        String tv_content = textViewList.get(6 - j + (7 - k) * 7).getText().toString() + "\n";
-                                        textViewList.get(6 - j + (7 - k) * 7).setText(tv_content + getString(R.string.teacher_cursor_table, list.get(i).getCursorName(), classId, list.get(i).getStartWeek(), list.get(i).getEndWeek()));
+                                        List<CursorArg> templist=listMap.get(6 - j + (7 - k) * 7);
+                                        String classId= DensityUtil.getClassLisId(list.get(i));//上课的班级id
+                                        if(templist==null){
+                                            templist = new ArrayList<>();
+                                            templist.add((CursorArg) list.get(i).clone());
+                                            listMap.put(6 - j + (7 - k) * 7,templist);
+                                            textViewList.get(6 - j + (7 - k) * 7).setText(getString(R.string.teacher_cursor_table, list.get(i).getCursorName(), classId, list.get(i).getResultWeek()));
+                                        }else {
+                                            templist = listMap.get(6 - j + (7 - k) * 7);
+                                            if(isHasThisId(list.get(i),templist)){//已有该课程
+                                                listMap.put(6 - j + (7 - k) * 7,setRestltStr(list.get(i),templist,textViewList.get(6 - j + (7 - k) * 7))) ;
+                                            }else {//没有该课程
+                                                templist.add((CursorArg)list.get(i).clone());
+                                                listMap.put(6 - j + (7 - k) * 7,templist);
+                                                String tv_content = textViewList.get(6 - j + (7 - k) * 7).getText().toString() + "\n";
+                                                textViewList.get(6 - j + (7 - k) * 7).setText(tv_content + getString(R.string.teacher_cursor_table, list.get(i).getCursorName(), classId, list.get(i).getResultWeek()));
+                                            }
+
+                                        }
+
                                         int finalJ = j;
                                         int finalK = k;
+                                        List<CursorArg> finalTemplist = templist;
                                         RxView.clicks(textViewList.get(6 - j + (7 - k) * 7))
                                                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                                                 .subscribe(obj -> {
-                                                    initTeacherDialog(getSubjectList(list, finalJ, finalK),6- finalJ,8- finalK,textViewList.get(6-finalJ+(7-finalK)*7));
+                                                    initTeacherDialog(finalTemplist,6- finalJ,8- finalK,textViewList.get(6-finalJ+(7-finalK)*7));
                                                 });
                                     }
                                 }
@@ -325,6 +361,65 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
         }
     }
 
+    /**
+     * 有同名课程时 获取同名课程的上课周数并重新设置显示数据
+     * @param cursorArg 代加入的同名课程
+     * @param templist 已加入的课程list
+     * @param textView 显示控件
+     * @return 返回结果list
+     */
+    private  List<CursorArg> setRestltStr(CursorArg cursorArg, List<CursorArg> templist, TextView textView) {
+        for(int i = 0;i<templist.size();i++){
+            if(cursorArg.getId().equals(templist.get(i).getId())){//已有相同安排课程id
+                if(cursorArg.getStartWeek()-templist.get(i).getEndWeek()==1){//相邻
+                    //替换以前的周数
+                    String result=templist.get(i).getResultWeek();
+                    templist.get(i).setResultWeek( result.replace("" + templist.get(i).getStartWeek() + "-" + templist.get(i).getEndWeek(), "" + templist.get(i).getStartWeek() + "-" + cursorArg.getEndWeek()));
+                    templist.get(i).setEndWeek(cursorArg.getEndWeek());
+                }else if(cursorArg.getStartWeek()-templist.get(i).getEndWeek()>1){//不相邻
+                    //在后面加入新周数
+                    String result=templist.get(i).getResultWeek()+","+cursorArg.getStartWeek()+"-"+cursorArg.getEndWeek();
+                    templist.get(i).setResultWeek(result);
+                    templist.get(i).setStartWeek(cursorArg.getStartWeek());
+                    templist.get(i).setEndWeek(cursorArg.getEndWeek());
+                }
+            }
+        }
+        if(textView!=null) {
+            textView.setText("");
+            for (int i = 0; i < templist.size(); i++) {
+                String classId = DensityUtil.getClassLisId(templist.get(i));//上课的班级id
+                String tv_content = textView.getText().toString() + "\n";
+                textView.setText(tv_content + getString(R.string.teacher_cursor_table, templist.get(i).getCursorName(), classId, templist.get(i).getResultWeek()));
+            }
+        }
+        return templist;
+
+    }
+
+    /**
+     * 是否已有该课程
+     * @param cursorArg 带加入的课程
+     * @param templist 已加入的课程列表
+     * @return
+     */
+    private boolean isHasThisId(CursorArg cursorArg, List<CursorArg> templist) {
+        if(cursorArg==null||templist==null)
+            return false;
+        for(int i = 0 ; i <templist.size();i++){
+            if(templist.get(i).getId().equals(cursorArg.getId()))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param subjectList
+     * @param week 星期week+1
+     * @param pitch 第pitch大节
+     * @param tv_temp
+     */
     private void initTeacherDialog(List<CursorArg> subjectList, int week, int pitch, TextView tv_temp) {
         if(subjectDialog==null) {
             subjectDialog = new SubjectDialog(this);
@@ -350,33 +445,6 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
         }
     }
 
-    /**
-     *
-     * @param list 所有课程列表
-     * @param weekDayPostion 星期 7-weekday
-     * @param pitchPosition 第8-pitch大节
-     * @return
-     */
-    private List<CursorArg> getSubjectList(List<CursorArg> list, int weekDayPostion, int pitchPosition) {
-        if(list==null)
-            return null;
-        List<CursorArg> cursorArgList = new ArrayList<>();
-        for(int i = 0 ; i <list.size();i++){
-            if(list.get(i).getWeekDay().charAt(weekDayPostion)=='1'){//这天有课
-                int position = list.get(i).getPitch().length();//这天这节课所在的字符串位置
-                for(int k = 6 ; k > weekDayPostion ; k--){
-                    if(list.get(i).getWeekDay().charAt(k)=='1'){
-                        position-=2;
-                    }
-                }
-                String thisPicth=DensityUtil.getPitchString(list.get(i).getPitch().charAt(position-2))+DensityUtil.getPitchString(list.get(i).getPitch().charAt(position-1));
-                if(thisPicth.charAt(pitchPosition)=='1'){//这天的第8-pitch大节有课
-                    cursorArgList.add(list.get(i));
-                }
-            }
-        }
-        return cursorArgList;
-    }
 
     private void initDate() {
         if(userType==0) {//学生
@@ -387,8 +455,6 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
             if (System.currentTimeMillis() <= subjectTable.getEndDate().getTime()) {//当前时间《=本学期结课时间
                 currentShowWeek = (int) Math.ceil((float) (System.currentTimeMillis() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay));
             }
-            //当前周数
-            tv_current_week.setText(getString(R.string.current_week, currentShowWeek));
             //本学期总周数
             subjectTable.setSumWeek((int) Math.ceil((float) (subjectTable.getEndDate().getTime() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay)));
             initSelectWeek();

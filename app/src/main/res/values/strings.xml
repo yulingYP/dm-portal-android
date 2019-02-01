@@ -85,7 +85,7 @@
     <string name="teacher_name">老师：%s</string>
     <string name="location">教室：%s</string>
     <string name="week_number">周数：第%d周</string>
-    <string name="week_number_2">周数：%d-%d周</string>
+    <string name="week_number_2">周数：%s周</string>
     <string name="pitch_number">节数：%s 第%d大节</string>
     <string name="unknow">未知</string>
     <string name="credit_tip">学分：%d</string>
@@ -190,7 +190,7 @@
     <string name="update_head_fail">头像上传失败</string>
     <string name="msg_success_upload_image">头像上传成功</string>
     <string name="scool_name">哈尔滨工业大学(威海)</string>
-    <string name="teacher_cursor_table">%s\n(%s)\n(%d-%d)周</string>
+    <string name="teacher_cursor_table">%s\n(%s)\n(%s)周</string>
     <string name="currentWeek">本周</string>
     <string name="class_des">班级：</string>
     <string name="email_model">您的验证码是%s，在5分钟内有效。如非本人操作请忽略本短信。</string>
@@ -214,4 +214,7 @@
     <string name="bind_phone">手机绑定</string>
     <string name="unbind_success">解绑成功</string>
     <string name="bind_success">绑定成功</string>
+    <string name="type_tip_sub">课表</string>
+    <string name="type_tip_score">成绩</string>
+    <string name="week_type">%d-%d</string>
 </resources>

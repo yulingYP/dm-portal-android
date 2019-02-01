@@ -233,27 +233,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         this.inputPwd.setText("123456");
         this.btn.callOnClick();
     }
-
+    //TODO 为方便调试设置的点击自动登录
     @OnLongClick(R.id.copyrt_att_log)
     public boolean onLongClick() {
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        if (vibrator != null) {
-            vibrator.vibrate(new long[]{0,30},-1);
-        }
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        EditText url = new EditText(LoginActivity.this);
-        layout.addView(url);
-        //MainApplication application = (MainApplication) getApplication();
-        url.setText(HttpConst.url);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("设置请求网址").setView(layout)
-                .setNegativeButton("少废话,直接进", (dialogInterface, i) -> ARouter.getInstance().build(ARouterConstants.MainActivity).navigation())
-                .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
-                    //application.setUrl(url.getText().toString());
-                }).show();
+        this.inputTel.setText("100000001");
+        this.inputPwd.setText("123456");
+        this.btn.callOnClick();
         return true;
-
     }
 
     @Override

@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by 羽翎 on 2018/8/31.
+ * Created by 羽翎 on 2018/11/24.
  */
 
 public class DensityUtil {
@@ -289,5 +289,29 @@ public class DensityUtil {
             else classId += classList.get(m);
         }
         return  classId;
+    }
+
+    /**
+     * 获取周数大小比较后的字符串
+     * @param endWeek 结束周
+     * @param startWeek 开始周
+     * @param sourceStr 已经存好的周数1-12或1-12,14-18
+     * @return sourceStr为1-12 待插入的字符串为13-18 则最终返回1-18 若带插入的字符串为14-18 则返回1-12,14-18
+     */
+    public static String getResultWeek(int endWeek,int startWeek,String sourceStr){
+        String[] arr1=sourceStr.split(",");
+
+        for(int i =0 ;i<arr1.length;i++ ){
+            String[] arr2=arr1[i].split("-");
+            int sorcueStart = Integer.valueOf(arr2[0]);
+            int sorcueEnd =Integer.valueOf(arr2[1]);
+            if(startWeek-sorcueEnd==1)//待填如周的开始与已填入周的结束相邻
+                arr1[i]=""+sorcueStart+"-"+endWeek;
+        }
+        for(int i =0 ;i<arr1.length;i++ ){
+            if(i==0)sourceStr=arr1[i];
+            else sourceStr+=","+arr1[i];
+        }
+        return sourceStr;
     }
 }

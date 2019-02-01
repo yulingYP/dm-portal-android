@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 授课列表
  */
-public class CursorArg  {
+public class CursorArg  implements Cloneable{
 
     private String id;//授课id
 
@@ -37,6 +37,8 @@ public class CursorArg  {
     private String cursorType;//课程类型
 
     private List<String> classId;//参加本节课的学生所在的班级
+
+    private String resultWeek;//某星期某几节课最终的开始周和结束周字符串 例 1-12或1-12,14-18
 
     public CursorArg() {
 
@@ -144,5 +146,18 @@ public class CursorArg  {
 
     public void setClassId(List<String> classId) {
         this.classId = classId;
+    }
+
+    public String getResultWeek() {
+        return resultWeek;
+    }
+
+    public void setResultWeek(String resultWeek) {
+        this.resultWeek = resultWeek;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
