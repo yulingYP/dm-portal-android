@@ -36,6 +36,8 @@ public class CursorArg  implements Cloneable{
 
     private String cursorType;//课程类型
 
+    private short score;//成绩
+
     private List<String> classId;//参加本节课的学生所在的班级
 
     private String resultWeek;//某星期某几节课最终的开始周和结束周字符串 例 1-12或1-12,14-18
@@ -154,6 +156,14 @@ public class CursorArg  implements Cloneable{
 
     public void setResultWeek(String resultWeek) {
         this.resultWeek = resultWeek;
+    }
+
+    public short getScore() {
+        return score;
+    }
+
+    public void setScore(short score) {
+        this.score = score;
     }
 
     @Override

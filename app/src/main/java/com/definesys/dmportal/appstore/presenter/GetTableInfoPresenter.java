@@ -8,6 +8,7 @@ import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.SubjectTableActivity;
+import com.definesys.dmportal.appstore.bean.CursorArg;
 import com.definesys.dmportal.appstore.bean.SubjectTable;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.main.presenter.HttpConst;
@@ -19,6 +20,7 @@ import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,7 +62,34 @@ public class GetTableInfoPresenter extends BasePresenter {
                     }
                 });
     }
+    public void getCursorScore (Number userId){
+        Map map = new HashMap();
+        map.put("stuId",userId);
+        Log.d("myMap",new Gson().toJson(map).toString());
+        ViseHttp.POST(HttpConst.listCursorScore)
+                .tag(HttpConst.getTable)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<CursorArg>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<CursorArg>> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_SCORE_INFO,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
 
+                        }
+
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+    }
     @Override
     public void unsubscribe() {
         ViseHttp.cancelTag(HttpConst.getTable);

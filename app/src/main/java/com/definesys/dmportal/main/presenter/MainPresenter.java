@@ -33,6 +33,9 @@ public class MainPresenter extends BasePresenter {
     //获取课表信息成功
     public static final String SUCCESSFUL_GET_TABLE_INFO="SUCCESSFUL_GET_TABLE_INFO";
 
+    //获取课程成绩成功
+    public static final String SUCCESSFUL_GET_SCORE_INFO="SUCCESSFUL_GET_SCORE_INFO";
+
     //获取提交请假请求
     public static final String SUCCESSFUL_GET_LEAVE_REQUEST="SUCCESSFUL_GET_LEAVE_REQUEST";
 

@@ -1,0 +1,36 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:id="@+id/cursor_name"
+        android:text="@string/first_lesson"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:id="@+id/score"
+        android:layout_weight="2"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="@string/first_lesson_time"
+        android:textColor="@color/black">
+
+    </TextView>
+</LinearLayout>

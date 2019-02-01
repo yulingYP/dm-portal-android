@@ -13,6 +13,9 @@ public interface HttpConst {
     //获取课表
     String getTable = "listCurArg";
 
+    //获取成绩
+    String listCursorScore = "listCursorScore";
+
     //提交请假请求
     String submitLeaveRequest = "submitLeaveRequest";
 

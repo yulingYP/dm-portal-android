@@ -48,6 +48,7 @@
     <string name="history_search">搜索历史</string>
     <string name="table_hello_tip">你好 %s %s,以下是您的课表,点击课程可以获取课程详细信息</string>
     <string name="table_hello_tip_2">以下是 %d 的课表,点击课程可以获取课程详细信息</string>
+    <string name="table_hello_tip_3">以下是 %d 的已修课程的成绩</string>
     <string name="help_tip">请点击要请假的课程,只能选择本周与下周的课程,最多可选择6节课</string>
     <string name="lesson">节次</string>
     <string name="Monday">周一</string>
@@ -217,4 +218,6 @@
     <string name="type_tip_sub">课表</string>
     <string name="type_tip_score">成绩</string>
     <string name="week_type">%d-%d</string>
+    <string name="cursor_name_2">课程名</string>
+    <string name="no_cursor_score">暂无课程成绩</string>
 </resources>

@@ -6,11 +6,13 @@ import android.os.Handler;
 import android.support.v4.widget.PopupWindowCompat;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,10 +75,20 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     LinearLayout lg_sixth;
     @BindView(R.id.move_week_layout)
     LinearLayout lg_move;
-//    @BindView(R.id.current_week_text)
-//    TextView tv_current_week;
     @BindView(R.id.current_show_layout)
     LinearLayout lg_current_week;
+    @BindView(R.id.table_text)
+    TextView tv_table;
+    @BindView(R.id.score_text)
+    TextView tv_score;
+    @BindView(R.id.type_layout)
+    LinearLayout lg_type;
+    @BindView(R.id.subject_table)
+    TableLayout tb_sub;
+    @BindView(R.id.subject_time_table)
+    TableLayout tb_time;
+    @BindView(R.id.score_table)
+    TableLayout tb_score;
 
     private List<TextView> textViewList;//周一到周日每节课的textView
     private SubjectTable subjectTable;//课表信息
@@ -106,7 +118,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     }
 
     private void initView() {
-        titleBar.setTitle(getString(R.string.subject_table));
+        titleBar.setTitle(R.string.subject_table);
         titleBar.setBackgroundDividerEnabled(false);
         //titleBar.setBackground(null);
         tv_hello.setText(setHello());
@@ -127,11 +139,12 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
 //        }
         if(userType==0) initStudentView();
         else if(userType==1) initTeacherView();
-        httpPost();//网络请求
+        httpPost(false);//网络请求
     }
 
     private void initTeacherView() {
         lg_move.setVisibility(View.GONE);
+        lg_type.setVisibility(View.GONE);
 //        tv_current_week.setVisibility(View.GONE);
     }
 
@@ -145,12 +158,12 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                     public void accept(Object o) throws Exception {
                         onClickWeek(tv_pre);
                         if(subjectTable==null) {
-                            httpPost();
+                            httpPost(false);
                             return;
                         }
                         if(currentShowWeek>1) {
                             --currentShowWeek;
-                            initTable();
+                            initSubTable();
                         }
                         else
                             Toast.makeText(SubjectTableActivity.this, R.string.alread_first_week,Toast.LENGTH_SHORT).show();
@@ -164,12 +177,12 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                     public void accept(Object o) throws Exception {
                         onClickWeek(tv_next);
                         if(subjectTable==null) {
-                            httpPost();
+                            httpPost(false);
                             return;
                         }
                         if(currentShowWeek<subjectTable.getSumWeek()) {
                             ++currentShowWeek;
-                            initTable();
+                            initSubTable();
                         }
                         else
                             Toast.makeText(SubjectTableActivity.this, R.string.already_last_week,Toast.LENGTH_SHORT).show();
@@ -179,11 +192,44 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
         RxView.clicks(lg_current_week)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
-                    initSelectWeek();
+                    initSelectWeek(true);
                 });
 
-//        tv_current_week.setText(getString(R.string.current_week,0));
+        //点击课表
+        RxView.clicks(tv_table)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    initSelect(true);
+                });
+        //点击成绩
+        RxView.clicks(tv_score)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    initSelect(false);
+                });
+
         tv_show.setText(getString(R.string.current_show_week,0));
+        initSelect(true);
+    }
+
+    /**
+     * 设置选项颜色
+     * @param isTable 点击的是不是课表
+     */
+    private void initSelect(boolean isTable) {
+        if(isTable&&tv_table.getCurrentTextColor()==getResources().getColor(R.color.text_noable)){//课表
+            tv_table.setTextColor(getResources().getColor(R.color.buttonBlue));
+            tv_table.setBackground(getResources().getDrawable(R.drawable.subtype_selected));
+            tv_score.setTextColor(getResources().getColor(R.color.text_noable));
+            tv_score.setBackground(getResources().getDrawable(R.drawable.subtype_noselected));
+            httpPost(false);
+        }else if(tv_table.getCurrentTextColor()==getResources().getColor(R.color.buttonBlue)&&!isTable){//成绩
+            tv_score.setTextColor(getResources().getColor(R.color.buttonBlue));
+            tv_score.setBackground(getResources().getDrawable(R.drawable.subtype_selected));
+            tv_table.setTextColor(getResources().getColor(R.color.text_noable));
+            tv_table.setBackground(getResources().getDrawable(R.drawable.subtype_noselected));
+            httpPost(true);
+        }
     }
 
     private String setHello() {
@@ -194,10 +240,11 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
 
     /**
      * 手动选择第几周
+     * isShow 是否显示
      */
-    private void initSelectWeek() {
+    private void initSelectWeek(boolean isShow) {
         if(subjectTable==null){
-            httpPost();
+            httpPost(false);
             return;
         }
         if(popupWindow==null) {
@@ -212,7 +259,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                     popupWindow.dismiss();
                     currentShowWeek = week;
                     try {
-                        initTable();
+                        initSubTable();
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                     }
@@ -220,10 +267,12 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
             });
             popupWindow.getContentView().measure(0,0);
         }else {
-            int offsetX = lg_current_week.getWidth() - popupWindow.getContentView().getMeasuredWidth();
-            int offsetY = 0;
-            selectWeekView.setCurrentWeek(currentShowWeek);
-            PopupWindowCompat.showAsDropDown(popupWindow, lg_current_week, offsetX, offsetY, Gravity.START);
+            if(isShow) {
+                int offsetX = lg_current_week.getWidth() - popupWindow.getContentView().getMeasuredWidth();
+                int offsetY = 0;
+                selectWeekView.setCurrentWeek(currentShowWeek);
+                PopupWindowCompat.showAsDropDown(popupWindow, lg_current_week, offsetX, offsetY, Gravity.START);
+            }
 
         }
 
@@ -249,7 +298,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     }
 
     /**
-     * 获取课表信息失败
+     * 获取课表信息或成绩失败
      * @param msg
      */
     @Subscribe(tags = {
@@ -261,6 +310,21 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
             progressHUD.dismiss();
         }
     }
+    /**
+     * 获取成绩成功
+     * @param data
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_SCORE_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getScoreInfo(BaseResponse<List<CursorArg>> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            setLayoutVisable(false);
+            progressHUD.dismiss();
+            initScoreTable(data.getData());
+        }
+    }
+
 
     /**
      * 获取课表信息成功
@@ -271,18 +335,48 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void getTableInfo(BaseResponse<SubjectTable> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            setLayoutVisable(true);
             subjectTable = data.getData();
             progressHUD.dismiss();
             initDate();
             try {
-                initTable();
+                initSubTable();
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
         }
     }
+    /**
+     * 课程成绩表格
+     * @param list 成绩信息
+     */
+    private void initScoreTable(List<CursorArg> list) {
+        tb_score.removeAllViews();
+        View topView = LayoutInflater.from(this).inflate(R.layout.item_cursor_score_top,null);
+        tb_score.addView(topView);
+        if(list==null||list.size()==0){
+            TextView textView = new TextView(this);
+            textView.setGravity(Gravity.CENTER);
+            textView.setText(R.string.no_cursor_score);
+            textView.setPadding(0,DensityUtil.dip2px(this,8),0,DensityUtil.dip2px(this,8));
+            tb_score.addView(textView);
+            return;
+        }
 
-    private void initTable() throws CloneNotSupportedException {
+        for(int i = 0;i<list.size();i++){
+            View view = LayoutInflater.from(this).inflate(R.layout.item_cursor_socre,null);
+            ((TextView)view.findViewById(R.id.cursor_name)).setText(getString(R.string.cursor_name,list.get(i).getCursorName(),list.get(i).getCursorType()));
+            ((TextView)view.findViewById(R.id.score)).setText(""+list.get(i).getScore());
+            tb_score.addView(view);
+        }
+
+    }
+
+    /**
+     * 课表
+     * @throws CloneNotSupportedException
+     */
+    private void initSubTable() throws CloneNotSupportedException {
         tv_show.setText(getString(R.string.current_show_week,currentShowWeek));
         clearTable();
         if(subjectTable.getCursorArgList()==null||subjectTable.getCursorArgList().size()==0)
@@ -457,7 +551,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
             }
             //本学期总周数
             subjectTable.setSumWeek((int) Math.ceil((float) (subjectTable.getEndDate().getTime() - subjectTable.getStartDate().getTime()) / (7 * Constants.oneDay)));
-            initSelectWeek();
+            initSelectWeek(false);
             initStudentDialog(null,0,0,null);//初始化课程详情对话框
         }else  if(userType==1){//教师
             initTeacherDialog(null,0,0,null);
@@ -466,9 +560,14 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     }
 
     //网络请求
-    private void httpPost() {
+    private void httpPost(boolean isScore) {
         progressHUD.show();
-        mPersenter.getTableInfo(checkId,userType,SharedPreferencesUtil.getInstance().getFaculty());
+        if(isScore){
+            mPersenter.getCursorScore(checkId);
+        }else {
+            mPersenter.getTableInfo(checkId,userType,SharedPreferencesUtil.getInstance().getFaculty());
+        }
+
     }
 
 
@@ -544,5 +643,28 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     public  GetTableInfoPresenter getPersenter() {
 
         return new GetTableInfoPresenter(this);
+    }
+
+    /**
+     * 设置可见表格
+     * @param isSub 是不是课表
+     */
+
+    public void setLayoutVisable(boolean isSub) {
+        if(isSub) {//课表
+            tb_time.setVisibility(View.VISIBLE);
+            tb_sub.setVisibility(View.VISIBLE);
+            lg_move.setVisibility(View.VISIBLE);
+            tb_score.setVisibility(View.GONE);
+            tv_hello.setText(setHello());
+            titleBar.setTitle(R.string.subject_table);
+        }else {//成绩
+            tb_time.setVisibility(View.GONE);
+            tb_sub.setVisibility(View.GONE);
+            lg_move.setVisibility(View.GONE);
+            tb_score.setVisibility(View.VISIBLE);
+            tv_hello.setText(getString(R.string.table_hello_tip_3,checkId));
+            titleBar.setTitle(R.string.type_tip_score);
+        }
     }
 }
