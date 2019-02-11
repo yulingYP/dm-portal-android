@@ -159,7 +159,7 @@
     <string name="subject_show_tip">点击查看他的课表及课程成绩</string>
     <string name="leaver_name">请假人姓名:%s</string>
     <string name="green_agree"><![CDATA[<font color=\'#7cb342\'>同意</font>]]></string>
-    <string name="red_refuse"><![CDATA[<font color=\'#ffff4444\'>不同意</font>]]></string>
+    <string name="red_refuse"><![CDATA[<font color=\'#ff4444\'>不同意</font>]]></string>
     <string name="click_close">点击关闭(%ds)</string>
     <string name="login">登陆</string>
     <string name="forget_password">忘记密码?</string>

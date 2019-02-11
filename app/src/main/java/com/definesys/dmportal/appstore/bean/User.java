@@ -3,6 +3,7 @@ package com.definesys.dmportal.appstore.bean;
 import java.util.Date;
 
 public class User{
+    //《-----用户----》
     private int userId;//用户id
 
     private String password;//密码

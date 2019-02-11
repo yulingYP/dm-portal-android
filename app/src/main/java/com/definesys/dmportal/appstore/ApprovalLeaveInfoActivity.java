@@ -343,7 +343,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 .subscribe(obj->{
                     ApprovalRecord approvalRecord = new ApprovalRecord(submitLeaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),
                             finalContent,(short)(isAgree?1:0),null,
-                            (short)SharedPreferencesUtil.getInstance().getUserAuthority());
+                            SharedPreferencesUtil.getInstance().getUserAuthority());
                     mPersenter.updateApprovalStatusById(approvalRecord);
                     progressHUD.show();
                     dialog.dismiss();

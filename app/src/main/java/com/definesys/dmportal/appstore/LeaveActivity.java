@@ -162,7 +162,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_off);
         ButterKnife.bind(this);
-        buttonBeyondKeyboardLayout(lg_reason,ed_reason);
+
         df = new SimpleDateFormat(getString(R.string.date_type));
         initView();
         initEdit();//编辑框
@@ -170,6 +170,9 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         initTypeDialog();//初始化请假类型提示框
         initDateDialog(false);//初始化日期选择提示框
         setLatoutVisibility();//根据请假类型设定显示的内容
+
+        //防遮挡
+        buttonBeyondKeyboardLayout(lg_reason,lg_reason);
         isScroll=true;
     }
 
@@ -368,11 +371,11 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                         Toast.makeText(LeaveActivity.this, R.string.time_fail_tip, Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(selectTypePosition==1&&(endDate.getTime()-startDate.getTime())/Constants.oneDay>7){//短假不在1-7天以内
+                    if(selectTypePosition==1&&(endDate.getTime()-startDate.getTime())/(float)Constants.oneDay>7){//短假不在1-7天以内
                         Toast.makeText(LeaveActivity.this, R.string.time_fail_tip_2, Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(selectTypePosition==2&&(endDate.getTime()-startDate.getTime())/Constants.oneDay<=7){
+                    if(selectTypePosition==2&&(endDate.getTime()-startDate.getTime())/(float)Constants.oneDay<=7){
                         Toast.makeText(LeaveActivity.this, R.string.data_fail, Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -756,7 +759,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                     public void onGlobalLayout() {
                         if (isScroll) {
                             if (ed_reason.isCursorVisible() && isVisible) {
-                                sc_scoll.scrollTo(0, (int) lg_reason.getY());
+                                sc_scoll.scrollTo(0, (int) button.getY());
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {

@@ -35,6 +35,10 @@
         <item>寝室长</item>
         <item>班长</item>
         <item>班主任</item>
+        <item>毕设导师</item>
         <item>辅导员</item>
+        <item>教学工作领导</item>
+        <item>教学工作院长</item>
+        <item>未知</item>
     </string-array>
 </resources>

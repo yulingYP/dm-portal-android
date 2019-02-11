@@ -192,7 +192,7 @@ public class ReasonTypeListLayout extends LinearLayout {
         @Override
         public void onBindViewHolder(@NonNull CheckApprovalAdapter.ViewHolder holder, int position) {
             //审批人 班长 寝室长 班主任 辅导员..
-            holder.tv_name.setText(mContext.getString(R.string.approver_text,mContext.getResources().getStringArray(R.array.approverType)[approvalRecordList.get(position).getApproverType()]));
+            holder.tv_name.setText(mContext.getString(R.string.approver_text,mContext.getResources().getStringArray(R.array.approverType)[setPosition(approvalRecordList.get(position).getApproverType())]));
 
             //审批意见
             holder.tv_content.setText(mContext.getString(R.string.approval_content_text,approvalRecordList.get(position).getApprovalContent()));
@@ -232,6 +232,20 @@ public class ReasonTypeListLayout extends LinearLayout {
             }
         }
     }
+
+    private int setPosition(int approverType) {
+        int max= 0;
+        while (approverType%10>=0&&approverType>0){
+            System.out.println(""+approverType%10);
+            if(max<approverType%10)
+                max=approverType%10;
+            approverType/=10;
+        }
+        if(max>6)
+            max=7;
+        return max;
+    }
+
     //请假原因数据
     public void setReasonlist(String[] reasonlist) {
         tv_confirm.setVisibility(GONE);

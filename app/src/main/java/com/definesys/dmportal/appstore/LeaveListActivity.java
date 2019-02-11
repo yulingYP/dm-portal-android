@@ -39,6 +39,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -112,6 +113,8 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 requestPage = 1;
                 if(submitLeaveInfoList!=null&&submitLeaveInfoList.size()>0) {
                     submitLeaveInfoList.clear();
+                    if(leaveInfoListAdapter!=null)
+                        leaveInfoListAdapter.notifyDataSetChanged();
                 }else if(approvalRecordList!=null&&approvalRecordList.size()>0){
                     submitLeaveInfoList.clear();
                     leaveInfoListAdapter.notifyDataSetChanged();
@@ -154,11 +157,11 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             setNoLayout(2);
             return;
         }
-        if(type==0)
+        if(type==0)//历史请假记录
             mPersenter.getLeaveInfoList(userId,requestPage);
-        else if(type==1)
+        else if(type==1)//待审批记录
             mPersenter.getApprovalList(userId,requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(),SharedPreferencesUtil.getInstance().getUserType());
-        else if(type==2)
+        else if(type==2)//历史审批记录
             mPersenter.getApprovalHistoryList(userId,requestPage);
     }
 
@@ -198,11 +201,13 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
                 --requestPage;
-                return;
             }
             else {//有数据
                 int currentSize = submitLeaveInfoList.size();
-                submitLeaveInfoList.addAll(data.getData());
+                List<LeaveInfo> leaveInfos = data.getData();
+                //排序
+                Collections.sort(leaveInfos);
+                submitLeaveInfoList.addAll(leaveInfos);
                 setNoLayout(0);
                 if(leaveInfoListAdapter==null)
                     initList();

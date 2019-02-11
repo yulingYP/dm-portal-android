@@ -18,8 +18,8 @@ public class ApprovalRecord {
 
     private Date approvalTime;//审批时间
 
-    private Short approverType;//审批人类型
-    //0.寝室长 1.班长 2.班主任 3.辅导员
+    private int approverType;//审批人类型
+    //0.寝室长 1.班长 2.班主任 3.毕设导师 4.辅导员 5.教学工作领导 6.教学工作院长
 
     private String leaverName;//请假人姓名
 
@@ -27,7 +27,7 @@ public class ApprovalRecord {
 
     }
 
-    public ApprovalRecord(String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, Short approverType) {
+    public ApprovalRecord(String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType) {
         this.leaveInfoId = leaveInfoId;
         this.approverId = approverId;
         this.approvalContent = approvalContent;
@@ -76,11 +76,11 @@ public class ApprovalRecord {
         this.approvalTime = approvalTime;
     }
 
-    public Short getApproverType() {
+    public int getApproverType() {
         return approverType;
     }
 
-    public void setApproverType(Short approverType) {
+    public void setApproverType(int approverType) {
         this.approverType = approverType;
     }
 

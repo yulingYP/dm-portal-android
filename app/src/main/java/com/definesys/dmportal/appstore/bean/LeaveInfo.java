@@ -1,12 +1,14 @@
 package com.definesys.dmportal.appstore.bean;
 
+import android.support.annotation.NonNull;
+
 import java.util.Date;
 
 /**
  * Created by 羽翎 on 2019/1/10.
  */
 
-public class LeaveInfo {
+public class LeaveInfo implements Comparable<LeaveInfo>{
     public String id;//请假编号
     public Number userId;//用户id
     public String userName;//姓名
@@ -176,5 +178,11 @@ public class LeaveInfo {
 
     public void setUserType(int userType) {
         this.userType = userType;
+    }
+
+
+    @Override
+    public int compareTo(@NonNull LeaveInfo o) {
+        return o.getId().compareTo(this.getId());
     }
 }

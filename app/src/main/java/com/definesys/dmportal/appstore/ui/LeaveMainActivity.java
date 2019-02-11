@@ -113,7 +113,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .withInt("type", 1)//列表类型
                                 .withString("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity)//点击列表跳转的页面
                                 .navigation());
-        //审批处理
+        //审批记录
         RxView.clicks(lg_approvalHistory)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj ->
@@ -133,6 +133,13 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .withObject("leaveInfo",null)
                                 .withInt("title",1)
                                 .navigation());
+        if(SharedPreferencesUtil.getInstance().getUserAuthority()<0){
+            lg_approval.setVisibility(View.GONE);
+            lg_approvalHistory.setVisibility(View.GONE);
+        }else {
+            lg_approval.setVisibility(View.VISIBLE);
+            lg_approvalHistory.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
