@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@color/back_gray"
+    android:fitsSystemWindows="true"
+    >
+    <LinearLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:background="@color/customer_title"
+        android:orientation="horizontal">
+        <com.definesys.dmportal.appstore.customViews.SearchBox
+            android:id="@+id/search_box"
+            android:background="@null"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+        </com.definesys.dmportal.appstore.customViews.SearchBox>
+        <TextView
+            android:id="@+id/cancel_text"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
+            android:text="@string/cancel" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/black"
+                android:text="@string/type_search"
+                android:paddingStart="12dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@color/white"
+                android:layout_marginBottom="2px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <com.definesys.dmportal.appstore.customViews.FlowLayout
+                android:id="@+id/type_view"
+                android:background="@color/white"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_height="wrap_content">
+            </com.definesys.dmportal.appstore.customViews.FlowLayout>
+            <LinearLayout
+                android:id="@+id/history_layout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/black"
+                    android:text="@string/search_history"
+                    android:paddingStart="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:background="@color/white"
+                    android:layout_marginBottom="2px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <com.definesys.dmportal.appstore.customViews.FlowLayout
+                    android:id="@+id/history_view"
+                    android:layout_marginBottom="2px"
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:overScrollMode="never"
+                    android:paddingBottom="8dp"
+                    android:layout_height="wrap_content">
+
+                </com.definesys.dmportal.appstore.customViews.FlowLayout>
+                <TextView
+                    android:id="@+id/delete_text"
+                    android:text="@string/delete_history"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
+

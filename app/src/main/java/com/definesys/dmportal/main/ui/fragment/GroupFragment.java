@@ -120,7 +120,7 @@ public class GroupFragment extends Fragment {
             typeList.add("动漫");
             typeList.add("实验室");
             StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-            typeListAdapter = new TypeListAdapter(typeList);
+            typeListAdapter = new TypeListAdapter(typeList,R.layout.item_type_list);
             tyepListView.setLayoutManager(staggeredGridLayoutManager);
             tyepListView.setAdapter(typeListAdapter);
             ((SimpleItemAnimator) tyepListView.getItemAnimator()).setSupportsChangeAnimations(false);

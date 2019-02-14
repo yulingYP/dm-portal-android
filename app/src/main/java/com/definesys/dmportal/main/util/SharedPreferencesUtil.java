@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.definesys.dmportal.appstore.bean.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.isFirstOpen;
@@ -11,6 +15,8 @@ import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spC
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFaculty;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFacultyName;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFileName;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spLeaveSearchHistory0;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spSearchHistory;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spToken;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserAuthority;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserId;
@@ -76,6 +82,21 @@ public class SharedPreferencesUtil {
 
     public String getUserSex() {
         return sp.getString(spUserSex, "");
+    }
+
+    public List<String> getHistortyData(int type){
+        List<String> datalist;
+        String Json = sp.getString(spSearchHistory+type+getUserId(), null);
+        if (null == Json) {
+            return null;
+        }
+
+        Gson gson = new Gson();
+        datalist = gson.fromJson(Json, new TypeToken<List<String>>() {
+
+        }.getType());
+
+        return datalist;
     }
 
     public String getToken() {   return sp.getString(spToken,"");}
@@ -175,6 +196,25 @@ public class SharedPreferencesUtil {
         SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserId, userId.intValue());
         editor.apply();
         return editor;
+    }
+
+    /**
+     * 保存List和当前歌曲号
+     *
+     * @param datalist
+     */
+    public SharedPreferences.Editor setHistoryData(int type, List<String> datalist) {
+        if (!(null == datalist || datalist.size() <= 0)) {
+            Gson gson = new Gson();
+            String Json = gson.toJson(datalist);
+            SharedPreferences.Editor editor = getSpWithEdit().putString(spSearchHistory + type + getUserId(), Json);
+            editor.apply();
+            return editor;
+        }else {
+            SharedPreferences.Editor editor = getSpWithEdit().putString(spSearchHistory + type + getUserId(), null);
+            editor.apply();
+            return editor;
+        }
     }
 
 }

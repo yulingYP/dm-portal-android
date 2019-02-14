@@ -243,10 +243,11 @@ public class DensityUtil {
         else if(leaveInfo.getApprovalStatus()==12&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)>=1)//已销假通过且时间超过一天
             return isMain?context.getString(R.string.status_tip_6):context.getString(R.string.status_tip_5);
         if(date!=null) {//长短假
-            if (leaveInfo.getApprovalStatus() == 10 && date.getTime() - System.currentTimeMillis() >= 0)//已批准假期且未到请假结束日期
-                return context.getString(R.string.status_tip_2);
-            else if (leaveInfo.getApprovalStatus() == 10 && date.getTime() - System.currentTimeMillis() < 0)//已批准假期且已到请假结束日期
+            if (leaveInfo.getApprovalStatus() == 10 && date.getTime() - System.currentTimeMillis() < 0&&leaveInfo.getType()==2)//长假 已批准假期且已到请假结束日期
                 return context.getString(R.string.status_tip_4);
+            else if (leaveInfo.getApprovalStatus() == 10)//长假除外 已批准
+                return context.getString(R.string.status_tip_2);
+
         }
         return context.getString(R.string.status_tip_7);
     }

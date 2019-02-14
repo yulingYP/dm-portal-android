@@ -77,7 +77,7 @@ public class GroupSearchActivity extends AppCompatActivity {
         typeList.add("动漫");
         typeList.add("实验室");
         GridLayoutManager staggeredGridLayoutManager = new GridLayoutManager(this,4);
-        typeListAdapter = new TypeListAdapter(typeList);
+        typeListAdapter = new TypeListAdapter(typeList,R.layout.item_type_list);
         tyepListView.setLayoutManager(staggeredGridLayoutManager);
         tyepListView.setAdapter(typeListAdapter);
         ((SimpleItemAnimator) tyepListView.getItemAnimator()).setSupportsChangeAnimations(false);

@@ -37,4 +37,16 @@ public interface SharedPreferencesParams {
 
     //sp文件中班级id
     String spClass = "u_class";
+
+    //sp文件中各类历史的tag 格式 xxx,xxx,xxx
+    String spSearchHistory = "u_history";
+
+    //sp文件中请假的历史记录 格式 xxx,xxx,xxx
+    String spLeaveSearchHistory0 = "u_history0";
+
+    //sp文件中待审批记录 格式 xxx,xxx,xxx
+    String spLeaveSearchHistory1 = "u_history1";
+
+    //sp文件中审批的历史记录 格式 xxx,xxx,xxx
+    String spLeaveSearchHistory2 = "u_history2";
 }

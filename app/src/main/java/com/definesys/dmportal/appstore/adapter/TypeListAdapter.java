@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.main.interfaces.OnItemClickListener;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.List;
@@ -32,17 +33,18 @@ import static com.vise.xsnow.http.ViseHttp.getContext;
 //社团类型
 public class TypeListAdapter extends RecyclerView.Adapter<TypeListAdapter.ViewHolder> {
     private List<String> typeList;
-    private int oldPosition;
+    private OnItemClickListener onItemClickListener;
+    private int layoutId;
 
-    public TypeListAdapter(List<String> typeList) {
+    public TypeListAdapter(List<String> typeList,int layoutId) {
         this.typeList = typeList;
-        oldPosition=0;
+        this.layoutId =layoutId;
     }
 
     @NonNull
     @Override
     public TypeListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =LayoutInflater.from(parent.getContext()).inflate(R.layout.item_type_list,parent,false);
+        View view =LayoutInflater.from(parent.getContext()).inflate(layoutId,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -50,31 +52,33 @@ public class TypeListAdapter extends RecyclerView.Adapter<TypeListAdapter.ViewHo
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull TypeListAdapter.ViewHolder holder, int position) {
-        if(position==oldPosition){
-            holder.typeText.setTextColor(Color.WHITE);
-            holder.typeText.setBackgroundResource(R.drawable.type_text_is_select);
-        }else {
-            holder.typeText.setTextColor(R.color.color_deep_gray);
-            holder.typeText.setBackgroundResource(R.drawable.type_text_no_select);
-        }
+//        if(position==oldPosition){
+//            holder.typeText.setTextColor(Color.WHITE);
+//            holder.typeText.setBackgroundResource(R.drawable.type_text_is_select);
+//        }else {
+//            holder.typeText.setTextColor(R.color.color_deep_gray);
+//            holder.typeText.setBackgroundResource(R.drawable.type_text_no_select);
+//        }
         holder.typeText.setText(typeList.get(position));
         RxView.clicks( holder.typeText)
                 .throttleFirst(Constants.clickdelay , TimeUnit.MILLISECONDS)   //两秒钟之内只取一个点击事件，防抖操作
                 .subscribe(obj ->{
-                    if(oldPosition!=-1){
-                        notifyItemChanged(oldPosition);
-                    }
-                    holder.typeText.setTextColor(Color.WHITE);
-                    holder.typeText.setBackgroundResource(R.drawable.type_text_is_select);
-                    oldPosition=position;
+//                    if(oldPosition!=-1){
+//                        notifyItemChanged(oldPosition);
+//                    }
+//                    holder.typeText.setTextColor(Color.WHITE);
+//                    holder.typeText.setBackgroundResource(R.drawable.type_text_is_select);
+//                    oldPosition=position;
                     // SmecRxBus.get().post(getContext().getString(R.string.rxbus_tag_type),holder.typeText.getText().toString());
-                    Toast.makeText(getContext(),typeList.get(position),Toast.LENGTH_SHORT).show();
+                    if(onItemClickListener!=null)
+                        onItemClickListener.onClick(position);
+
                 });
     }
 
     @Override
     public int getItemCount() {
-        return typeList.size();
+        return typeList==null?0:typeList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,8 +90,10 @@ public class TypeListAdapter extends RecyclerView.Adapter<TypeListAdapter.ViewHo
         }
     }
 
-    public int getPosition(){
-        return oldPosition;
+
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }
 

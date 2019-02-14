@@ -25,7 +25,7 @@
                 android:layout_width="200dp"
                 android:layout_height="30dp">
                 <ImageView
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:src="@drawable/search_icon"
                     android:layout_width="20dp"
                     android:layout_gravity="center_vertical"
@@ -37,7 +37,7 @@
                 android:src="@drawable/list_icon"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
-                android:layout_marginRight="12dp"
+                android:layout_marginEnd="12dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_height="wrap_content" />

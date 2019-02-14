@@ -51,6 +51,9 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
 
+    @BindView(R.id.search_icon)
+    ImageView iv_search;//搜索图标
+
     @BindView(R.id.no_layout)
     LinearLayout lg_no;//暂无记录或网络
 
@@ -74,7 +77,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     int userId;//要查询的id
 
     @Autowired(name = "type")
-    int type;//页面类型 0.历史请假记录 1.待处理的审批记录 2.审批记录
+    int type;//页面类型 0.历史请假记录 1.待处理的审批记录 2.历史审批记录
 
     @Autowired(name = "ARouterPath")
     String ARouterPath;
@@ -130,6 +133,14 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 httpPost();
             }
         });
+        RxView.clicks(iv_search)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(o -> {
+                   ARouter.getInstance()
+                           .build(ARouterConstants.LeaveListSearchActivity)
+                           .withInt("type",type)
+                           .navigation();
+                });
         //隐藏暂无页面
         lg_no.setVisibility(View.GONE);
         smartRefreshLayout.autoRefresh();
@@ -140,12 +151,18 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
      * @return
      */
     private int setMyTitle() {
-        if(type==0)
+        if(type==0) {
+            iv_search.setVisibility(View.VISIBLE);
             return R.string.leave_history;
-        else if(type == 1)
+        }
+        else if(type == 1) {
+            iv_search.setVisibility(View.VISIBLE);
             return R.string.approval_processing;
-        else if(type==2)
+        }
+        else if(type==2) {
+            iv_search.setVisibility(View.VISIBLE);
             return R.string.approval_record;
+        }
         return R.string.leave_history;
     }
 

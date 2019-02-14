@@ -172,7 +172,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         /*
         ”发送验证码“按钮的点击事件
          */
-        RxView.clicks(inputPwd.getSendVerifyCodeButton()).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+        RxView.clicks(inputPwd.getSendVerifyCodeButton())
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     if (imm != null)

@@ -74,8 +74,10 @@
         <activity android:name=".appstore.ApprovalLeaveInfoActivity" />
         <activity android:name=".main.ui.LoginActivity" />
         <activity android:name=".main.userSettingActivity.ForgetPwdActivity" />
-        <activity android:name=".main.userSettingActivity.ChangePwdActivity"></activity>
-        <activity android:name=".main.userSettingActivity.PhoneBindActivity"></activity>
+        <activity android:name=".main.userSettingActivity.ChangePwdActivity" />
+        <activity android:name=".main.userSettingActivity.PhoneBindActivity" />
+        <activity android:name=".appstore.LeaveListSearchActivity" />
+        <activity android:name=".appstore.LeaveSearchResultActivity"></activity>
     </application>
 
 </manifest>

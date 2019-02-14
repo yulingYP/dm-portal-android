@@ -10,7 +10,7 @@
         <!--标题栏主题样式-->
         <item name="CustomTitleBarStyle">@style/QDTopBar</item>
         <!--设置标题栏高度-->
-        <item name="titlebar_height">56dp</item>
+        <item name="titlebar_height">44dp</item>
 
     </style>
 
@@ -52,11 +52,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Main_AppTheme.Full" parent="Main_AppTheme.NoActionBar">
+    <style name="Main_AppTheme.Splash" parent="Main_AppTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <style name="Main_AppTheme.Splash" parent="Main_AppTheme.Full">
         <item name="android:windowBackground">@drawable/x_splash</item>
     </style>
 
