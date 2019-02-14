@@ -28,8 +28,8 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         super(context);
     }
 
-    //请假历史记录
-    public void getLeaveInfoList (Number userId,Number page){
+    //请假的全部历史记录
+    public void getAllLeaveInfoList (Number userId,Number page){
         Map map = new HashMap();
         map.put("userId",userId);
         map.put("page",page);
@@ -67,8 +67,8 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
                 });
     }
 
-    //待审批处理的请假记录
-    public void getApprovalList (Number userId,Number page,Number userAuthority,Number userType){
+    //待审批处理的全部请假记录
+    public void getAllApprovalList (Number userId,Number page,Number userAuthority,Number userType){
         Map map = new HashMap();
         map.put("userId",userId);
         map.put("page",page);
@@ -107,8 +107,9 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
                     }
                 });
     }
-    //审批的历史记录
-    public void getApprovalHistoryList (Number userId,Number page){
+
+    //审批的全部历史记录
+    public void getAllApprovalHistoryList (Number userId,Number page){
         Map map = new HashMap();
         map.put("userId",userId);
         map.put("page",page);
@@ -145,11 +146,138 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
                     }
                 });
     }
+
+    //根据关键字搜索请假信息或审批记录
+    public void getSearchLeaveInfoList (Number userId,Number page,Number checkCode,Number type,String content){
+        Map map = new HashMap();
+        map.put("userId",userId);
+        map.put("page",page);
+        map.put("checkCode",checkCode);
+        map.put("type",type);
+        map.put("content",content);
+        Log.d("myMap",new Gson().toJson(map).toString());
+
+        ViseHttp.CONFIG()
+                //配置读取超时时间，单位秒
+                .readTimeout(5)
+                //配置写入超时时间，单位秒
+                .writeTimeout(5)
+                //配置连接超时时间，单位秒
+                .connectTimeout(5);
+
+        ViseHttp.POST(HttpConst.getLeaveSearchList)
+                .tag(HttpConst.getLeaveInfoById)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<LeaveInfo>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<LeaveInfo>> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_INFO_LIST,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
+                        }
+
+                    }
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        Log.d("myMap","fail");
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+    }
     @Override
     public void unsubscribe() {
         ViseHttp.cancelTag(HttpConst.getLeaveInfoById);
         ViseHttp.cancelTag(HttpConst.getDealApprovalListById);
         ViseHttp.cancelTag(HttpConst.getApprovalHistoryListById);
         super.unsubscribe();
+    }
+
+    public void getSearchApprovalList(int userId, int requestPage, int userAuthority, int userType, int checkCode, int type, String content) {
+        Map map = new HashMap();
+        map.put("userId",userId);
+        map.put("page",requestPage);
+        map.put("userAuthority",userAuthority);
+        map.put("userType",userType);
+        map.put("checkCode",checkCode);
+        map.put("type",type);
+        map.put("content",content);
+        Log.d("myMap",new Gson().toJson(map).toString());
+
+        ViseHttp.CONFIG()
+                //配置读取超时时间，单位秒
+                .readTimeout(5)
+                //配置写入超时时间，单位秒
+                .writeTimeout(5)
+                //配置连接超时时间，单位秒
+                .connectTimeout(5);
+
+        ViseHttp.POST(HttpConst.getLeaveSearchList)
+                .tag(HttpConst.getDealApprovalListById)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<LeaveInfo>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<LeaveInfo>> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_INFO_LIST,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
+                        }
+
+                    }
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        Log.d("myMap","fail");
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+    }
+
+    //审批的全部历史记录
+    public void getSearchApprovalHistoryList (Number userId,Number page,Number checkCode ,Number type,String content){
+        Map map = new HashMap();
+        map.put("userId",userId);
+        map.put("page",page);
+        map.put("checkCode",checkCode);
+        map.put("type",type);
+        map.put("content",content);
+        Log.d("myMap",new Gson().toJson(map).toString());
+
+        ViseHttp.CONFIG()
+                //配置读取超时时间，单位秒
+                .readTimeout(5)
+                //配置写入超时时间，单位秒
+                .writeTimeout(5)
+                //配置连接超时时间，单位秒
+                .connectTimeout(5);
+
+        ViseHttp.POST(HttpConst.getLeaveSearchList)
+                .tag(HttpConst.getApprovalHistoryListById)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<ApprovalRecord>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<ApprovalRecord>> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPROVAL_HISTORY_LIST,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
+                        }
+
+                    }
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        Log.d("myMap","fail");
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
     }
 }

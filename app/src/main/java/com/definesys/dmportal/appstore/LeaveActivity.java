@@ -471,8 +471,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         String content = "\n  "+ed_reason.getText().toString();
         String selectedSubject="";
         int type = selectTypePosition;
-        if(selectTypePosition>1&&getString(R.string.shixi).equals(tv_typeReason.getText().toString()))
-            type=3;
+//        if(selectTypePosition>1&&getString(R.string.shixi).equals(tv_typeReason.getText().toString()))
+//            type=3;
         if(type==0) {
             //对hashMap排序
             //这里将map.entrySet()转换成list

@@ -23,17 +23,20 @@ public class ApprovalRecord {
 
     private String leaverName;//请假人姓名
 
+    private int leaverId;//请假人id
+
     public ApprovalRecord() {
 
     }
 
-    public ApprovalRecord(String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType) {
+    public ApprovalRecord(String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType,int leaverId) {
         this.leaveInfoId = leaveInfoId;
         this.approverId = approverId;
         this.approvalContent = approvalContent;
         this.approvalResult = approvalResult;
         this.approvalTime = approvalTime;
         this.approverType = approverType;
+        this.leaverId = leaverId;
     }
 
     public String getLeaveInfoId() {
@@ -86,6 +89,14 @@ public class ApprovalRecord {
 
     public String getLeaverName() {
         return leaverName;
+    }
+
+    public int getLeaverId() {
+        return leaverId;
+    }
+
+    public void setLeaverId(int leaverId) {
+        this.leaverId = leaverId;
     }
 
     public void setLeaverName(String leaverName) {

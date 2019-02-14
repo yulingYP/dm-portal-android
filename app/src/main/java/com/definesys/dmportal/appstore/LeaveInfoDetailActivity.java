@@ -154,7 +154,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         tv_name.setText(getString(R.string.name_tip,submitLeaveInfo.getName()));
 
         //请假类型
-        tv_type.setText(getString(R.string.type_tip, DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[submitLeaveInfo.getType()])));
+        tv_type.setText(getString(R.string.type_tip, DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[submitLeaveInfo.getType()%3])));
 
         //请假原因
         tv_title.setText(getString(R.string.leave_title,submitLeaveInfo.getLeaveTitle()));

@@ -222,8 +222,8 @@
     <string name="no_cursor_score">暂无课程成绩</string>
     <string name="search_history">搜索历史</string>
     <string name="delete_history">清除搜索记录</string>
-    <string name="history_hint_0">请输入请假的种类或原因</string>
-    <string name="history_hint_1">请输入请假的种类、原因或请假人姓名、学号</string>
+    <string name="history_hint_0">请输入请假的种类或请假内容</string>
+    <string name="history_hint_1">请输入要查询的内容</string>
     <string name="history_hint_2">请输入审批的内容或请假人姓名</string>
     <string name="detele_history">确定要清除历史记录吗</string>
     <string name="all">全部</string>
@@ -235,7 +235,7 @@
     <string name="tag_6">正在审批</string>
     <string name="tag_7">未销假</string>
     <string name="tag_8">同意</string>
-    <string name="tag_9">拒绝</string>
+    <string name="tag_9">不同意</string>
     <string name="search_result">搜索结果</string>
     <string name="tag_10">已销假</string>
 </resources>

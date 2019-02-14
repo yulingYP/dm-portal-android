@@ -101,6 +101,8 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .build(ARouterConstants.LeaveListActivity)
                                 .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
                                 .withInt("type", 0)//列表类型
+                                .withBoolean("isAll",true)
+                                .withBoolean("isSearch",false)
                                 .withString("ARouterPath",ARouterConstants.LeaveInFoDetailActivity)//点击列表跳转的页面
                                 .navigation());
         //审批处理
@@ -111,6 +113,8 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .build(ARouterConstants.LeaveListActivity)
                                 .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
                                 .withInt("type", 1)//列表类型
+                                .withBoolean("isAll",true)
+                                .withBoolean("isSearch",false)
                                 .withString("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity)//点击列表跳转的页面
                                 .navigation());
         //审批记录
@@ -121,6 +125,8 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .build(ARouterConstants.LeaveListActivity)
                                 .withInt("userId",(int) SharedPreferencesUtil.getInstance().getUserId())
                                 .withInt("type", 2)//列表类型
+                                .withBoolean("isAll",true)
+                                .withBoolean("isSearch",false)
                                 .withString("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity)//点击列表跳转的页面
                                 .navigation());
 

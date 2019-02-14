@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.definesys.base.BaseActivity;
+import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.TypeListAdapter;
@@ -43,7 +45,7 @@ import butterknife.ButterKnife;
 import static com.vise.xsnow.http.ViseHttp.getContext;
 
 @Route(path = ARouterConstants.LeaveListSearchActivity)
-public class LeaveListSearchActivity extends AppCompatActivity {
+public class LeaveListSearchActivity extends BaseActivity {
 
     //搜索框
     @BindView(R.id.et_search)
@@ -71,7 +73,7 @@ public class LeaveListSearchActivity extends AppCompatActivity {
 
 
     @Autowired(name = "type")
-    int type;//页面类型 0.历史请假记录 1.待处理的审批记录 2.历史审批记录
+    int type;//页面类型 0.历史请假记录 1.待处理的请假记录 2.历史审批记录
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +84,9 @@ public class LeaveListSearchActivity extends AppCompatActivity {
         initTpyeList();//种类标签
         initHistoryList();//历史记录
     }
+
+
+
     /**
      * 种类列表
      */
@@ -169,11 +174,14 @@ public class LeaveListSearchActivity extends AppCompatActivity {
             fl_history.addView(addTagItem(content,true),0);
         }
 
-        ARouter.getInstance().build(ARouterConstants.LeaveSearchResultActivity)
+        ARouter.getInstance().build(ARouterConstants.LeaveListActivity)
                 .withInt("type",type)
                 .withBoolean("isAll",getString(R.string.all).equals(content.trim()))
+                .withBoolean("isSearch",true)
                 .withInt("checkCode",getCode(content.trim()))
                 .withString("content",content)
+                .withInt("userId",SharedPreferencesUtil.getInstance().getUserId().intValue())
+                .withString("ARouterPath",type==0?ARouterConstants.LeaveInFoDetailActivity:ARouterConstants.ApprovalLeaveInfoActivity)
                 .navigation();
     }
 
@@ -280,5 +288,15 @@ public class LeaveListSearchActivity extends AppCompatActivity {
             return 12;
         else
             return -1;
+    }
+
+    @Override
+    public BasePresenter getPersenter() {
+        return new BasePresenter(this) {
+            @Override
+            public void subscribe() {
+                super.subscribe();
+            }
+        };
     }
 }

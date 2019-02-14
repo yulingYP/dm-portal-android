@@ -82,6 +82,18 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     @Autowired(name = "ARouterPath")
     String ARouterPath;
 
+    @Autowired(name = "isSearch")
+    boolean isSearch;//是不是搜索页
+
+    @Autowired(name = "isAll")
+    boolean isAll;//是否查询全部记录
+
+    @Autowired(name = "checkCode")
+    int checkCode;//-1.代表编辑框输入 其他.代表点击标签
+
+    @Autowired(name = "content")
+    String content;//编辑框输入内容
+
     private int requestPage;//请求的页码
 
     @Override
@@ -105,8 +117,6 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
-                    Intent intent = new Intent();
-                    setResult(RESULT_CANCELED,intent);
                     finish();
                 });
         //下拉刷新监听
@@ -119,7 +129,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                     if(leaveInfoListAdapter!=null)
                         leaveInfoListAdapter.notifyDataSetChanged();
                 }else if(approvalRecordList!=null&&approvalRecordList.size()>0){
-                    submitLeaveInfoList.clear();
+                    approvalRecordList.clear();
                     leaveInfoListAdapter.notifyDataSetChanged();
                 }
                 httpPost();
@@ -151,6 +161,10 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
      * @return
      */
     private int setMyTitle() {
+        if(isSearch) {
+            iv_search.setVisibility(View.GONE);
+            return R.string.search_result;
+        }
         if(type==0) {
             iv_search.setVisibility(View.VISIBLE);
             return R.string.leave_history;
@@ -174,12 +188,22 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             setNoLayout(2);
             return;
         }
-        if(type==0)//历史请假记录
-            mPersenter.getLeaveInfoList(userId,requestPage);
-        else if(type==1)//待审批记录
-            mPersenter.getApprovalList(userId,requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(),SharedPreferencesUtil.getInstance().getUserType());
-        else if(type==2)//历史审批记录
-            mPersenter.getApprovalHistoryList(userId,requestPage);
+        if(isAll) {//查询全部记录
+            if (type == 0)//历史请假记录
+                mPersenter.getAllLeaveInfoList(userId, requestPage);
+            else if (type == 1)//待审批记录
+                mPersenter.getAllApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(), SharedPreferencesUtil.getInstance().getUserType());
+            else if (type == 2)//历史审批记录
+                mPersenter.getAllApprovalHistoryList(userId, requestPage);
+        }else {
+            if (type == 0)//历史请假记录
+                mPersenter.getSearchLeaveInfoList(userId,requestPage,checkCode,type,checkCode==-1?content:"");
+            else if (type == 1)//待审批记录
+                mPersenter.getSearchApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(), SharedPreferencesUtil.getInstance().getUserType(),checkCode,type,checkCode==-1?content:"");
+            else if(type == 2){//历史审批记录
+                mPersenter.getSearchApprovalHistoryList(userId,requestPage,checkCode,type,checkCode==-1?content:"");
+            }
+        }
     }
 
     /**

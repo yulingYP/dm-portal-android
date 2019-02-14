@@ -103,7 +103,9 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
             holder.tv_id.setVisibility(View.GONE);
             holder.tv_type.setVisibility(View.GONE);
             //请假人姓名
-            holder.tv_name.setText(mContext.getString(R.string.leaver_name,approvalRecordList.get(position).getLeaverName()));
+            holder.tv_name.setText(approvalRecordList.get(position).getLeaverName());
+            //学号
+            holder.tv_status.setText("" + approvalRecordList.get(position).getLeaverId());
             //审批结果
             String result=mContext.getString(R.string.approval_result_text, approvalRecordList.get(position).getApprovalResult()==1?mContext.getString(R.string.green_agree):mContext.getString(R.string.red_refuse));
             holder.tv_title.setText(Html.fromHtml(result));

@@ -334,7 +334,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         String content = ed_reason.getText().toString();
         if("".equals(content)&&isAgree)
             content = getString(R.string.agree_tip);
-        ((TextView) view.findViewById(R.id.approval_content_text)).setText(getString(R.string.approval_addvise)+":\n"+content);
+        ((TextView) view.findViewById(R.id.approval_content_text)).setText(getString(R.string.approval_addvise)+":\n "+content);
 
         //确定
         String finalContent = content;
@@ -343,7 +343,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 .subscribe(obj->{
                     ApprovalRecord approvalRecord = new ApprovalRecord(submitLeaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),
                             finalContent,(short)(isAgree?1:0),null,
-                            SharedPreferencesUtil.getInstance().getUserAuthority());
+                            SharedPreferencesUtil.getInstance().getUserAuthority(),submitLeaveInfo.getUserId().intValue());
                     mPersenter.updateApprovalStatusById(approvalRecord);
                     progressHUD.show();
                     dialog.dismiss();

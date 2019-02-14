@@ -25,6 +25,8 @@ public interface HttpConst {
     //根据Id分页获取请假记录
     String getLeaveInfoById = "getLeaveInfoById";
 
+    String getLeaveSearchList = "getLeaveSearchList";
+
     //根据Id分页获取该用户未审批的请假信息
     String getDealApprovalListById = "getDealApprovalListById";
 
