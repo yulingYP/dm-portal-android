@@ -248,14 +248,16 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
                     ed_reason.setCursorVisible(true);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            isScroll = true;
-                            isVisible = true;
-                            ed_reason.setCursorVisible(true);
-                        }
-                    }, Constants.scrollDelay);
+                    isScroll = true;
+                    isVisible = true;
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            isScroll = true;
+//                            isVisible = true;
+//                            ed_reason.setCursorVisible(true);
+//                        }
+//                    }, Constants.scrollDelay);
                 }
             }
         });
@@ -450,6 +452,13 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
             return;
         }
+        if(getString(R.string.shixi).equals(tv_typeReason.getText().toString())){//如果是实习，进行规范西检测
+            String content = ed_reason.getText().toString().trim();
+            if(!(content.contains("+")&&content.indexOf("+")<content.length()-1&&content.indexOf("+")>0)) {
+                Toast.makeText(this, R.string.no_reason_des_2, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
         if(selectTypePosition==2&&(Math.ceil(endDate.getTime()-startDate.getTime())/Constants.oneDay)<=7){
             Toast.makeText(this, R.string.data_fail,Toast.LENGTH_SHORT).show();
             return;
@@ -468,7 +477,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         String startTime = selectTypePosition==0?"":tv_timeStart.getText().toString();
         String endTime = selectTypePosition==0?"":tv_timeEnd.getText().toString();
         String sumTime = tv_dayOffCount.getText().toString();
-        String content = "\n  "+ed_reason.getText().toString();
+        String content = "\n  "+ed_reason.getText().toString().trim();
         String selectedSubject="";
         int type = selectTypePosition;
 //        if(selectTypePosition>1&&getString(R.string.shixi).equals(tv_typeReason.getText().toString()))
@@ -542,6 +551,12 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             initDate();//初始化日期
         }
         tv_typeReason.setText(getResources().getStringArray(selectTypePosition <=1 ? R.array.leave_short_reason : R.array.leave_long_reason)[0]);
+        //具体原因的hint替换
+        if(getString(R.string.shixi).equals(tv_typeReason.getText().toString())){//实习
+            ed_reason.setHint(R.string.reson_detail_tip_2);
+        }else {//不是实习
+            ed_reason.setHint(R.string.reson_detail_tip);
+        }
         initTypeReasonDialog();
     }
 
@@ -655,6 +670,11 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                 @Override
                 public void onClick(String type, int position) {
                     tv_typeReason.setText(type);
+                    if(getString(R.string.shixi).equals(type)){//实习
+                        ed_reason.setHint(R.string.reson_detail_tip_2);
+                    }else {//不是实习
+                        ed_reason.setHint(R.string.reson_detail_tip);
+                    }
                     reasonDialog.dismiss();
                 }
             });
@@ -757,6 +777,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+                        Log.d("mydemo","entry"+isScroll);
                         if (isScroll) {
                             if (ed_reason.isCursorVisible() && isVisible) {
                                 sc_scoll.scrollTo(0, (int) button.getY());
@@ -764,6 +785,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                                     @Override
                                     public void run() {
                                         sc_scoll.scrollTo(0, (int) lg_reason.getY());
+                                        Log.d("mydemo","scroll_delay");
                                     }
                                 }, Constants.scrollDelay);
 

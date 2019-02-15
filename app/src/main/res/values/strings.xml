@@ -33,6 +33,7 @@
     <string name="img_tip">相关截图或照片</string>
     <string name="reason_detail_txt">具体原因</string>
     <string name="reson_detail_tip">请填写具体原因</string>
+    <string name="reson_detail_tip_2">请输入实习地点和实习公司名称中间用"+"号隔开，例：实习地点+实习公司</string>
     <string name="word_count">%d/150</string>
     <string name="name">姓名</string>
     <string name="type">请假类型</string>
@@ -101,7 +102,8 @@
     <string name="selected_subject_info">第%d周 周%d 第%d大节</string>
     <string name="subject_count_tip">%d.</string>
     <string name="no_subject_select">请选择要请假的课程</string>
-    <string name="no_reason_des">请填写请假的具体原因</string>
+    <string name="no_reason_des">请假的具体原因不能为空</string>
+    <string name="no_reason_des_2">请按要求填写请假的具体原因</string>
     <string name="data_fail">长假的天数要多于7天</string>
     <string name="confirm_info_tip">请确认信息是否正确,确认无误后点击确定提交申请</string>
     <string name="name_tip">姓名:%s</string>
@@ -117,7 +119,7 @@
     <string name="report_back">销假</string>
     <string name="approval_processing">审批处理</string>
     <string name="check_progress">进度查询</string>
-    <string name="approval_history">审批记录</string>
+    <string name="approval_history">历史审批记录</string>
     <string name="my_leave_off_list">我的请假记录</string>
     <string name="leave_history">请假记录</string>
     <string name="leave_detail">请假详情</string>
@@ -137,7 +139,7 @@
     <string name="status_tip_7">获取失败</string>
     <string name="check_approval_record">查看审批记录</string>
     <string name="check_approval_record_2">查看其他人的审批意见</string>
-    <string name="approval_record">审批记录</string>
+    <string name="approval_record">历史审批记录</string>
     <string name="submit_time">提交时间:%s</string>
     <string name="approver_text">审批人:%s</string>
     <string name="approval_content_text">审批内容:%s</string>

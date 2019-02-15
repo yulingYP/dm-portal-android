@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -37,10 +39,9 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-       int userAuthority = 1230;
-       int max= 13;
-
-        System.out.println("max=="+userAuthority/(float)max);
+        String content = "adasd+asdasd";
+        boolean flag = content.contains("+")&&content.indexOf("+")<content.length()-1&&content.indexOf("+")>0;
+        System.out.println(flag);
        assertEquals(4, 2 + 2);
     }
 

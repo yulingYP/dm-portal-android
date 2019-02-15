@@ -105,7 +105,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .withBoolean("isSearch",false)
                                 .withString("ARouterPath",ARouterConstants.LeaveInFoDetailActivity)//点击列表跳转的页面
                                 .navigation());
-        //审批处理
+        //未审批的请假记录
         RxView.clicks(lg_approval)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj ->
@@ -117,7 +117,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .withBoolean("isSearch",false)
                                 .withString("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity)//点击列表跳转的页面
                                 .navigation());
-        //审批记录
+        //历史审批记录
         RxView.clicks(lg_approvalHistory)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj ->
