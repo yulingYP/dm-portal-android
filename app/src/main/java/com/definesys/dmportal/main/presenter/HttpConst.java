@@ -10,6 +10,9 @@ public interface HttpConst {
     //获取用户信息
     String getUserInfo = "getUserInfo";
 
+    //获取用户姓名
+    String getUserName = "getUserName";
+
     //获取课表
     String getTable = "listCurArg";
 

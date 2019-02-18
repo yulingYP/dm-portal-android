@@ -77,7 +77,10 @@
         <activity android:name=".main.userSettingActivity.ChangePwdActivity" />
         <activity android:name=".main.userSettingActivity.PhoneBindActivity" />
         <activity android:name=".appstore.LeaveListSearchActivity" />
-        <activity android:name=".appstore.LeaveSearchResultActivity"></activity>
+        <activity android:name=".appstore.LeaveSearchResultActivity" />
+        <activity android:name=".appstore.LeaveTextActivity" android:configChanges="orientation|keyboardHidden">
+
+        </activity>
     </application>
 
 </manifest>

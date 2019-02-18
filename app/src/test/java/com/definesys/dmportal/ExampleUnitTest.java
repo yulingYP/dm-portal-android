@@ -39,9 +39,18 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        String content = "adasd+asdasd";
-        boolean flag = content.contains("+")&&content.indexOf("+")<content.length()-1&&content.indexOf("+")>0;
-        System.out.println(flag);
+//        String content = "12812小时";
+//        String result = "";
+////        boolean flag = content.contains("+")&&content.indexOf("+")<content.length()-1&&content.indexOf("+")>0;
+//        try {
+//            result =content.substring(0,content.indexOf("天"));
+//        }catch (Exception e){
+//            result = "error";
+//        }
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        System.out.println(calendar.get(Calendar.YEAR));
        assertEquals(4, 2 + 2);
     }
 

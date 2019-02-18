@@ -93,7 +93,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                         ARouter.getInstance()
                         .build(ARouterConstants.LeaveActivity)
                         .navigation());
-        //请假记录
+        //历史请假记录
         RxView.clicks(lg_leaveHistory)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj ->

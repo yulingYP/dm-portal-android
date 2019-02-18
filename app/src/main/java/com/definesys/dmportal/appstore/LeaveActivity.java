@@ -452,7 +452,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
             return;
         }
-        if(getString(R.string.shixi).equals(tv_typeReason.getText().toString())){//如果是实习，进行规范西检测
+        if(getString(R.string.shixi).equals(tv_typeReason.getText().toString())){//如果是实习，进行规范性检测
             String content = ed_reason.getText().toString().trim();
             if(!(content.contains("+")&&content.indexOf("+")<content.length()-1&&content.indexOf("+")>0)) {
                 Toast.makeText(this, R.string.no_reason_des_2, Toast.LENGTH_SHORT).show();

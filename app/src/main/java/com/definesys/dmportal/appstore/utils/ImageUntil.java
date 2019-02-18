@@ -71,7 +71,7 @@ public class ImageUntil {
      * @return
      * @throws ParseException
      */
-    public static String  saveBitmapFromView(Bitmap code,String picName, Context context,int mode) throws ParseException {
+    public static String  saveBitmapFromView(Bitmap code,String picName, Context context,int mode) {
         String path = null;
         Bitmap bmp = null;
         Bitmap scaleBmp = null;
@@ -193,6 +193,29 @@ public class ImageUntil {
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
+
+    }
+
+    /** * 将图片存到本地 */
+    public static Uri saveBitmap(Bitmap bm, String picName) {
+        try {
+            String dir=Environment.getExternalStorageDirectory().getAbsolutePath()+"/leavePic/"+picName+".jpg";
+            File f = new File(dir);
+            if (!f.exists()) {
+                f.getParentFile().mkdirs();
+                f.createNewFile();
+            }
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+            Uri uri = Uri.fromFile(f);
+            return uri;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();    }
+        return null;
     }
 
 }

@@ -19,7 +19,7 @@ public class ApprovalRecord {
     private Date approvalTime;//审批时间
 
     private int approverType;//审批人类型
-    //0.寝室长 1.班长 2.班主任 3.毕设导师 4.辅导员 5.教学工作领导 6.教学工作院长
+    //0.寝室长 1.班长 2.班主任 3.毕设导师 4.辅导员 5.学院实习工作负责人 6.学生工作领导 7.教学工作院长 -10.用户销假
 
     private String leaverName;//请假人姓名
 

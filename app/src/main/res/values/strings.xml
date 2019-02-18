@@ -24,7 +24,7 @@
     <string name="exit_en">exit</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="date_type">yyyy年MM月dd日 HH时</string>
+
     <string name="leave_off">请假</string>
     <string name="time_fail_tip">结束时间不能小于开始时间</string>
     <string name="time_fail_tip_2">短假最多只能请7天假</string>
@@ -128,8 +128,12 @@
     <string name="no_dyn_tip">暂无动态</string>
     <string name="no_history_tip">暂无记录</string>
     <string name="userId_tip">学号/工号:%d</string>
+    <string name="date_type">yyyy年MM月dd日 HH时</string>
     <string name="date_type_2">yyyy-MM-dd HH:mm</string>
     <string name="date_type_3">MMDDHHmmss</string>
+    <string name="date_type_4">yyyy年MM月dd日</string>
+    <string name="date_type_5">yyyy.MM.dd</string>
+    <string name="date_type_6">MM月dd日</string>
     <string name="status_tip_1">正在审批</string>
     <string name="status_tip_2">已批准</string>
     <string name="status_tip_3">已拒绝</string>
@@ -240,4 +244,47 @@
     <string name="tag_9">不同意</string>
     <string name="search_result">搜索结果</string>
     <string name="tag_10">已销假</string>
+    <string name="create_absence">生成请假条</string>
+    <string name="leave_absence">请假条</string>
+    <string name="share_img">生成图片并分享</string>
+    <string name="share_pdf">生成PDF并分享</string>
+    <string name="leader_sign_text">辅导员意见及签字</string>
+    <string name="leave_reason">事由</string>
+    <string name="stuId">学号</string>
+    <string name="leave_short_des">%s课堂请假条</string>
+    <string name="leave_short_des_2">请假条（存根）</string>
+    <string name="leave_time">请假时间</string>
+    <string name="get_sign_fail">获取签名失败</string>
+    <string name="sum_time">共计：%s</string>
+
+    <string name="sign">签字:</string>
+    <string name="stu_return_sign">学生销假签字:%s</string>
+    <string name="return_time">销假时间:%s</string>
+    <string name="agree_tip_1">班长意见:\n%s</string>
+    <string name="agree_tip_2">班主任意见:\n%s</string>
+    <string name="agree_tip_3">辅导员意见:\n%s</string>
+    <string name="agree_tip_4">主管学生工作领导意见:\n%s</string>
+    <string name="agree_tip_5">主管教学院长意见:\n%s</string>
+    <string name="leave_practice_des">离校登记表</string>
+    <string name="leave_long_des">学生请假条</string>
+    <string name="leave_practice_content">  因工业实习，申请离校前往%s地，%s公司，时间为%s至%s。具体情况已与父母陈述清楚。在离校前，承诺会整理好个人物品，保持寝室整洁；离校期间，会遵纪守法，完成实习各项要求，注意个人人身及财产安全。</string>
+    <string name="leave_practive_copy_des">离校登记表存根</string>
+    <string name="leave_practice_copy_content">   %d班 %s 同学因实习离校，预计于 %s 返校，请做好相关的教育管理工作。</string>
+    <string name="leave_practive_number">%d年%s号</string>
+    <string name="stu_sign">学生签字：%s</string>
+    <string name="stu_id">学号：%d</string>
+    <string name="leave_tag_0">寝室长</string>
+    <string name="leave_tag_1">班长</string>
+    <string name="leave_tag_2">班主任</string>
+    <string name="leave_tag_3">毕设导师</string>
+    <string name="leave_tag_4">辅导员</string>
+    <string name="leave_tag_5">学院实习工作负责人</string>
+    <string name="leave_tag_6">学生工作负责人</string>
+    <string name="leave_tag_7">教学工作负责人</string>
+    <string name="leave_tag_8">返校后签字</string>
+    <string name="sub_time">时间</string>
+    <string name="get_sign">"http://192.168.43.248:9001/last_design/showImage?name=%s&amp;type=%d"</string>
+    <string name="leave_time_start_to_end">%s至\n%s</string>
+    <string name="return_date">年    月    日</string>
+    <string name="get_name_fail">获取失败</string>
 </resources>

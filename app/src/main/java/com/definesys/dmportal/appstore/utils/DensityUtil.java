@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
+
 /**
  * Created by 羽翎 on 2018/11/24.
  */
@@ -314,5 +316,32 @@ public class DensityUtil {
             else sourceStr+=","+arr1[i];
         }
         return sourceStr;
+    }
+
+    /**
+     * 获取请假时长
+     * @param startDateStr 开始时间的字符串 yyyy年MM月dd日 HH时
+     * @param endDateStr 结束时间的字符串 yyyy年MM月dd日 HH时
+     * @param isHour 是否需要显示小时
+     * @return
+     */
+    public  static String getSumTime(String startDateStr,String endDateStr,Context context,boolean isHour){
+        SimpleDateFormat df = new SimpleDateFormat(context.getString(R.string.date_type));
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = df.parse(startDateStr);
+            endDate = df.parse(endDateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            startDate = new Date();
+            endDate = new Date();
+        }
+        long time = endDate.getTime() - startDate.getTime();
+        int day = (int)(time/oneDay );
+        int hour = (int)(time/(oneDay /24))-day*24;
+        if(isHour)
+        return (day>0?context.getString(R.string.off_day,day):"")+(day>0&&hour==0?"":context.getString(R.string.off_hour,hour));
+        else return context.getString(R.string.off_day,day);
     }
 }

@@ -251,11 +251,8 @@ public class MyFragment extends Fragment {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         userImage.setImageBitmap(resource);
-                        try {
-                           SharedPreferencesUtil.getInstance().setUserLocal(ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),0));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        SharedPreferencesUtil.getInstance().setUserLocal(ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),0));
+
                     }
 
                     @Override
@@ -293,24 +290,18 @@ public class MyFragment extends Fragment {
         if (type == 2) {
             bottomDialog.setOnOptionClickListener(position -> {
                 if(position==2){
-                    try {
-                        String path = SharedPreferencesUtil.getInstance().getUserLocal();
-                        if("".equals(path)){
-                            Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
-                            path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
-                        }
-                        LocalMedia localMedia = new LocalMedia();
-                        localMedia.setPath(path);
-                        localMedia.setPosition(0);
-                        List<LocalMedia> localMedias = new ArrayList<>();
-                        localMedias.add(localMedia);
-                        PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
-                                .openExternalPreview(0, localMedias);
-                    } catch (ParseException e) {
-                        Toast.makeText(getContext(), R.string.get_head_fail,Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                    String path = SharedPreferencesUtil.getInstance().getUserLocal();
+                    if("".equals(path)){
+                        Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
+                        path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
                     }
-
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setPath(path);
+                    localMedia.setPosition(0);
+                    List<LocalMedia> localMedias = new ArrayList<>();
+                    localMedias.add(localMedia);
+                    PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
+                            .openExternalPreview(0, localMedias);
                 }
                 if (position == 1) {
                     PictureSelector.create(this)

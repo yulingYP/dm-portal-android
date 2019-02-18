@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <TextView
+               android:id="@+id/practice_leave_des"
+               android:layout_gravity="center"
+               android:text="@string/leave_practice_des"
+               android:padding="10dp"
+               android:textSize="20sp"
+               android:layout_centerInParent="true"
+               android:textColor="@color/black"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+           <TextView
+               android:layout_width="match_parent"
+               android:id="@+id/leave_number"
+               android:layout_alignParentEnd="true"
+               android:layout_alignBottom="@+id/practice_leave_des"
+               android:padding="10dp"
+               android:layout_toEndOf="@+id/practice_leave_des"
+               android:gravity="end"
+               android:textSize="14sp"
+               android:textColor="@color/black"
+               android:text="@string/leave_practive_number"
+               android:layout_height="wrap_content" />
+       </RelativeLayout>
+        <TextView
+            android:id="@+id/des_text"
+            android:textColor="@color/black"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:text="@string/leave_practice_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/stu_sign"
+                android:textColor="@color/black"
+                android:text="@string/stu_sign"
+                android:layout_toStartOf="@+id/stuId_text"
+                android:layout_marginEnd="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/stuId_text"
+                android:textColor="@color/black"
+                android:text="@string/stu_id"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/sign_time"
+                android:textColor="@color/black"
+                android:text="@string/date_type_4"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/stuId_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <LinearLayout
+            android:background="@color/black"
+            android:paddingStart="1dp"
+            android:paddingEnd="1dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <TextView
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:text="@string/leave_tag_0"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:layout_marginTop="1dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:text="@string/leave_tag_1"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:text="@string/leave_tag_2"
+                android:layout_marginTop="1dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:text="@string/leave_tag_3"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:text="@string/leave_tag_4"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:layout_marginTop="1dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:text="@string/leave_tag_5"
+                android:paddingTop="8dp"
+                android:layout_marginTop="1dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:text="@string/leave_tag_6"
+                android:layout_marginTop="1dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:text="@string/leave_tag_7"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:text="@string/leave_tag_8"
+                android:layout_marginTop="1dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:background="@color/black"
+            android:padding="1dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_0"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_0"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar0"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginStart="1dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_1"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_1"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginStart="1dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_2"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_2"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar2"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginStart="1dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_3"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_3"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar3"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginStart="1dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_4"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_4"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar4"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginStart="1dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_5"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_5"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar5"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginStart="1dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_6"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_6"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar6"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/white"
+                android:layout_marginStart="1dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/sign_text_7"
+                    android:background="@color/white"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="1dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/sign_img_7"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ProgressBar
+                    android:id="@+id/progressBar7"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/sign_text_8"
+                android:background="@color/white"
+                android:textColor="@color/black"
+                android:layout_marginStart="1dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/practice_leave_copy_des"
+                android:layout_gravity="center"
+                android:text="@string/leave_practive_copy_des"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:layout_centerInParent="true"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/leave_copy_number"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@+id/practice_leave_copy_des"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:layout_toEndOf="@+id/practice_leave_copy_des"
+                android:gravity="end"
+                android:textColor="@color/black"
+                android:text="@string/leave_practive_number"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/copy_des"
+            android:textColor="@color/black"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="@string/leave_practice_copy_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/copy_time"
+            android:textColor="@color/black"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="@string/date_type_4"
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

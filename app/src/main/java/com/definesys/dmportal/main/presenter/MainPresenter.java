@@ -15,6 +15,9 @@ public class MainPresenter extends BasePresenter {
     //网络请求失败
     public static final String ERROR_NETWORK="ERROR_NETWORK";
 
+    //获取用户姓名失败
+    public static final String ERROR_NETWORK_NAME="ERROR_NETWORK_NAME";
+
     //登陆成功
     public static final String SUCCESSFUL_LOGIN_USER = "SUCCESSFUL_LOGIN_USER" ;
 
@@ -26,6 +29,9 @@ public class MainPresenter extends BasePresenter {
 
     //获取用户信息成功
     public static final String SUCCESSFUL_GET_USER_INFO="SUCCESSFUL_GET_USER_INFO";
+
+    //获取用户姓名成功
+    public static final String SUCCESSFUL_GET_USER_NAME="SUCCESSFUL_GET_USER_NAME";
 
     //修改头像成功
     public static final String SUCCESSFUL_UPLOAD_USER_IMAGE="SUCCESSFUL_UPLOAD_USER_IMAGE";

@@ -455,11 +455,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         img.setImageBitmap(resource);
                         String path="";
-                        try {
-                            path= ImageUntil.saveBitmapFromView(resource,picUrl,ApprovalLeaveInfoActivity.this,0);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        path= ImageUntil.saveBitmapFromView(resource,picUrl,ApprovalLeaveInfoActivity.this,0);
                         localMediaList.get(position).setPosition(position);
                         localMediaList.get(position).setPath(path);
                         //  LocalMedia localMedia1 = new LocalMedia(resource.);

@@ -94,6 +94,8 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     ImageView img_3;
     @BindView(R.id.status_text)
     TextView tv_status;
+    @BindView(R.id.share_layout)
+    LinearLayout lg_share;
     @BindView(R.id.submit_time)
     TextView tv_submitTime;
     @BindView(R.id.check_approval_layout)
@@ -140,15 +142,6 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                     setResult(RESULT_CANCELED,intent);
                     finish();
                 });
-        
-        //查看审批记录
-        RxView.clicks(lg_check)
-              .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-              .subscribe(obj->{
-                  progressHUD.show();
-                  mPersenter.getApprovalRecord(submitLeaveInfo.getId());
-                 
-              });  
 
         //姓名
         tv_name.setText(getString(R.string.name_tip,submitLeaveInfo.getName()));
@@ -187,9 +180,33 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             tv_selectedSubject.setVisibility(GONE);
 
             //时长
-            tv_sumTime.setText(getString(R.string.sum_time_tip,getSumTime(submitLeaveInfo.getStartTime(),submitLeaveInfo.getEndTime())));
+            tv_sumTime.setText(getString(R.string.sum_time_tip,DensityUtil.getSumTime(submitLeaveInfo.getStartTime(),submitLeaveInfo.getEndTime(),this,true)));
         }
 
+        //查看审批记录
+        RxView.clicks(lg_check)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    progressHUD.show();
+                    mPersenter.getApprovalRecord(submitLeaveInfo.getId());
+
+                });
+
+        //状态为已批准
+        if(submitLeaveInfo!=null&&(getString(R.string.status_tip_2).equals(tv_status.getText().toString())||getString(R.string.status_tip_4).equals(tv_status.getText().toString())||getString(R.string.status_tip_5).equals(tv_status.getText().toString()))){
+            lg_share.setVisibility(VISIBLE);
+            //生成请假条
+            RxView.clicks(lg_share)
+                    .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                    .subscribe(obj->{
+                        ARouter.getInstance().build(ARouterConstants.LeaveTextActivity)
+                                .withObject("leaveInfo",submitLeaveInfo)
+                                .navigation(this);
+                    });
+
+        }else {
+            lg_share.setVisibility(GONE);
+        }
 
         if(submitLeaveInfo.getPicUrl()==null||"".equals(submitLeaveInfo.getPicUrl().trim())) {//没有图片
             lg_img.setVisibility(GONE);
@@ -216,6 +233,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                 }
             }
         }
+
     }
 
     /**
@@ -247,18 +265,14 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     private void initImg(ImageView img, String picUrl,int position) {
         Glide.with(this)
              .asBitmap()
-             .load(getString(R.string.get_image,picUrl,0))
+             .load(getString(R.string.get_image,picUrl,SharedPreferencesUtil.getInstance().getUserType()))
              .into(new SimpleTarget<Bitmap>() {
                  //得到图片
                  @Override
                  public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                      img.setImageBitmap(resource);
                      String path="";
-                     try {
-                         path=ImageUntil.saveBitmapFromView(resource,picUrl,LeaveInfoDetailActivity.this,0);
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
+                     path=ImageUntil.saveBitmapFromView(resource,picUrl,LeaveInfoDetailActivity.this,0);
                      localMediaList.get(position).setPosition(position);
                      localMediaList.get(position).setPath(path);
                    //  LocalMedia localMedia1 = new LocalMedia(resource.);
@@ -332,29 +346,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             initView();
         }
     }
-    /**
-     * 获取请假时长
-     * @param startDateStr 开始时间的字符串 yyyy年MM月dd日 HH时
-     * @param endDateStr 结束时间的字符串 yyyy年MM月dd日 HH时
-     * @return
-     */
-    private String getSumTime(String startDateStr,String endDateStr){
-        SimpleDateFormat df = new SimpleDateFormat(getString(R.string.date_type));
-        Date startDate = null;
-        Date endDate = null;
-        try {
-            startDate = df.parse(startDateStr);
-            endDate = df.parse(endDateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            startDate = new Date();
-            endDate = new Date();
-        }
-        long time = endDate.getTime() - startDate.getTime();
-        int day = (int)(time/oneDay );
-        int hour = (int)(time/(oneDay /24))-day*24;
-        return (day>0?getString(R.string.off_day,day):"")+(day>0&&hour==0?"":getString(R.string.off_hour,hour));
-    }
+
 
     /**
      * 设置暂无页
@@ -369,6 +361,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             lg_scoll.setVisibility(VISIBLE);
         }
     }
+
     @Override
     public GetApprovalRecordPresent getPersenter() {
         return new GetApprovalRecordPresent(this);
