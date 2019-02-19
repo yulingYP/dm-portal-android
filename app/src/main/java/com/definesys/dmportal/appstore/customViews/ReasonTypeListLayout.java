@@ -43,8 +43,7 @@ public class ReasonTypeListLayout extends LinearLayout {
     TextView tv_title;
     @BindView(R.id.confirm_text)
     TextView tv_confirm;
-//    @BindView(R.id.scroll_view)
-//    ScrollView lg_srcoll;
+
     private String[] reasonlist;//请假类型或原因数组
     private MyClickListener myClickListener;//请假类型或原因点击监听
     private MyOnConfirmClickListener myOnConfirmClickListener;//去顶按钮点击监听
@@ -294,15 +293,6 @@ public class ReasonTypeListLayout extends LinearLayout {
     public void setMyOnConfirmClickListener(MyOnConfirmClickListener myOnConfirmClickListener) {
         this.myOnConfirmClickListener = myOnConfirmClickListener;
     }
-
-//    public void scrollToBottom(){
-//       recyclerView.post(new Runnable() {
-//           @Override
-//           public void run() {
-//               lg_srcoll.fullScroll(ScrollView.FOCUS_DOWN);
-//           }
-//       });
-//    }
 
     public TextView getTitleText() {
         return tv_title;

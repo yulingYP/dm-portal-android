@@ -256,7 +256,6 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         dialog.setCancelable(true);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
-//        checkApprovalView.scrollToBottom();
     }
     /**
      * 加载图片

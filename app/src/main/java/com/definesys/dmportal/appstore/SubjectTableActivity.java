@@ -648,7 +648,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
         if(isSub) {//课表
             tb_time.setVisibility(View.VISIBLE);
             tb_sub.setVisibility(View.VISIBLE);
-            lg_move.setVisibility(View.VISIBLE);
+            if(userType==0)lg_move.setVisibility(View.VISIBLE);
             tb_score.setVisibility(View.GONE);
             tv_hello.setText(setHello());
             titleBar.setTitle(R.string.subject_table);

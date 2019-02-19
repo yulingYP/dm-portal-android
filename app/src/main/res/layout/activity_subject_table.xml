@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:layout_marginStart="24dp"
-                android:background="@color/back_gray"
+                android:background="@color/stroke_text"
                 android:orientation="horizontal"
                 android:padding="2px">
 
@@ -150,7 +150,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/back_gray"
+                android:background="@color/stroke_text"
                 android:stretchColumns="*">
 
                 <TableRow
@@ -360,7 +360,7 @@
                 android:layout_margin="24dp"
                 android:id="@+id/score_table"
                 android:visibility="gone"
-                android:background="@color/back_gray"
+                android:background="@color/stroke_text"
                 android:stretchColumns="*">
                 <TableRow
                     android:layout_width="match_parent"
@@ -409,7 +409,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="24dp"
                 android:id="@+id/subject_time_table"
-                android:background="@color/back_gray"
+                android:background="@color/stroke_text"
                 android:stretchColumns="*">
 
                 <TableRow

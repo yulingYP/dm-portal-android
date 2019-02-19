@@ -250,14 +250,6 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                     ed_reason.setCursorVisible(true);
                     isScroll = true;
                     isVisible = true;
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            isScroll = true;
-//                            isVisible = true;
-//                            ed_reason.setCursorVisible(true);
-//                        }
-//                    }, Constants.scrollDelay);
                 }
             }
         });
