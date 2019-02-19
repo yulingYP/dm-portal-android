@@ -147,6 +147,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
                 });
     }
 
+
     //根据关键字搜索请假信息或审批记录
     public void getSearchLeaveInfoList (Number userId,Number page,Number checkCode,Number type,String content){
         Map map = new HashMap();

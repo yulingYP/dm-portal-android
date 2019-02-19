@@ -29,13 +29,12 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
     public LeaveInfo() {
     }
 
-    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject, int type,int userType) {
+    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveTitle, String subTime, String selectedSubject, int type,int userType) {
         this.userId = id;
         this.userName = name;
         this.leaveReason = content;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.leaveType = leaveType;
         this.leaveTitle = leaveTitle;
         this.subTime = subTime;
         this.selectedSubject = selectedSubject;

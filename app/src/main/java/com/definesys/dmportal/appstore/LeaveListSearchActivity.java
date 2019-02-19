@@ -110,6 +110,9 @@ public class LeaveListSearchActivity extends BaseActivity {
         }else if(type==2) {
             typeList.add(getString(R.string.tag_8));
             typeList.add(getString(R.string.tag_9));
+        }else if(type==3) {
+            typeList.add(getString(R.string.tag_4));
+            typeList.add(getString(R.string.tag_7));
         }
         //初始化列表
         for (int i = 0; i < typeList.size(); i++) {
@@ -186,7 +189,7 @@ public class LeaveListSearchActivity extends BaseActivity {
     }
 
     private void initView() {
-        if(type==0)//历史请假记录
+        if(type==0||type==3)//历史请假记录||销假
             ed_search.setHint(R.string.history_hint_0);
         else if(type==1) //待处理的审批记录
             ed_search.setHint(R.string.history_hint_1);

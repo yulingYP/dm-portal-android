@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.definesys.dmportal.R;
@@ -42,6 +43,8 @@ public class ReasonTypeListLayout extends LinearLayout {
     TextView tv_title;
     @BindView(R.id.confirm_text)
     TextView tv_confirm;
+//    @BindView(R.id.scroll_view)
+//    ScrollView lg_srcoll;
     private String[] reasonlist;//请假类型或原因数组
     private MyClickListener myClickListener;//请假类型或原因点击监听
     private MyOnConfirmClickListener myOnConfirmClickListener;//去顶按钮点击监听
@@ -192,7 +195,7 @@ public class ReasonTypeListLayout extends LinearLayout {
         @Override
         public void onBindViewHolder(@NonNull CheckApprovalAdapter.ViewHolder holder, int position) {
             //审批人 班长 寝室长 班主任 辅导员..
-            holder.tv_name.setText(mContext.getString(R.string.approver_text,mContext.getResources().getStringArray(R.array.approverType)[setPosition(approvalRecordList.get(position).getApproverType())]));
+            holder.tv_name.setText(mContext.getString(R.string.approver_text,mContext.getResources().getStringArray(R.array.approverType)[setPosition(approvalRecordList.get(position).getApproverType()%9)]));
 
             //审批意见
             holder.tv_content.setText(mContext.getString(R.string.approval_content_text,approvalRecordList.get(position).getApprovalContent()));
@@ -291,6 +294,15 @@ public class ReasonTypeListLayout extends LinearLayout {
     public void setMyOnConfirmClickListener(MyOnConfirmClickListener myOnConfirmClickListener) {
         this.myOnConfirmClickListener = myOnConfirmClickListener;
     }
+
+//    public void scrollToBottom(){
+//       recyclerView.post(new Runnable() {
+//           @Override
+//           public void run() {
+//               lg_srcoll.fullScroll(ScrollView.FOCUS_DOWN);
+//           }
+//       });
+//    }
 
     public TextView getTitleText() {
         return tv_title;

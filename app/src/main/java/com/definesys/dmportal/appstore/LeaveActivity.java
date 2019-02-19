@@ -472,7 +472,6 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     private void initSubmitDialog() {
         String name = SharedPreferencesUtil.getInstance().getUserName();
         Number id = SharedPreferencesUtil.getInstance().getUserId();
-        String leaveType=tv_type.getText().toString();
         String title = tv_typeReason.getText().toString();
         String startTime = selectTypePosition==0?"":tv_timeStart.getText().toString();
         String endTime = selectTypePosition==0?"":tv_timeEnd.getText().toString();
@@ -482,7 +481,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         int type = selectTypePosition;
 //        if(selectTypePosition>1&&getString(R.string.shixi).equals(tv_typeReason.getText().toString()))
 //            type=3;
-        if(type==0) {
+        if(type==0) {//课假
             //对hashMap排序
             //这里将map.entrySet()转换成list
             List<Map.Entry<Integer,String>> list = DensityUtil.sort(hashMap);
@@ -501,7 +500,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         }
 
         //(Number id,String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject)
-        LeaveInfo submitLeaveInfo = new LeaveInfo(id,name,content,startTime,endTime,leaveType,title,sumTime,selectedSubject,type,SharedPreferencesUtil.getInstance().getUserType());
+        LeaveInfo submitLeaveInfo = new LeaveInfo(id,name,content,startTime,endTime,title,sumTime,selectedSubject,type,SharedPreferencesUtil.getInstance().getUserType());
 
         Dialog dialog = new Dialog(this);
         SubmitLeaveInfoView submitLeaveInfoView = new SubmitLeaveInfoView(this);

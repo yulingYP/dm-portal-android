@@ -50,6 +50,9 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
     @BindView(R.id.leave_layout)
     LinearLayout lg_leave;//请假
 
+    @BindView(R.id.cancel_layout)
+    LinearLayout lg_cancel;//销假
+
     @BindView(R.id.approval_layout)
     LinearLayout lg_approval;//审批处理
 
@@ -93,6 +96,18 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                         ARouter.getInstance()
                         .build(ARouterConstants.LeaveActivity)
                         .navigation());
+        //销假
+        RxView.clicks(lg_cancel)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj ->
+                        ARouter.getInstance().build(ARouterConstants.LeaveListActivity)
+                                .withInt("type",3)
+                                .withBoolean("isAll",true)
+                                .withBoolean("isSearch",false)
+                                .withInt("userId",SharedPreferencesUtil.getInstance().getUserId().intValue())
+                                .withString("ARouterPath",ARouterConstants.LeaveInFoDetailActivity)
+                                .navigation());
+
         //历史请假记录
         RxView.clicks(lg_leaveHistory)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

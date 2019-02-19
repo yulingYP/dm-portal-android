@@ -530,12 +530,6 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
             tv_temp.setTextColor(getResources().getColor(R.color.buttonBlue));
             subjectDialog.setData(subjectList, week, pitch);
             subjectDialog.show();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    subjectDialog.scrollToBootom();
-                }
-            }, Constants.scrollDelay);
         }
     }
 

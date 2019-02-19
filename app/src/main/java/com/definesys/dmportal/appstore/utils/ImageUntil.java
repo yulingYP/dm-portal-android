@@ -13,6 +13,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -197,7 +198,7 @@ public class ImageUntil {
     }
 
     /** * 将图片存到本地 */
-    public static Uri saveBitmap(Bitmap bm, String picName) {
+    public static File saveBitmap(Bitmap bm, String picName) {
         try {
             String dir=Environment.getExternalStorageDirectory().getAbsolutePath()+"/leavePic/"+picName+".jpg";
             File f = new File(dir);
@@ -209,13 +210,37 @@ public class ImageUntil {
             bm.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.flush();
             out.close();
-            Uri uri = Uri.fromFile(f);
-            return uri;
+
+            return f;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();    }
+            e.printStackTrace();
+        }
         return null;
+    }
+    public static File viewToPdf(View view,String fileName){
+        PdfDocument document = new PdfDocument();//1, 建立PdfDocument
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
+                view.getMeasuredWidth(), view.getMeasuredHeight(), 1).create();//2
+        PdfDocument.Page page = document.startPage(pageInfo);
+        view.draw(page.getCanvas());//3
+        document.finishPage(page);//4
+        File file = null;
+        try {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/leavePic/"+fileName+".pdf";
+            file=new File(path);
+            if (file.exists()) {
+                file.delete();
+            }
+            document.writeTo(new FileOutputStream(file));
+            document.close();//5
+        } catch (IOException e) {
+            e.printStackTrace();
+            document.close();//5
+            return null;
+        }
+        return file;
     }
 
 }

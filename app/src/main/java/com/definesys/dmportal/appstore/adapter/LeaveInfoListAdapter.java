@@ -32,7 +32,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
     private List<LeaveInfo> submitLeaveInfoList;
     private List<ApprovalRecord> approvalRecordList;
     private String ARouterPath;//跳转路径
-    private int type;//适配器类型 0.历史请假记录 1.待处理的审批记录 2.历史审批记录
+    private int type;//适配器类型 0.历史请假记录 1.待处理的审批记录 2.历史审批记录 3.销假
     private int layoutId;//layoutId
 
     public LeaveInfoListAdapter(Context mContext, List<LeaveInfo> submitLeaveInfoList,List<ApprovalRecord> approvalRecordList, String ARouterPath, int type, int layoutId) {
@@ -54,7 +54,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
     public void onBindViewHolder(@NonNull LeaveInfoListAdapter.ViewHolder holder, int position) {
 //        submitLeaveInfoList.get(position)
 
-        if(type==1||type==0) {//请假信息
+        if(type==1||type==0||type==3) {//请假信息
 
             //点击事件
             RxView.clicks(holder.itemView)
@@ -66,7 +66,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
                                     .withInt("title", 0)//页面标题
                                     .navigation()
                     );
-            if (type == 0) {
+            if (type == 0||type==3) {
                 holder.tv_id.setVisibility(View.GONE);
                 holder.tv_name.setVisibility(View.GONE);
 
@@ -81,7 +81,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
             if (submitLeaveInfoList.get(position).getType() == 3)//实习
                 submitLeaveInfoList.get(position).setType(2);
             //请假类型
-            submitLeaveInfoList.get(position).setLeaveType(DensityUtil.setTypeText(mContext.getResources().getStringArray(R.array.leave_type)[submitLeaveInfoList.get(position).getType()]));
+            submitLeaveInfoList.get(position).setLeaveType(DensityUtil.setTypeText(mContext.getResources().getStringArray(R.array.leave_type)[submitLeaveInfoList.get(position).getType()%3]));
             holder.tv_type.setText(mContext.getString(R.string.type_tip, submitLeaveInfoList.get(position).getLeaveType()));
             //请假原因
             holder.tv_title.setText(mContext.getString(R.string.leave_title, submitLeaveInfoList.get(position).getLeaveTitle()));
@@ -120,7 +120,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
 
     @Override
     public int getItemCount() {
-        if(type == 0 ||type == 1)
+        if(type == 0 ||type == 1||type==3)
          return submitLeaveInfoList==null?0:submitLeaveInfoList.size();
         return approvalRecordList==null?0:approvalRecordList.size();
     }

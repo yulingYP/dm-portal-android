@@ -134,6 +134,7 @@
     <string name="date_type_4">yyyy年MM月dd日</string>
     <string name="date_type_5">yyyy.MM.dd</string>
     <string name="date_type_6">MM月dd日</string>
+    <string name="date_type_7">yyyyMMdd-HH:mm:ss</string>
     <string name="status_tip_1">正在审批</string>
     <string name="status_tip_2">已批准</string>
     <string name="status_tip_3">已拒绝</string>
@@ -287,4 +288,7 @@
     <string name="leave_time_start_to_end">%s至\n%s</string>
     <string name="return_date">年    月    日</string>
     <string name="get_name_fail">获取失败</string>
+    <string name="file_name">%s-%s-%s-%s</string>
+    <string name="leave_stop_title">销假</string>
+    <string name="cursor">课程</string>
 </resources>

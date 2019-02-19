@@ -25,7 +25,7 @@ public class SubjectDialog extends Dialog {
 
     private TextView tv_confirm;
     private LinearLayout lg_item;
-    private ScrollView lg_main;
+    private RCLinearLayout lg_main;
 
     private List<CursorArg> subjectList;
     private int weekDay;
@@ -46,7 +46,7 @@ public class SubjectDialog extends Dialog {
         });
 
         lg_item=(LinearLayout) view.findViewById(R.id.subject_layout);
-        lg_main=(ScrollView) view.findViewById(R.id.main_layout);
+        lg_main=(RCLinearLayout) view.findViewById(R.id.main_view);
     }
 
     public void setData(List<CursorArg> subjectList, int week, int pitch){
@@ -60,15 +60,18 @@ public class SubjectDialog extends Dialog {
         lg_item.removeAllViews();
         if(subjectList==null)
             return;
-        for(CursorArg cursorArg: subjectList){
-            View view =  LayoutInflater.from(mContext).inflate(R.layout.item_teacher_table_view, null);
-            ((TextView)view.findViewById(R.id.cusor_name_text)).setText(mContext.getString(R.string.cursor_name,cursorArg.getCursorName(),cursorArg.getCursorType()));
-            ((TextView)view.findViewById(R.id.credit_text)).setText(mContext.getString(R.string.credit_tip,cursorArg.getCredit()));
-            ((TextView)view.findViewById(R.id.cusor_hour_text)).setText(mContext.getString(R.string.cursor_hour_tip,2));
-            ((TextView)view.findViewById(R.id.location_text)).setText(mContext.getString(R.string.location,checkString(DensityUtil.checkClassRoom(weekDay+1,cursorArg.getClassroom()))));
-            ((TextView)view.findViewById(R.id.week_text)).setText(mContext.getString(R.string.week_number_2,cursorArg.getResultWeek()));
-            ((TextView)view.findViewById(R.id.pitch_text)).setText(mContext.getString(R.string.pitch_number,mContext.getResources().getStringArray(R.array.week)[weekDay],pitch));
-            ((TextView)view.findViewById(R.id.class_id_text)).setText(checkString(DensityUtil.getClassLisId(cursorArg)));
+
+        for (int i = 0 ;i<subjectList.size();i++) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_teacher_table_view, null);
+            ((TextView) view.findViewById(R.id.cusor_name_text)).setText(mContext.getString(R.string.cursor_name, subjectList.get(i).getCursorName(), subjectList.get(i).getCursorType()));
+            ((TextView) view.findViewById(R.id.credit_text)).setText(mContext.getString(R.string.credit_tip, subjectList.get(i).getCredit()));
+            ((TextView) view.findViewById(R.id.cusor_hour_text)).setText(mContext.getString(R.string.cursor_hour_tip, 2));
+            ((TextView) view.findViewById(R.id.location_text)).setText(mContext.getString(R.string.location, checkString(DensityUtil.checkClassRoom(weekDay + 1, subjectList.get(i).getClassroom()))));
+            ((TextView) view.findViewById(R.id.week_text)).setText(mContext.getString(R.string.week_number_2, subjectList.get(i).getResultWeek()));
+            ((TextView) view.findViewById(R.id.pitch_text)).setText(mContext.getString(R.string.pitch_number, mContext.getResources().getStringArray(R.array.week)[weekDay], pitch));
+            ((TextView) view.findViewById(R.id.class_id_text)).setText(checkString(DensityUtil.getClassLisId(subjectList.get(i))));
+            if(i==0)
+                view.findViewById(R.id.top_line).setVisibility(View.VISIBLE);
             lg_item.addView(view);
         }
         setContentView(lg_main);
@@ -79,7 +82,7 @@ public class SubjectDialog extends Dialog {
         //设置Dialog从窗体底部弹出
         //getWindow().setGravity(Gravity.BOTTOM);
         //设置铺满屏幕
-        getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
     }
@@ -93,14 +96,5 @@ public class SubjectDialog extends Dialog {
             return getContext().getString(R.string.unknow);
         return str;
     }
-   public void scrollToBootom(){
-       if(lg_main!=null)
-           lg_main.fullScroll(ScrollView.FOCUS_DOWN);//滚动到底部
-   }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        scrollToBootom();
-    }
 }

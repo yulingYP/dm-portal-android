@@ -77,7 +77,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     int userId;//要查询的id
 
     @Autowired(name = "type")
-    int type;//页面类型 0.历史请假记录 1.待处理的审批记录 2.历史审批记录
+    int type;//页面类型 0.历史请假记录 1.待处理的审批记录 2.历史审批记录 3.销假
 
     @Autowired(name = "ARouterPath")
     String ARouterPath;
@@ -106,7 +106,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }
 
     private void initView() {
-        if(type==0||type==1)
+        if(type==0||type==1||type==3)
             submitLeaveInfoList = new ArrayList<>();
         else
             approvalRecordList = new ArrayList<>();
@@ -143,6 +143,8 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 httpPost();
             }
         });
+
+        //搜索
         RxView.clicks(iv_search)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
@@ -177,6 +179,10 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             iv_search.setVisibility(View.VISIBLE);
             return R.string.approval_record;
         }
+        else if(type==3) {
+            iv_search.setVisibility(View.VISIBLE);
+            return R.string.leave_stop_title;
+        }
         return R.string.leave_history;
     }
 
@@ -195,8 +201,11 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 mPersenter.getAllApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(), SharedPreferencesUtil.getInstance().getUserType());
             else if (type == 2)//历史审批记录
                 mPersenter.getAllApprovalHistoryList(userId, requestPage);
+            else if(type==3){//销假
+                mPersenter.getSearchLeaveInfoList(userId, requestPage,30,type,"");
+            }
         }else {
-            if (type == 0)//历史请假记录
+            if (type == 0||type==3)//历史请假记录||销假
                 mPersenter.getSearchLeaveInfoList(userId,requestPage,checkCode,type,checkCode==-1?content:"");
             else if (type == 1)//待审批记录
                 mPersenter.getSearchApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(), SharedPreferencesUtil.getInstance().getUserType(),checkCode,type,checkCode==-1?content:"");
@@ -312,7 +321,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             img_no.setImageResource(R.mipmap.no_history);
             tv_no.setText(R.string.no_history_tip);
         }
-        else if(showType==2&&(((type==1||type==0)&&submitLeaveInfoList.size()==0)||(type==2&&approvalRecordList.size()==0))){
+        else if(showType==2&&(((type==1||type==0||type==3)&&submitLeaveInfoList.size()==0)||(type==2&&approvalRecordList.size()==0))){
             lg_no.setVisibility(View.VISIBLE);
             img_no.setImageResource(R.mipmap.nointernet);
             tv_no.setText(R.string.no_net_tip);

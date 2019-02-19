@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -24,11 +23,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.definesys.base.BaseActivity;
@@ -52,7 +48,7 @@ import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.io.File;
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,6 +60,13 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 @Route(path = ARouterConstants.LeaveTextActivity)
 public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
@@ -119,8 +122,10 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                 .subscribe(o->{
                     if(approvalRecordList.size()==0){//审批记录为空，重新获取
                        httpPost();
-                    }else
-                        shareImg();
+                    }else{
+                        String leaveType = "".equals(leaveInfo.getLeaveType())?DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[leaveInfo.getType()%3]):leaveInfo.getLeaveType();
+                        share(true,getString(R.string.file_name,leaveInfo.getName(),leaveType,leaveInfo.getLeaveTitle(),(new SimpleDateFormat(getString(R.string.date_type_7))).format(new Date())));
+                    }
                 });
 
         //生成pdf并分享
@@ -129,8 +134,10 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                 .subscribe(o->{
                     if(approvalRecordList.size()==0){////审批记录为空，重新获取
                         httpPost();
-                    }else
-                        sharePdf();
+                    }else {
+                        String leaveType = "".equals(leaveInfo.getLeaveType())?DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[leaveInfo.getType()%3]):leaveInfo.getLeaveType();
+                        share(false, getString(R.string.file_name, leaveInfo.getName(), leaveType, leaveInfo.getLeaveTitle(),(new SimpleDateFormat(getString(R.string.date_type_7))).format(new Date())));
+                    }
                 });
 
         approvalRecordList = new ArrayList<>();
@@ -144,22 +151,48 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     }
 
     /**
-     * 生成pdf并分享
+     * 分享图片或pdf
+     * @param isImage 是不是图片
+     * @param fileName 用户名-请假类型-请假标题-yyyyMMdd-HH:mm:ss
      */
-    private void sharePdf() {
-    }
-    /**
-     * 生成图片并分享
-     */
-    private void shareImg() {
+    private void share(boolean isImage,String fileName){
+        Observable.create(new ObservableOnSubscribe<File>() {
+            @Override
+            public void subscribe(ObservableEmitter<File> emitter) throws Exception {
+                File file=isImage?ImageUntil.saveBitmap(ImageUntil.convertViewToBitmap(lg_absence),fileName):ImageUntil.viewToPdf(lg_absence,fileName);
+                emitter.onNext(file);
+                emitter.onComplete();
+            }
 
-        Intent share_intent = new Intent();
-        share_intent.setAction(Intent.ACTION_SEND);//设置分享行为
-        share_intent.setType("image/*");  //设置分享内容的类型
-        share_intent.putExtra(Intent.EXTRA_STREAM, ImageUntil.saveBitmap(ImageUntil.convertViewToBitmap(lg_absence),UUID.randomUUID().toString()));
-        //创建分享的Dialog
-        share_intent = Intent.createChooser(share_intent, "");
-        startActivity(share_intent);
+        }).subscribeOn(Schedulers.io())// 指定 subscribe() 发生在 IO 线程
+                .doOnSubscribe(disposable -> progressHUD.show())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<File>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(File file) {
+                        Intent share_intent = new Intent();
+                        share_intent.setAction(Intent.ACTION_SEND);//设置分享行为
+                        share_intent.setType(isImage?"image/*":"application/pdf");//设置分享内容的类型
+                        share_intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));//添加分享内容
+                        startActivity(Intent.createChooser(share_intent, ""));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        progressHUD.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        progressHUD.dismiss();
+                    }
+                });
+
     }
 
     /**
@@ -278,8 +311,11 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
             if(approvalAuthority==0){//宿舍长
                 //签字
                 setSign((ImageView)view.findViewById(R.id.sign_img_0),(TextView)view.findViewById(R.id.sign_text_0),(ProgressBar)view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),0);
+            }else if(approvalAuthority<0){//销假签字
+                //返校后签字
+                ((TextView)view.findViewById(R.id.sign_text_8)).setText(leaveInfo.getName());
             }
-            if(approvalAuthority!=0){
+            else {
                 while (approvalAuthority%10>=0&&approvalAuthority>0){
                     int authority = approvalAuthority%10;
                     if(authority==0) {//宿舍长
@@ -368,28 +404,21 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
             //时间
             ((TextView)view.findViewById(R.id.leave_time)).setText(getString(R.string.leave_time_start_to_end,leaveInfo.getStartTime(),leaveInfo.getEndTime()));
         }
-        if(leaveInfo.getApprovalStatus()==12){//已销假
-            //销假签字
-            ((TextView)view.findViewById(R.id.return_sign)).setText(getString(R.string.stu_return_sign,leaveInfo.getUserName()));
-            String content =  "    "+getString(R.string.return_time,getString(R.string.return_date));
-            for(ApprovalRecord approvalRecord:approvalRecordList){
-                if(approvalRecord.getApproverType()==-10){
-                    content = getString(R.string.return_time,sdf.format(leaveInfo.getSubmitDate()));
-                    break;
-                }
-            }
-                //销假日期
-            ((TextView)view.findViewById(R.id.return_time)).setText(content);
-        }else {
-            //销假签字
-            ((TextView)view.findViewById(R.id.return_sign)).setText(getString(R.string.stu_return_sign,""));
-            //销假日期
-            ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,"     "+getString(R.string.return_date)));
-        }
+        //销假签字
+        ((TextView)view.findViewById(R.id.return_sign)).setText(getString(R.string.stu_return_sign,""));
+        //销假日期
+        ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,"     "+getString(R.string.return_date)));
+
         //各部门签字
         for (ApprovalRecord approvalRecord:approvalRecordList){
             int approvalAuthority  = approvalRecord.getApproverType();
-            if(approvalAuthority!=0){
+            if(approvalAuthority<0){//销假
+                //销假签字
+                ((TextView)view.findViewById(R.id.return_sign)).setText(getString(R.string.stu_return_sign,leaveInfo.getUserName()));
+                //销假日期
+                ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,sdf.format(leaveInfo.getSubmitDate())));
+            }
+            else if(approvalAuthority>0){//未销假
                 while (approvalAuthority%10>=0&&approvalAuthority>0){
                     int authority = approvalAuthority%10;
                     if(authority==1){//班长
