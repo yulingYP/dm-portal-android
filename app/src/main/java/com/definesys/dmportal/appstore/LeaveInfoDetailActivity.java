@@ -1,6 +1,8 @@
 package com.definesys.dmportal.appstore;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -40,6 +42,7 @@ import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -103,6 +106,9 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
 
     @BindView(R.id.no_layout)
     LinearLayout lg_no;
+
+    @BindView(R.id.cancel_layout)
+    LinearLayout lg_cancel;
 
     @BindView(R.id.layout_scroll)
     ScrollView lg_scoll;
@@ -188,7 +194,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     progressHUD.show();
-                    mPersenter.getApprovalRecord(submitLeaveInfo.getId());
+                    mPersenter.getApprovalRecord(submitLeaveInfo.getId(),"need");
 
                 });
 
@@ -206,6 +212,19 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
 
         }else {
             lg_share.setVisibility(GONE);
+        }
+
+        //长假且审批未拒绝
+        if(submitLeaveInfo.getType()==2&&submitLeaveInfo.getApprovalStatus()==100){
+            lg_cancel.setVisibility(VISIBLE);
+            //销假
+            RxView.clicks(lg_cancel)
+                    .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                    .subscribe(obj->{
+                      showSubDialog();
+                    });
+        }else {
+            lg_cancel.setVisibility(GONE);
         }
 
         if(submitLeaveInfo.getPicUrl()==null||"".equals(submitLeaveInfo.getPicUrl().trim())) {//没有图片
@@ -234,6 +253,22 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             }
         }
 
+    }
+
+    private void showSubDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.back_report_tip)
+                .setNegativeButton(R.string.cancel,null)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        progressHUD.show();
+//                        String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType,int leaverId
+                        mPersenter.updateApprovalStatusById(new ApprovalRecord(submitLeaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),getString(R.string.status_tip_3),(short)2,null,-10,SharedPreferencesUtil.getInstance().getUserId().intValue()));
+                    }
+                });
+        alertDialog.show();
     }
 
     /**
@@ -325,6 +360,21 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             }
             initDialog(data.getData());
 
+        }
+    }
+    /**
+     * 更新审批状态成功
+     * @param data
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_UPDATE_APPRVAL_RECORD)
+    }, thread = EventThread.MAIN_THREAD)
+    public void updateApprovalStatus(BaseResponse<String> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            progressHUD.dismiss();
+            SmecRxBus.get().post("cancelLeaveSuccess",submitLeaveInfo.getId());
+            Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
     /**

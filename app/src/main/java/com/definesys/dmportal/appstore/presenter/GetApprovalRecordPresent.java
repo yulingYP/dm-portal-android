@@ -30,9 +30,10 @@ public class GetApprovalRecordPresent extends BasePresenter {
         super(context);
     }
 
-    public void getApprovalRecord (String leaveId){
+    public void getApprovalRecord (String leaveId,String isNeed){
         Map map = new HashMap();
         map.put("leaveId",leaveId);
+        map.put("isNeed",isNeed);//是否需要排除销假记录
         Log.d("myMap",new Gson().toJson(map).toString());
         ViseHttp.POST(HttpConst.getApprovalRecordById)
                 .tag(HttpConst.getApprovalRecordById)

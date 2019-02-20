@@ -77,7 +77,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     int userId;//要查询的id
 
     @Autowired(name = "type")
-    int type;//页面类型 0.历史请假记录 1.待处理的审批记录 2.历史审批记录 3.销假
+    int type;//页面类型 0.历史请假记录 1.待处理的请假记录 2.历史审批记录 3.销假
 
     @Autowired(name = "ARouterPath")
     String ARouterPath;
@@ -340,6 +340,29 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             for (int i = 0; i < submitLeaveInfoList.size(); i++) {
                 if (submitLeaveInfoList.get(i).getId().equals(leaveId)) {
                     submitLeaveInfoList.remove(i);
+                    break;
+                }
+            }
+            leaveInfoListAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    /**
+     * 销假成功
+     * @param leaveId
+     */
+    @Subscribe(tags = {
+            @Tag("cancelLeaveSuccess")
+    }, thread = EventThread.MAIN_THREAD)
+    public void cancelSuccess(String leaveId) {
+        if(submitLeaveInfoList!=null) {
+            for (int i = 0; i < submitLeaveInfoList.size(); i++) {
+                if (submitLeaveInfoList.get(i).getId().equals(leaveId)) {
+                    if(type!=3&&isAll)//非销假列表 显示全部请假信息的列表
+                        submitLeaveInfoList.get(i).setApprovalStatus((short)120);
+                    else//销假列表
+                        submitLeaveInfoList.remove(i);
                     break;
                 }
             }

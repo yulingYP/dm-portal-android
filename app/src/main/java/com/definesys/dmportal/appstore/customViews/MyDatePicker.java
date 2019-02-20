@@ -64,6 +64,7 @@ public class MyDatePicker extends LinearLayout {
     private int currentDay;
     private Calendar cal = Calendar.getInstance();
     private onClickEventListener myListener;
+    private Context mContent;
 
     public MyDatePicker(Context context) {
         super(context);
@@ -80,7 +81,8 @@ public class MyDatePicker extends LinearLayout {
     }
     @SuppressLint("ClickableViewAccessibility")
     private void initView(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.view_date_picker, this);
+        mContent = context;
+        LayoutInflater.from(mContent).inflate(R.layout.view_date_picker, this);
         ButterKnife.bind(this);
         currentYear = cal.get(Calendar.YEAR);
         currentMonth = cal.get(Calendar.MONTH)+1;
@@ -169,11 +171,12 @@ public class MyDatePicker extends LinearLayout {
         num_month.setValue(currentMonth);
         //设置天数
         num_day.setMinValue(currentDay);
-        num_day.setMaxValue(getDays(currentYear,currentMonth)+1);
+        num_day.setMaxValue(getDays(currentYear,num_month.getValue()));
     }
 
     private String initDate(int year,int month,int day,int hour) {
-        return ""+year+"年"+String.format("%02d",month)+"月"+String.format("%02d",(day))+"日 "+String.format("%02d",(hour))+"时";
+        return mContent.getString(R.string.date_des,year,month,day,hour);
+//        ""+year+"年"+String.format("%02d",month)+"月"+String.format("%02d",(day))+"日 "+String.format("%02d",(hour))+"时";
     }
 
     public interface onClickEventListener{

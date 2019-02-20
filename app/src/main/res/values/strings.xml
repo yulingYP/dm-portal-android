@@ -291,4 +291,6 @@
     <string name="file_name">%s-%s-%s-%s</string>
     <string name="leave_stop_title">销假</string>
     <string name="cursor">课程</string>
+    <string name="back_report_tip">您确定要销假吗？</string>
+    <string name="date_des">%04d年%02d月%02d日 %02d时</string>
 </resources>

@@ -424,10 +424,11 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         try {
             startDate = isStart?df.parse(date):df.parse(tv_timeStart.getText().toString());
             endDate = isStart?df.parse(tv_timeEnd.getText().toString()):df.parse(date);
+            return startDate.before(endDate);
         } catch (ParseException e) {
             e.printStackTrace();
+            return false;
         }
-        return startDate.before(endDate);
     }
 
     /**

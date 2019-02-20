@@ -234,20 +234,20 @@ public class DensityUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(leaveInfo.getApprovalStatus()<10)//正在审批
+        if(leaveInfo.getApprovalStatus()<100)//正在审批
             return context.getString(R.string.status_tip_1);
-        else if(leaveInfo.getApprovalStatus()==11&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)<1)//审批未通过且时间未超过一天
+        else if(leaveInfo.getApprovalStatus()==110&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)<1)//审批未通过且时间未超过一天
             return context.getString(R.string.status_tip_3);
-        else if(leaveInfo.getApprovalStatus()==11&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)>=1)//审批未通过且时间超过一天
+        else if(leaveInfo.getApprovalStatus()==110&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)>=1)//审批未通过且时间超过一天
             return isMain?context.getString(R.string.status_tip_6):context.getString(R.string.status_tip_3);
-        else if(leaveInfo.getApprovalStatus()==12&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)<1)//已销假且时间未超过一天
+        else if(leaveInfo.getApprovalStatus()==120&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)<1)//已销假且时间未超过一天
             return context.getString(R.string.status_tip_5);
-        else if(leaveInfo.getApprovalStatus()==12&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)>=1)//已销假通过且时间超过一天
+        else if(leaveInfo.getApprovalStatus()==120&&(System.currentTimeMillis()-leaveInfo.getUpdateDate().getTime())/(24*60*60*1000)>=1)//已销假通过且时间超过一天
             return isMain?context.getString(R.string.status_tip_6):context.getString(R.string.status_tip_5);
         if(date!=null) {//长短假
-            if (leaveInfo.getApprovalStatus() == 10 && date.getTime() - System.currentTimeMillis() < 0&&leaveInfo.getType()==2)//长假 已批准假期且已到请假结束日期
+            if (leaveInfo.getApprovalStatus() == 100 && date.getTime() - System.currentTimeMillis() < 0&&leaveInfo.getType()==2)//长假 已批准假期且已到请假结束日期
                 return context.getString(R.string.status_tip_4);
-            else if (leaveInfo.getApprovalStatus() == 10)//长假除外 已批准
+            else if (leaveInfo.getApprovalStatus() == 100)//长假除外 已批准
                 return context.getString(R.string.status_tip_2);
 
         }
@@ -270,7 +270,7 @@ public class DensityUtil {
         else if(context.getString(R.string.status_tip_4).equals(data))
             tv.setTextColor(context.getResources().getColor(R.color.customOrange));
         else if(context.getString(R.string.status_tip_5).equals(data))
-            tv.setTextColor(context.getResources().getColor(R.color.green));
+            tv.setTextColor(context.getResources().getColor(R.color.customGreen));
         else
             tv.setTextColor(context.getResources().getColor(R.color.buttonBlue));
     }

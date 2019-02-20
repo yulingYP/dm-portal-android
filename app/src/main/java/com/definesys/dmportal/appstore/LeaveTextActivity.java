@@ -147,7 +147,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
 
     private void httpPost() {
         progressHUD.show();
-        mPersenter.getApprovalRecord(leaveInfo.getId());
+        mPersenter.getApprovalRecord(leaveInfo.getId(),null);
     }
 
     /**
