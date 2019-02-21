@@ -37,7 +37,8 @@ public class LeaveRequestPresenter extends BasePresenter {
      */
     public void getRequestResult (LeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
         //设置请假id
-        submitLeaveInfo.setId(submitLeaveInfo.getUserId().toString() + System.currentTimeMillis());
+        String id = submitLeaveInfo.getUserId().toString() + System.currentTimeMillis();
+        submitLeaveInfo.setId(id);
         //减少传输的数据
         submitLeaveInfo.setSubTime(null);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -70,9 +71,9 @@ public class LeaveRequestPresenter extends BasePresenter {
                         switch (data.getCode()) {
                             case "200":
                                 if(finalRequestBody == null)//没有图片要上传
-                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, data.getMsg());
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, id);
                                 else //有图片要上传
-                                    setPicture(finalRequestBody);
+                                    setPicture(finalRequestBody,id);
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
@@ -91,8 +92,9 @@ public class LeaveRequestPresenter extends BasePresenter {
     /**
      * 上传请假图片
      * @param finalRequestBody
+     * @param id 请假id
      */
-    private void setPicture(RequestBody finalRequestBody) {
+    private void setPicture(RequestBody finalRequestBody, String id) {
         ViseHttp.POST(HttpConst.uploadLeaveImg)
                 .setRequestBody(finalRequestBody)
                 .tag(HttpConst.uploadLeaveImg)
@@ -101,7 +103,7 @@ public class LeaveRequestPresenter extends BasePresenter {
                     public void onSuccess(BaseResponse<String> data) {
                         switch (data.getCode()) {
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, data.getMsg());
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, id);
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());

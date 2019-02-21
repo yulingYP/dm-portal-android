@@ -147,7 +147,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
 
     private void httpPost() {
         progressHUD.show();
-        mPersenter.getApprovalRecord(leaveInfo.getId(),null);
+        mPersenter.getApprovalRecordList(leaveInfo.getId(),null);
     }
 
     /**
@@ -303,7 +303,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         //学号
         ((TextView)view.findViewById(R.id.stuId_text)).setText(getString(R.string.stu_id,leaveInfo.getUserId().intValue()));
         //签名时间
-        ((TextView)view.findViewById(R.id.sign_time)).setText(sdf.format(leaveInfo.submitDate));
+        ((TextView)view.findViewById(R.id.sign_time)).setText(sdf.format(leaveInfo.getSubmitDate()));
 
         //各部门签字
         for (ApprovalRecord approvalRecord:approvalRecordList){

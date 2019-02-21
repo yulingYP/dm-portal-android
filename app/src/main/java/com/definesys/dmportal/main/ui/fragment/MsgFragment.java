@@ -10,9 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.definesys.base.BaseFragment;
+import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.bean.LeaveInfo;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.main.adapter.MsgRecycleViewAdapter;
 import com.definesys.dmportal.main.bean.DataContent;
 import com.definesys.dmportal.main.bean.Message;
@@ -20,6 +24,7 @@ import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.MessagePresenter;
 import com.definesys.dmportal.main.util.MsgIconIdUtil;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -56,9 +61,8 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
     @BindView(R.id.tv_nomessage)
     TextView tvNomessage;
     private MsgRecycleViewAdapter myAdapter;
-    private List<Message> messageList;
-    private boolean isLastPage;
-    private int requestPage;
+    private List<MyMessage> messageList;
+    private int requestPage;//请求页码
 
     @Nullable
     @Override
@@ -74,7 +78,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         initView();
-        refreshLayout.autoRefresh();
+//        refreshLayout.autoRefresh();
     }
 
     @Override
@@ -90,49 +94,33 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
 
     private void initView() {
 //        tvNomessage.setTextSize(DensityUtil.px2sp(getActivity(),28));
-        requestPage = 1;
         messageList = new ArrayList<>();
+
+        //下拉刷新
+        refreshLayout.setOnRefreshListener(refreshLayout -> {
+            requestPage = 1;
+            messageList.clear();
+            if(myAdapter!=null)
+                myAdapter.notifyDataSetChanged();
+            mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserId(), requestPage);
+        });
+
+        //上拉刷新
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            ++requestPage;
+            mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserId(), requestPage);
+
+        });
+        initList();
+        hide(1);
+    }
+
+    private void initList() {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         myAdapter = new MsgRecycleViewAdapter(getActivity(), messageList);
 
         recyclerView.setAdapter(myAdapter);
-
-        refreshLayout.setOnRefreshListener(refreshLayout -> {
-            requestPage = 1;
-            mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserId().toString(), requestPage,1);
-            Observable
-                    .timer(5, TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Long>() {
-                        @Override
-                        public void accept(Long aLong) throws Exception {
-                            refreshLayout.finishRefresh(false);
-
-                        }
-                    });
-        });
-        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            if (!isLastPage) {
-                mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserId().toString(), requestPage,2);
-                Observable
-                        .timer(5, TimeUnit.SECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<Long>() {
-                            @Override
-                            public void accept(Long aLong) throws Exception {
-                                refreshLayout.finishLoadMore(false);
-
-                            }
-                        });
-            } else {
-                refreshLayout.finishLoadMore();
-                show();
-            }
-
-
-        });
-        hide(1);
     }
 
     /**
@@ -140,54 +128,38 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
      * 重设当前页数、是否尾页、适配器内容
      * 通知页面刷新成功
      *
-     * @param dataContent 消息内容
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_MESSAGE)
     }, thread = EventThread.MAIN_THREAD
     )
-    public void successfulGetMessage(DataContent<Message> dataContent) {
-        isLastPage = dataContent.isLastPage();
-        //初始化工具类
-        dataContent.getList().get(0).setMsgStatus("已审批");
-        dataContent.getList().get(0).setMsgTitle("您的请假申请已通过");
-        dataContent.getList().get(1).setMsgTitle("您的请假申请正在审批中,点击查看进度详情");
-        dataContent.getList().get(2).setMsgStatus("已拒绝");
-        dataContent.getList().get(2).setMsgTitle("您的请假申请已被拒绝，点击查看详细内容");
-        MsgIconIdUtil msgIconIdUtil = new MsgIconIdUtil();
-        for (Message message : dataContent.getList()) {
-
-//            message.setMsgDate(new SimpleDateFormat(getString(R.string.time_format),Locale.getDefault()).format(message.getMsgDate()));// 格式化时间
-            message.setMsgIcon(msgIconIdUtil.getMsgStatusIcon(message.getMsgStatus()));   //  设置图标
-        }
-        if (refreshLayout.getState().isHeader) {
-            this.messageList.clear();
-            myAdapter.notifyDataSetChanged();
-        }
-        requestPage++;
-        int size = this.messageList.size();
-        this.messageList.addAll(dataContent.getList());
-
-        Collections.sort(messageList, new Comparator<Message>(){
-            @Override
-            public int compare(Message o1, Message o2) {
-                return o2.getMsgDate().compareTo(o1.getMsgDate());
-            }
-        });
-
-        int currentSize = this.messageList.size();
-        myAdapter.notifyItemRangeChanged(currentSize, size);
-        myAdapter.notifyDataSetChanged();
-        //传入true表示刷新成功
-        if (refreshLayout.getState().isHeader) {
+    public void successfulGetMessage(BaseResponse<List<MyMessage>> data) {
+        if(requestPage==1) {//下拉刷新
             refreshLayout.finishRefresh(true);
-        } else {
             refreshLayout.finishLoadMore(true);
         }
-
-        if ( messageList != null   || messageList.size() > 0) {
+        else//加载更多
+            refreshLayout.finishLoadMore(true);
+        if((data.getData()==null||data.getData().size()==0)&&messageList.size()==0)//没有数据
+            hide(1);
+        else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
+            Toast.makeText(getContext(),data.getMsg(),Toast.LENGTH_SHORT).show();
+            --requestPage;
+        }
+        else {//有数据
+            int currentSize = messageList.size();
+            List<MyMessage> myMessages = data.getData();
+            //排序
+            Collections.sort(myMessages);
+            messageList.addAll(myMessages);
+            if(myAdapter==null)
+                initList();
+            else {
+                myAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
+            }
             show();
         }
+        SmecRxBus.get().post("setRed",false);
     }
 
     /**
@@ -201,8 +173,11 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
             @Tag(MainPresenter.ERROR_GET_MESSAGE)
     }, thread = EventThread.MAIN_THREAD
     )
-    public void errorGetMessage(Object msg) {
+    public void errorGetMessage(String msg) {
+        if(msg!=null&&!"".equals(msg))
+            Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT).show();
         refreshLayout.finishRefresh(false);
+        refreshLayout.finishLoadMore(false);
     }
 
     @Override
@@ -225,5 +200,21 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
             tvNomessage.setText(R.string.no_msg_tip);
         else
             tvNomessage.setText(R.string.no_net_tip);
+    }
+
+    public void reFresh(){
+        requestPage=1;
+        refreshLayout.autoRefresh();
+    }
+    //添加消息
+    public void addMsg(MyMessage myMessage){
+     messageList.add(0,myMessage);
+     if(myAdapter==null)
+         initList();
+     else {
+//         myAdapter.notifyDataSetChanged();
+         myAdapter.notifyItemInserted(0);//通知演示插入动画
+         myAdapter.notifyItemRangeChanged(0,messageList.size());//通知数据与界面重新绑定
+     }
     }
 }

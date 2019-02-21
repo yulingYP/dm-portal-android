@@ -78,7 +78,7 @@ public class NewsFragment extends BaseFragment<NewsPresenter> {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         initView();
-        refreshLayout.autoRefresh();
+//        refreshLayout.autoRefresh();
     }
 
     @Override

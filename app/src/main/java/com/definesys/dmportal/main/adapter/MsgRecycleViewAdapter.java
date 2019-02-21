@@ -11,25 +11,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.TextViewUniversalToast;
+import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.main.bean.Message;
+import com.jakewharton.rxbinding2.view.RxView;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Message> messages;
+    private List<MyMessage> messages;
     private Context context;
     //  点击事件的预留变量
     private OnClickListener onClickListener;
+    private SimpleDateFormat sdf;
 
 
-    public MsgRecycleViewAdapter(Context context, List<Message> messages) {
+    public MsgRecycleViewAdapter(Context context, List<MyMessage> messages) {
         this.context = context;
         this.messages = messages;
-
+        this.sdf=new SimpleDateFormat(context.getString(R.string.date_type_2));
     }
 
     @NonNull
@@ -43,12 +52,79 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MsgHolder) {
             MsgHolder viewHolder = (MsgHolder) holder;
-            viewHolder.time.setTextDisplayed(messages.get(position).getMsgDate());
-            viewHolder.img.setImageResource(messages.get(position).getMsgIcon());
-            viewHolder.content.setText(messages.get(position).getMsgTitle());
-            if (onClickListener != null)
-                viewHolder.layout.setOnClickListener((view) -> onClickListener.OnClick(position));
+            viewHolder.time.setTextDisplayed(sdf.format(messages.get(position).getSendTime()));
+            if(messages.get(position).getMessageType()==1){//请假人消息
+                if(messages.get(position).getMessageExtend2()==0) {//拒绝
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_refuse);
+                    viewHolder.content.setText(R.string.message_tip_1);
+                }else if(messages.get(position).getMessageExtend2()==1) {//同意
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
+                    viewHolder.content.setText(R.string.message_tip_2);
+                }
+                else if(messages.get(position).getMessageExtend2()==2) {//已提交
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_await);
+                    viewHolder.content.setText(R.string.message_tip_3);
+                }else if(messages.get(position).getMessageExtend2()==3) {//已销假
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_await);
+                    viewHolder.content.setText(R.string.message_tip_4);
+                }
+
+            }else if(messages.get(position).getMessageType()==2){//审批人消息
+                String id = messages.get(position).getMessageExtend();
+                id=id.length()>9?id.substring(0,9):id;
+                if(messages.get(position).getMessageExtend2()==0) {//拒绝
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_refuse);
+                    viewHolder.content.setText(context.getString(R.string.message_tip_5,id));
+                }else if(messages.get(position).getMessageExtend2()==1) {//同意
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
+                    viewHolder.content.setText(context.getString(R.string.message_tip_6,id));
+                }else if(messages.get(position).getMessageExtend2()==4) {//未审批
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_await);
+                    viewHolder.content.setText(context.getString(R.string.message_tip_7,id));
+                }
+            }
+            RxView.clicks(viewHolder.layout)
+                    .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                    .subscribe(obj->{
+                        if(messages.get(position).getMessageType()==1){//请假人消息
+                            ARouter.getInstance()
+                                    .build(ARouterConstants.LeaveInFoDetailActivity)
+                                    .withString("leaveId",messages.get(position).getMessageExtend())
+                                    .navigation();
+                        }else if(messages.get(position).getMessageType()==2){//审批人消息
+                            int pos = position;
+                            if(messages.get(position).getMessageExtend2()==4){
+                               pos= checkDate(position);
+                            }
+                            ARouter.getInstance()
+                                    .build(ARouterConstants.ApprovalLeaveInfoActivity)
+                                    .withString("leaveId",messages.get(pos).getMessageExtend())
+                                    .withInt("type",messages.get(pos).getMessageExtend2())
+                                    .withObject("approvalDate",messages.get(pos).getMessageExtend3())
+                                    .withString("approvalContent",messages.get(pos).getMessageContent())
+                                    .navigation();
+                        }
+
+                    });
         }
+    }
+
+    /**
+     * 检查该记录是否已经审批
+     * @param position 检测的位置
+     * @return
+     */
+    private int checkDate(int position) {
+        MyMessage myMessage = messages.get(position);
+        int i;
+        for( i= position-1 ; i >=0;i--){
+            if(messages.get(i).getMessageExtend().equals(myMessage.getMessageExtend())&&//是不是同一条请假信息
+                    messages.get(i).getMessageExtend2()!=4&&//是不是已经给出请假结果
+                    messages.get(i).getSendTime().after(myMessage.getSendTime())) {//是不是在该条信息之后
+                break;
+            }
+        }
+        return i>=0?i:position;
     }
 
     @Override

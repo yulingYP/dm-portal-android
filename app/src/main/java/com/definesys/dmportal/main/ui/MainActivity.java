@@ -1,5 +1,7 @@
 package com.definesys.dmportal.main.ui;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
@@ -15,7 +17,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
@@ -59,6 +63,7 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     private MyFragment myFragment ;
     public static int screenWith;//手机屏幕的宽度
     public static int screenHeight;//手机屏幕的高度
+    private boolean isFirst = true;//第一次点击消息页
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +97,11 @@ public class MainActivity extends BaseActivity<MainPresenter> {
             public void onTabSelect(int position) {
                 currentPosition = position;
                 mViewPager.setCurrentItem(position, false);
-                mTabbar.getTabAtPosition(position).hiddenBadge();   //隐藏红点
+
+                if((position==0&& mTabbar.getTabAtPosition(position).isBadgeShow())||isFirst){
+                    contactFragment.freshMsgFragment();
+                    isFirst = false;
+                }
             }
 
             @Override
@@ -117,7 +126,7 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         mViewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.setCurrentItem(currentPosition, true);
-        mViewPager.getAdapter().notifyDataSetChanged();
+        if(mViewPager.getAdapter()!=null)mViewPager.getAdapter().notifyDataSetChanged();
 
         titleIndicator = new CustomTitleIndicator(this, null);
         titleIndicator.setOnTitleClickListener(new CustomTitleIndicator.OnTitleClickListener() {
@@ -252,5 +261,31 @@ public class MainActivity extends BaseActivity<MainPresenter> {
             });
         }
     }
+    /**
+     * 添加消息
+     */
+    @Subscribe(tags = {
+            @Tag("addMessage")
+    }, thread = EventThread.MAIN_THREAD)
+    public void addMessage(MyMessage message) {
+        if(currentPosition==0&&contactFragment.getCurrentitem()==0){//在消息页面
+            contactFragment.getMsgFragment().addMsg(message);
+        } else //显示红点
+            mTabbar.getTabAtPosition(0).showCirclePointBadge();
+    }
 
+    //消息页红点
+    @Subscribe(
+            tags = {@Tag("setRed")},
+            thread = EventThread.MAIN_THREAD
+    )
+    public void setRed(Boolean isRed){
+        if(isRed) {
+            mTabbar.getTabAtPosition(0).showCirclePointBadge();
+        }
+        else {
+            mTabbar.getTabAtPosition(0).hiddenBadge();
+//            deleteNofi();
+        }
+    }
 }

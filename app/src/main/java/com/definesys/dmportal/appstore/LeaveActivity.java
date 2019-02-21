@@ -32,6 +32,7 @@ import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
 import com.definesys.dmportal.appstore.bean.LeaveInfo;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.bean.SubjectTable;
 import com.definesys.dmportal.appstore.customViews.MyDatePicker;
 import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
@@ -46,6 +47,7 @@ import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -600,6 +602,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             Toast.makeText(this, R.string.submit_success,Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
             PictureFileUtils.deleteCacheDirFile(this);
+            //请假人提交请假申请成功
+            SmecRxBus.get().post("addMessage",new MyMessage(SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,null, new Date()));
             finish();
 
         }

@@ -130,7 +130,8 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                         leaveInfoListAdapter.notifyDataSetChanged();
                 }else if(approvalRecordList!=null&&approvalRecordList.size()>0){
                     approvalRecordList.clear();
-                    leaveInfoListAdapter.notifyDataSetChanged();
+                    if(leaveInfoListAdapter!=null)
+                        leaveInfoListAdapter.notifyDataSetChanged();
                 }
                 httpPost();
             }
@@ -242,8 +243,10 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void getLeaveInfoList(BaseResponse<List<LeaveInfo>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestPage==1)//下拉刷新
+            if(requestPage==1) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
+                smartRefreshLayout.finishLoadMore(true);
+            }
             else//加载更多
                 smartRefreshLayout.finishLoadMore(true);
             if((data.getData()==null||data.getData().size()==0)&&submitLeaveInfoList.size()==0)//没有数据
@@ -275,8 +278,10 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void getApprovalInfoList(BaseResponse<List<ApprovalRecord>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestPage==1)//下拉刷新
+            if(requestPage==1) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
+                smartRefreshLayout.finishLoadMore(true);
+            }
             else//加载更多
                 smartRefreshLayout.finishLoadMore(true);
             if((data.getData()==null||data.getData().size()==0)&&approvalRecordList.size()==0)//没有数据
@@ -284,7 +289,6 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
                 --requestPage;
-                return;
             }
             else {//有数据
                 int currentSize = approvalRecordList.size();

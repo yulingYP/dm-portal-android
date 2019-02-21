@@ -135,6 +135,7 @@
     <string name="date_type_5">yyyy.MM.dd</string>
     <string name="date_type_6">MM月dd日</string>
     <string name="date_type_7">yyyyMMdd-HH:mm:ss</string>
+    <string name="date_type_8">yyyy-MM-dd HH:mm:ss</string>
     <string name="status_tip_1">正在审批</string>
     <string name="status_tip_2">已批准</string>
     <string name="status_tip_3">已拒绝</string>
@@ -293,4 +294,12 @@
     <string name="cursor">课程</string>
     <string name="back_report_tip">您确定要销假吗？</string>
     <string name="date_des">%04d年%02d月%02d日 %02d时</string>
+    <string name="message_tip_1">您的请假请求已被拒绝</string>
+    <string name="message_tip_2">您的请假请求已通过</string>
+    <string name="message_tip_3">您的请假请求已提交，请耐心等待审批结果</string>
+    <string name="message_tip_4">销假成功，祝您生活愉快</string>
+    <string name="message_tip_5">您拒绝了%s的请假请求</string>
+    <string name="message_tip_6">您通过了%s的请假请求</string>
+    <string name="message_tip_7">学号%s有请假请求，请去处理</string>
+    <string name="request_date_type">%d-%02d-%02d %02d:%02d:%02d</string>
 </resources>

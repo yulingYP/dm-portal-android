@@ -9,22 +9,22 @@ import java.util.Date;
  */
 
 public class LeaveInfo implements Comparable<LeaveInfo>{
-    public String id;//请假编号
-    public Number userId;//用户id
-    public String userName;//姓名
-    public String leaveReason;//具体原因
-    public String startTime;//开始时间
-    public String endTime;//结束时间
-    public String leaveType;//请假类型
-    public String leaveTitle;//请假标题（原因）
-    public String subTime;//时长
-    public String selectedSubject;//选择课表
-    Short approvalStatus;//审批状态 1.正在审批 10.已批准 11.已拒绝
-    int type;//0.课假 1.短假 2.长假
-    public Date submitDate;//提交日期
-    public String picUrl;//图片url用*号隔开
-    public Date updateDate;//更新日期
-    public int userType;//用户类型
+    private String id;//请假编号
+    private Number userId;//用户id
+    private String userName;//姓名
+    private String leaveReason;//具体原因
+    private String startTime;//开始时间
+    private String endTime;//结束时间
+    private String leaveType;//请假类型
+    private String leaveTitle;//请假标题（原因）
+    private String subTime;//时长
+    private String selectedSubject;//选择课表
+    private Short approvalStatus;//审批状态 1.正在审批 10.已批准 11.已拒绝
+    private int type;//0.课假 1.短假 2.长假
+    private Date submitDate;//提交日期
+    private String picUrl;//图片url用*号隔开
+    private Date updateDate;//更新日期
+    private int userType;//用户类型
 
     public LeaveInfo() {
     }

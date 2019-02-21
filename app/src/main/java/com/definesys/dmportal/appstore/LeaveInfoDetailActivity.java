@@ -31,6 +31,7 @@ import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
 import com.definesys.dmportal.appstore.bean.LeaveInfo;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
 import com.definesys.dmportal.appstore.presenter.GetApprovalRecordPresent;
 import com.definesys.dmportal.appstore.presenter.GetCurrentLeaveInfoPresenter;
@@ -39,7 +40,6 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
-import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -51,8 +51,6 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +61,6 @@ import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
 
 @Route(path = ARouterConstants.LeaveInFoDetailActivity)
 public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPresent> {
@@ -115,6 +112,8 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
 
     @Autowired(name = "leaveInfo")
     LeaveInfo submitLeaveInfo;
+    @Autowired(name = "leaveId")
+    String leaveId;
     @Autowired(name = "title")
     int title;
     private List<LocalMedia> localMediaList;
@@ -125,21 +124,20 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
         setNoLayout(true);
+        initTitle();
         if(submitLeaveInfo!=null)
             initView();
-        else {
+        else if(leaveId!=null&&!"".equals(leaveId)){
+            mPersenter.getLeaveInfoById(leaveId);
+        } else {
             progressHUD.show();
             (new GetCurrentLeaveInfoPresenter(this)).getCurrentLeaveInfo(SharedPreferencesUtil.getInstance().getUserId());
         }
     }
 
-    private void initView() {
-        setNoLayout(false);
+    private void initTitle(){
         titleBar.setTitle(title==0?R.string.leave_detail:R.string.leave_progress);
         titleBar.setBackgroundDividerEnabled(false);
-
-        if(submitLeaveInfo.getType()==3)//实习
-            submitLeaveInfo.setType(2);
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -148,7 +146,11 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                     setResult(RESULT_CANCELED,intent);
                     finish();
                 });
-
+    }
+    private void initView() {
+        setNoLayout(false);
+        if(submitLeaveInfo.getType()==3)//实习
+            submitLeaveInfo.setType(2);
         //姓名
         tv_name.setText(getString(R.string.name_tip,submitLeaveInfo.getName()));
 
@@ -194,7 +196,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     progressHUD.show();
-                    mPersenter.getApprovalRecord(submitLeaveInfo.getId(),"need");
+                    mPersenter.getApprovalRecordList(submitLeaveInfo.getId(),"need");
 
                 });
 
@@ -345,6 +347,26 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     }
 
     /**
+     * 根据leaveId获取请假信息成功
+     * @param data
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getLeaveInfo(BaseResponse<LeaveInfo> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            progressHUD.dismiss();
+            if(data.getData()==null){
+                setNoLayout(true);
+                Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
+                return;
+            }
+            submitLeaveInfo = data.getData();
+            initView();
+        }
+    }
+
+    /**
      * 获取审批记录成功
      * @param data
      */
@@ -374,6 +396,8 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             progressHUD.dismiss();
             SmecRxBus.get().post("cancelLeaveSuccess",submitLeaveInfo.getId());
             Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
+            //请假人销假成功
+            SmecRxBus.get().post("addMessage",new MyMessage(submitLeaveInfo.getUserId(), (short) 1, "", (short)3 ,submitLeaveInfo.getId(),null, new Date()));
             finish();
         }
     }

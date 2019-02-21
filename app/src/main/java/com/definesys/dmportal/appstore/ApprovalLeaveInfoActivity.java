@@ -1,6 +1,5 @@
 package com.definesys.dmportal.appstore;
 
-import android.animation.IntArrayEvaluator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -37,21 +35,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.definesys.base.BaseActivity;
-import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
 import com.definesys.dmportal.appstore.bean.LeaveInfo;
-import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
-import com.definesys.dmportal.appstore.customViews.SubmitLeaveInfoView;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.presenter.GetApprovalRecordPresent;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
-import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -150,6 +145,16 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     @Autowired(name = "approvalRecord")
     ApprovalRecord approvalRecord;
 
+    @Autowired(name = "leaveId")
+    String leaveId;//请假id
+    @Autowired(name = "type")
+    int type;//审批的类型 0.拒绝 1.同意 4.未审批
+    @Autowired(name = "approvalDate")
+    Date approvalDate;//审批时间
+    @Autowired(name = "approvalContent")
+    String approvalContent;//审批内容
+
+
     private List<LocalMedia> localMediaList;
     private boolean isAgree = true;//是否同意
     @Override
@@ -158,18 +163,33 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         setContentView(R.layout.activity_approval_leave_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-        initTitle();
+
         if(submitLeaveInfo!=null) {
             initView();
             initEdit();
-        }else {
+        }else if(leaveId!=null&&!"".equals(leaveId)){//根据leaveId获取请假信息
+            progressHUD.show();
+            mPersenter.getLeaveInfoById(leaveId);
+            if(type!=4&&approvalDate==null&&approvalContent!=null&&!"".equals(approvalContent)){//已审批但找不到审批记录
+                isAgree = type==1;
+                approvalRecord = new ApprovalRecord(leaveId,0,approvalContent,(short)type,null,0,0);
+                if(submitLeaveInfo!=null){//已获取到请假信息
+                    initView();
+                    initEditUnable();
+                }
+            }else if(type!=4&&approvalDate!=null){
+                mPersenter.getApprovalRecordByDate(leaveId,approvalDate,this);
+            }
+        }
+        else {
             progressHUD.show();
             mPersenter.getLeaveInfoById(approvalRecord.getLeaveInfoId());
         }
+        initTitle(false);
     }
 
-    private void initTitle() {
-        titleBar.setTitle(submitLeaveInfo!=null?getString(R.string.approval_leave_info):getString(R.string.approval_leave_info_2));
+    private void initTitle(boolean isSow) {
+        titleBar.setTitle(approvalRecord==null?getString(R.string.approval_leave_info):getString(R.string.approval_leave_info_2));
         titleBar.setBackgroundDividerEnabled(false);
         //titleBar.setBackground(null);
         RxView.clicks(titleBar.addLeftBackImageButton())
@@ -182,7 +202,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                         finish();
                     }
                 });
-        if(submitLeaveInfo!=null) {
+        if(approvalRecord==null&&isSow) {
             Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_approval_leave_info);
             button.setTextSize(14);
 
@@ -190,13 +210,15 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             RxView.clicks(button)
                     .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                     .subscribe(obj -> checkContent());
+        }else {
+            titleBar.removeAllRightViews();
         }
         tv_approvalContent.setVisibility(GONE);
 
     }
 
     private void initView() {
-
+        initTitle(true);
         //点击更多
         RxView.clicks(lg_info)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
@@ -503,13 +525,40 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             progressHUD.dismiss();
             SmecRxBus.get().post("updateSuccess",submitLeaveInfo.getId());
+            //审批人提交审批成功
+            String content = ed_reason.getText().toString();  //审批意见
+            if("".equals(content)&&isAgree)
+                content = getString(R.string.agree_tip);
+            SmecRxBus.get().post("addMessage",new MyMessage(submitLeaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,submitLeaveInfo.getId(),null, new Date()));
             Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             finish();
         }
     }
+    /**
+     * 获取审批记录成功
+     * @param data
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_APPRVAL_RECORD_BY_DATE)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getApprovalInfo(BaseResponse<ApprovalRecord> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            if(data.getData()==null){
+                Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
+            }else {
+                approvalRecord = data.getData();
+                if(submitLeaveInfo!=null){
+                    progressHUD.dismiss();
+                    initView();
+                    initEditUnable();
+                }
+            }
+        }
+
+    }
 
     /**
-     * 更新审批状态成功
+     * 获取请假信息成功
      * @param data
      */
     @Subscribe(tags = {
@@ -521,11 +570,15 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             progressHUD.dismiss();
             if(submitLeaveInfo==null){
                 Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
-                return;
             }else {
-                isAgree=approvalRecord.getApprovalResult()!=0;
-                initView();
-                initEditUnable();
+                if(approvalRecord!=null&type!=4) {
+                    isAgree = approvalRecord.getApprovalResult() != 0;
+                    initView();
+                    initEditUnable();
+                }else if(type==4){
+                    initView();
+                    initEdit();
+                }
             }
         }
     }

@@ -54,8 +54,11 @@ public class MainPresenter extends BasePresenter {
     //获取历史审批记录成功
     public static final String SUCCESSFUL_GET_APPROVAL_HISTORY_LIST="SUCCESSFUL_GET_APPROVAL_HISTORY_LIST";
 
-    //获取审批记录成功
+    //通过ID获取审批记录成功
     public static final String SUCCESSFUL_GET_APPRVAL_RECORD="SUCCESSFUL_GET_APPRVAL_RECORD";
+
+    //通过时间获取审批记录成功
+    public static final String SUCCESSFUL_GET_APPRVAL_RECORD_BY_DATE="SUCCESSFUL_GET_APPRVAL_RECORD_BY_DATE";
 
     //根据请假Id更新审批状态，并插入审批记录
     public static final String SUCCESSFUL_UPDATE_APPRVAL_RECORD="SUCCESSFUL_UPDATE_APPRVAL_RECORD";

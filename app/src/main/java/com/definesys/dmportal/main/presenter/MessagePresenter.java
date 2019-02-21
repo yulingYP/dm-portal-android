@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.main.bean.DataContent;
 import com.definesys.dmportal.main.bean.Message;
 import com.google.gson.Gson;
@@ -12,6 +13,7 @@ import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MessagePresenter extends BasePresenter {
@@ -20,26 +22,36 @@ public class MessagePresenter extends BasePresenter {
         super(context);
     }
 
-    public void getMsg(String phoneNumber,int requestPage,int i){
-        Map<String,String> msgMap = new HashMap<>();
-        msgMap.put("userCode","17863136613");
-        msgMap.put("page",String.valueOf(requestPage));
-        msgMap.put("size","10");
-        ViseHttp.POST(HttpConst.getStaticMessage).setJson(new Gson().toJson(msgMap)).tag(HttpConst.getStaticMessage)
-        .request(new ACallback<BaseResponse<DataContent<Message>>>() {
+    public void getMsg(Number userId,Number page){
+        Map<String,Number> msgMap = new HashMap<>();
+        msgMap.put("userId",userId);
+        msgMap.put("page",page);
+        ViseHttp.CONFIG()
+                //配置读取超时时间，单位秒
+                .readTimeout(5)
+                //配置写入超时时间，单位秒
+                .writeTimeout(5)
+                //配置连接超时时间，单位秒
+                .connectTimeout(5);
+        ViseHttp.POST(HttpConst.getStaticMessage)
+                .setJson(new Gson().toJson(msgMap))
+                .tag(HttpConst.getStaticMessage)
+        .request(new ACallback<BaseResponse<List<MyMessage>>>() {
             @Override
-            public void onSuccess(BaseResponse data) {
+            public void onSuccess(BaseResponse<List<MyMessage>> data) {
             switch (data.getCode()){
                 case "200":
-                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_MESSAGE,data.getData());break;
+                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_MESSAGE,data);
+                    break;
                 default:
-                    SmecRxBus.get().post(MainPresenter.ERROR_GET_MESSAGE,data.getMsg());break;
+                    SmecRxBus.get().post(MainPresenter.ERROR_GET_MESSAGE,data.getMsg());
+                    break;
             }
             }
 
             @Override
             public void onFail(int errCode, String errMsg) {
-                SmecRxBus.get().post(MainPresenter.ERROR_GET_MESSAGE,i);
+                SmecRxBus.get().post(MainPresenter.ERROR_GET_MESSAGE,"");
             }
         });
     }

@@ -50,7 +50,7 @@ public class ContactFragment extends Fragment {
     ViewPager mViewpager;
 
 
-    int currentitem = 0;
+    private int currentitem = 0;
 
     Unbinder unbinder;
 
@@ -185,5 +185,19 @@ public class ContactFragment extends Fragment {
 
     public void setmViewpager(ViewPager mViewpager) {
         this.mViewpager = mViewpager;
+    }
+
+    public void freshMsgFragment(){
+        if(msgFragment!=null){
+            msgFragment.reFresh();
+        }
+    }
+
+    public int getCurrentitem() {
+        return currentitem;
+    }
+
+    public MsgFragment getMsgFragment() {
+        return msgFragment;
     }
 }
