@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="ContentDescription"
     android:background="@drawable/back_2">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -42,23 +45,26 @@
                     android:layout_height="44dp"
                     android:gravity="center"
                     android:background="@color/white"
-                    android:layout_marginTop="2px"
+                    android:layout_marginTop="1dp"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_marginStart="8dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@mipmap/user_protocol"
-                        android:layout_height="wrap_content" />
+                        android:scaleType="center"
+                        android:adjustViewBounds="true"
+                        android:layout_marginStart="8dp"
+                        android:src="@mipmap/user_protocol" />
 
                     <TextView
                         android:layout_marginStart="-6dp"
                         android:layout_width="wrap_content"
+
                         android:padding="12dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="个人信息"
+                        android:text="@string/user_info"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="0dp"
@@ -72,52 +78,19 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/bind_phone_layout"
+                    android:id="@+id/feedback_layout"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center"
                     android:background="@color/white"
-                    android:layout_marginTop="2px"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_marginStart="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@mipmap/ic_auto"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginStart="-6dp"
-                        android:layout_width="wrap_content"
-                        android:padding="12dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/bind_phone"
-                        android:textColor="@color/black" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-                    <ImageView
-                        android:layout_marginEnd="12dp"
-                        android:src="@drawable/entry"
-                        android:layout_width="20dp"
-                        android:layout_height="30dp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/change_pwd_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center"
-                    android:background="@color/white"
-                    android:layout_marginTop="2px"
+                    android:layout_marginTop="1dp"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_marginStart="8dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="24dp"
                         android:layout_gravity="center"
                         android:src="@mipmap/feedback"
+                        android:scaleType="centerInside"
                         android:layout_height="wrap_content" />
 
                     <TextView
@@ -126,7 +99,7 @@
                         android:padding="12dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/change_pwd"
+                        android:text="@string/feed_back"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="0dp"
@@ -138,20 +111,21 @@
                         android:layout_width="20dp"
                         android:layout_height="30dp" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:id="@+id/group_layout"
+                    android:id="@+id/setting_layout"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center"
                     android:background="@color/white"
-                    android:layout_marginTop="2px"
+                    android:layout_marginTop="1dp"
                     android:orientation="horizontal">
-
                     <ImageView
                         android:layout_marginStart="8dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="24dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/ic_about"
+                        android:src="@mipmap/ic_setting"
+                        android:scaleType="centerInside"
                         android:layout_height="wrap_content" />
 
                     <TextView
@@ -160,7 +134,7 @@
                         android:padding="12dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/about_our"
+                        android:text="@string/setting"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="0dp"
@@ -178,26 +152,26 @@
                     android:layout_height="44dp"
                     android:gravity="center"
                     android:background="@color/white"
-                    android:layout_marginTop="2px"
+                    android:layout_marginTop="1dp"
                     android:orientation="horizontal">
+
                     <ImageView
-                        android:layout_marginStart="8dp"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@mipmap/ic_logout"
-                        android:layout_height="wrap_content" />
+                        android:layout_marginStart="8dp"
+                        android:src="@mipmap/ic_logout" />
 
                     <TextView
                         android:layout_marginStart="-6dp"
                         android:layout_width="wrap_content"
                         android:padding="12dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
                         android:gravity="center"
                         android:text="@string/exit_des"
                         android:textColor="@color/black" />
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                     <ImageView

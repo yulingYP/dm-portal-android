@@ -15,7 +15,6 @@ import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spC
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFaculty;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFacultyName;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFileName;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spLeaveSearchHistory0;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spSearchHistory;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spToken;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserAuthority;
@@ -23,6 +22,7 @@ import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spU
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserLocalimg;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserName;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserPhone;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSetting;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSex;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserType;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserUrl;
@@ -115,6 +115,8 @@ public class SharedPreferencesUtil {
 
     public int getUserType() {   return sp.getInt(spUserType,0);}
     public int getUserAuthority() {   return sp.getInt(spUserAuthority,-1);}
+
+    public int getUserSetting() {   return sp.getInt(spUserSetting+getUserId(),1);}
     //-----------------------SET-------------------
     public SharedPreferences.Editor setUser(User user) {
         if(user!=null) {
@@ -184,6 +186,11 @@ public class SharedPreferencesUtil {
 
     public SharedPreferences.Editor setUserLocal(String userurl) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserLocalimg, userurl);
+        editor.apply();
+        return editor;
+    }
+    public SharedPreferences.Editor setUserSetting(int setCode) {
+        SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserSetting+getUserId(), setCode);
         editor.apply();
         return editor;
     }

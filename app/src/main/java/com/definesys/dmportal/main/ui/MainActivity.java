@@ -1,12 +1,16 @@
 package com.definesys.dmportal.main.ui;
 
-import android.app.Activity;
-import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -17,13 +21,14 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
-import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
+import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.UserInfoPresent;
 import com.definesys.dmportal.main.ui.fragment.ContactFragment;
@@ -37,11 +42,11 @@ import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.OnTabSelectListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 @Route(path = ARouterConstants.MainActivity)
 public class MainActivity extends BaseActivity<MainPresenter> {
 
@@ -63,14 +68,36 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     private MyFragment myFragment ;
     public static int screenWith;//手机屏幕的宽度
     public static int screenHeight;//手机屏幕的高度
+    public static boolean XG_isBind = false;//是否绑定信鸽
     private boolean isFirst = true;//第一次点击消息页
+//    private NotificationManager notiManager;//通知栏管理
+//    private int notifyID=0;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case Constants.XG_CODE://检测信鸽是否绑定
+                    if(!XG_isBind){
+                        Log.d("myXG","reBind");
+//                        XGPushManager.bindAccount(MainActivity.this,String.valueOf(SharedPreferencesUtil.getInstance().getUserId()));
+                        handler.sendEmptyMessageDelayed(Constants.XG_CODE,Constants.sendDelayTime*5);
+                    }
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         RxBus.get().register(this);
+//        JPushInterface.init(getApplicationContext());
 
+        //提醒模式
+        MyCongfig.remindMode = SharedPreferencesUtil.getInstance().getUserSetting();
+        //信鸽是否绑定
+//        handler.sendEmptyMessage(Constants.XG_CODE);
         //获取用户信息
         (new UserInfoPresent(this)).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
         //获取手机宽高
@@ -78,6 +105,7 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         screenHeight = dm.heightPixels;
         screenWith = dm.widthPixels;
         Log.d("myWidth", "" + screenWith + "  " + screenHeight);
+
         initView();
 
     }
@@ -234,14 +262,7 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         super.onNewIntent(intent);
         setIntent(intent);// 信鸽必须要调用这句
         //点击通知进入主页进行的操作
-//        if( intent.getBooleanExtra("hasMessage",false)){
-//            isTop = true;
-//            mTabbar.setSelectTab(0);
-//            if(contactFragment!=null&& contactFragment.getmViewpager()!=null&&contactFragment.getMsgFragment()!= null) {
-//                contactFragment.getmViewpager().setCurrentItem(0);
-//                contactFragment.getMsgFragment().refresh();
-//            }
-//        }
+
         singleLogout(intent!=null&&intent.getBooleanExtra(getString(R.string.exit_en), false));
     }
     /**
@@ -252,6 +273,10 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void singleLogout(Boolean isExit) {
         if (isExit) {
+            //信鸽解绑
+            Log.d("myXG","unbind");
+//            XGPushManager.delAccount(this,String.valueOf(SharedPreferencesUtil.getInstance().getUserId()));
+//            XG_isBind = false;
             SharedPreferencesUtil.getInstance().clearUser();
             ARouter.getInstance().build(ARouterConstants.LoginAcitvity).navigation(this, new NavCallback() {
                 @Override
@@ -260,6 +285,15 @@ public class MainActivity extends BaseActivity<MainPresenter> {
                 }
             });
         }
+    }
+    /**
+     * 重新绑定信鸽
+     */
+    @Subscribe(tags = {
+            @Tag("reBind")
+    }, thread = EventThread.MAIN_THREAD)
+    public void reBind(Object o){
+        handler.sendEmptyMessage(Constants.XG_CODE);
     }
     /**
      * 添加消息
@@ -288,4 +322,46 @@ public class MainActivity extends BaseActivity<MainPresenter> {
 //            deleteNofi();
         }
     }
+    //for receive customer msg from jpush server
+    private MessageReceiver mMessageReceiver;
+    public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_EXTRAS = "extras";
+
+    public void registerMessageReceiver() {
+        mMessageReceiver = new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        filter.addAction(MESSAGE_RECEIVED_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
+    }
+
+    public class MessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
+                    String messge = intent.getStringExtra(KEY_MESSAGE);
+                    String extras = intent.getStringExtra(KEY_EXTRAS);
+                    StringBuilder showMsg = new StringBuilder();
+                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+//                    if (!ExampleUtil.isEmpty(extras)) {
+//                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+//                    }
+//                    setCostomMsg(showMsg.toString());
+                }
+            } catch (Exception e){
+            }
+        }
+    }
+
+//    private void setCostomMsg(String msg){
+//        if (null != msgText) {
+//            msgText.setText(msg);
+//            msgText.setVisibility(android.view.View.VISIBLE);
+//        }
+//    }
+
 }

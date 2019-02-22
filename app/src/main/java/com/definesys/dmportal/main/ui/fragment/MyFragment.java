@@ -109,11 +109,15 @@ public class MyFragment extends Fragment {
     @BindView(R.id.logout_layout)
     LinearLayout lg_logout;
 
-    @BindView(R.id.change_pwd_layout)
-    LinearLayout lg_pwd;
+//    @BindView(R.id.change_pwd_layout)
+//    LinearLayout lg_pwd;
 
-    @BindView(R.id.bind_phone_layout)
-    LinearLayout lg_phone;
+//    @BindView(R.id.bind_phone_layout)
+//    LinearLayout lg_phone;
+
+
+    @BindView(R.id.setting_layout)
+    LinearLayout lg_setting;
 
     // 用户已选择的图片
     private List<LocalMedia> selectImages;
@@ -161,13 +165,15 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my, container, false);
+        View view =inflater.inflate(R.layout.fragment_my, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
+
         SmecRxBus.get().register(this);
         initView();
         requestPermissions();
@@ -192,23 +198,30 @@ public class MyFragment extends Fragment {
                     show(photoStyles, 2);
                 });
 
-        //手机绑定
-        RxView.clicks(lg_phone)
+//        //手机绑定
+//        RxView.clicks(lg_phone)
+//                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(o ->
+//                        ARouter.getInstance()
+//                                .build(ARouterConstants.PhoneBindActivity)
+//                                .withBoolean("isBind",!"".equals(SharedPreferencesUtil.getInstance().getUserPhone()))
+//                                .navigation()
+//                );
+//
+//        //修改密码
+//        RxView.clicks(lg_pwd)
+//                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(o ->
+//                       ARouter.getInstance().build(ARouterConstants.ChangePwdActivity).navigation()
+//                );
+        //设置
+        RxView.clicks(lg_setting)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o ->
-                        ARouter.getInstance()
-                                .build(ARouterConstants.PhoneBindActivity)
-                                .withBoolean("isBind",!"".equals(SharedPreferencesUtil.getInstance().getUserPhone()))
-                                .navigation()
-                );
-
-        //修改密码
-        RxView.clicks(lg_pwd)
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o ->
-                       ARouter.getInstance().build(ARouterConstants.ChangePwdActivity).navigation()
+                        ARouter.getInstance().build(ARouterConstants.UserSettingActivity).navigation()
                 );
         //退出
         RxView.clicks(lg_logout).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

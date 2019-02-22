@@ -1,0 +1,248 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/back_gray"
+    tools:ignore="ContentDescription"
+    android:orientation="vertical">
+
+    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+        android:id="@+id/title_bar_att_us"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/titlebar_height" />
+
+    <ScrollView
+        android:background="@color/back_gray"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- TODO: Update blank fragment layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/item_margin_10dp"
+                android:layout_marginStart="@dimen/item_margin_border_10dp"
+                android:layout_marginTop="@dimen/item_margin_10dp"
+                android:text="@string/us_alertset"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_sound"
+                    android:layout_height="wrap_content"
+                     />
+
+                <TextView
+                    android:layout_marginStart="-6dp"
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="声音"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <Switch
+                    android:id="@+id/switch_sound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:theme="@style/MySwitch"
+                  />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/vibration"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:layout_marginStart="-6dp"
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="震动"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <Switch
+                    android:id="@+id/switch_vibrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:theme="@style/MySwitch"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/bind_phone_layout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginStart="10dp"
+                    android:layout_width="24dp"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_auto"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginStart="-6dp"
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/bind_phone"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/change_pwd_layout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:layout_width="24dp"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/feedback"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginStart="-6dp"
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/change_pwd"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/about_layout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:layout_width="24dp"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_about"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginStart="-6dp"
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/about_our"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/logout_layout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_marginStart="8dp"
+                    android:layout_width="24dp"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_logout"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginStart="-6dp"
+                    android:layout_width="wrap_content"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/exit_des"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

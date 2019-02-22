@@ -28,10 +28,10 @@ import butterknife.ButterKnife;
 public class SplashActivity extends BaseActivity {
 //    public static final int ENTRY_MAIN_CODE = 1;//进入主页面
 //    public static final int TIP_REMAIN_CODE = 2;//剩余多少秒进入主界面
-    private int reaminTime = Constants.opendelayTime/ Constants.sendDelayTime;
+//    private int reaminTime = Constants.opendelayTime/ Constants.sendDelayTime;
 //    private View v;
-    @BindView(R.id.tip_remain_text)
-    TextView tipText;
+//    @BindView(R.id.tip_remain_text)
+//    TextView tipText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class SplashActivity extends BaseActivity {
         // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        tipText.setVisibility(View.GONE);
+//        tipText.setVisibility(View.GONE);
 //        v= LayoutInflater.from(this).inflate(R.layout.activity_splash,null);
 //        downfaceInit();//下载默认封面
 

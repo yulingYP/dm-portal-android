@@ -22,6 +22,16 @@ public class NoScrollViewPager extends ViewPager {
         super(context, attrs);
     }
 
+    public NoScrollViewPager(@NonNull Context context, boolean isScroll) {
+        super(context);
+        this.isScroll = isScroll;
+    }
+
+    public NoScrollViewPager(@NonNull Context context, @Nullable AttributeSet attrs, boolean isScroll) {
+        super(context, attrs);
+        this.isScroll = isScroll;
+    }
+
     /**
      * 1.dispatchTouchEvent一般情况不做处理
      *,如果修改了默认的返回值,子孩子都无法收到事件

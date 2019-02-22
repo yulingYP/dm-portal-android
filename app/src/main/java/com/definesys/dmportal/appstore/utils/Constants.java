@@ -11,5 +11,7 @@ public interface Constants {
     int opendelayTime = 3200;
     int sendDelayTime = 1000;
     int oneDay = 1000*60*60*24;//1天
+
+    int XG_CODE = 1;//判断信鸽是否绑定
     String FIRST_OPEN = "first_open";
 }

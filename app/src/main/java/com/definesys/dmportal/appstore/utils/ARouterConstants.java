@@ -7,6 +7,7 @@ package com.definesys.dmportal.appstore.utils;
 public interface ARouterConstants {
     String SplashActivity = "/dmportal/appstore/SplashActivity";//倒计时页
     String LoginAcitvity = "/dmportal/appstore/LoginAcitvity";//登录页
+    String UserSettingActivity = "/dmportal/appstore/UserSettingActivity ";//用户设置页
     String ForgetPwdActivity = "/dmportal/appstore/ForgetPwdActivity";//忘记密码页
     String ChangePwdActivity = "/dmportal/appstore/ChangePwdActivity";//修改密码页面
     String PhoneBindActivity = "/dmportal/appstore/PhoneBindActivity";//手机绑定页面

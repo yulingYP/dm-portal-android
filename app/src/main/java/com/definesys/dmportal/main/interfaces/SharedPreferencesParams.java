@@ -41,6 +41,10 @@ public interface SharedPreferencesParams {
     //sp文件中各类历史的tag 格式 xxx,xxx,xxx
     String spSearchHistory = "u_history";
 
+
+    //sp文件中用户设置的tag
+    String spUserSetting = "u_setting";
+
     //sp文件中请假的历史记录 格式 xxx,xxx,xxx
     String spLeaveSearchHistory0 = "u_history0";
 

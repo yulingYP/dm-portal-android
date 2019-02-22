@@ -302,4 +302,8 @@
     <string name="message_tip_6">您通过了%s的请假请求</string>
     <string name="message_tip_7">学号%s有请假请求，请去处理</string>
     <string name="request_date_type">%d-%02d-%02d %02d:%02d:%02d</string>
+    <string name="user_info">个人信息</string>
+    <string name="us_alertset">提醒方式</string>
+    <string name="setting">设置</string>
+    <string name="feed_back">反馈建议</string>
 </resources>
