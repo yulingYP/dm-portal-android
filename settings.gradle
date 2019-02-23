@@ -1,1 +1,1 @@
-include ':app', ':commonttilebar', 'primwebcore'
+include ':app', ':commonttilebar', 'primwebcore', ':JPush'

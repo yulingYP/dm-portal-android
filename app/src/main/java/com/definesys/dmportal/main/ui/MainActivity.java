@@ -1,15 +1,22 @@
 package com.definesys.dmportal.main.ui;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -17,11 +24,18 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
+import com.definesys.base.BaseResponse;
+import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.LeaveActivity;
+import com.definesys.dmportal.appstore.LeaveInfoDetailActivity;
+import com.definesys.dmportal.appstore.LeaveListActivity;
+import com.definesys.dmportal.appstore.bean.ApprovalRecord;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
@@ -35,6 +49,7 @@ import com.definesys.dmportal.main.ui.fragment.ContactFragment;
 import com.definesys.dmportal.appstore.ui.fragment.HomeAppFragment;
 import com.definesys.dmportal.main.ui.fragment.MyFragment;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.example.jpushdemo.ExampleUtil;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -44,11 +59,14 @@ import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.OnTabSelectListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
+
 @Route(path = ARouterConstants.MainActivity)
-public class MainActivity extends BaseActivity<MainPresenter> {
+public class MainActivity extends BaseActivity<UserInfoPresent> {
 
 
     @BindView(R.id.mTitlebar)
@@ -60,6 +78,9 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     @BindView(R.id.mViewPager)
     NoScrollViewPager mViewPager ;
 
+    @Autowired(name = "isLogin")
+    boolean isLogin;//是否通过登陆进入主页
+
     CustomTitleIndicator titleIndicator;
     private int currentPosition=1;
 
@@ -68,38 +89,31 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     private MyFragment myFragment ;
     public static int screenWith;//手机屏幕的宽度
     public static int screenHeight;//手机屏幕的高度
-    public static boolean XG_isBind = false;//是否绑定信鸽
+    public static boolean JP_isBind = false;//是否解绑
     private boolean isFirst = true;//第一次点击消息页
-//    private NotificationManager notiManager;//通知栏管理
-//    private int notifyID=0;
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case Constants.XG_CODE://检测信鸽是否绑定
-                    if(!XG_isBind){
-                        Log.d("myXG","reBind");
-//                        XGPushManager.bindAccount(MainActivity.this,String.valueOf(SharedPreferencesUtil.getInstance().getUserId()));
-                        handler.sendEmptyMessageDelayed(Constants.XG_CODE,Constants.sendDelayTime*5);
-                    }
-                    break;
-            }
-        }
-    };
+
+    private NotificationManager notiManager;//通知栏管理
+    private int notifyID=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         RxBus.get().register(this);
-//        JPushInterface.init(getApplicationContext());
+        ARouter.getInstance().inject(this);
 
+        //设置推送别名
+        JPushInterface.setAlias(this,++notifyID,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()));
         //提醒模式
         MyCongfig.remindMode = SharedPreferencesUtil.getInstance().getUserSetting();
-        //信鸽是否绑定
-//        handler.sendEmptyMessage(Constants.XG_CODE);
+        //通知管理
+        notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         //获取用户信息
-        (new UserInfoPresent(this)).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+        mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+        if(isLogin){//通过登陆页面进入主页面时，获取登出时发送失败的推送
+            mPersenter.getPushErrorMsg(SharedPreferencesUtil.getInstance().getUserId());
+        }
         //获取手机宽高
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels;
@@ -196,12 +210,12 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         });
 
         RxView.clicks(mTitlebar)
-                .subscribe(obj->myFragment.refreshUserImage());
+                .subscribe(obj->hasNotify(null));
     }
 
     @Override
-    public MainPresenter getPersenter() {
-        return new MainPresenter(this);
+    public UserInfoPresent getPersenter() {
+        return new UserInfoPresent(this);
     }
 
 
@@ -235,6 +249,20 @@ public class MainActivity extends BaseActivity<MainPresenter> {
            myFragment.refreshUserImage();
            myFragment.updateShowInfo();
        }
+    }
+    /**
+     * 获取推送失败的消息列表成功
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_PUSH_ERROR_MSG)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getPushErrorMsg(List<MyMessage> data) {
+        for(MyMessage myMessage:data){
+            if(myMessage.getMessageType()==2){//新的请假请求
+                myMessage.setMessageType((short)10);
+            }
+            hasNotify(myMessage);
+        }
     }
     class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -273,11 +301,11 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void singleLogout(Boolean isExit) {
         if (isExit) {
-            //信鸽解绑
-            Log.d("myXG","unbind");
-//            XGPushManager.delAccount(this,String.valueOf(SharedPreferencesUtil.getInstance().getUserId()));
-//            XG_isBind = false;
+
             SharedPreferencesUtil.getInstance().clearUser();
+            //解绑当前用户
+            JPushInterface.deleteAlias(this,++notifyID);
+
             ARouter.getInstance().build(ARouterConstants.LoginAcitvity).navigation(this, new NavCallback() {
                 @Override
                 public void onArrival(Postcard postcard) {
@@ -286,15 +314,7 @@ public class MainActivity extends BaseActivity<MainPresenter> {
             });
         }
     }
-    /**
-     * 重新绑定信鸽
-     */
-    @Subscribe(tags = {
-            @Tag("reBind")
-    }, thread = EventThread.MAIN_THREAD)
-    public void reBind(Object o){
-        handler.sendEmptyMessage(Constants.XG_CODE);
-    }
+
     /**
      * 添加消息
      */
@@ -318,50 +338,99 @@ public class MainActivity extends BaseActivity<MainPresenter> {
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
         }
         else {
-            mTabbar.getTabAtPosition(0).hiddenBadge();
-//            deleteNofi();
-        }
-    }
-    //for receive customer msg from jpush server
-    private MessageReceiver mMessageReceiver;
-    public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_MESSAGE = "message";
-    public static final String KEY_EXTRAS = "extras";
-
-    public void registerMessageReceiver() {
-        mMessageReceiver = new MessageReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-        filter.addAction(MESSAGE_RECEIVED_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
-    }
-
-    public class MessageReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
-                    String messge = intent.getStringExtra(KEY_MESSAGE);
-                    String extras = intent.getStringExtra(KEY_EXTRAS);
-                    StringBuilder showMsg = new StringBuilder();
-                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
-//                    if (!ExampleUtil.isEmpty(extras)) {
-//                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
-//                    }
-//                    setCostomMsg(showMsg.toString());
-                }
-            } catch (Exception e){
+            if(!MainApplication.getInstances().isHasNewMessage()) {
+                notiManager.cancelAll();
+                mTabbar.getTabAtPosition(0).hiddenBadge();
             }
         }
     }
 
-//    private void setCostomMsg(String msg){
-//        if (null != msgText) {
-//            msgText.setText(msg);
-//            msgText.setVisibility(android.view.View.VISIBLE);
-//        }
-//    }
+    //显示通知
+    @Subscribe(tags = {
+            @Tag("hasNotify")
+    }, thread = EventThread.MAIN_THREAD)
+    public void hasNotify(MyMessage myMessage) {
+        MyCongfig.checkMode(this);
+        MainApplication.getInstances().setHasNewMessage(true);
+        addMessage(myMessage);
+
+        NotificationCompat.Builder mBuilder;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            NotificationChannel channel;
+            channel = new NotificationChannel("com.last.design.dmportal", "jpChannel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setSound(null,null);
+            //channel.setShowBadge(true); //是否在久按桌面图标时显示此渠道的通知
+            notiManager.createNotificationChannel(channel);
+            mBuilder = new NotificationCompat.Builder(this,"com.last.design.dmportal");
+        }else {
+            mBuilder=new NotificationCompat.Builder(this);
+        }
+
+        String title="aa";//标题
+        String content="bb";//内容
+        PendingIntent pendingIntent =  setResultIntent(myMessage);
+        if(myMessage!=null){
+            if(myMessage.getMessageType()==1) {//请假人审批结果
+                title = "审批结果";
+                content = "请查看您请假请求的审批结果";
+            }else if(myMessage.getMessageType()==2) {//新的请假请求，跳转到详细页面
+                title = "请假请求";
+                content = "有新的请假请求,请去审批";
+            }else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
+                title = "请假请求";
+                content = "有新的请假请求,请查看";
+            }
+
+        }
+        Notification notification = mBuilder
+                .setContentTitle(title)
+                .setContentText(content)
+                .setSmallIcon(R.mipmap.app_icon)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.app_icon))
+                .setWhen(System.currentTimeMillis())
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setDefaults(NotificationCompat.FLAG_ONLY_ALERT_ONCE)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSound(null)
+                .setLights(Color.GREEN, 1000, 1000)
+                .build();
+
+
+        notiManager.notify(++notifyID,notification );
+    }
+
+    private PendingIntent setResultIntent(MyMessage myMessage) {
+        if(myMessage==null)
+            return PendingIntent.getActivity(this, 0,  new Intent(this, MainActivity.class), 0) ;
+        Intent intent = null;
+        if(myMessage.getMessageType()==1){//请假人请假结果
+            intent = new Intent(this, LeaveInfoDetailActivity.class);
+            intent.putExtra("leaveId",myMessage.getMessageExtend());
+        }else if(myMessage.getMessageType()==2){//审批人新的审批任务，跳转到详情页
+            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
+            intent = new Intent(this, ApprovalRecord.class);
+            if(temp!=null) {
+                intent.putExtra("leaveId", temp.getMessageExtend());
+                intent.putExtra("type", temp.getMessageExtend2());
+                intent.putExtra("approvalDate", temp.getSendTime());
+                intent.putExtra("approvalContent", temp.getMessageContent());
+            }else {
+                intent.putExtra("leaveId", myMessage.getMessageExtend());
+                intent.putExtra("type", 4);
+            }
+        }else if(myMessage.getMessageType()==10){
+            intent = new Intent(this, LeaveListActivity.class);
+            intent.putExtra("userId",(int) SharedPreferencesUtil.getInstance().getUserId());
+            intent.putExtra("type",1);
+            intent.putExtra("isAll",true);
+            intent.putExtra("isSearch",false);
+            intent.putExtra("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity);
+
+        }
+        if(intent == null)
+            intent = new Intent(this, MainActivity.class);
+        return PendingIntent.getActivity(this, 0,  intent, 0) ;
+    }
 
 }

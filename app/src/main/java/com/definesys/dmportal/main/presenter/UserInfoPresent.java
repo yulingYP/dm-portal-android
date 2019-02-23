@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
+import com.definesys.dmportal.appstore.bean.ApprovalRecord;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.bean.User;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
@@ -15,6 +17,7 @@ import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,6 +60,7 @@ public class UserInfoPresent extends BasePresenter {
 
     }
 
+    //获取用户姓名
     public void getUserName(Number id, int userType, TextView textView, ProgressBar progressBar){
         Map map = new HashMap();
         map.put("userId",id);
@@ -85,6 +89,32 @@ public class UserInfoPresent extends BasePresenter {
                     @Override
                     public void onFail(int errCode, String errMsg) {
                         SmecRxBus.get().post(MainPresenter.ERROR_NETWORK_NAME, hashMap);
+                    }
+                });
+    }
+    //获取用户姓名
+    public void getPushErrorMsg(Number id){
+        Map map = new HashMap();
+        map.put("userId",id);
+        Log.d("myMap",new Gson().toJson(map).toString());
+        HashMap<String,Object> hashMap = new HashMap<>();
+        ViseHttp.POST(HttpConst.getPushErrorMessage)
+                .tag(HttpConst.getUserInfo)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<MyMessage>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<MyMessage>> data) {
+                        switch (data.getCode()) {
+                            case "200":
+                                if(data.getData()!=null&&data.getData().size()>0)
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_PUSH_ERROR_MSG, data.getData());
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+
                     }
                 });
     }

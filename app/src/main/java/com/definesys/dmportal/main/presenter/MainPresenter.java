@@ -94,6 +94,9 @@ public class MainPresenter extends BasePresenter {
     public static final String SUCCESSFUL_SEND_CODE_FORGET_PSW = "SUCCESSFUL_SEND_CODE_FORGET_PSW";
 
 
+    //获取用户推送失败的消息列表
+    public static final String SUCCESSFUL_GET_PUSH_ERROR_MSG="SUCCESSFUL_GET_PUSH_ERROR_MSG";
+
     public MainPresenter(Context context) {
         super(context);
     }

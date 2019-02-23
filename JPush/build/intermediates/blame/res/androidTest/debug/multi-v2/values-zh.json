@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\DELL-\\Desktop\\last_design\\dm-portal-android\\JPush\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-zh\\values-zh.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\DELL-\\Desktop\\last_design\\dm-portal-android\\JPush\\build\\intermediates\\bundles\\debug\\res\\values-zh\\values-zh.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,20,25",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,113,155,211,273,329,381,433,487,540,610,686,730,778,845,983,1168",
+                        "endLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,24,28",
+                        "endColumns": "57,41,55,61,55,51,51,53,52,69,75,43,47,66,9,9,9",
+                        "endOffsets": "108,150,206,268,324,376,428,482,535,605,681,725,773,840,978,1163,1297"
+                    }
+                }
+            ]
+        }
+    ]
+}

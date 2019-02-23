@@ -108,13 +108,15 @@ public class UserSettingActivity extends BaseActivity {
         sw_sound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MyCongfig.musicOpen(UserSettingActivity.this,true);
+                if(isChecked)
+                    MyCongfig.musicOpen(UserSettingActivity.this,true);
             }
         });
         sw_vibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MyCongfig.vibratorOpen(UserSettingActivity.this);
+                if(isChecked)
+                    MyCongfig.vibratorOpen(UserSettingActivity.this);
             }
         });
     }

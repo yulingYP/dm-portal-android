@@ -145,4 +145,22 @@ public class MyMessage implements Comparable<MyMessage>{
     public void setMessageExtend3(Date messageExtend3) {
         this.messageExtend3 = messageExtend3;
     }
+
+    @Override
+    public String toString() {
+        return "MyMessage{" +
+                "userId=" + userId +
+                ", messageType=" + messageType +
+                ", messageContent='" + messageContent + '\'' +
+                ", messageExtend='" + messageExtend + '\'' +
+                ", messageExtend2=" + messageExtend2 +
+                ", messageExtend3=" + messageExtend3 +
+                ", sendTime=" + sendTime +
+                ", attribute1='" + attribute1 + '\'' +
+                ", attribute2='" + attribute2 + '\'' +
+                ", attribute3='" + attribute3 + '\'' +
+                ", attribute4='" + attribute4 + '\'' +
+                ", attribute5='" + attribute5 + '\'' +
+                '}';
+    }
 }

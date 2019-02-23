@@ -1,8 +1,10 @@
 package com.definesys.dmportal.main.ui;
 
+import android.Manifest;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 
@@ -12,6 +14,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -42,6 +45,8 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.vise.xsnow.http.mode.ApiCode;
+import com.vise.xsnow.permission.Permission;
+import com.vise.xsnow.permission.RxPermissions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +54,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 @Route(path = ARouterConstants.LoginAcitvity)
 public class LoginActivity extends BaseActivity<LoginPresenter> {
@@ -71,6 +78,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     @BindView(R.id.mainview)
     View main;
 
+    @Autowired(name = "isFirst")
+    boolean isFirst;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +89,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         setStatusBarFullTransparent();
         ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
+        if(isFirst)//第一次使用APP？
+            requestPermissions();
         initView();
     }
 
@@ -120,7 +132,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     public void successfulLogin(String msg) {
         progressHUD.dismiss();
         //Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-        ARouter.getInstance().build(ARouterConstants.MainActivity)
+        ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean("isLogin",true)
                 .navigation(this, new NavCallback() {
                     @Override
                     public void onArrival(Postcard postcard) {
@@ -253,7 +265,28 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     public LoginPresenter getPersenter() {
         return new LoginPresenter(this);
     }
-
+    //申请权限
+    private void requestPermissions() {
+//        JPushInterface.requestPermission(this);
+        RxPermissions rxPermission = new RxPermissions(this);
+        rxPermission
+                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(Permission permission) throws Exception {
+                        if (permission.granted) {
+                            // 用户已经同意该权限
+                            Log.d("mydemo", permission.name + " is granted.");
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                            Log.d("mydemo", permission.name + " is denied. More info should be provided.");
+                        } else {
+                            // 用户拒绝了该权限，并且选中『不再询问』
+                            Log.d("mydemo", permission.name + " is denied.");
+                        }
+                    }
+                });
+    }
 
 //    /*
 //     注册成功

@@ -217,4 +217,12 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
          myAdapter.notifyItemRangeChanged(0,messageList.size());//通知数据与界面重新绑定
      }
     }
+
+    public MsgRecycleViewAdapter getMyAdapter() {
+        return myAdapter;
+    }
+
+    public void setMyAdapter(MsgRecycleViewAdapter myAdapter) {
+        this.myAdapter = myAdapter;
+    }
 }

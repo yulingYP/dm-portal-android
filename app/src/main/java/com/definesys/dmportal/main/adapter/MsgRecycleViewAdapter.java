@@ -92,16 +92,16 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                     .withString("leaveId",messages.get(position).getMessageExtend())
                                     .navigation();
                         }else if(messages.get(position).getMessageType()==2){//审批人消息
-                            int pos = position;
+                            MyMessage myMessage = messages.get(position);
                             if(messages.get(position).getMessageExtend2()==4){
-                               pos= checkDate(position);
+                                myMessage= checkDate(position);
                             }
                             ARouter.getInstance()
                                     .build(ARouterConstants.ApprovalLeaveInfoActivity)
-                                    .withString("leaveId",messages.get(pos).getMessageExtend())
-                                    .withInt("type",messages.get(pos).getMessageExtend2())
-                                    .withObject("approvalDate",messages.get(pos).getMessageExtend3())
-                                    .withString("approvalContent",messages.get(pos).getMessageContent())
+                                    .withString("leaveId",myMessage.getMessageExtend())
+                                    .withInt("type",myMessage.getMessageExtend2())
+                                    .withObject("approvalDate",myMessage.getMessageExtend3())
+                                    .withString("approvalContent",myMessage.getMessageContent())
                                     .navigation();
                         }
 
@@ -114,7 +114,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @param position 检测的位置
      * @return
      */
-    private int checkDate(int position) {
+    private MyMessage checkDate(int position) {
         MyMessage myMessage = messages.get(position);
         int i;
         for( i= position-1 ; i >=0;i--){
@@ -124,7 +124,19 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 break;
             }
         }
-        return i>=0?i:position;
+        return messages.get((i>=0?i:position));
+    }
+    /**
+     * 获取结果消息
+     * @return
+     */
+    public MyMessage getMessage(MyMessage myMessage) {
+        MyMessage result = null;
+        if(messages.contains(myMessage)){
+            result = checkDate(messages.indexOf(myMessage));
+        }
+
+        return result;
     }
 
     @Override

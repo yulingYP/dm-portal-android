@@ -248,8 +248,8 @@
     <string name="tag_10">已销假</string>
     <string name="create_absence">生成请假条</string>
     <string name="leave_absence">请假条</string>
-    <string name="share_img">生成图片并分享</string>
-    <string name="share_pdf">生成PDF并分享</string>
+    <string name="share_img">分享图片</string>
+    <string name="share_pdf">分享PDF</string>
     <string name="leader_sign_text">辅导员意见及签字</string>
     <string name="leave_reason">事由</string>
     <string name="stuId">学号</string>

@@ -72,6 +72,7 @@ import io.reactivex.functions.Consumer;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
+import static com.definesys.dmportal.appstore.utils.Constants.scrollDelay;
 
 @Route(path = ARouterConstants.ApprovalLeaveInfoActivity)
 public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPresent> {
@@ -575,12 +576,40 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     isAgree = approvalRecord.getApprovalResult() != 0;
                     initView();
                     initEditUnable();
-                }else if(type==4){
+                }else if(!checkAuthority()){
+
+                }
+                else if(type==4){
                     initView();
                     initEdit();
                 }
             }
         }
+    }
+
+    private boolean checkAuthority() {
+        boolean flag = true;
+        if(type==4){
+            if(submitLeaveInfo.getApprovalStatus()>=100){//已经审批
+                flag = false;
+            }else {
+                int userAuthority = SharedPreferencesUtil.getInstance().getUserAuthority();
+                if(userAuthority==0&&userAuthority<submitLeaveInfo.getApprovalStatus()){//已经审批
+                    flag = false;
+                }else {
+                    int authority;
+                    while (userAuthority%10>=0&&userAuthority>0){
+                        authority= userAuthority%10;
+                        if(authority<submitLeaveInfo.getApprovalStatus()){//已经审批
+                            flag = false;
+                        }
+                        userAuthority/=10;
+                    }
+                }
+            }
+
+        }
+        return flag;
     }
 
     /**

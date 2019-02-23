@@ -1,9 +1,11 @@
 package com.definesys.dmportal.welcomeActivity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -20,9 +22,15 @@ import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.main.ui.MainActivity;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.luck.picture.lib.PictureSelector;
+import com.vise.xsnow.permission.Permission;
+import com.vise.xsnow.permission.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+
+
 
 @Route(path = ARouterConstants.SplashActivity)
 public class SplashActivity extends BaseActivity {
@@ -58,7 +66,12 @@ public class SplashActivity extends BaseActivity {
         // 如果是第一次启动，则先进入功能引导页
         if (isFirstOpen) {
             SharedPreferencesUtil.getInstance().disableFirstOpen();
-            entryActivity(ARouterConstants.LoginAcitvity);
+            ARouter.getInstance().build(ARouterConstants.LoginAcitvity).withBoolean("isFirst",true).navigation(this, new NavCallback() {
+                @Override
+                public void onArrival(Postcard postcard) {
+                    SplashActivity.this.finish();
+                }
+            });
             return;
         }
 
@@ -97,14 +110,6 @@ public class SplashActivity extends BaseActivity {
         return SharedPreferencesUtil.getInstance().getUserId().intValue() > 0 && SharedPreferencesUtil.getInstance().getToken().length()>0;
     }
 
-    private void entryActivity(String activity) {
-        ARouter.getInstance().build(activity).navigation(this, new NavCallback() {
-            @Override
-            public void onArrival(Postcard postcard) {
-                SplashActivity.this.finish();
-            }
-        });
-    }
 
     @Override
     protected void onDestroy() {

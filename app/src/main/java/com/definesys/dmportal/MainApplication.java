@@ -23,6 +23,7 @@ import com.vise.xsnow.http.ViseHttp;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -67,9 +68,8 @@ public class MainApplication extends Application {
         super.onCreate();
         scale = getResources().getDisplayMetrics().density;
 
-        //信鸽
-//        XGPushConfig.enableDebug(this, true);
-//        XGPushManager.registerPush(getApplicationContext());
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(getApplicationContext());
 
         RePlugin.App.onCreate();
 

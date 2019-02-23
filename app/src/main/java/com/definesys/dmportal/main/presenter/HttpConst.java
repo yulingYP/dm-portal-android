@@ -79,5 +79,8 @@ public interface HttpConst {
     //获取新闻
      String getNews = "getNews";
 
+     //获取用户推送失败的消息
+    String getPushErrorMessage = "getPushErrorMessage";
+
     String uploadUserHeadPicture="uploadUserHeadPicture";
 }

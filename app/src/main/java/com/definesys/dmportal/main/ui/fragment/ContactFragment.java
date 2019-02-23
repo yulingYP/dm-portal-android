@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.main.adapter.MsgRecycleViewAdapter;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.SmecRxBus;
 
@@ -132,7 +133,8 @@ public class ContactFragment extends Fragment {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(msgFragment);
         fragments.add(newsFragment);
-        mViewpager.setAdapter(new MainFragmentPagerAdapter(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), fragments));
+        if(getActivity()!=null)
+            mViewpager.setAdapter(new MainFragmentPagerAdapter(getActivity().getSupportFragmentManager(), fragments));
         mViewpager.setCurrentItem(0, true);
     }
 
@@ -200,4 +202,6 @@ public class ContactFragment extends Fragment {
     public MsgFragment getMsgFragment() {
         return msgFragment;
     }
+
+    public MsgRecycleViewAdapter getMsgAdapter(){return getMsgAdapter();}
 }
