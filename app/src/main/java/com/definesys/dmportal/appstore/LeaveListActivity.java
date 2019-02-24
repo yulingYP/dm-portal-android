@@ -298,8 +298,8 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 if(leaveInfoListAdapter==null)
                     initList();
                 else
-                    leaveInfoListAdapter.notifyDataSetChanged();
-//                    leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
+//                    leaveInfoListAdapter.notifyDataSetChanged();
+                    leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
             }
         }
     }

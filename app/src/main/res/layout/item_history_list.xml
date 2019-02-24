@@ -3,7 +3,7 @@
 <TextView android:id="@+id/type_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="left"
+    android:layout_gravity="start"
     android:gravity="center"
     android:textSize="12sp"
     android:layout_marginTop="8dp"

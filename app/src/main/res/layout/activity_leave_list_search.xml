@@ -68,15 +68,15 @@
                     android:textColor="@color/black"
                     android:text="@string/search_history"
                     android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
                     android:background="@color/white"
-                    android:layout_marginBottom="2px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <com.definesys.dmportal.appstore.customViews.FlowLayout
                     android:id="@+id/history_view"
-                    android:layout_marginBottom="2px"
+                    android:layout_marginBottom="1dp"
                     android:layout_width="match_parent"
                     android:background="@color/white"
                     android:paddingStart="8dp"
