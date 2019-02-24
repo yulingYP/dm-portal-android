@@ -146,7 +146,7 @@ public class MyDatePicker extends LinearLayout {
      * 改变数值
      */
     private void changeStatus() {
-        if(num_year.getValue()==currentYear||(num_year.getValue()==currentYear&&num_month.getValue()==currentMonth))
+        if(num_year.getValue()==currentYear)
             initStatus();
         else {
             num_month.setMinValue(1);
@@ -170,7 +170,7 @@ public class MyDatePicker extends LinearLayout {
         if(num_month.getValue()<currentMonth)
         num_month.setValue(currentMonth);
         //设置天数
-        num_day.setMinValue(currentDay);
+        num_day.setMinValue(num_month.getValue()==currentMonth?currentDay:1);
         num_day.setMaxValue(getDays(currentYear,num_month.getValue()));
     }
 
@@ -190,6 +190,7 @@ public class MyDatePicker extends LinearLayout {
 
 
     public void setDate(String date){
+        tv_date.setText(date);
         Date currentDate = null;
         try {
             currentDate = new SimpleDateFormat(getContext().getString(R.string.date_type)).parse(date);
@@ -199,9 +200,17 @@ public class MyDatePicker extends LinearLayout {
 
         cal.setTime(currentDate);
 //        num_year.setValue(cal.get(Calendar.YEAR));
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH)+1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
         num_month.setValue(cal.get(Calendar.MONTH)+1);
-        num_day.setMaxValue(getDays(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1));
-        num_day.setValue(cal.get(Calendar.DAY_OF_MONTH));
+        num_day.setMaxValue(getDays(year,month));
+        if(day==currentDay&&year==currentYear)
+            num_day.setMinValue(currentDay);
+        else
+            num_day.setMinValue(1);
+        num_day.setValue(day);
         num_hour.setValue(currentDate.getHours());
 //        changeStatus();
 

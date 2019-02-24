@@ -40,6 +40,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -258,9 +259,9 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             else {//有数据
                 int currentSize = submitLeaveInfoList.size();
                 List<LeaveInfo> leaveInfos = data.getData();
-                //排序
-                Collections.sort(leaveInfos);
                 submitLeaveInfoList.addAll(leaveInfos);
+                //排序
+                Collections.sort(submitLeaveInfoList);
                 setNoLayout(0);
                 if(leaveInfoListAdapter==null)
                     initList();
@@ -297,7 +298,8 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 if(leaveInfoListAdapter==null)
                     initList();
                 else
-                    leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
+                    leaveInfoListAdapter.notifyDataSetChanged();
+//                    leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
             }
         }
     }

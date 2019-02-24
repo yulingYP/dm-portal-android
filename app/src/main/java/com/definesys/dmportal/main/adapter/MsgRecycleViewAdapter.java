@@ -115,6 +115,8 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @return
      */
     private MyMessage checkDate(int position) {
+        if(position<0)
+            return null;
         MyMessage myMessage = messages.get(position);
         int i;
         for( i= position-1 ; i >=0;i--){
@@ -132,7 +134,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     public MyMessage getMessage(MyMessage myMessage) {
         MyMessage result = null;
-        if(messages.contains(myMessage)){
+        if(messages!=null&&messages.contains(myMessage)){
             result = checkDate(messages.indexOf(myMessage));
         }
 

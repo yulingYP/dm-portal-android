@@ -306,4 +306,9 @@
     <string name="us_alertset">提醒方式</string>
     <string name="setting">设置</string>
     <string name="feed_back">反馈建议</string>
+    <string name="approval_result">审批结果</string>
+    <string name="approval_result_tip_1">请查看您请假请求的审批结果</string>
+    <string name="leave_request">请假请求</string>
+    <string name="leave_request_tip_1">有新的请假请求,请去审批</string>
+    <string name="leave_request_tip_2">有新的请假请求,请查看</string>
 </resources>

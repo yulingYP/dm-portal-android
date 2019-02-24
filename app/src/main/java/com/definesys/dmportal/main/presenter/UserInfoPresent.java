@@ -16,6 +16,7 @@ import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +93,7 @@ public class UserInfoPresent extends BasePresenter {
                     }
                 });
     }
-    //获取用户姓名
+    //获取发送失败的信息
     public void getPushErrorMsg(Number id){
         Map map = new HashMap();
         map.put("userId",id);
@@ -101,9 +102,9 @@ public class UserInfoPresent extends BasePresenter {
         ViseHttp.POST(HttpConst.getPushErrorMessage)
                 .tag(HttpConst.getUserInfo)
                 .setJson(new Gson().toJson(map))
-                .request(new ACallback<BaseResponse<List<MyMessage>>>() {
+                .request(new ACallback<BaseResponse<ArrayList<MyMessage>>>() {
                     @Override
-                    public void onSuccess(BaseResponse<List<MyMessage>> data) {
+                    public void onSuccess(BaseResponse<ArrayList<MyMessage>> data) {
                         switch (data.getCode()) {
                             case "200":
                                 if(data.getData()!=null&&data.getData().size()>0)

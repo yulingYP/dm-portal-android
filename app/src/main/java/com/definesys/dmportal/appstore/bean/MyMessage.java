@@ -8,6 +8,8 @@ import java.util.Date;
  */
 
 public class MyMessage implements Comparable<MyMessage>{
+    private String messageId;// 消息id
+
     private Number userId;// 用户id
 
     private Short messageType;//消息类型 1.请假人的请假结果 2.审批人的审批结果
@@ -35,7 +37,8 @@ public class MyMessage implements Comparable<MyMessage>{
     public MyMessage(){
 
     }
-    public MyMessage(Number userId, Short messageType, String messageContent, Short messageExtend2, String messageExtend,Date messageExtend3, Date sendTime) {
+    public MyMessage(String messageId,Number userId, Short messageType, String messageContent, Short messageExtend2, String messageExtend,Date messageExtend3, Date sendTime) {
+        this.messageId =messageId;
         this.userId = userId;
         this.messageType = messageType;
         this.messageContent = messageContent;
@@ -162,5 +165,13 @@ public class MyMessage implements Comparable<MyMessage>{
                 ", attribute4='" + attribute4 + '\'' +
                 ", attribute5='" + attribute5 + '\'' +
                 '}';
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 }

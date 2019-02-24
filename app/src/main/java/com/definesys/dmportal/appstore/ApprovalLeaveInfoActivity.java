@@ -164,10 +164,11 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         setContentView(R.layout.activity_approval_leave_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-
+        boolean flag = false;
         if(submitLeaveInfo!=null) {
             initView();
             initEdit();
+            flag = true;
         }else if(leaveId!=null&&!"".equals(leaveId)){//根据leaveId获取请假信息
             progressHUD.show();
             mPersenter.getLeaveInfoById(leaveId);
@@ -186,7 +187,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             progressHUD.show();
             mPersenter.getLeaveInfoById(approvalRecord.getLeaveInfoId());
         }
-        initTitle(false);
+        initTitle(flag);
     }
 
     private void initTitle(boolean isSow) {
@@ -204,6 +205,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     }
                 });
         if(approvalRecord==null&&isSow) {
+            titleBar.removeAllRightViews();
             Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_approval_leave_info);
             button.setTextSize(14);
 
@@ -530,7 +532,8 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             String content = ed_reason.getText().toString();  //审批意见
             if("".equals(content)&&isAgree)
                 content = getString(R.string.agree_tip);
-            SmecRxBus.get().post("addMessage",new MyMessage(submitLeaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,submitLeaveInfo.getId(),null, new Date()));
+            Date date = new Date();
+            SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(date.getTime()),submitLeaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,submitLeaveInfo.getId(),null,date ));
             Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -576,9 +579,10 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     isAgree = approvalRecord.getApprovalResult() != 0;
                     initView();
                     initEditUnable();
-                }else if(!checkAuthority()){
-
                 }
+//                }else if(!checkAuthority()){
+//
+//                }
                 else if(type==4){
                     initView();
                     initEdit();
@@ -587,6 +591,10 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         }
     }
 
+    /**
+     * 权限检测，检测该请假记录是否有权限审批
+     * @return ture 有审批 false无权限
+     */
     private boolean checkAuthority() {
         boolean flag = true;
         if(type==4){
@@ -597,14 +605,14 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 if(userAuthority==0&&userAuthority<submitLeaveInfo.getApprovalStatus()){//已经审批
                     flag = false;
                 }else {
-                    int authority;
+                    int max=0;
                     while (userAuthority%10>=0&&userAuthority>0){
-                        authority= userAuthority%10;
-                        if(authority<submitLeaveInfo.getApprovalStatus()){//已经审批
-                            flag = false;
-                        }
+                        if(max<userAuthority%10)
+                            max=userAuthority%10;
                         userAuthority/=10;
                     }
+                    if(max<submitLeaveInfo.getApprovalStatus())
+                        flag = false;
                 }
             }
 

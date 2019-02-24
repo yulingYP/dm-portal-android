@@ -12,7 +12,9 @@ public class User{
 
     private String phone;//电话
 
-    private Short userType;//用户类型
+    private Short userType;//用户类型 0.学生 1.教师
+
+    private Short userSex;//用户性别 1.男 2.女
 
     private String userImage;//用户头像
 

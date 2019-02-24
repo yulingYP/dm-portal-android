@@ -397,7 +397,8 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             SmecRxBus.get().post("cancelLeaveSuccess",submitLeaveInfo.getId());
             Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             //请假人销假成功
-            SmecRxBus.get().post("addMessage",new MyMessage(submitLeaveInfo.getUserId(), (short) 1, "", (short)3 ,submitLeaveInfo.getId(),null, new Date()));
+            Date date = new Date();
+            SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(date.getTime()),submitLeaveInfo.getUserId(), (short) 1, "", (short)3 ,submitLeaveInfo.getId(),null, date));
             finish();
         }
     }

@@ -182,6 +182,6 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
 
     @Override
     public int compareTo(@NonNull LeaveInfo o) {
-        return o.getId().compareTo(this.getId());
+        return o.submitDate.compareTo(this.submitDate);
     }
 }

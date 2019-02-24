@@ -203,5 +203,5 @@ public class ContactFragment extends Fragment {
         return msgFragment;
     }
 
-    public MsgRecycleViewAdapter getMsgAdapter(){return getMsgAdapter();}
+    public MsgRecycleViewAdapter getMsgAdapter(){return msgFragment.getMyAdapter();}
 }

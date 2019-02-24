@@ -158,6 +158,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
                 myAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
             }
             show();
+//            SmecRxBus.get().post("deleteNo",messageList);
         }
         SmecRxBus.get().post("setRed",false);
     }

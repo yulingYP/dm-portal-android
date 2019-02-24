@@ -111,9 +111,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         //获取用户信息
         mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
-        if(isLogin){//通过登陆页面进入主页面时，获取登出时发送失败的推送
+//        if(isLogin){//通过登陆页面进入主页面时，获取登出时发送失败的推送
             mPersenter.getPushErrorMsg(SharedPreferencesUtil.getInstance().getUserId());
-        }
+//        }
         //获取手机宽高
         DisplayMetrics dm = getResources().getDisplayMetrics();
         screenHeight = dm.heightPixels;
@@ -210,7 +210,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         });
 
         RxView.clicks(mTitlebar)
-                .subscribe(obj->hasNotify(null));
+                .subscribe(obj->  mPersenter.getPushErrorMsg(SharedPreferencesUtil.getInstance().getUserId()));
     }
 
     @Override
@@ -256,7 +256,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_PUSH_ERROR_MSG)
     }, thread = EventThread.MAIN_THREAD)
-    public void getPushErrorMsg(List<MyMessage> data) {
+    public void getPushErrorMsg(ArrayList<MyMessage> data) {
         for(MyMessage myMessage:data){
             if(myMessage.getMessageType()==2){//新的请假请求
                 myMessage.setMessageType((short)10);
@@ -324,8 +324,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     public void addMessage(MyMessage message) {
         if(currentPosition==0&&contactFragment.getCurrentitem()==0){//在消息页面
             contactFragment.getMsgFragment().addMsg(message);
-        } else //显示红点
+        } else {//显示红点
+            MainApplication.getInstances().setHasNewMessage(true);
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
+        }
     }
 
     //消息页红点
@@ -334,24 +336,33 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             thread = EventThread.MAIN_THREAD
     )
     public void setRed(Boolean isRed){
+        MainApplication.getInstances().setHasNewMessage(isRed);
         if(isRed) {
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
         }
         else {
-            if(!MainApplication.getInstances().isHasNewMessage()) {
-                notiManager.cancelAll();
+//                notiManager.cancelAll();
                 mTabbar.getTabAtPosition(0).hiddenBadge();
-            }
         }
     }
-
+//    //删除指定消息
+//    @Subscribe(
+//            tags = {@Tag("deleteNo")},
+//            thread = EventThread.MAIN_THREAD
+//    )
+//    public void deleteNo(List<MyMessage> data){
+//        if(data!=null){
+//            for(MyMessage myMessage : data){
+//                notiManager.cancel(Integer.valueOf(myMessage.getMessageId()));
+//            }
+//        }
+//    }
     //显示通知
     @Subscribe(tags = {
             @Tag("hasNotify")
     }, thread = EventThread.MAIN_THREAD)
     public void hasNotify(MyMessage myMessage) {
         MyCongfig.checkMode(this);
-        MainApplication.getInstances().setHasNewMessage(true);
         addMessage(myMessage);
 
         NotificationCompat.Builder mBuilder;
@@ -371,14 +382,14 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         PendingIntent pendingIntent =  setResultIntent(myMessage);
         if(myMessage!=null){
             if(myMessage.getMessageType()==1) {//请假人审批结果
-                title = "审批结果";
-                content = "请查看您请假请求的审批结果";
+                title = getString(R.string.approval_result);
+                content = getString(R.string.approval_result_tip_1);
             }else if(myMessage.getMessageType()==2) {//新的请假请求，跳转到详细页面
-                title = "请假请求";
-                content = "有新的请假请求,请去审批";
+                title = getString(R.string.leave_request);
+                content = getString(R.string.leave_request_tip_1);
             }else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
-                title = "请假请求";
-                content = "有新的请假请求,请查看";
+                title = getString(R.string.leave_request);
+                content = getString(R.string.leave_request_tip_2);
             }
 
         }
@@ -395,7 +406,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 .setSound(null)
                 .setLights(Color.GREEN, 1000, 1000)
                 .build();
-
 
         notiManager.notify(++notifyID,notification );
     }
@@ -430,7 +440,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         }
         if(intent == null)
             intent = new Intent(this, MainActivity.class);
-        return PendingIntent.getActivity(this, 0,  intent, 0) ;
+        return PendingIntent.getActivity(this, 0,  intent, PendingIntent.FLAG_UPDATE_CURRENT) ;
     }
 
 }
