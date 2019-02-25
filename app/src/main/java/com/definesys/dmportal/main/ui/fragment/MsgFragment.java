@@ -22,6 +22,7 @@ import com.definesys.dmportal.main.bean.DataContent;
 import com.definesys.dmportal.main.bean.Message;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.MessagePresenter;
+import com.definesys.dmportal.main.presenter.UserInfoPresent;
 import com.definesys.dmportal.main.util.MsgIconIdUtil;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -158,7 +159,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
                 myAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
             }
             show();
-//            SmecRxBus.get().post("deleteNo",messageList);
+         mPersenter.updateMsgStatus(SharedPreferencesUtil.getInstance().getUserId(),null);
         }
         SmecRxBus.get().post("setRed",false);
     }
@@ -210,6 +211,8 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
     //添加消息
     public void addMsg(MyMessage myMessage){
      messageList.add(0,myMessage);
+     //改为已读状态
+     mPersenter.updateMsgStatus(myMessage.getUserId(), myMessage.getMessageId());
      if(myAdapter==null)
          initList();
      else {

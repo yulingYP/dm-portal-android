@@ -24,6 +24,8 @@ public class MyMessage implements Comparable<MyMessage>{
 
     private Date sendTime;//发送时间
 
+    private Short pushResult;//信息状态 0.未读 1.已读 2.推送失败
+
     private String attribute1;
 
     private String attribute2;
@@ -173,5 +175,13 @@ public class MyMessage implements Comparable<MyMessage>{
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+
+    public Short getPushResult() {
+        return pushResult;
+    }
+
+    public void setPushResult(Short pushResult) {
+        this.pushResult = pushResult;
     }
 }

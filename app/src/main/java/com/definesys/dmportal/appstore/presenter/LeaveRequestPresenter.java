@@ -71,9 +71,9 @@ public class LeaveRequestPresenter extends BasePresenter {
                         switch (data.getCode()) {
                             case "200":
                                 if(finalRequestBody == null)//没有图片要上传
-                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, id);
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, data.getData());
                                 else //有图片要上传
-                                    setPicture(finalRequestBody,id);
+                                    setPicture(finalRequestBody,data.getData());
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
@@ -92,9 +92,9 @@ public class LeaveRequestPresenter extends BasePresenter {
     /**
      * 上传请假图片
      * @param finalRequestBody
-     * @param id 请假id
+     * @param msgId 消息id
      */
-    private void setPicture(RequestBody finalRequestBody, String id) {
+    private void setPicture(RequestBody finalRequestBody,String msgId) {
         ViseHttp.POST(HttpConst.uploadLeaveImg)
                 .setRequestBody(finalRequestBody)
                 .tag(HttpConst.uploadLeaveImg)
@@ -103,7 +103,7 @@ public class LeaveRequestPresenter extends BasePresenter {
                     public void onSuccess(BaseResponse<String> data) {
                         switch (data.getCode()) {
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, id);
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, msgId);
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());

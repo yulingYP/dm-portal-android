@@ -10,6 +10,7 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.bean.User;
+import com.definesys.dmportal.main.bean.Message;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -93,8 +94,8 @@ public class UserInfoPresent extends BasePresenter {
                     }
                 });
     }
-    //获取发送失败的信息
-    public void getPushErrorMsg(Number id){
+    //获取发送失败和未读的信息
+    public void getPushErrorReadMsg(Number id){
         Map map = new HashMap();
         map.put("userId",id);
         Log.d("myMap",new Gson().toJson(map).toString());
@@ -119,6 +120,7 @@ public class UserInfoPresent extends BasePresenter {
                     }
                 });
     }
+
     @Override
     public void unsubscribe() {
         super.unsubscribe();

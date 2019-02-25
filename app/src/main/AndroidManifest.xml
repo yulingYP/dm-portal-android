@@ -78,96 +78,99 @@
         <activity android:name=".main.userSettingActivity.PhoneBindActivity" />
         <activity android:name=".appstore.LeaveListSearchActivity" />
         <activity android:name=".appstore.LeaveSearchResultActivity" />
-        <activity android:name=".main.userSettingActivity.UserSettingActivity"/>
+        <activity android:name=".main.userSettingActivity.UserSettingActivity" />
         <activity
             android:name=".appstore.LeaveTextActivity"
-            android:configChanges="orientation|keyboardHidden"></activity>
+            android:configChanges="orientation|keyboardHidden" />
         <!-- APP实现的Receiver，用于接收消息和结果反馈 -->
 
 
-        <!--&lt;!&ndash; 【必须】 信鸽receiver广播接收 &ndash;&gt;-->
-        <!--<receiver-->
-            <!--android:name="com.tencent.android.tpush.XGPushReceiver"-->
-            <!--android:process=":xg_service_v2"-->
-            <!--tools:replace="android:process">-->
-            <!--<intent-filter android:priority="0x7fffffff">-->
-
-                <!--&lt;!&ndash; 【必须】 信鸽SDK的内部广播 &ndash;&gt;-->
-                <!--<action android:name="com.tencent.android.tpush.action.SDK" />-->
-                <!--<action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />-->
-                <!--&lt;!&ndash; 【必须】 系统广播：开屏和网络切换 &ndash;&gt;-->
-                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
-                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-
-                <!--&lt;!&ndash; 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service &ndash;&gt;-->
-                <!--<action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />-->
-                <!--<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />-->
-                <!--<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--<receiver-->
-            <!--android:name=".appstore.receiver.MyXGReceiver"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="true">-->
-            <!--<intent-filter>-->
-
-                <!--&lt;!&ndash; 接收消息透传 &ndash;&gt;-->
-                <!--<action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />-->
-                <!--&lt;!&ndash; 监听注册、反注册、设置/删除标签、通知被点击等处理结果 &ndash;&gt;-->
-                <!--<action android:name="com.tencent.android.tpush.action.FEEDBACK" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-        <!--&lt;!&ndash; &lt;!&ndash; 【必须】 信鸽service &ndash;&gt; &ndash;&gt;-->
-        <!--&lt;!&ndash; <service &ndash;&gt;-->
-        <!--&lt;!&ndash; android:name="com.tencent.android.tpush.service.XGPushServiceV3" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:exported="true" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:persistent="true" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:process=":xg_service_v3" /> &ndash;&gt;-->
+        <!-- &lt;!&ndash; 【必须】 信鸽receiver广播接收 &ndash;&gt; -->
+        <!-- <receiver -->
+        <!-- android:name="com.tencent.android.tpush.XGPushReceiver" -->
+        <!-- android:process=":xg_service_v2" -->
+        <!-- tools:replace="android:process"> -->
+        <!-- <intent-filter android:priority="0x7fffffff"> -->
 
 
-        <!--&lt;!&ndash; 【必须】 通知service，此选项有助于提高抵达率 &ndash;&gt;-->
-        <!--<service-->
-            <!--android:name="com.tencent.android.tpush.rpc.XGRemoteService"-->
-            <!--android:exported="true">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.last.design.dmportal.PUSH_ACTION" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
-
-        <!--&lt;!&ndash; 【必须】 【注意】authorities修改为 包名.AUTH_XGPUSH, 如demo的包名为：com.qq.xgdemo &ndash;&gt;-->
-        <!--&lt;!&ndash; <provider &ndash;&gt;-->
-        <!--&lt;!&ndash; android:name="com.tencent.android.tpush.XGPushProvider" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:authorities="com.last.design.dmportal.AUTH_XGPUSH" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:exported="true"/> &ndash;&gt;-->
+        <!-- &lt;!&ndash; 【必须】 信鸽SDK的内部广播 &ndash;&gt; -->
+        <!-- <action android:name="com.tencent.android.tpush.action.SDK" /> -->
+        <!-- <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" /> -->
+        <!-- &lt;!&ndash; 【必须】 系统广播：开屏和网络切换 &ndash;&gt; -->
+        <!-- <action android:name="android.intent.action.USER_PRESENT" /> -->
+        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
 
 
-        <!--&lt;!&ndash; &lt;!&ndash; 【必须】 【注意】authorities修改为 包名.TPUSH_PROVIDER, 如demo的包名为：com.qq.xgdemo&ndash;&gt; &ndash;&gt;-->
-        <!--&lt;!&ndash; <provider &ndash;&gt;-->
-        <!--&lt;!&ndash; android:name="com.tencent.android.tpush.SettingsContentProvider" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:authorities="com.last.design.dmportal.TPUSH_PROVIDER" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:exported="false" /> &ndash;&gt;-->
+        <!-- &lt;!&ndash; 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service &ndash;&gt; -->
+        <!-- <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" /> -->
+        <!-- <action android:name="android.intent.action.ACTION_POWER_CONNECTED" /> -->
+        <!-- <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <!-- <receiver -->
+        <!-- android:name=".appstore.receiver.MyXGReceiver" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
 
 
-        <!--&lt;!&ndash; &lt;!&ndash; 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V3, 如demo的包名为：com.qq.xgdemo&ndash;&gt; &ndash;&gt;-->
-        <!--&lt;!&ndash; <provider &ndash;&gt;-->
-        <!--&lt;!&ndash; android:name="com.tencent.mid.api.MidProvider" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:authorities="com.last.design.dmportal.TENCENT.MID.V3" &ndash;&gt;-->
-        <!--&lt;!&ndash; android:exported="true" > &ndash;&gt;-->
-        <!--&lt;!&ndash; </provider> &ndash;&gt;-->
+        <!-- &lt;!&ndash; 接收消息透传 &ndash;&gt; -->
+        <!-- <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" /> -->
+        <!-- &lt;!&ndash; 监听注册、反注册、设置/删除标签、通知被点击等处理结果 &ndash;&gt; -->
+        <!-- <action android:name="com.tencent.android.tpush.action.FEEDBACK" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <!-- &lt;!&ndash; &lt;!&ndash; 【必须】 信鸽service &ndash;&gt; &ndash;&gt; -->
+        <!-- &lt;!&ndash; <service &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:name="com.tencent.android.tpush.service.XGPushServiceV3" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:exported="true" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:persistent="true" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:process=":xg_service_v3" /> &ndash;&gt; -->
 
 
-        <!--&lt;!&ndash; 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 &ndash;&gt;-->
-        <!--<meta-data-->
-            <!--android:name="XG_V2_ACCESS_ID"-->
-            <!--android:value="2100326213" />-->
-        <!--&lt;!&ndash; 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 &ndash;&gt;-->
-        <!--<meta-data-->
-            <!--android:name="XG_V2_ACCESS_KEY"-->
-            <!--android:value="A1V1E9E3V2NM" />-->
+        <!-- &lt;!&ndash; 【必须】 通知service，此选项有助于提高抵达率 &ndash;&gt; -->
+        <!-- <service -->
+        <!-- android:name="com.tencent.android.tpush.rpc.XGRemoteService" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.last.design.dmportal.PUSH_ACTION" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
 
+
+        <!-- &lt;!&ndash; 【必须】 【注意】authorities修改为 包名.AUTH_XGPUSH, 如demo的包名为：com.qq.xgdemo &ndash;&gt; -->
+        <!-- &lt;!&ndash; <provider &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:name="com.tencent.android.tpush.XGPushProvider" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:authorities="com.last.design.dmportal.AUTH_XGPUSH" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:exported="true"/> &ndash;&gt; -->
+
+
+        <!-- &lt;!&ndash; &lt;!&ndash; 【必须】 【注意】authorities修改为 包名.TPUSH_PROVIDER, 如demo的包名为：com.qq.xgdemo&ndash;&gt; &ndash;&gt; -->
+        <!-- &lt;!&ndash; <provider &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:name="com.tencent.android.tpush.SettingsContentProvider" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:authorities="com.last.design.dmportal.TPUSH_PROVIDER" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:exported="false" /> &ndash;&gt; -->
+
+
+        <!-- &lt;!&ndash; &lt;!&ndash; 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V3, 如demo的包名为：com.qq.xgdemo&ndash;&gt; &ndash;&gt; -->
+        <!-- &lt;!&ndash; <provider &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:name="com.tencent.mid.api.MidProvider" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:authorities="com.last.design.dmportal.TENCENT.MID.V3" &ndash;&gt; -->
+        <!-- &lt;!&ndash; android:exported="true" > &ndash;&gt; -->
+        <!-- &lt;!&ndash; </provider> &ndash;&gt; -->
+
+
+        <!-- &lt;!&ndash; 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 &ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="XG_V2_ACCESS_ID" -->
+        <!-- android:value="2100326213" /> -->
+        <!-- &lt;!&ndash; 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 &ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="XG_V2_ACCESS_KEY" -->
+        <!-- android:value="A1V1E9E3V2NM" /> -->
 
         <receiver
-            android:name="com.definesys.dmportal.appstore.receiver.MyReceiver"
+            android:name=".appstore.receiver.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -181,13 +184,15 @@
         </receiver>
 
         <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调 -->
-        <receiver android:name="com.definesys.dmportal.appstore.receiver.MyJPushMessageReceiver">
+        <receiver android:name=".appstore.receiver.MyJPushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
 
                 <category android:name="com.last.design.dmportal" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".main.userSettingActivity.UserInfoActivity"></activity>
     </application>
 
 </manifest>

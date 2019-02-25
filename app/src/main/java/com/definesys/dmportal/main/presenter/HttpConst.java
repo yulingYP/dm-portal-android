@@ -82,5 +82,8 @@ public interface HttpConst {
      //获取用户推送失败的消息
     String getPushErrorMessage = "getPushErrorMessage";
 
+    //更新消息状态
+    String updateMsgStatus = "updateMsgStatus";
+
     String uploadUserHeadPicture="uploadUserHeadPicture";
 }

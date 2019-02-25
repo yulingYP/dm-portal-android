@@ -48,9 +48,9 @@ android {
         }
 
         manifestPlaceholders = [
-                JPUSH_PKGNAME : "com.last.design.dmportal",
+                JPUSH_PKGNAME: "com.last.design.dmportal",
                 JPUSH_APPKEY : "f7ebf00c87b1825fb078140c", //JPush 上注册的包名对应的 Appkey.
-                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
     buildTypes {
@@ -70,8 +70,6 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
-
 
 
     }

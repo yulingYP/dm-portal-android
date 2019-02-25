@@ -17,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -31,6 +30,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.ApprovalLeaveInfoActivity;
 import com.definesys.dmportal.appstore.LeaveInfoDetailActivity;
 import com.definesys.dmportal.appstore.LeaveListActivity;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
@@ -69,7 +69,6 @@ import cn.jpush.android.data.JPushLocalNotification;
 @Route(path = ARouterConstants.MainActivity)
 public class MainActivity extends BaseActivity<UserInfoPresent> {
 
-
     @BindView(R.id.mTitlebar)
     CustomTitleBar mTitlebar ;
 
@@ -93,12 +92,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     private MyFragment myFragment ;
     public static int screenWith;//手机屏幕的宽度
     public static int screenHeight;//手机屏幕的高度
-    public static boolean JP_isBind = false;//是否解绑
     private boolean isFirst = true;//第一次点击消息页
 
     public static NotificationManager notiManager;//通知栏管理
     private int notifyID=0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +106,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
 
         //设置推送别名
         JPushInterface.setAlias(this,++notifyID,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()));
+        //设置静默时间段
         JPushInterface.setSilenceTime(getApplicationContext(),1,1,23,59);
+
         //提醒模式
         MyCongfig.remindMode = SharedPreferencesUtil.getInstance().getUserSetting();
         //通知管理
@@ -117,7 +116,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         //获取用户信息
         mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
 //        if(isLogin){//通过登陆页面进入主页面时，获取登出时发送失败的推送
-            mPersenter.getPushErrorMsg(SharedPreferencesUtil.getInstance().getUserId());
+            mPersenter.getPushErrorReadMsg(SharedPreferencesUtil.getInstance().getUserId());
 //        }
         //获取手机宽高
         DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -215,7 +214,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         });
 
         RxView.clicks(mTitlebar)
-                .subscribe(obj->  mPersenter.getPushErrorMsg(SharedPreferencesUtil.getInstance().getUserId()));
+                .subscribe(obj-> mPersenter.getPushErrorReadMsg(SharedPreferencesUtil.getInstance().getUserId()));
     }
 
     @Override
@@ -263,10 +262,15 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }, thread = EventThread.MAIN_THREAD)
     public void getPushErrorMsg(ArrayList<MyMessage> data) {
         for(MyMessage myMessage:data){
-            if(myMessage.getMessageType()==2){//新的请假请求
-                myMessage.setMessageType((short)10);
+            if(myMessage.getPushResult()==2){//推送失败的消息
+                if(myMessage.getMessageType()==2){//新的请假请求
+                    myMessage.setMessageType((short)10);
+                }
+                hasNotify(myMessage);
+            }else if(myMessage.getPushResult()==0){//未读消息
+                setRed(true);
             }
-            hasNotify(myMessage);
+
         }
     }
     class MainFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -348,7 +352,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }, thread = EventThread.MAIN_THREAD)
     public void addMessage(MyMessage message) {
         if(currentPosition==0&&contactFragment.getCurrentitem()==0){//在消息页面
-            contactFragment.getMsgFragment().addMsg(message);
+            if(message!=null) {
+                contactFragment.getMsgFragment().addMsg(message);
+
+            }
         } else {//显示红点
             MainApplication.getInstances().setHasNewMessage(true);
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
@@ -370,18 +377,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 mTabbar.getTabAtPosition(0).hiddenBadge();
         }
     }
-//    //删除指定消息
-//    @Subscribe(
-//            tags = {@Tag("deleteNo")},
-//            thread = EventThread.MAIN_THREAD
-//    )
-//    public void deleteNo(List<MyMessage> data){
-//        if(data!=null){
-//            for(MyMessage myMessage : data){
-//                notiManager.cancel(Integer.valueOf(myMessage.getMessageId()));
-//            }
-//        }
-//    }
+
     //显示通知
     @Subscribe(tags = {
             @Tag("hasNotify")
@@ -389,7 +385,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     public void hasNotify(MyMessage myMessage) {
         MyCongfig.checkMode(this);
         addMessage(myMessage);
-
         NotificationCompat.Builder mBuilder;
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
             NotificationChannel channel;
@@ -436,6 +431,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         notiManager.notify(++notifyID,notification );
     }
 
+    //设置跳转的intent
     public Intent setResultIntent(MyMessage myMessage) {
         Intent intent = null;
         if(myMessage==null) {//跳转到消息页
@@ -449,7 +445,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("leaveId",myMessage.getMessageExtend());
         }else if(myMessage.getMessageType()==2){//审批人新的审批任务，跳转到详情页
             MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
-            intent = new Intent(this, ApprovalRecord.class);
+            intent = new Intent(this, ApprovalLeaveInfoActivity.class);
             if(temp!=null) {
                 intent.putExtra("leaveId", temp.getMessageExtend());
                 intent.putExtra("type", temp.getMessageExtend2());
@@ -459,7 +455,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 intent.putExtra("leaveId", myMessage.getMessageExtend());
                 intent.putExtra("type", 4);
             }
-        }else if(myMessage.getMessageType()==10){
+        }else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
             intent = new Intent(this, LeaveListActivity.class);
             intent.putExtra("userId",(int) SharedPreferencesUtil.getInstance().getUserId());
             intent.putExtra("type",1);
@@ -474,5 +470,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         }
         return intent;
     }
+
 
 }
