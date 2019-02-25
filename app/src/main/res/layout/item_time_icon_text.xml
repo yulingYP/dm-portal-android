@@ -31,7 +31,6 @@
             android:layout_width="@dimen/msg_icon_size"
             android:layout_height="@dimen/msg_icon_size"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_msg_status_accept" />

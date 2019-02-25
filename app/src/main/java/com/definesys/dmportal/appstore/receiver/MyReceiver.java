@@ -1,14 +1,20 @@
 package com.definesys.dmportal.appstore.receiver;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.definesys.dmportal.MainApplication;
+import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.LeaveActivity;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.main.ui.MainActivity;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.definesys.dmportal.welcomeActivity.SplashActivity;
 import com.example.jpushdemo.ExampleUtil;
 import com.example.jpushdemo.LocalBroadcastManager;
 import com.example.jpushdemo.Logger;
@@ -22,7 +28,11 @@ import org.json.JSONObject;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.data.JPushLocalNotification;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * 自定义接收器
@@ -33,6 +43,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class MyReceiver extends BroadcastReceiver {
 	private static final String TAG = "JIGUANG-Example";
+	private static String extra = "";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -47,8 +58,8 @@ public class MyReceiver extends BroadcastReceiver {
 
 			} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-				if("message".equals(bundle.get(JPushInterface.EXTRA_TITLE)))
-					processCustomMessage(context, bundle);
+				processCustomMessage(context, bundle);
+
 
 			} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知");
@@ -59,8 +70,8 @@ public class MyReceiver extends BroadcastReceiver {
 				Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
 				//打开自定义的Activity
-				Intent i = new Intent(context, LeaveActivity.class);
-				i.putExtras(bundle);
+				Intent i = new Intent(context, SplashActivity.class);
+				i.putExtra("message",extra);
 				//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
 				context.startActivity(i);
@@ -118,10 +129,48 @@ public class MyReceiver extends BroadcastReceiver {
 	//send msg to MainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
 		String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-		Gson gson = new Gson();
-		MyMessage myMessage=gson.fromJson(message, new TypeToken<MyMessage>() {
-		}.getType());
-		SmecRxBus.get().post("hasNotify",myMessage);
-		    Logger.d(TAG, message+"\n"+myMessage.toString());
+		MyMessage myMessage = null;
+//		JPushInterface.addLocalNotification(context, createNotification(context, myMessage, message));
+		if("message".equals(bundle.get(JPushInterface.EXTRA_TITLE))) {//请假或审批消息
+			if (message != null && !"".equals(message) && message.contains("{")) {
+				myMessage = new Gson().fromJson(message, new TypeToken<MyMessage>() {
+				}.getType());
+			}
+			if (MainActivity.notiManager != null)//app已初始化
+				SmecRxBus.get().post("hasNotify", myMessage);
+			else {//app未初始化
+				extra = message;
+				JPushInterface.addLocalNotification(context, createNotification(context, myMessage, message));
+			}
+		}else if("token".equals(bundle.get(JPushInterface.EXTRA_TITLE))){//单机登陆验证
+			if(!SharedPreferencesUtil.getInstance().getToken().equals(message)){
+				MainApplication.getInstances().showDialog(R.string.no_one_tip);
+			}
+		}
+		Logger.d(TAG, message+"\n"+myMessage.toString());
+	}
+	//app未初始化时尝试建立本地消息
+	public JPushLocalNotification createNotification(Context context, MyMessage myMessage, String message){
+
+		JPushLocalNotification jPushLocalNotification = new JPushLocalNotification();
+		String title="aa";//标题
+		String content="bb";//内容
+		if(myMessage!=null){
+			if(myMessage.getMessageType()==1) {//请假人审批结果
+				title = context.getString(R.string.approval_result);
+				content = context.getString(R.string.approval_result_tip_1);
+			}else if(myMessage.getMessageType()==2) {//新的请假请求，跳转到详细页面
+				title = context.getString(R.string.leave_request);
+				content = context.getString(R.string.leave_request_tip_1);
+			}else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
+				title = context.getString(R.string.leave_request);
+				content = context.getString(R.string.leave_request_tip_2);
+			}
+		}
+
+		jPushLocalNotification.setTitle(title);
+		jPushLocalNotification.setContent(content);
+		jPushLocalNotification.setNotificationId(System.currentTimeMillis());
+		return jPushLocalNotification;
 	}
 }

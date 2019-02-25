@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity {
 //    private View v;
 //    @BindView(R.id.tip_remain_text)
 //    TextView tipText;
-
+private String message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Main_AppTheme);
@@ -48,10 +48,8 @@ public class SplashActivity extends BaseActivity {
 
         // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
-//        tipText.setVisibility(View.GONE);
-//        v= LayoutInflater.from(this).inflate(R.layout.activity_splash,null);
-//        downfaceInit();//下载默认封面
+        if(getIntent()!=null)
+            message = getIntent().getStringExtra("message");
 
     }
 
@@ -77,7 +75,7 @@ public class SplashActivity extends BaseActivity {
 
         //已经登录
         if (checkExist()) {
-            ARouter.getInstance().build(ARouterConstants.MainActivity).navigation(this, new NavCallback() {
+            ARouter.getInstance().build(ARouterConstants.MainActivity).withString("message",message).navigation(this, new NavCallback() {
                 @Override
                 public void onArrival(Postcard postcard) {
                     SplashActivity.this.finish();

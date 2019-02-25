@@ -39,7 +39,7 @@ public class LoginPresenter extends BasePresenter {
     登录接口
     */
     public void userLogin(Number userId,String phone, String psw, int loginType) {
-        Map loginMap = new HashMap<>();
+        Map<String,Object> loginMap = new HashMap<>();
         //登录所需参数
         loginMap.put("userId", userId);
         if (loginType == EditSendText.PASSWORD) {
@@ -81,8 +81,6 @@ public class LoginPresenter extends BasePresenter {
             }
         });
     }
-
-
     @Override
     public void unsubscribe() {
         super.unsubscribe();

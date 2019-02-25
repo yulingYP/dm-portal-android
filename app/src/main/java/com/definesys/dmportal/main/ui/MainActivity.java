@@ -29,10 +29,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
-import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.LeaveActivity;
 import com.definesys.dmportal.appstore.LeaveInfoDetailActivity;
 import com.definesys.dmportal.appstore.LeaveListActivity;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
@@ -50,6 +48,8 @@ import com.definesys.dmportal.appstore.ui.fragment.HomeAppFragment;
 import com.definesys.dmportal.main.ui.fragment.MyFragment;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.example.jpushdemo.ExampleUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -64,6 +64,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.data.JPushLocalNotification;
 
 @Route(path = ARouterConstants.MainActivity)
 public class MainActivity extends BaseActivity<UserInfoPresent> {
@@ -81,6 +82,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     @Autowired(name = "isLogin")
     boolean isLogin;//是否通过登陆进入主页
 
+    @Autowired(name = "message")
+    String splashMessage;//从跳转页得到的消息，可能是json化的Message实例
+
     CustomTitleIndicator titleIndicator;
     private int currentPosition=1;
 
@@ -92,7 +96,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     public static boolean JP_isBind = false;//是否解绑
     private boolean isFirst = true;//第一次点击消息页
 
-    private NotificationManager notiManager;//通知栏管理
+    public static NotificationManager notiManager;//通知栏管理
     private int notifyID=0;
 
     @Override
@@ -105,6 +109,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
 
         //设置推送别名
         JPushInterface.setAlias(this,++notifyID,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()));
+        JPushInterface.setSilenceTime(getApplicationContext(),1,1,23,59);
         //提醒模式
         MyCongfig.remindMode = SharedPreferencesUtil.getInstance().getUserSetting();
         //通知管理
@@ -119,7 +124,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         screenHeight = dm.heightPixels;
         screenWith = dm.widthPixels;
         Log.d("myWidth", "" + screenWith + "  " + screenHeight);
-
+        needSplash(splashMessage);
         initView();
 
     }
@@ -289,10 +294,30 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);// 信鸽必须要调用这句
-        //点击通知进入主页进行的操作
-
-        singleLogout(intent!=null&&intent.getBooleanExtra(getString(R.string.exit_en), false));
+        if(intent!=null) {
+            //点击通知进入主页进行的操作
+            needSplash(intent.getStringExtra("message"));
+            singleLogout( intent.getBooleanExtra(getString(R.string.exit_en), false));
+        }
     }
+
+    //是否需要跳转页页面
+    private void needSplash(String message) {
+        if(message==null)
+            return;
+        MyMessage myMessage = null;
+        if(message.equals("showMessage")){//跳转到消息也
+            isFirst = false;
+             mTabbar.setSelectTab(0);
+            contactFragment.freshMsgFragment();
+        }
+        else if(message.contains("{")){
+            myMessage= new Gson().fromJson(message, new TypeToken<MyMessage>() {
+            }.getType());
+        }else
+            startActivity(setResultIntent(myMessage));
+    }
+
     /**
      * 退出登录
      */
@@ -379,7 +404,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
 
         String title="aa";//标题
         String content="bb";//内容
-        PendingIntent pendingIntent =  setResultIntent(myMessage);
+        Intent intent = setResultIntent(myMessage);
+        PendingIntent pendingIntent =  PendingIntent.getActivity(this, 0,  intent, PendingIntent.FLAG_UPDATE_CURRENT) ;
         if(myMessage!=null){
             if(myMessage.getMessageType()==1) {//请假人审批结果
                 title = getString(R.string.approval_result);
@@ -410,10 +436,14 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         notiManager.notify(++notifyID,notification );
     }
 
-    private PendingIntent setResultIntent(MyMessage myMessage) {
-        if(myMessage==null)
-            return PendingIntent.getActivity(this, 0,  new Intent(this, MainActivity.class), 0) ;
+    public Intent setResultIntent(MyMessage myMessage) {
         Intent intent = null;
+        if(myMessage==null) {//跳转到消息页
+            intent=new Intent(this, MainActivity.class);
+            intent.putExtra("message","showMessage");
+            return intent;
+        }
+
         if(myMessage.getMessageType()==1){//请假人请假结果
             intent = new Intent(this, LeaveInfoDetailActivity.class);
             intent.putExtra("leaveId",myMessage.getMessageExtend());
@@ -438,9 +468,11 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity);
 
         }
-        if(intent == null)
+        if(intent == null) {//跳转到消息页
             intent = new Intent(this, MainActivity.class);
-        return PendingIntent.getActivity(this, 0,  intent, PendingIntent.FLAG_UPDATE_CURRENT) ;
+            intent.putExtra("message","showMessage");
+        }
+        return intent;
     }
 
 }

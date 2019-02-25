@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.main.presenter.HttpConst;
+import com.definesys.dmportal.main.ui.LoginActivity;
 import com.definesys.dmportal.main.util.SSLSocketClient;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
@@ -150,7 +151,7 @@ public class MainApplication extends Application {
     }
 
     public synchronized void showDialog(int msgId) {
-        if(alert!=null&&alert.isShowing())
+        if((alert!=null&&alert.isShowing())||MyActivityManager.getInstance().getCurrentActivity() instanceof LoginActivity)
             return;
 //        SharedPreferencesUtil.getInstance().setToken("");
 

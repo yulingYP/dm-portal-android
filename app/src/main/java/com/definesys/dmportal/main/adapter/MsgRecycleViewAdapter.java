@@ -55,7 +55,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             viewHolder.time.setTextDisplayed(sdf.format(messages.get(position).getSendTime()));
             if(messages.get(position).getMessageType()==1){//请假人消息
                 if(messages.get(position).getMessageExtend2()==0) {//拒绝
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_refuse);
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_refuse);
                     viewHolder.content.setText(R.string.message_tip_1);
                 }else if(messages.get(position).getMessageExtend2()==1) {//同意
                     viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
@@ -65,7 +65,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.img.setImageResource(R.drawable.ic_msg_status_await);
                     viewHolder.content.setText(R.string.message_tip_3);
                 }else if(messages.get(position).getMessageExtend2()==3) {//已销假
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_await);
+                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
                     viewHolder.content.setText(R.string.message_tip_4);
                 }
 
@@ -76,10 +76,10 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.img.setImageResource(R.drawable.ic_msg_status_refuse);
                     viewHolder.content.setText(context.getString(R.string.message_tip_5,id));
                 }else if(messages.get(position).getMessageExtend2()==1) {//同意
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_accept);
                     viewHolder.content.setText(context.getString(R.string.message_tip_6,id));
                 }else if(messages.get(position).getMessageExtend2()==4) {//未审批
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_await);
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_approving);
                     viewHolder.content.setText(context.getString(R.string.message_tip_7,id));
                 }
             }
