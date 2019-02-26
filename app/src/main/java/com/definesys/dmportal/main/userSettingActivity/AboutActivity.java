@@ -171,7 +171,7 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
                                     //（必须）下载地址
                                     .setApkFileUrl(data.optString("appDownloadUrl"))
                                     //标题
-                                    .setUpdateDefDialogTitle(String.format("智能用梯 是否升级到%s版本？", newVersion))
+                                    .setUpdateDefDialogTitle(String.format("快捷校园 是否升级到%s版本？", newVersion))
                                     //（必须）更新内容
                                     .setUpdateLog(data.optString("versionDetail"))
                                     //大小，不设置不显示大小，可以不设置

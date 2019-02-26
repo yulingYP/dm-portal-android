@@ -15,8 +15,11 @@ public interface SharedPreferencesParams {
     //sp文件中token所用的对应的字段
     String spToken = "sp_token";
 
-    //sp文件中url所用的对应的字段
-    String spUserUrl = "u_url";
+    //sp文件中用户头像url所用的对应的字段
+    String spUserHead = "u_head_url";
+
+    //sp文件中用户签名url所用的对应的字段
+    String spUserSign = "u_sign_url";
 
     //sp文件中url所用的对应的字段
     String spUserId = "u_id";

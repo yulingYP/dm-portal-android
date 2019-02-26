@@ -10,6 +10,7 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.bean.User;
+import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.bean.Message;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 
 public class UserInfoPresent extends BasePresenter {
+
     public UserInfoPresent(Context context) {
         super(context);
     }
@@ -111,12 +113,19 @@ public class UserInfoPresent extends BasePresenter {
                                 if(data.getData()!=null&&data.getData().size()>0)
                                     SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_PUSH_ERROR_MSG, data.getData());
                                 break;
+                            default:
+                                Log.d("mydemo",data.getMsg());
+                                if(++MyCongfig.tryCount<=3)
+                                    getPushErrorReadMsg(id);
+                                break;
                         }
                     }
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-
+                        Log.d("mydemo",errMsg);
+                        if(++MyCongfig.tryCount<=3)
+                            getPushErrorReadMsg(id);
                     }
                 });
     }

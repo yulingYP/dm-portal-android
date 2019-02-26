@@ -18,14 +18,16 @@ import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spF
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spSearchHistory;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spToken;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserAuthority;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserHead;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserId;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserLocalimg;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserName;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserPhone;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSetting;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSex;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSign;
 import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserType;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserUrl;
+import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserHead;
 
 public class SharedPreferencesUtil {
     private static SharedPreferencesUtil instance;
@@ -107,7 +109,9 @@ public class SharedPreferencesUtil {
 
     public String getClassId() {   return sp.getString(spClass,"");}
 
-    public String getUserImageUrl() {   return sp.getString(spUserUrl,"");}
+    public String getUserImageUrl() {   return sp.getString(spUserHead,"");}
+
+    public String getUserSign() {   return sp.getString(spUserSign,"");}
 
     public String getUserLocal() {   return sp.getString(spUserLocalimg,"");}
 
@@ -127,7 +131,8 @@ public class SharedPreferencesUtil {
                     .putString(spFaculty,user.getFacultyId())//院系id
                     .putString(spFacultyName,user.getFacultName())//院系名称
                     .putString(spClass,user.getClassId())//班级
-                    .putString(spUserUrl,user.getUserImage())//用户头像
+                    .putString(spUserHead,user.getUserImage())//用户头像
+                    .putString(spUserSign,user.getUserSign())//用户头像
 //                    .putString(spUserType,user.getUserType())
                     .putInt(spUserAuthority,user.getLeaveAuthority())//请假权限
                     .putString(spUserLocalimg,"");//本地头像
@@ -144,7 +149,8 @@ public class SharedPreferencesUtil {
                 .putString(spFaculty,"")//院系id
                 .putString(spFacultyName,"")//院系名称
                 .putString(spClass,"")//班级
-                .putString(spUserUrl,"")//用户头像
+                .putString(spUserHead,"")//用户头像
+                .putString(spUserSign,"")//用户签名
                 .putInt(spUserType,0)//用户类型
                 .putString(spToken,"")//Token
 //                    .putString(spUserType,user.getUserType())
@@ -195,7 +201,12 @@ public class SharedPreferencesUtil {
         return editor;
     }
     public SharedPreferences.Editor setUserImageUrl(String userurl) {
-        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserUrl, userurl);
+        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserHead, userurl);
+        editor.apply();
+        return editor;
+    }
+    public SharedPreferences.Editor setUserSign(String userurl) {
+        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserSign, userurl);
         editor.apply();
         return editor;
     }

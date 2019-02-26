@@ -1,7 +1,5 @@
 package com.definesys.dmportal.appstore.receiver;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,13 +8,10 @@ import android.text.TextUtils;
 
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.LeaveActivity;
 import com.definesys.dmportal.appstore.bean.MyMessage;
-import com.definesys.dmportal.main.ui.MainActivity;
+import com.definesys.dmportal.main.MainActivity;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.definesys.dmportal.welcomeActivity.SplashActivity;
-import com.example.jpushdemo.ExampleUtil;
-import com.example.jpushdemo.LocalBroadcastManager;
 import com.example.jpushdemo.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,13 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
-import java.util.List;
 
-import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.data.JPushLocalNotification;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * 自定义接收器

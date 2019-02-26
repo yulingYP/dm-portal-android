@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.ui.MainActivity"
+            android:name=".main.MainActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".webview.ui.WebViewActivity" />
@@ -72,7 +72,7 @@
         <activity android:name=".appstore.LeaveListActivity" />
         <activity android:name=".appstore.LeaveInfoDetailActivity" />
         <activity android:name=".appstore.ApprovalLeaveInfoActivity" />
-        <activity android:name=".main.ui.LoginActivity" />
+        <activity android:name=".main.LoginActivity" />
         <activity android:name=".main.userSettingActivity.ForgetPwdActivity" />
         <activity android:name=".main.userSettingActivity.ChangePwdActivity" />
         <activity android:name=".main.userSettingActivity.PhoneBindActivity" />

@@ -14,6 +14,7 @@ import static android.content.Context.VIBRATOR_SERVICE;
  */
 
 public  class MyCongfig {
+    public static int tryCount = 0;//开机获取信息失败时尝试次数 3次
     public static int remindMode = 1;// 0.静音 1.震动 2.铃声  3.震动+铃声
     public static void musicOpen(Context context, boolean isShow) {
         if(remindMode>=2||isShow) {

@@ -267,20 +267,25 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
      */
     private void initText() {
         lg_absence.removeAllViews();
-        //课假或短假
-        if(leaveInfo.getType()==0||leaveInfo.getType()==1){
-            lg_absence.addView(addShortView());
-        }
 
-        //长假且不是实习
-        else if(leaveInfo.getType()==2&&!getString(R.string.shixi).equals(leaveInfo.getLeaveTitle())){
-            lg_absence.addView(addLongView());
-        }
+        if(leaveInfo.getUserType()==0) {//学生
+            //课假或短假
+            if (leaveInfo.getType() == 0 || leaveInfo.getType() == 1) {
+                lg_absence.addView(addShortView());
+            }
 
-        //长假且是实习
-        else if(leaveInfo.getType()==2&&getString(R.string.shixi).equals(leaveInfo.getLeaveTitle())||leaveInfo.getType()==3){
-            lg_absence.addView(addLongView());
-            lg_absence.addView(addPractice());
+            //长假且不是实习
+            else if (leaveInfo.getType() == 2 && !getString(R.string.shixi).equals(leaveInfo.getLeaveTitle())) {
+                lg_absence.addView(addLongView());
+            }
+
+            //长假且是实习
+            else if (leaveInfo.getType() == 2 && getString(R.string.shixi).equals(leaveInfo.getLeaveTitle()) || leaveInfo.getType() == 3) {
+                lg_absence.addView(addLongView());
+                lg_absence.addView(addPractice());
+            }
+        }else if(leaveInfo.getUserType()==1){//教师
+
         }
         //        设置横屏
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){

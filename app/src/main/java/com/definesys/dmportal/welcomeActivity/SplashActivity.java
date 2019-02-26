@@ -1,14 +1,6 @@
 package com.definesys.dmportal.welcomeActivity;
 
-import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,17 +11,7 @@ import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
-import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.main.ui.MainActivity;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
-import com.luck.picture.lib.PictureSelector;
-import com.vise.xsnow.permission.Permission;
-import com.vise.xsnow.permission.RxPermissions;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-
 
 
 @Route(path = ARouterConstants.SplashActivity)

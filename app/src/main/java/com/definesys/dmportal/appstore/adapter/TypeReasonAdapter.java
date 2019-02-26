@@ -1,27 +1,18 @@
 package com.definesys.dmportal.appstore.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.appstore.utils.DensityUtil;
-import com.definesys.dmportal.main.ui.MainActivity;
-import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by 羽翎 on 2018/11/21.

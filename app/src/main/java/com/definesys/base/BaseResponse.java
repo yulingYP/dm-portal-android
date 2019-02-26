@@ -18,7 +18,7 @@ public class BaseResponse<T> {
     }
 
     public String getMsg() {
-        return msg;
+        return msg==null?"":msg;
     }
 
     public void setMsg(String msg) {

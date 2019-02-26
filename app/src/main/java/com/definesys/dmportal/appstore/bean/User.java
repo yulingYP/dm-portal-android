@@ -16,7 +16,9 @@ public class User{
 
     private Short userSex;//用户性别 1.男 2.女
 
-    private String userImage;//用户头像
+    private String userImage;//用户头像URL
+
+    private String userSign;//用户签名URL
 
     private Date lastLoginDate;//上次登陆时间
 
@@ -222,5 +224,25 @@ public class User{
 
     public void setFacultName(String facultName) {
         this.facultName = facultName==null?"":facultName;
+    }
+
+    public Short getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(Short userSex) {
+        this.userSex = userSex;
+    }
+
+    public String getUserSign() {
+        return userSign;
+    }
+
+    public void setUserSign(String userSign) {
+        this.userSign = userSign;
+    }
+
+    public String getFacultId() {
+        return facultId;
     }
 }

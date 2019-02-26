@@ -7,14 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MainIcon;
 import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.main.ui.MainActivity;
+import com.definesys.dmportal.main.MainActivity;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by 羽翎 on 2019/1/4.
