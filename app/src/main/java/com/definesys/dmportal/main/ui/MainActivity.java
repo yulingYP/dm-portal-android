@@ -255,14 +255,15 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
        }
     }
     /**
-     * 获取推送失败的消息列表成功
+     * 获取推送失败和未读的消息列表成功
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_PUSH_ERROR_MSG)
     }, thread = EventThread.MAIN_THREAD)
     public void getPushErrorMsg(ArrayList<MyMessage> data) {
         for(MyMessage myMessage:data){
-            if(myMessage.getPushResult()==2){//推送失败的消息
+            if((myMessage.getPushResult()==2)||(myMessage.getPushResult()==0&&myMessage.getMessageType()==1
+                    &&(myMessage.getMessageExtend2()==0||myMessage.getMessageExtend2()==1))){//推送失败和未读的请假结果消息
                 if(myMessage.getMessageType()==2){//新的请假请求
                     myMessage.setMessageType((short)10);
                 }

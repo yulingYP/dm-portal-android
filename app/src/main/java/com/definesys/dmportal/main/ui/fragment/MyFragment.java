@@ -109,8 +109,8 @@ public class MyFragment extends Fragment {
     @BindView(R.id.logout_layout)
     LinearLayout lg_logout;
 
-//    @BindView(R.id.change_pwd_layout)
-//    LinearLayout lg_pwd;
+    @BindView(R.id.feedback_layout)
+    LinearLayout lg_fed;
 
 //    @BindView(R.id.bind_phone_layout)
 //    LinearLayout lg_phone;
@@ -209,13 +209,13 @@ public class MyFragment extends Fragment {
 //                                .navigation()
 //                );
 //
-//        //修改密码
-//        RxView.clicks(lg_pwd)
-//                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(o ->
-//                       ARouter.getInstance().build(ARouterConstants.ChangePwdActivity).navigation()
-//                );
+        //反馈建议
+        RxView.clicks(lg_fed)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o ->
+                       ARouter.getInstance().build(ARouterConstants.FeedBackActivity).navigation()
+                );
         //设置
         RxView.clicks(lg_setting)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

@@ -136,7 +136,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @BindView(R.id.ed_reason)
     EditText ed_reason;
 
-    private ReasonImageAdapter fedbkImgAdapter;//图片适配器
+    private ReasonImageAdapter leaveImgAdapter;//图片适配器
     private List<LocalMedia> selectImages;//选择的图片
 
     private Date startDate;
@@ -281,11 +281,11 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.HORIZONTAL, false));
 
-        fedbkImgAdapter = new ReasonImageAdapter(this, selectImages);
-        recyclerView.setAdapter(fedbkImgAdapter);
+        leaveImgAdapter = new ReasonImageAdapter(this, selectImages);
+        recyclerView.setAdapter(leaveImgAdapter);
 
         // 自定义图片控件的点击事件
-        fedbkImgAdapter.setOnClickListener(new ReasonImageAdapter.OnClickListener() {
+        leaveImgAdapter.setOnClickListener(new ReasonImageAdapter.OnClickListener() {
             @Override
             public void onBackgroundClick(int position) {
                 if(position == 0){
@@ -307,8 +307,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             public void onForegroundClick(int position) {
                 // 删除选中的图片
                 selectImages.remove(position-1);
-                fedbkImgAdapter.notifyDataSetChanged();
-                tv_imgCount.setText(getString(R.string.img_count, fedbkImgAdapter.getItemCount()-1));
+                leaveImgAdapter.notifyDataSetChanged();
+                tv_imgCount.setText(getString(R.string.img_count, leaveImgAdapter.getItemCount()-1));
             }
         });
     }
@@ -747,8 +747,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                     // 更新图片数量
                     tv_imgCount.setText(getString(R.string.img_count, selectImages.size()));
                     // 更新显示图片
-                    fedbkImgAdapter.setImages(selectImages);
-                    fedbkImgAdapter.notifyDataSetChanged();
+                    leaveImgAdapter.setImages(selectImages);
+                    leaveImgAdapter.notifyDataSetChanged();
                     break;
             }
         }

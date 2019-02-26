@@ -1,4 +1,4 @@
-package com.definesys.dmportal.appstore.presenter;
+package com.definesys.dmportal.main.presenter;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,8 +6,7 @@ import android.util.Log;
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.LeaveInfo;
-import com.definesys.dmportal.main.presenter.HttpConst;
-import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.bean.Feedback;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -23,11 +22,11 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
- * Created by 羽翎 on 2019/1/10.
+ * Created by 羽翎 on 2019/2/26.
  */
 
-public class LeaveRequestPresenter extends BasePresenter {
-    public LeaveRequestPresenter(Context context) {
+public class FeedBackPresenter extends BasePresenter {
+    public FeedBackPresenter(Context context) {
         super(context);
     }
 
@@ -35,12 +34,8 @@ public class LeaveRequestPresenter extends BasePresenter {
      * 提交请假请求
      * @param selectImages 选择的图片
      */
-    public void getRequestResult (LeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
-        //设置请假id
-        String id = submitLeaveInfo.getUserId().toString() + System.currentTimeMillis();
-        submitLeaveInfo.setId(id);
-        //减少传输的数据
-        submitLeaveInfo.setSubTime(null);
+    public void getRequestResult (Feedback feedback, List<LocalMedia> selectImages){
+
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         RequestBody requestBody=null;
         //上传图片文件
@@ -53,19 +48,19 @@ public class LeaveRequestPresenter extends BasePresenter {
                 builder.addFormDataPart("files", fileName, RequestBody.create(type, file));
                 builder.addFormDataPart("uuids", UUID.randomUUID().toString());
             }
-            builder.addFormDataPart("uploadId", submitLeaveInfo.getId());
-            builder.addFormDataPart("type","1");
+            builder.addFormDataPart("uploadId", feedback.getFeedbackId());
+            builder.addFormDataPart("type","2");
             requestBody = builder.build();
         }
 
 
         //submitLeaveInfo.setSubmitDate(DensityUtil.getFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",new Date()));
 
-        Log.d("myMap",new Gson().toJson(submitLeaveInfo).toString());
+        Log.d("myMap",new Gson().toJson(feedback).toString());
         RequestBody finalRequestBody = requestBody;
-        ViseHttp.POST(HttpConst.submitLeaveRequest)
-                .tag(HttpConst.submitLeaveRequest)
-                .setJson(new Gson().toJson(submitLeaveInfo))
+        ViseHttp.POST(HttpConst.submitFeedBack)
+                .tag(HttpConst.submitFeedBack)
+                .setJson(new Gson().toJson(feedback))
                 .request(new ACallback<BaseResponse<String>>() {
                     @Override
                     public void onSuccess(BaseResponse<String> data) {
@@ -98,7 +93,7 @@ public class LeaveRequestPresenter extends BasePresenter {
     private void updatePictures(RequestBody finalRequestBody,String msgId) {
         ViseHttp.POST(HttpConst.uploadPictures)
                 .setRequestBody(finalRequestBody)
-                .tag(HttpConst.uploadPictures)
+                .tag(HttpConst.submitFeedBack)
                 .request(new ACallback<BaseResponse<String>>() {
                     @Override
                     public void onSuccess(BaseResponse<String> data) {
@@ -121,8 +116,7 @@ public class LeaveRequestPresenter extends BasePresenter {
 
     @Override
     public void unsubscribe() {
-        ViseHttp.cancelTag(HttpConst.submitLeaveRequest);
-        ViseHttp.cancelTag(HttpConst.uploadPictures);
         super.unsubscribe();
+        ViseHttp.cancelTag(HttpConst.submitFeedBack);
     }
 }

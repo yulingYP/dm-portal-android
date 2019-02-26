@@ -23,7 +23,7 @@ public interface HttpConst {
     String submitLeaveRequest = "submitLeaveRequest";
 
     //上传图片
-    String uploadLeaveImg = "uploadLeavePicture";
+    String uploadPictures = "uploadPictures";
 
     //根据Id分页获取请假记录
     String getLeaveInfoById = "getLeaveInfoById";
@@ -85,5 +85,10 @@ public interface HttpConst {
     //更新消息状态
     String updateMsgStatus = "updateMsgStatus";
 
+    //更新用户头像
     String uploadUserHeadPicture="uploadUserHeadPicture";
+
+    //提交反馈建议
+    String submitFeedBack = "submitFeedBack";
+
 }

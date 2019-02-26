@@ -55,14 +55,14 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             viewHolder.time.setTextDisplayed(sdf.format(messages.get(position).getSendTime()));
             if(messages.get(position).getMessageType()==1){//请假人消息
                 if(messages.get(position).getMessageExtend2()==0) {//拒绝
-                    viewHolder.img.setImageResource(R.drawable.ic_leave_refuse);
+                    viewHolder.img.setImageResource(R.drawable.refuse);
                     viewHolder.content.setText(R.string.message_tip_1);
                 }else if(messages.get(position).getMessageExtend2()==1) {//同意
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
+                    viewHolder.img.setImageResource(R.drawable.pass);
                     viewHolder.content.setText(R.string.message_tip_2);
                 }
                 else if(messages.get(position).getMessageExtend2()==2) {//已提交
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_await);
+                    viewHolder.img.setImageResource(R.drawable.review);
                     viewHolder.content.setText(R.string.message_tip_3);
                 }else if(messages.get(position).getMessageExtend2()==3) {//已销假
                     viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
@@ -73,7 +73,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 String id = messages.get(position).getMessageExtend();
                 id=id.length()>9?id.substring(0,9):id;
                 if(messages.get(position).getMessageExtend2()==0) {//拒绝
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_refuse);
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_refuse);
                     viewHolder.content.setText(context.getString(R.string.message_tip_5,id));
                 }else if(messages.get(position).getMessageExtend2()==1) {//同意
                     viewHolder.img.setImageResource(R.drawable.ic_leave_accept);
