@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?attr/selectableItemBackground"
-    android:background="@color/customer_title">
+    android:background="@color/white">
     <ImageView
         android:id="@+id/img_item_itr"
         android:layout_width="@dimen/icon_size"
@@ -19,18 +19,18 @@
     <TextView
         android:id="@+id/title_item_itr"
         android:text="个人信息"
-        android:textColor="@color/color_white"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="@+id/img_item_itr"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageView
         android:id="@+id/right_item_itr"
-        android:src="@drawable/ic_chevron_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:src="@drawable/entry"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -38,9 +38,10 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_margin_1dp"
-        android:background="@color/black"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints" />
 </android.support.constraint.ConstraintLayout>

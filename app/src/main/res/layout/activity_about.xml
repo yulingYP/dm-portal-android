@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_gray"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/back_gray"
+        android:fitsSystemWindows="true"
+        >
+        <com.definesys.dmportal.commontitlebar.CustomTitleBar
+            android:background="?attr/colorPrimaryDark"
+            android:id="@+id/title_bar_att_about"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/titlebar_height"/>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/head_att_about"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/app_icon"
+            app:riv_corner_radius="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_bar_att_about"
+            app:layout_constraintBottom_toTopOf="@+id/check_update_att_about"/>
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/head_att_about">
+            <TextView
+                android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/version_att_about"
+                android:text="@string/app_version_name"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <include
+            android:id="@+id/check_update_att_about"
+            layout="@layout/item_img_tv_right"
+            android:layout_height="@dimen/item_height_50dp"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <include
+            android:id="@+id/user_protocol"
+            layout="@layout/item_img_tv_right"
+            android:layout_height="@dimen/item_height_50dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="1dp"
+            app:layout_constraintTop_toBottomOf="@+id/check_update_att_about"/>
+        <TextView
+            android:text="@string/copyright"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

@@ -65,7 +65,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.img.setImageResource(R.drawable.review);
                     viewHolder.content.setText(R.string.message_tip_3);
                 }else if(messages.get(position).getMessageExtend2()==3) {//已销假
-                    viewHolder.img.setImageResource(R.drawable.ic_msg_status_accept);
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_return);
                     viewHolder.content.setText(R.string.message_tip_4);
                 }
 

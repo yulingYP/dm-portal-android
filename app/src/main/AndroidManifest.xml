@@ -193,7 +193,8 @@
         </receiver>
 
         <activity android:name=".main.userSettingActivity.UserInfoActivity" />
-        <activity android:name=".main.userSettingActivity.FeedBackActivity"></activity>
+        <activity android:name=".main.userSettingActivity.FeedBackActivity" />
+        <activity android:name=".main.userSettingActivity.AboutActivity"></activity>
     </application>
 
 </manifest>

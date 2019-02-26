@@ -16,25 +16,37 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.webview.jsinterface.JsInterface;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.prim.primweb.core.PrimWeb;
 import com.prim.primweb.core.jsloader.CommonJSListener;
 import com.prim.primweb.core.webclient.webchromeclient.AgentChromeClient;
 import com.prim.primweb.core.webclient.webviewclient.AgentWebViewClient;
 import com.prim.primweb.core.webview.IAgentWebView;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Route(path = ARouterConstants.WebViewActivity)
 public class WebViewActivity extends AppCompatActivity {
 
     @BindView(R.id.mTitlebar)
-    CustomTitleBar mTitlebar ;
+    CustomTitleBar mTitlebar;
 
     @BindView(R.id.container)
-    ViewGroup mLinearLayout ;
+    ViewGroup mLinearLayout;
+
+    @Autowired(name = "url")
+    String url;
 
     PrimWeb mAgentWeb;
 
@@ -43,18 +55,20 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
 
+        ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
 
-        mTitlebar.setTitle("浏览器");
-        mTitlebar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mAgentWeb.handlerBack()) {
-                    WebViewActivity.this.finish();
-                }
+        mTitlebar.setTitle("");
 
-            }
-        });
+        RxView.clicks(   mTitlebar.addLeftBackImageButton())
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(object ->{
+                    if (!mAgentWeb.handlerBack()) {
+                        WebViewActivity.this.finish();
+                    }
+                });
+
+
         mAgentWeb = PrimWeb.with(this)//传入Activity
                 .setWebParent(mLinearLayout, new LinearLayout.LayoutParams(-1, -1))//传入AgentWeb 的父控件 ，如果父控件为 RelativeLayout ， 那么第二参数需要传入 RelativeLayout.LayoutParams
                 .useDefaultUI()// 使用默认进度条
@@ -75,7 +89,7 @@ public class WebViewActivity extends AppCompatActivity {
                 .setWebChromeClient(agentChromeClient)
                 .buildWeb()
                 .lastGo()
-                .launch("http://192.168.43.19:53274/dm-portal-js-api/index.html");
+                .launch(url);
 
 
         mAgentWeb.getJsInterface().addJavaObject(new JsInterface(mAgentWeb.getCallJsLoader()), "androidBridge");

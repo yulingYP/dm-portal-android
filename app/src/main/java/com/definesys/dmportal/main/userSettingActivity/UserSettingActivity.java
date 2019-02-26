@@ -87,7 +87,7 @@ public class UserSettingActivity extends BaseActivity {
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-//                        ARouter.getInstance().build(ARouterConstants.UserSettingActivity).navigation()
+                        ARouter.getInstance().build(ARouterConstants.AboutActivity).navigation();
                         }
                 );
         //退出登录

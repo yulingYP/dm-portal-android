@@ -25,5 +25,7 @@ public interface ARouterConstants {
     String LeaveTextActivity = "/dmportal/appstore/LeaveTextActivity";//生成请假条页面
     String ApprovalLeaveInfoActivity = "/dmportal/appstore/ApprovalLeaveInfoActivity";//审批请假记录页
     String FeedBackActivity = "/dmportal/appstore/FeedBackActivity";//反馈建议界面
+    String AboutActivity = "/dmportal/appstore/AboutActivity";//关于我们页面
+    String WebViewActivity ="/dmportal/webview/WebViewActivity";//网页
 
 }

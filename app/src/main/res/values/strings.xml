@@ -314,4 +314,9 @@
     <string name="feedback_word_hint">描述您对我们应用的建议…</string>
     <string name="feedback_img_hint">提供相关截图或照片</string>
     <string name="feedback">反馈建议</string>
+    <string name="app_version_name">V%s</string>
+    <string name="us_aboutus">关于我们</string>
+    <string name="about_check">版本更新</string>
+    <string name="use_protocol">用户协议</string>
+    <string name="us_protocol_url">"file:///android_asset/user_protocol.html"</string>
 </resources>
