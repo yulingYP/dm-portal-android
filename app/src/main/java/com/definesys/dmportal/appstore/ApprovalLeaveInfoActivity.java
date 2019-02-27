@@ -368,7 +368,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 .subscribe(obj->{
                     ApprovalRecord approvalRecord = new ApprovalRecord(submitLeaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),
                             finalContent,(short)(isAgree?1:0),null,
-                            SharedPreferencesUtil.getInstance().getUserAuthority(),submitLeaveInfo.getUserId().intValue());
+                            SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(),submitLeaveInfo.getUserId().intValue());
                     mPersenter.updateApprovalStatusById(approvalRecord);
                     progressHUD.show();
                     dialog.dismiss();
@@ -594,30 +594,30 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
      * 权限检测，检测该请假记录是否有权限审批
      * @return ture 有审批 false无权限
      */
-    private boolean checkAuthority() {
-        boolean flag = true;
-        if(type==4){
-            if(submitLeaveInfo.getApprovalStatus()>=100){//已经审批
-                flag = false;
-            }else {
-                int userAuthority = SharedPreferencesUtil.getInstance().getUserAuthority();
-                if(userAuthority==0&&userAuthority<submitLeaveInfo.getApprovalStatus()){//已经审批
-                    flag = false;
-                }else {
-                    int max=0;
-                    while (userAuthority%10>=0&&userAuthority>0){
-                        if(max<userAuthority%10)
-                            max=userAuthority%10;
-                        userAuthority/=10;
-                    }
-                    if(max<submitLeaveInfo.getApprovalStatus())
-                        flag = false;
-                }
-            }
-
-        }
-        return flag;
-    }
+//    private boolean checkAuthority() {
+//        boolean flag = true;
+//        if(type==4){
+//            if(submitLeaveInfo.getApprovalStatus()>=100){//已经审批
+//                flag = false;
+//            }else {
+//                int userAuthority = SharedPreferencesUtil.getInstance().getUserStudentAuthority();
+//                if(userAuthority==0&&userAuthority<submitLeaveInfo.getApprovalStatus()){//已经审批
+//                    flag = false;
+//                }else {
+//                    int max=0;
+//                    while (userAuthority%10>=0&&userAuthority>0){
+//                        if(max<userAuthority%10)
+//                            max=userAuthority%10;
+//                        userAuthority/=10;
+//                    }
+//                    if(max<submitLeaveInfo.getApprovalStatus())
+//                        flag = false;
+//                }
+//            }
+//
+//        }
+//        return flag;
+//    }
 
     /**
      * 获取请假时长

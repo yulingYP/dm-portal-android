@@ -154,7 +154,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                                 .withObject("leaveInfo",null)
                                 .withInt("title",1)
                                 .navigation());
-        if(SharedPreferencesUtil.getInstance().getUserAuthority()<0){
+        if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0&&SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0){
             lg_approval.setVisibility(View.GONE);
             lg_approvalHistory.setVisibility(View.GONE);
         }else {

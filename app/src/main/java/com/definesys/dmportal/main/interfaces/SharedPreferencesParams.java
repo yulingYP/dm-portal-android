@@ -26,14 +26,21 @@ public interface SharedPreferencesParams {
 
     //sp文件中url所用的对应的字段
     String spUserType = "u_type";
-    //sp文件中url所用的对应的字段
-    String spUserAuthority= "u_authority";
+
+    //sp文件中审批学生请假权限对应的字段
+    String spApprovalStuAut= "u_approval_student_authority";
+
+    //sp文件中审批教师请假权限对应的字段
+    String spApprovalTeaAut= "u_apprpval_teacher_authority";
 
     //sp文件中localimg所用的对应的字段
     String spUserLocalimg = "u_localimg";
 
     //sp文件中院系id
     String spFaculty = "u_faculty";
+
+    //sp文件中教师请假部门id
+    String spBranchId = "u_branch_id ";
 
     //sp文件中院系name
     String spFacultyName = "u_faculty_name";

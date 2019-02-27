@@ -51,12 +51,14 @@ public class UserInfoPresent extends BasePresenter {
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+//                                Log.d("mydemo",data.getMsg());
                                 break;
                         }
                     }
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
+//                        Log.d("mydemo",errMsg);
                         SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
                     }
                 });

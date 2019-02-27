@@ -239,7 +239,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }, thread = EventThread.MAIN_THREAD)
     public void getUserUrl(String str) {
        if(myFragment!=null) {
-           SharedPreferencesUtil.getInstance().setUserLocal("");
+//           SharedPreferencesUtil.getInstance().setUserLocal("");
            myFragment.refreshUserImage();
            myFragment.updateShowInfo();
        }
@@ -325,7 +325,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             SharedPreferencesUtil.getInstance().clearUser();
             //解绑当前用户
             JPushInterface.deleteAlias(this,++notifyID);
-
+            notiManager.cancelAll();
             ARouter.getInstance().build(ARouterConstants.LoginAcitvity).navigation(this, new NavCallback() {
                 @Override
                 public void onArrival(Postcard postcard) {
@@ -345,7 +345,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         if(currentPosition==0&&contactFragment.getCurrentitem()==0){//在消息页面
             if(message!=null) {
                 contactFragment.getMsgFragment().addMsg(message);
-
             }
         } else {//显示红点
             MainApplication.getInstances().setHasNewMessage(true);

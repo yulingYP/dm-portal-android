@@ -4,32 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.definesys.dmportal.appstore.bean.User;
+import com.definesys.dmportal.main.interfaces.SharedPreferencesParams;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.isFirstOpen;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spClass;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFaculty;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFacultyName;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spFileName;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spSearchHistory;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spToken;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserAuthority;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserHead;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserId;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserLocalimg;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserName;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserPhone;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSetting;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSex;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserSign;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserType;
-import static com.definesys.dmportal.main.interfaces.SharedPreferencesParams.spUserHead;
 
-public class SharedPreferencesUtil {
+
+public class SharedPreferencesUtil implements SharedPreferencesParams {
     private static SharedPreferencesUtil instance;
     private static SharedPreferences sp;
     private static Context context;
@@ -64,11 +48,15 @@ public class SharedPreferencesUtil {
         user.setUserType((short) getUserType());
         user.setName(getUserName());
         user.setFacultId(getFaculty());
+        user.setFacultName(getFacultyName());
         user.setClassId(getClassId());
-//        user.setUserSex(getUserSex());
-        user.setLeaveAuthority((short)getUserAuthority());
+        user.setUserSex((short)getUserSex());
+        user.setLeaveAuthority(getApprpvalStudentAuthority());
+        user.setLeaveTeacherAuthority(getApprpvalTeacherAuthority());
         user.setUserImage(getUserImageUrl());
+        user.setUserSign(getUserSign());
         user.setPhone(getUserPhone());
+        user.setBranchId(getUserBranchId());
         return user;
     }
     public boolean isFirstOpen() {
@@ -82,8 +70,8 @@ public class SharedPreferencesUtil {
         return sp.getInt(spUserId, -1);
     }
 
-    public String getUserSex() {
-        return sp.getString(spUserSex, "");
+    public int getUserSex() {
+        return sp.getInt(spUserSex, -1);
     }
 
     public List<String> getHistortyData(int type){
@@ -117,9 +105,11 @@ public class SharedPreferencesUtil {
 
     public String getUserPhone() {   return sp.getString(spUserPhone,"");}
 
-    public int getUserType() {   return sp.getInt(spUserType,0);}
-    public int getUserAuthority() {   return sp.getInt(spUserAuthority,-1);}
+    public String getUserBranchId() {   return sp.getString(spBranchId,"");}
 
+    public int getUserType() {   return sp.getInt(spUserType,0);}
+    public int getApprpvalTeacherAuthority() {   return sp.getInt(spApprovalTeaAut,-1);}
+    public int getApprpvalStudentAuthority() {   return sp.getInt(spApprovalStuAut,-1);}
     public int getUserSetting() {   return sp.getInt(spUserSetting+getUserId(),1);}
     //-----------------------SET-------------------
     public SharedPreferences.Editor setUser(User user) {
@@ -127,14 +117,15 @@ public class SharedPreferencesUtil {
             SharedPreferences.Editor editor = getSpWithEdit()
                     .putString(spUserName, user.getName())//姓名
                     .putString(spUserPhone, user.getPhone())//电话
-//                    .putString(spUserSex, user.getUserSex())
+                    .putInt(spUserSex, user.getUserSex())
                     .putString(spFaculty,user.getFacultyId())//院系id
                     .putString(spFacultyName,user.getFacultName())//院系名称
                     .putString(spClass,user.getClassId())//班级
                     .putString(spUserHead,user.getUserImage())//用户头像
                     .putString(spUserSign,user.getUserSign())//用户头像
-//                    .putString(spUserType,user.getUserType())
-                    .putInt(spUserAuthority,user.getLeaveAuthority())//请假权限
+                    .putString(spBranchId,user.getBranchId())//请假部门id
+                    .putInt(spApprovalStuAut,user.getLeaveAuthority())//学生请假方面的权限
+                    .putInt(spApprovalTeaAut,user.getLeaveTeacherAuthority())//教师请假方面的权限
                     .putString(spUserLocalimg,"");//本地头像
             editor.apply();
             return editor;
@@ -145,7 +136,7 @@ public class SharedPreferencesUtil {
         SharedPreferences.Editor editor = getSpWithEdit()
                 .putString(spUserName, "")//姓名
                 .putString(spUserPhone, getUserPhone())//电话
-//                    .putString(spUserSex, user.getUserSex())
+                .putInt(spUserSex, -1)
                 .putString(spFaculty,"")//院系id
                 .putString(spFacultyName,"")//院系名称
                 .putString(spClass,"")//班级
@@ -153,8 +144,9 @@ public class SharedPreferencesUtil {
                 .putString(spUserSign,"")//用户签名
                 .putInt(spUserType,0)//用户类型
                 .putString(spToken,"")//Token
-//                    .putString(spUserType,user.getUserType())
-                .putInt(spUserAuthority,-1)//请假权限
+                .putString(spBranchId,"")//教师请假部门id
+                .putInt(spApprovalStuAut,-1)//请假权限
+                .putInt(spApprovalTeaAut,-1)//请假权限
                 .putString(spUserLocalimg,"");//本地头像路径
         editor.apply();
         return getSpWithEdit();
@@ -192,6 +184,11 @@ public class SharedPreferencesUtil {
 
     public SharedPreferences.Editor setUserLocal(String userurl) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserLocalimg, userurl);
+        editor.apply();
+        return editor;
+    }
+    public SharedPreferences.Editor setBranchId(String branchId) {
+        SharedPreferences.Editor editor = getSpWithEdit().putString(spBranchId, branchId);
         editor.apply();
         return editor;
     }

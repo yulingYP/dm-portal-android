@@ -58,8 +58,8 @@ public class MessagePresenter extends BasePresenter {
     }
     //更新信息的状态
     public void updateMsgStatus(Number userId,String messageId){
-        Map map = new HashMap();
-        map.put("userId",userId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId",userId.intValue());
         map.put("messageId",messageId);
         Log.d("myMap",new Gson().toJson(map).toString());
         ViseHttp.POST(HttpConst.updateMsgStatus)

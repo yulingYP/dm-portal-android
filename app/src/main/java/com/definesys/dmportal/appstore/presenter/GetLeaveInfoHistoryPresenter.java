@@ -30,7 +30,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
 
     //请假的全部历史记录
     public void getAllLeaveInfoList (Number userId,Number page){
-        Map map = new HashMap();
+        HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
         Log.d("myMap",new Gson().toJson(map).toString());
@@ -68,11 +68,12 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
     }
 
     //待审批处理的全部请假记录
-    public void getAllApprovalList (Number userId,Number page,Number userAuthority,Number userType){
-        Map map = new HashMap();
+    public void getAllApprovalList (Number userId,Number page,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType){
+        HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
-        map.put("userAuthority",userAuthority);
+        map.put("approvalStuAut",approvalStudentAuthority);
+        map.put("approvalTeaAut",approvalTeacherAuthority);
         map.put("userType",userType);
         Log.d("myMap",new Gson().toJson(map).toString());
 
@@ -110,7 +111,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
 
     //审批的全部历史记录
     public void getAllApprovalHistoryList (Number userId,Number page){
-        Map map = new HashMap();
+        HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
         Log.d("myMap",new Gson().toJson(map).toString());
@@ -150,7 +151,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
 
     //根据关键字搜索请假信息或审批记录
     public void getSearchLeaveInfoList (Number userId,Number page,Number checkCode,Number type,String content){
-        Map map = new HashMap();
+        HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
         map.put("checkCode",checkCode);
@@ -196,12 +197,13 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         ViseHttp.cancelTag(HttpConst.getApprovalHistoryListById);
         super.unsubscribe();
     }
-
-    public void getSearchApprovalList(int userId, int requestPage, int userAuthority, int userType, int checkCode, int type, String content) {
-        Map map = new HashMap();
+//    Number userId,Number page,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType
+    public void getSearchApprovalList(Number userId,Number page,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType, Number checkCode, Number type, String content) {
+        HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page",requestPage);
-        map.put("userAuthority",userAuthority);
+        map.put("page", page);
+        map.put("approvalStuAut",approvalStudentAuthority);
+        map.put("approvalTeaAut",approvalTeacherAuthority);
         map.put("userType",userType);
         map.put("checkCode",checkCode);
         map.put("type",type);
@@ -240,9 +242,9 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
                 });
     }
 
-    //审批的全部历史记录
+    //条件查询已审批的历史记录
     public void getSearchApprovalHistoryList (Number userId,Number page,Number checkCode ,Number type,String content){
-        Map map = new HashMap();
+        HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
         map.put("checkCode",checkCode);

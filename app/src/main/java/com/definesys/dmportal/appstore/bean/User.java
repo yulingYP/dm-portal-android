@@ -24,7 +24,9 @@ public class User{
 
     private Date lastLogoutDate;//上次登出时间
 
-    private Short leaveAuthority;//请假审批权限
+    private Integer leaveAuthority;//学生请假审批权限
+
+    private Integer leaveTeacherAuthority;//教师请假审批权限
 
     private String name;//姓名
 
@@ -36,15 +38,15 @@ public class User{
 
     private Date enrolDate;//入学时间
 
-    private Short tutorId;//毕设导师id
+    private Integer tutorId;//毕设导师id
 
-    private Short dormitorLeaderId; //寝室长id
+    private Integer dormitorLeaderId; //寝室长id
 
     private String facultName;//院系名称
 
 
     //《-----教师----》
-    private String teacherLevel;//等级
+    private String branchId;//请假部门编号
 
     private String attribute2;
 
@@ -55,15 +57,14 @@ public class User{
     private String attribute5;
 
 
-
-
-    public String getTeacherLevel() {
-        return teacherLevel;
+    public String getBranchId() {
+        return branchId==null?"": branchId;
     }
 
-    public void setTeacherLevel(String teacherLevel) {
-        this.teacherLevel = teacherLevel == null ? null : teacherLevel.trim();
+    public void setBranchId(String brachId) {
+        this.branchId = brachId==null?"": brachId;
     }
+
     public String getName() {
         return name;
     }
@@ -96,23 +97,21 @@ public class User{
         this.enrolDate = enrolDate;
     }
 
-    public Short getTutorId() {
+    public Integer getTutorId() {
         return tutorId;
     }
 
-    public void setTutorId(Short tutorId) {
+    public void setTutorId(Integer tutorId) {
         this.tutorId = tutorId;
     }
 
-    public Short getDormitorLeaderId() {
+    public Integer getDormitorLeaderId() {
         return dormitorLeaderId;
     }
 
-    public void setDormitorLeaderId(Short dormitorLeaderId) {
+    public void setDormitorLeaderId(Integer dormitorLeaderId) {
         this.dormitorLeaderId = dormitorLeaderId;
     }
-
-
 
     public String getAttribute5() {
         return attribute5;
@@ -155,7 +154,7 @@ public class User{
     }
 
     public Short getUserType() {
-        return userType;
+        return userType==null?-1:userType;
     }
 
     public void setUserType(Short userType) {
@@ -210,12 +209,20 @@ public class User{
         this.attribute4 = attribute4 == null ? null : attribute4.trim();
     }
 
-    public Short getLeaveAuthority() {
-        return leaveAuthority;
+    public Integer getLeaveAuthority() {
+        return leaveAuthority==null?-1:leaveAuthority;
     }
 
-    public void setLeaveAuthority(Short leaveAuthority) {
+    public void setLeaveAuthority(Integer leaveAuthority) {
         this.leaveAuthority = leaveAuthority;
+    }
+
+    public Integer getLeaveTeacherAuthority() {
+        return leaveTeacherAuthority==null?-1:leaveTeacherAuthority;
+    }
+
+    public void setLeaveTeacherAuthority(Integer leaveTeacherAuthority) {
+        this.leaveTeacherAuthority = leaveTeacherAuthority;
     }
 
     public String getFacultName() {
@@ -227,7 +234,7 @@ public class User{
     }
 
     public Short getUserSex() {
-        return userSex;
+        return userSex==null?-1:userSex;
     }
 
     public void setUserSex(Short userSex) {
@@ -235,7 +242,7 @@ public class User{
     }
 
     public String getUserSign() {
-        return userSign;
+        return userSign==null?"":userSign;
     }
 
     public void setUserSign(String userSign) {

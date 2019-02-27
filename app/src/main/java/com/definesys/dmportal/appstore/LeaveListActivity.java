@@ -200,7 +200,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             if (type == 0)//历史请假记录
                 mPersenter.getAllLeaveInfoList(userId, requestPage);
             else if (type == 1)//待审批记录
-                mPersenter.getAllApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(), SharedPreferencesUtil.getInstance().getUserType());
+                mPersenter.getAllApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(),SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType());
             else if (type == 2)//历史审批记录
                 mPersenter.getAllApprovalHistoryList(userId, requestPage);
             else if(type==3){//销假
@@ -210,7 +210,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             if (type == 0||type==3)//历史请假记录||销假
                 mPersenter.getSearchLeaveInfoList(userId,requestPage,checkCode,type,checkCode==-1?content:"");
             else if (type == 1)//待审批记录
-                mPersenter.getSearchApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getUserAuthority(), SharedPreferencesUtil.getInstance().getUserType(),checkCode,type,checkCode==-1?content:"");
+                mPersenter.getSearchApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(), SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType(),checkCode,type,checkCode==-1?content:"");
             else if(type == 2){//历史审批记录
                 mPersenter.getSearchApprovalHistoryList(userId,requestPage,checkCode,type,checkCode==-1?content:"");
             }
