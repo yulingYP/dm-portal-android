@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/back_gray"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
+    android:layout_height="wrap_content"
     >
-    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/back_gray"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+    >
+        <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         app:titlebar_bg_color="@color/customer_title"
         android:layout_height="44dp">
+        <ImageView
+            android:id="@+id/img_menu"
+            android:layout_width="wrap_content"
+            android:src="@drawable/list_icon"
+            android:padding="8dp"
+            android:layout_marginEnd="6dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
-    <RelativeLayout
+        <RelativeLayout
         android:layout_marginTop="1px"
         android:layout_width="match_parent"
         android:focusable="true"
@@ -48,13 +62,13 @@
              />
     </RelativeLayout>
 
-    <LinearLayout
+        <LinearLayout
         android:id="@+id/leave_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
         android:background="@color/white"
-        android:layout_marginTop="2px"
+        android:layout_marginTop="1dp"
         android:orientation="horizontal">
 
         <TextView
@@ -75,12 +89,12 @@
             android:layout_height="30dp" />
     </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
         android:id="@+id/cancel_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:layout_marginTop="2px"
+        android:layout_marginTop="1dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -103,12 +117,12 @@
             android:layout_height="30dp" />
     </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
         android:id="@+id/approval_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:layout_marginTop="2px"
+        android:layout_marginTop="1dp"
         android:visibility="gone"
         android:background="@color/white"
         android:orientation="horizontal">
@@ -131,12 +145,12 @@
             android:layout_width="20dp"
             android:layout_height="30dp" />
     </LinearLayout>
-    <LinearLayout
+        <LinearLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:layout_marginTop="2px"
+        android:layout_marginTop="1dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -158,12 +172,12 @@
             android:layout_width="20dp"
             android:layout_height="30dp" />
     </LinearLayout>
-    <LinearLayout
+        <LinearLayout
         android:id="@+id/approval_history_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:layout_marginTop="2px"
+        android:layout_marginTop="1dp"
         android:visibility="gone"
         android:background="@color/white"
         android:orientation="horizontal">
@@ -186,12 +200,12 @@
             android:layout_width="20dp"
             android:layout_height="30dp" />
     </LinearLayout>
-    <LinearLayout
+        <LinearLayout
         android:id="@+id/my_leave_history_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:layout_marginTop="2px"
+        android:layout_marginTop="1dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -213,7 +227,5 @@
             android:layout_width="20dp"
             android:layout_height="30dp" />
     </LinearLayout>
-
-
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

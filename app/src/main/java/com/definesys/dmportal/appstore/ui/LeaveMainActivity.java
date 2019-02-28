@@ -1,12 +1,18 @@
 package com.definesys.dmportal.appstore.ui;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +27,7 @@ import com.definesys.dmportal.appstore.SubjectTableActivity;
 import com.definesys.dmportal.appstore.adapter.MainIconAdapter;
 import com.definesys.dmportal.appstore.bean.MainIcon;
 import com.definesys.dmportal.appstore.bean.SubjectTable;
+import com.definesys.dmportal.appstore.customViews.GroupMenuView;
 import com.definesys.dmportal.appstore.presenter.GetCurrentApprovalStatusPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
@@ -33,6 +40,7 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -67,6 +75,11 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
 
     @BindView(R.id.current_status)
     TextView tv_currentStatus;
+
+    @BindView(R.id.img_menu)
+    ImageView img_list;
+
+    private PopupWindow popupWindow;//弹出菜单框
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +174,58 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
             lg_approval.setVisibility(View.VISIBLE);
             lg_approvalHistory.setVisibility(View.VISIBLE);
         }
+        //菜单
+        RxView.clicks(img_list)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj-> {
+                    dimBackground(1.0f,0.6f);
+                    popupWindow.showAsDropDown(img_list);
+                });
+        img_list.post(new Runnable() {
+            @Override
+            public void run() {
+                initMenuList(img_list.getMeasuredWidth());
+            }
+        });
+    }
+    /**
+     * 菜单列表
+     */
+    private void initMenuList(int width) {
+        List<MainIcon> mainIconList = new ArrayList<>();
+        mainIconList.add(new MainIcon("我的签名",R.drawable.sign_icon,ARouterConstants.LeaveMainActivity));
+        mainIconList.add(new MainIcon("我的权限",R.drawable.table_icon,ARouterConstants.SubjectTableActivity));
+
+        GroupMenuView groupMenuView= new GroupMenuView(this);
+        groupMenuView.setData(mainIconList,width);
+        popupWindow = new PopupWindow(groupMenuView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        popupWindow.setAnimationStyle(R.style.PopupAnimation);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+
+                dimBackground(0.6f,1.0f);
+            }
+        });
+
+    }
+    //屏幕变灰动画
+    private void dimBackground(final float from, final float to) {
+        final Window window = getWindow();
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(from, to);
+        valueAnimator.setDuration(200);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                WindowManager.LayoutParams params = window.getAttributes();
+                params.alpha = (Float) animation.getAnimatedValue();
+                window.setAttributes(params);
+            }
+        });
+        valueAnimator.start();
     }
 
     /**
@@ -207,4 +272,10 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
         return new GetCurrentApprovalStatusPresenter(this);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(popupWindow!=null)
+            popupWindow.dismiss();
+    }
 }

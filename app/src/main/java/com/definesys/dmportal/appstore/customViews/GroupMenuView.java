@@ -66,7 +66,8 @@ public class GroupMenuView extends LinearLayout{
 
         //设置上箭头位置
         LayoutParams layoutParams = (LayoutParams) img_up.getLayoutParams();
-        layoutParams.rightMargin= DensityUtil.dip2px(mContext,12) + iconWith/2-DensityUtil.dip2px(mContext,4);
+
+        layoutParams.rightMargin= DensityUtil.dip2px(mContext,6) +iconWith/2-DensityUtil.dip2px(mContext,4);
 //        layoutParams.rightMargin=0;
         img_up.setLayoutParams(layoutParams);
 

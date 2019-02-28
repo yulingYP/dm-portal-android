@@ -65,15 +65,15 @@ public class MessagePresenter extends BasePresenter {
         ViseHttp.POST(HttpConst.updateMsgStatus)
                 .tag(HttpConst.getStaticMessage)
                 .setJson(new Gson().toJson(map))
-                .request(new ACallback<Object>() {
+                .request(new ACallback<BaseResponse<Integer>>() {
                     @Override
-                    public void onSuccess(Object data) {
-
+                    public void onSuccess(BaseResponse<Integer> data) {
+                        Log.d("mydemo",data.getMsg());
                     }
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-
+                        Log.d("mydemo",errMsg);
                     }
                 });
 

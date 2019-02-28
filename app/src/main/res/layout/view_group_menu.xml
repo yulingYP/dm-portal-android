@@ -14,14 +14,14 @@
         android:layout_height="20dp" />
     <com.definesys.dmportal.appstore.customViews.RCLinearLayout
         android:layout_width="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:layout_marginTop="-8dp"
         android:id="@+id/list_layout"
         app:round_corner="8dp"
         android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/menu_view"
-            android:background="@color/white"
+            android:background="@color/back_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
