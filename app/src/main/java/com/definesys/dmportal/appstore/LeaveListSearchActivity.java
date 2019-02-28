@@ -18,8 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.base.BasePresenter;
@@ -71,9 +73,10 @@ public class LeaveListSearchActivity extends BaseActivity {
     @BindView(R.id.delete_text)
     TextView tv_delete;//删除历史记录
 
-
     @Autowired(name = "type")
     int type;//页面类型 0.历史请假记录 1.待处理的请假记录 2.历史审批记录
+    private String clickContent;//点击的标签
+    private boolean clickCheck;//是否需要进行重复内容检测
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,14 +172,8 @@ public class LeaveListSearchActivity extends BaseActivity {
      * @param content
      */
     private void goSearch(String content,boolean check){
-        if(check&&checkSearchItem(content)) {//重复内容检测
-            historyList.add(0, content);
-            SharedPreferencesUtil.getInstance().setHistoryData(type, historyList);
-            if(lg_history.getVisibility()==View.GONE)
-                lg_history.setVisibility(View.VISIBLE);
-            fl_history.addView(addTagItem(content,true),0);
-        }
-
+        this.clickCheck =check;
+        this.clickContent =content;
         ARouter.getInstance().build(ARouterConstants.LeaveListActivity)
                 .withInt("type",type)
                 .withBoolean("isAll",getString(R.string.all).equals(content.trim()))
@@ -245,6 +242,8 @@ public class LeaveListSearchActivity extends BaseActivity {
      * @return
      */
     private boolean checkSearchItem(String item){
+        if(item==null||"".equals(item))
+            return false;
         if(null==historyList||historyList.size()<=0)
             return true;
         for(int i = 0 ; i <historyList.size(); i++){
@@ -291,6 +290,20 @@ public class LeaveListSearchActivity extends BaseActivity {
             return 12;
         else
             return -1;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //添加新标签
+        if(clickCheck&&checkSearchItem(clickContent)) {//重复内容检测
+            historyList.add(0, clickContent);
+            SharedPreferencesUtil.getInstance().setHistoryData(type, historyList);
+
+            if(lg_history.getVisibility()==View.GONE)
+                lg_history.setVisibility(View.VISIBLE);
+            fl_history.addView(addTagItem(clickContent,true),0);
+        }
     }
 
     @Override

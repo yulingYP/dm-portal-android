@@ -271,7 +271,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         if(leaveInfo.getUserType()==0) {//学生
             //课假或短假
             if (leaveInfo.getType() == 0 || leaveInfo.getType() == 1) {
-                lg_absence.addView(addShortView());
+                lg_absence.addView(addShortView(0));
             }
 
             //长假且不是实习
@@ -285,7 +285,13 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                 lg_absence.addView(addPractice());
             }
         }else if(leaveInfo.getUserType()==1){//教师
-
+            //课假或短假
+            if (leaveInfo.getType() == 0 || leaveInfo.getType() == 1) {
+                lg_absence.addView(addShortView(1));
+            }
+            else if (leaveInfo.getType() == 2 ) {//长假
+                lg_absence.addView(addTeacherLongView());
+            }
         }
         //        设置横屏
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -293,7 +299,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         }
     }
 
-    //添加实习请假条
+    //添加学生实习请假条
     private View addPractice() {
         View view = LayoutInflater.from(this).inflate(R.layout.leave_practice_view,null);
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4));
@@ -391,7 +397,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
        return view;
     }
 
-    //添加长假请假条
+    //添加学生长假请假条
     private View addLongView() {
         View view = LayoutInflater.from(this).inflate(R.layout.leave_long_view,null);
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4));
@@ -412,7 +418,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         //销假签字
         ((TextView)view.findViewById(R.id.return_sign)).setText(getString(R.string.stu_return_sign,""));
         //销假日期
-        ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,"     "+getString(R.string.return_date)));
+        ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,getString(R.string.return_date,"        ","     ","     ")));
 
         //各部门签字
         for (ApprovalRecord approvalRecord:approvalRecordList){
@@ -469,10 +475,77 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
 
        return view;
     }
+    //添加教师长假请假条
+    private View addTeacherLongView() {
+        View view = LayoutInflater.from(this).inflate(R.layout.leave_teacher_long_view,null);
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4));
+        //姓名
+        ((TextView)view.findViewById(R.id.leave_name)).setText(getString(R.string.name_tip,leaveInfo.getName()));
+        //事由
+        ((TextView)view.findViewById(R.id.leave_reason)).setText(getString(R.string.leave_title,"\n"+leaveInfo.getLeaveReason()));
+        //时长
+        ((TextView)view.findViewById(R.id.leave_sum)).setText(getString(R.string.sum_time, DensityUtil.getSumTime(leaveInfo.getStartTime(),leaveInfo.getEndTime(),this,false)));
+        try {
+            //时间
+            ((TextView)view.findViewById(R.id.leave_time)).setText(getString(R.string.leave_time_start_to_end,leaveInfo.getStartTime().substring(0,11),leaveInfo.getEndTime().substring(0,11)));
 
-    //添加短假请假条
-    private View addShortView() {
-        View view = LayoutInflater.from(this).inflate(R.layout.leave_short_view,null);
+        }catch (Exception e){
+            //时间
+            ((TextView)view.findViewById(R.id.leave_time)).setText(getString(R.string.leave_time_start_to_end,leaveInfo.getStartTime(),leaveInfo.getEndTime()));
+        }
+        //销假签字
+        ((TextView)view.findViewById(R.id.return_sign)).setText(getString(R.string.tea_return_sign,""));
+        //销假日期
+        ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,getString(R.string.return_date,"        ","     ","     ")));
+
+        //各部门签字
+        for (ApprovalRecord approvalRecord:approvalRecordList){
+            int approvalAuthority  = approvalRecord.getApproverType();
+            if(approvalAuthority<0){//销假
+                //销假签字
+                ((TextView)view.findViewById(R.id.return_sign)).setText(getString(R.string.stu_return_sign,leaveInfo.getUserName()));
+                //销假日期
+                ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,sdf.format(leaveInfo.getSubmitDate())));
+            }else if(approvalAuthority==0){//请假负责人
+                //签字
+                setSign((ImageView)view.findViewById(R.id.sign_img_0),(TextView)view.findViewById(R.id.sign_text_0),(ProgressBar)view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),1);
+                //意见
+                ((TextView)view.findViewById(R.id.agree_text_0)).setText(getString(R.string.agree_tip_6,"  "+approvalRecord.getApprovalContent()));
+                //签名日期
+                ((TextView)view.findViewById(R.id.sign_time_0)).setText(sdf.format(approvalRecord.getApprovalTime()));
+            }
+            else if(approvalAuthority>0){//未销假
+                while (approvalAuthority%10>=0&&approvalAuthority>0){
+                    int authority = approvalAuthority%10;
+                    if(authority==0){//请假负责人
+                        //签字
+                        setSign((ImageView)view.findViewById(R.id.sign_img_0),(TextView)view.findViewById(R.id.sign_text_0),(ProgressBar)view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),1);
+                        //意见
+                        ((TextView)view.findViewById(R.id.agree_text_0)).setText(getString(R.string.agree_tip_6,"  "+approvalRecord.getApprovalContent()));
+                        //签名日期
+                        ((TextView)view.findViewById(R.id.sign_time_0)).setText(sdf.format(approvalRecord.getApprovalTime()));
+                    }else if(authority==1){//教学院长
+                        //意见
+                        ((TextView)view.findViewById(R.id.agree_text_1)).setText(getString(R.string.agree_tip_7,"  "+approvalRecord.getApprovalContent()));
+                        //签字
+                        setSign((ImageView)view.findViewById(R.id.sign_img_1),(TextView)view.findViewById(R.id.sign_text_1),(ProgressBar)view.findViewById(R.id.progressBar1),approvalRecord.getApproverId(),1);
+                        //签名日期
+                        ((TextView)view.findViewById(R.id.sign_time_1)).setText(sdf.format(approvalRecord.getApprovalTime()));
+                    }
+                    approvalAuthority/=10;
+                }
+            }
+        }
+
+        return view;
+    }
+
+    /**
+     * 添加短假请假条
+     * @param userType 用户类型 0.学生 1.教师
+     */
+    private View addShortView(int userType) {
+        View view = LayoutInflater.from(this).inflate(userType==0?R.layout.leave_short_view:R.layout.leave_teacher_short_view,null);
         //请假标题
         ((TextView)view.findViewById(R.id.short_leave_des)).setText(getString(R.string.leave_short_des, SharedPreferencesUtil.getInstance().getFacultyName()));
         //姓名
@@ -483,10 +556,10 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         ((TextView)view.findViewById(R.id.leave_reason)).setText(leaveInfo.getLeaveReason());
         //时间
         ((TextView)view.findViewById(R.id.submit_time)).setText(new SimpleDateFormat(getString(R.string.date_type_5)).format(leaveInfo.getSubmitDate()));
-        //辅导员意见
+        //辅导员或请假管理员意见
         ((TextView)view.findViewById(R.id.approval_content)).setText(approvalRecordList.get(0).getApprovalContent());
         //签名
-        setSign((ImageView)view.findViewById(R.id.sign_img),(TextView)view.findViewById(R.id.sign_text),(ProgressBar)view.findViewById(R.id.progressBar),approvalRecordList.get(0).getApproverId(),1);
+        setSign((ImageView)view.findViewById(R.id.sign_img),(TextView)view.findViewById(R.id.sign_text),(ProgressBar)view.findViewById(R.id.progressBar),approvalRecordList.get(0).getApproverId(),userType);
         //签名日期
         ((TextView)view.findViewById(R.id.sign_time)).setText(new SimpleDateFormat(getString(R.string.date_type_6)).format(approvalRecordList.get(0).getApprovalTime()));
 
