@@ -325,4 +325,18 @@
     <string name="teaId">工号</string>
     <string name="leader_sign_text_2">请假管理员意见及签字</string>
     <string name="leave_teacher_long_des">教师请假条</string>
+    <string name="my_sign">我的签名</string>
+    <string name="my_authority">我的权限</string>
+    <string name="no_sign_des">暂无签名</string>
+    <string name="create_sign">生成签名</string>
+    <string name="sign_edit_des">请输入您的姓名(10字以内)</string>
+    <string name="create_sign_des">修改签名</string>
+    <string name="edit_error">发生未知错误,请联系我们</string>
+    <string name="edit_fail_des_1">请输入签名</string>
+    <string name="edit_select_des">请选择签名的样式</string>
+    <string name="sign_select_error">您当前并未选择签名</string>
+    <string name="sign_update_success">上传成功</string>
+    <string name="current_sign">当前签名</string>
+    <string name="sign_setting">签名设置</string>
+    <string name="sign_setting_des">请先去设置您的审批签名</string>
 </resources>

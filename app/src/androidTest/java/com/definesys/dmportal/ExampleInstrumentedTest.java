@@ -1,6 +1,8 @@
 package com.definesys.dmportal;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.AssetManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
@@ -13,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,9 +39,12 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
+        AssetManager assetManager = appContext.getAssets();
+        String[] path=assetManager.list("ttf");
+        for(String s:path){
+            System.out.println(s.substring(s.length()-4,s.length()));
+        }
 
-//        System.out.println((double)result.get("result")==0);
-//        assertEquals("com.definesys.dmportal", appContext.getPackageName());
     }
 
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_gray"
+    tools:ignore="ContentDescription"
+    tools:context="com.definesys.dmportal.appstore.LeaveSignActivity">
+    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        app:titlebar_bg_color="@color/customer_title"
+        android:layout_height="44dp">
+
+    </com.definesys.dmportal.commontitlebar.CustomTitleBar>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:background="@color/white"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="@string/my_sign"
+                    android:padding="12dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:gravity="center|start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+
+                <TextView
+                    android:id="@+id/no_sign_des"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:textColor="@color/black"
+                    android:gravity="end"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <ProgressBar
+                    android:layout_width="30dp"
+                    android:id="@+id/progressBar"
+                    android:layout_gravity="center"
+                    android:layout_height="30dp" />
+                <ImageView
+                    android:id="@+id/sign_img"
+                    android:layout_width="wrap_content"
+                    android:scaleType="fitXY"
+                    android:layout_marginEnd="8dp"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="50dp"
+                    android:minWidth="80dp"
+                    android:minHeight="30dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:scaleType="fitXY"
+                    android:id="@+id/edit_sign"
+                    android:src="@drawable/edit_icon"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="12dp"
+                    android:layout_height="24dp"
+                    />
+            </LinearLayout>
+            <TextView
+                android:layout_marginTop="2dp"
+                android:padding="8dp"
+                android:id="@+id/select_des_text"
+                android:textColor="@color/black"
+                android:background="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:text="@string/edit_select_des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/recycle_view"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent">-->
+
+            <!--</android.support.v7.widget.RecyclerView>-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/type_layout"
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

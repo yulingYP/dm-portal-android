@@ -26,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.customViews.BottomDialog;
 import com.definesys.dmportal.appstore.customViews.RCImageView;
@@ -286,7 +287,7 @@ public class MyFragment extends Fragment {
         BottomDialog bottomDialog = new BottomDialog(getContext(),list);
         if (type == 2) {
             bottomDialog.setOnOptionClickListener(position -> {
-                if(position==2){
+                if(position==2){//查看头像
                     String path = SharedPreferencesUtil.getInstance().getUserLocal();
                     if("".equals(path)){
                         Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
@@ -300,15 +301,14 @@ public class MyFragment extends Fragment {
                     PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
                             .openExternalPreview(0, localMedias);
                 }
-                if (position == 1) {
+                if (position == 1) {//拍照
                     PictureSelector.create(this)
                             .openGallery(PictureMimeType.ofImage())
                             .maxSelectNum(1).enableCrop(true).compress(true)
                             .withAspectRatio(1, 1)
                             .forResult(PictureConfig.CHOOSE_REQUEST);
                 }
-                if(position == 0)
-                {
+                if(position == 0) {//从相册选择
                     PictureSelector.create(this)
                             .openCamera(PictureMimeType.ofImage())
                             .maxSelectNum(1).enableCrop(true).compress(true)
@@ -346,13 +346,25 @@ public class MyFragment extends Fragment {
             @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
     }, thread = EventThread.MAIN_THREAD)
     public void successfulUploadUserImage(String newUrl) {
-
-        Toast.makeText(getContext(), R.string.msg_success_upload_image, Toast.LENGTH_SHORT).show();
-        Glide.with(this).load(pathName).apply(option).into(userImage);
-        //更新本地头像信息
-        SharedPreferencesUtil.getInstance().setUserLocal(pathName);
+        if(MyActivityManager.getInstance().getCurrentActivity()==this.getActivity()) {
+            Toast.makeText(getContext(), R.string.msg_success_upload_image, Toast.LENGTH_SHORT).show();
+            Glide.with(this).load(newUrl).apply(option).into(userImage);
+            //更新本地头像信息
+            SharedPreferencesUtil.getInstance().setUserLocal(newUrl);
+        }
     }
-
+    /**
+     * 上传失败
+     * @param msg
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.ERROR_NETWORK)
+    }, thread = EventThread.MAIN_THREAD)
+    public void netWorkError(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity()==this.getActivity()) {
+            Toast.makeText(getContext(), ("".equals(msg) ? getString(R.string.net_work_error) : msg), Toast.LENGTH_SHORT).show();
+        }
+    }
     //申请权限
     private void requestPermissions() {
         RxPermissions rxPermission = new RxPermissions(getActivity());
@@ -396,7 +408,7 @@ public class MyFragment extends Fragment {
 
                     pathName = selectImages.get(0).getCompressPath();
                     File file = new File(pathName);
-                    new ChangeUserImagePresenter(getContext()).uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file);
+                    new ChangeUserImagePresenter(getContext()).uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"0");
                     break;
 
             }

@@ -22,21 +22,27 @@ public class ChangeUserImagePresenter extends BasePresenter {
         super(context);
     }
 
-    public void uploadUserImage(String userId, File file){
+    /**
+     * 上传头像或签名
+     * @param userId
+     * @param file
+     * @param updateType 0.头像 1.签名
+     */
+    public void uploadUserImage(String userId, File file,String updateType){
         String fileName = file.getName();
         MediaType type = MediaType.parse("image/"+fileName.substring(fileName.lastIndexOf(".")+1));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("userId",userId)
                 .addFormDataPart("uuid",String.valueOf(SharedPreferencesUtil.getInstance().getUserId()))
+                .addFormDataPart("type",updateType)
                 .addFormDataPart("file", fileName,RequestBody.create(type,file));
 
-        ViseHttp.POST(HttpConst.uploadUserHeadPicture).setRequestBody(builder.build())
-                .tag(HttpConst.uploadUserHeadPicture).request(new ACallback<BaseResponse>() {
+        ViseHttp.POST(HttpConst.uploadUserPicture).setRequestBody(builder.build())
+                .tag(HttpConst.uploadUserPicture).request(new ACallback<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse data) {
                         switch (data.getCode()) {
                             case "200":
-
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE, file.getPath());
                                 break;
                             default:
@@ -47,7 +53,7 @@ public class ChangeUserImagePresenter extends BasePresenter {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK,mContext.getString(R.string.update_head_fail));
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK,errMsg);
                     }
                 });
     }
@@ -55,6 +61,6 @@ public class ChangeUserImagePresenter extends BasePresenter {
     @Override
     public void unsubscribe() {
         super.unsubscribe();
-        ViseHttp.cancelTag(HttpConst.uploadUserHeadPicture);
+        ViseHttp.cancelTag(HttpConst.uploadUserPicture);
     }
 }

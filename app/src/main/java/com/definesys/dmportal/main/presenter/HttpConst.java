@@ -86,7 +86,7 @@ public interface HttpConst {
     String updateMsgStatus = "updateMsgStatus";
 
     //更新用户头像
-    String uploadUserHeadPicture="uploadUserHeadPicture";
+    String uploadUserPicture="uploadUserPicture";
 
     //提交反馈建议
     String submitFeedBack = "submitFeedBack";

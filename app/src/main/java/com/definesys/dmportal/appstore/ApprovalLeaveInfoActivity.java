@@ -1,9 +1,12 @@
 package com.definesys.dmportal.appstore;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -208,7 +211,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             titleBar.removeAllRightViews();
             Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_approval_leave_info);
             button.setTextSize(14);
-
             //提交
             RxView.clicks(button)
                     .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -272,7 +274,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         tv_name.setText(getString(R.string.name_tip,submitLeaveInfo.getName()));
 
         //学号
-        tv_userId.setText(""+submitLeaveInfo.getUserId().longValue());
+        tv_userId.setText(""+submitLeaveInfo.getUserId().intValue());
 
         //请假类型
         tv_type.setText(getString(R.string.type_tip, DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[submitLeaveInfo.getType()])));
@@ -341,6 +343,20 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     private void checkContent() {
         if("".equals(ed_reason.getText().toString())&&!isAgree) {//不同意且未输入审批意见
             Toast.makeText(this, R.string.approval_addvise_tip_2, Toast.LENGTH_SHORT).show();
+            return;
+        } else if(SharedPreferencesUtil.getInstance().getUserSign()==null||"".equals(SharedPreferencesUtil.getInstance().getUserSign())){//签名设置
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.sign_setting)
+                    .setMessage(R.string.sign_setting_des)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ARouter.getInstance().build(ARouterConstants.LeaveSignActivity).navigation();
+                        }
+                    })
+                    .create()
+                    .show();
             return;
         }
         initResultDialog();

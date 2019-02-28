@@ -1,15 +1,11 @@
 package com.definesys.dmportal.appstore.ui;
 
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -23,10 +19,7 @@ import com.definesys.base.BaseActivity;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.SubjectTableActivity;
-import com.definesys.dmportal.appstore.adapter.MainIconAdapter;
 import com.definesys.dmportal.appstore.bean.MainIcon;
-import com.definesys.dmportal.appstore.bean.SubjectTable;
 import com.definesys.dmportal.appstore.customViews.GroupMenuView;
 import com.definesys.dmportal.appstore.presenter.GetCurrentApprovalStatusPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
@@ -46,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.functions.Consumer;
+
 @Route(path = ARouterConstants.LeaveMainActivity)
 public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPresenter> {
     @BindView(R.id.title_bar)
@@ -193,8 +186,8 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
      */
     private void initMenuList(int width) {
         List<MainIcon> mainIconList = new ArrayList<>();
-        mainIconList.add(new MainIcon("我的签名",R.drawable.sign_icon,ARouterConstants.LeaveMainActivity));
-        mainIconList.add(new MainIcon("我的权限",R.drawable.table_icon,ARouterConstants.SubjectTableActivity));
+        mainIconList.add(new MainIcon(getString(R.string.my_sign),R.drawable.sign_icon,ARouterConstants.LeaveSignActivity));
+        mainIconList.add(new MainIcon(getString(R.string.my_authority),R.drawable.table_icon,ARouterConstants.SubjectTableActivity));
 
         GroupMenuView groupMenuView= new GroupMenuView(this);
         groupMenuView.setData(mainIconList,width);
