@@ -168,20 +168,37 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     showBottomDialog(list);
                     //showMyDialog();
                 });
-        //点击签名
+        //点击签名 展示签名
         RxView.clicks(iv_sign)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    ImageView imageView =new ImageView(this);
-                    imageView.setImageBitmap(((BitmapDrawable)iv_sign.getDrawable()).getBitmap());
-                    builder.setTitle(R.string.current_sign)
-                            .setView( imageView)
-                            .setPositiveButton(R.string.confirm,null)
-                            .create()
-                            .show();
+                    Bitmap image = ((BitmapDrawable)iv_sign.getDrawable()).getBitmap();
+                    String path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),this,4);
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setPath(path);
+                    localMedia.setPosition(0);
+                    List<LocalMedia> localMedias = new ArrayList<>();
+                    localMedias.add(localMedia);
+                    PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
+                            .openExternalPreview(0, localMedias);
                 });
+        //点击新建签名 展示新建签名
+        RxView.clicks(iv_show)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    Bitmap image = ((BitmapDrawable)iv_show.getDrawable()).getBitmap();
+                    String path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),this,4);
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setPath(path);
+                    localMedia.setPosition(0);
+                    List<LocalMedia> localMedias = new ArrayList<>();
+                    localMedias.add(localMedia);
+                    PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
+                            .openExternalPreview(0, localMedias);
+//                    iv_show.setImageBitmap(null);
+                    iv_show.setImageBitmap(BitmapFactory.decodeFile(path));
 
+                });
         setSign();//设置签名
 
     }
@@ -266,6 +283,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     if(tv_des.getVisibility()==View.GONE)
                         tv_des.setVisibility(View.VISIBLE);
                     tv_des.setText(R.string.pre_show);
+                    iv_show.setVisibility(View.VISIBLE);
                     iv_show.setImageBitmap(BitmapFactory.decodeFile(data.getStringExtra("path")));
                     break;
 
@@ -299,7 +317,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             tv.destroyDrawingCache();
 //            pathName = ImageUntil.saveBitmapFromView(bitmap, String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()), LeaveSignActivity.this, 4);
         }
-        pathName = ImageUntil.saveBitmapFromView(bitmap, String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()), LeaveSignActivity.this, 4);
+        pathName = ImageUntil.saveBitmapFromView(bitmap,UUID.randomUUID().toString(), LeaveSignActivity.this, 4);
         File file = new File(pathName);
 
         mPersenter.uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"1");

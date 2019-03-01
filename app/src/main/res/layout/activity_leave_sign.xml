@@ -86,7 +86,7 @@
                 android:textColor="@color/black"
                 android:background="@color/white"
                 android:textSize="16sp"
-
+                android:visibility="gone"
                 android:text="@string/edit_select_des"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

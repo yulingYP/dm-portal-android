@@ -1,9 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.definesys.dmportal.appstore.SignatureActivity">
+    android:layout_height="wrap_content"
+    android:background="@color/back_gray"
+    tools:context="com.definesys.dmportal.appstore.SignatureActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:background="@color/customer_title"
+        android:layout_height="30dp">
+        <ImageView
+            android:id="@+id/back_icon"
+            android:padding="2dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/icon_titlebar_back"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerInParent="true"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="@string/sign_write_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
 
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="0dp">
+        <com.definesys.dmportal.appstore.customViews.RCLinearLayout
+            android:layout_width="match_parent"
+            app:round_corner="8dp"
+            android:layout_margin="8dp"
+            android:layout_height="match_parent">
+            <com.definesys.dmportal.appstore.customViews.LinePathView
+                android:id="@+id/sign_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF" />
+        </com.definesys.dmportal.appstore.customViews.RCLinearLayout>
+        <View
+            android:background="@drawable/sign_text_back"
+            android:layout_width="match_parent"
+            android:layout_margin="7dp"
+            android:layout_height="match_parent">
+        </View>
+    </FrameLayout>
+        <LinearLayout
+            android:id="@+id/clear_layout"
+            android:paddingBottom="2dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:id="@+id/image_share"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:src="@drawable/img_icon"
+                    android:layout_width="30dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_height="30dp"
+                     />
+                <TextView
+                    android:text="清除"
+                    android:textColor="@color/black"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:id="@+id/save_layout"
+                android:layout_marginStart="1dp"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:src="@drawable/pdf_icon"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:text="保存"
+                    android:textColor="@color/black"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>

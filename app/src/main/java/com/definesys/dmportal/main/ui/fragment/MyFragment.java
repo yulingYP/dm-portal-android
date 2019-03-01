@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -248,8 +249,9 @@ public class MyFragment extends Fragment {
                     //得到图片
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        userImage.setImageBitmap(resource);
-                        SharedPreferencesUtil.getInstance().setUserLocal(ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),0));
+                        String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),4);
+                        SharedPreferencesUtil.getInstance().setUserLocal(path);
+                        userImage.setImageBitmap(BitmapFactory.decodeFile(path));
 
                     }
 
@@ -289,7 +291,8 @@ public class MyFragment extends Fragment {
             bottomDialog.setOnOptionClickListener(position -> {
                 if(position==2){//查看头像
                     String path = SharedPreferencesUtil.getInstance().getUserLocal();
-                    if("".equals(path)){
+                    boolean isEmpty = "".equals(path);
+                    if(isEmpty){
                         Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
                         path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
                     }
@@ -300,6 +303,8 @@ public class MyFragment extends Fragment {
                     localMedias.add(localMedia);
                     PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
                             .openExternalPreview(0, localMedias);
+                    if(isEmpty)
+                        userImage.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
                 if (position == 1) {//从相册选择
                     PictureSelector.create(this)

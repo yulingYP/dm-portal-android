@@ -92,7 +92,8 @@ public class ImageUntil {
 
         } catch (Exception e) {
             throw e;
-        } finally {
+        }
+        finally {
             if (bmp != null && !bmp.isRecycled()) {
                 bmp = null;
             }
