@@ -345,4 +345,5 @@
     <string name="sign_design">艺术字</string>
     <string name="sign_pictures">从相册选择</string>
     <string name="sign_write_tip">请在方框内写入您的签名</string>
+    <string name="sign_select_error_2">请先去编辑签名</string>
 </resources>

@@ -28,9 +28,12 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,6 +98,15 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
 
     @BindView(R.id.no_sign_des)
     TextView tv_noSign;
+
+    @BindView(R.id.des_layout)
+    FrameLayout lg_des;
+
+    @BindView(R.id.type_scroll)
+    ScrollView sc_type;
+
+    @BindView(R.id.temp_view)
+    View view_temp;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -240,8 +252,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                             .withAspectRatio(36, 17)
                             .forResult(PictureConfig.CHOOSE_REQUEST);
                 }
-                if(position!=2)
-                    addSubmitButtom();
                 updateMode = position;
                 bottomDialog.dismiss();
             });
@@ -269,21 +279,26 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     // 3.media.getCompressPath();为压缩后 path，需判断 media.isCompressed();是否为 true
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
 
-                    lg_type.removeAllViews();
-                    if(tv_des.getVisibility()==View.GONE)
-                        tv_des.setVisibility(View.VISIBLE);
-                    tv_des.setText(R.string.pre_show);
-                    iv_show.setVisibility(View.VISIBLE);
+
+                    showLaout(1);
+//                    lg_type.removeAllViews();
+//                    if(tv_des.getVisibility()==View.GONE)
+//                        tv_des.setVisibility(View.VISIBLE);
+//                    tv_des.setText(R.string.pre_show);
+//                    iv_show.setVisibility(View.VISIBLE);
                     //设置图片
                     iv_show.setImageBitmap(BitmapFactory.decodeFile(selectImages.get(0).getCompressPath()));
 //                    handler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
                     break;
                 case SIGN_CODE://手写签名
-                    lg_type.removeAllViews();
-                    if(tv_des.getVisibility()==View.GONE)
-                        tv_des.setVisibility(View.VISIBLE);
-                    tv_des.setText(R.string.pre_show);
-                    iv_show.setVisibility(View.VISIBLE);
+//                    lg_type.removeAllViews();
+//                    if(tv_des.getVisibility()==View.GONE)
+//                        tv_des.setVisibility(View.VISIBLE);
+//                    tv_des.setText(R.string.pre_show);
+//                    iv_show.setVisibility(View.VISIBLE);
+                    showLaout(1);
+                    addSubmitButtom();
+                    //设置图片
                     iv_show.setImageBitmap(BitmapFactory.decodeFile(data.getStringExtra("path")));
                     break;
 
@@ -294,6 +309,10 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     private void checkSelect() {
         if(updateMode==2&&(tv_selected==null||typeList==null||typeList.size()==0)){
             Toast.makeText(this, R.string.sign_select_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(updateMode!=2(pathName==null||"".equals(pathName))){
+            Toast.makeText(this, R.string.sign_select_error_2,Toast.LENGTH_SHORT).show();
             return;
         }
         progressHUD.show();
@@ -357,9 +376,9 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
      * @param content 签名
      */
     private void getTypeList(String content) {
-        if(tv_des.getVisibility()==View.GONE) {
-            tv_des.setVisibility(View.VISIBLE);
-        }
+//        if(tv_des.getVisibility()==View.GONE) {
+//            tv_des.setVisibility(View.VISIBLE);
+//        }
         if(lg_type.getChildCount()!=0)
             lg_type.removeAllViews();
         selectPosition = 0;
@@ -416,9 +435,10 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             public void onComplete() {
                 progressHUD.dismiss();
                 addSubmitButtom();
-                tv_des.setText(R.string.edit_select_des);
-                iv_show.setVisibility(View.GONE);
-                lg_type.setVisibility(View.VISIBLE);
+//                tv_des.setText(R.string.edit_select_des);
+//                iv_show.setVisibility(View.GONE);
+//                lg_type.setVisibility(View.VISIBLE);
+                showLaout(2);
             }
         });
     }
@@ -472,7 +492,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             Message message = new Message();
             message.what=0;
             message.obj=content;
-            lg_type.setVisibility(View.GONE);
+//            lg_type.setVisibility(View.GONE);
             handler.sendMessageDelayed(message,Constants.scrollDelay);
             //getTypeList(content);
         }
@@ -542,5 +562,29 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     @Override
     public ChangeUserImagePresenter getPersenter() {
         return new ChangeUserImagePresenter(this);
+    }
+
+    /**
+     * 显示模式
+     * @param mode
+     */
+    private void showLaout(int mode){
+        if(mode==2){//艺术字
+            lg_des.setVisibility(View.VISIBLE);
+            iv_show.setVisibility(View.GONE);
+            view_temp.setVisibility(View.GONE);
+            sc_type.setVisibility(View.VISIBLE);
+            lg_type.setVisibility(View.VISIBLE);
+            tv_des.setText(R.string.edit_select_des);
+            tv_des.setVisibility(View.VISIBLE);
+        }else {//其他
+            lg_type.removeAllViews();
+            sc_type.setVisibility(View.GONE);
+            lg_des.setVisibility(View.VISIBLE);
+            iv_show.setVisibility(View.VISIBLE);
+            view_temp.setVisibility(View.VISIBLE);
+            tv_des.setText(R.string.pre_show);
+            tv_des.setVisibility(View.VISIBLE);
+        }
     }
 }
