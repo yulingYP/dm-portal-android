@@ -1,15 +1,12 @@
 package com.definesys.dmportal.appstore;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,21 +15,16 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
-
-import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,14 +38,11 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.definesys.base.BaseActivity;
-import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-
 import com.definesys.dmportal.appstore.customViews.BottomDialog;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
@@ -74,7 +63,6 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -124,16 +112,17 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     LinearLayout lg_type;
     @BindView(R.id.show_img)
     ImageView iv_show;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 0:
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0://延迟0.3秒设置艺术字
                     getTypeList(msg.obj.toString());
                     break;
             }
+            return false;
         }
-    };
+    });
     private int selectPosition;//选择的样式的位置
     private ImageView iv_selected;//选择位置的imageview控件
     private TextView tv_selected;//选择位置的文本控件
@@ -147,7 +136,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     private List<String> typeList;//艺术字种类列表
     private BottomDialog bottomDialog;//签名生成模式选择提示框
     private int updateMode;//更新签名的模式  0.拍照 1.手写 2.艺术字 3.从相册选择
-    private String pathName;//新签名的本地路径
+//    private String pathName;//新签名的本地路径
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,23 +268,13 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     // 3.media.getCompressPath();为压缩后 path，需判断 media.isCompressed();是否为 true
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
 
-
                     showLaout(1);
-//                    lg_type.removeAllViews();
-//                    if(tv_des.getVisibility()==View.GONE)
-//                        tv_des.setVisibility(View.VISIBLE);
-//                    tv_des.setText(R.string.pre_show);
-//                    iv_show.setVisibility(View.VISIBLE);
+                    addSubmitButtom();
                     //设置图片
                     iv_show.setImageBitmap(BitmapFactory.decodeFile(selectImages.get(0).getCompressPath()));
-//                    handler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
                     break;
                 case SIGN_CODE://手写签名
-//                    lg_type.removeAllViews();
-//                    if(tv_des.getVisibility()==View.GONE)
-//                        tv_des.setVisibility(View.VISIBLE);
-//                    tv_des.setText(R.string.pre_show);
-//                    iv_show.setVisibility(View.VISIBLE);
+
                     showLaout(1);
                     addSubmitButtom();
                     //设置图片
@@ -311,7 +290,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             Toast.makeText(this, R.string.sign_select_error,Toast.LENGTH_SHORT).show();
             return;
         }
-        else if(updateMode!=2(pathName==null||"".equals(pathName))){
+        else if(updateMode!=2&&iv_show.getVisibility()==View.GONE){
             Toast.makeText(this, R.string.sign_select_error_2,Toast.LENGTH_SHORT).show();
             return;
         }
@@ -319,8 +298,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         Bitmap bitmap;
         if(updateMode!=2){//拍照、相册选择、手写
             bitmap =ImageUntil.convertViewToBitmap(iv_show);
-//            pathName = ImageUntil.saveBitmapFromView(bitmap, String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()), LeaveSignActivity.this, 4);
-//            iv_show.setImageBitmap(BitmapFactory.decodeFile(pathName));
         }
         else  {//艺术字
             //上传签名图片
@@ -334,9 +311,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             bitmap = Bitmap.createBitmap(tv.getDrawingCache());
             //千万别忘最后一步
             tv.destroyDrawingCache();
-//            pathName = ImageUntil.saveBitmapFromView(bitmap, String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()), LeaveSignActivity.this, 4);
         }
-        pathName = ImageUntil.saveBitmapFromView(bitmap,UUID.randomUUID().toString(), LeaveSignActivity.this, 4);
+        String pathName = ImageUntil.saveBitmapFromView(bitmap,UUID.randomUUID().toString(), LeaveSignActivity.this, 4);
         File file = new File(pathName);
 
         mPersenter.uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"1");
@@ -376,9 +352,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
      * @param content 签名
      */
     private void getTypeList(String content) {
-//        if(tv_des.getVisibility()==View.GONE) {
-//            tv_des.setVisibility(View.VISIBLE);
-//        }
         if(lg_type.getChildCount()!=0)
             lg_type.removeAllViews();
         selectPosition = 0;
@@ -435,9 +408,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             public void onComplete() {
                 progressHUD.dismiss();
                 addSubmitButtom();
-//                tv_des.setText(R.string.edit_select_des);
-//                iv_show.setVisibility(View.GONE);
-//                lg_type.setVisibility(View.VISIBLE);
                 showLaout(2);
             }
         });
@@ -447,7 +417,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     private void showMyDialog() {
         if(dialog==null){
             dialog = new Dialog(this);
-            View view = LayoutInflater.from(this).inflate(R.layout.view_edit_sign,null);
+             View view = LayoutInflater.from(this).inflate(R.layout.view_edit_sign,null);
             //编辑框
             EditText editText = (EditText)view.findViewById(R.id.edit_text);
             ed_sign = editText;
@@ -466,7 +436,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(view);
             dialog.setCancelable(true);
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if(dialog.getWindow()!=null)
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -565,8 +536,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     }
 
     /**
-     * 显示模式
-     * @param mode
+     * 显示设置模式
+     * @param mode 2.艺术字 1.其他
      */
     private void showLaout(int mode){
         if(mode==2){//艺术字

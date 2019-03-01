@@ -55,6 +55,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -124,7 +125,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                        httpPost();
                     }else{
                         String leaveType = "".equals(leaveInfo.getLeaveType())?DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[leaveInfo.getType()%3]):leaveInfo.getLeaveType();
-                        share(true,getString(R.string.file_name,leaveInfo.getName(),leaveType,leaveInfo.getLeaveTitle(),(new SimpleDateFormat(getString(R.string.date_type_7))).format(new Date())));
+                        share(true,getString(R.string.file_name,leaveInfo.getName(),leaveType,leaveInfo.getLeaveTitle(),(new SimpleDateFormat(getString(R.string.date_type_7), Locale.getDefault())).format(new Date())));
                     }
                 });
 
@@ -136,7 +137,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                         httpPost();
                     }else {
                         String leaveType = "".equals(leaveInfo.getLeaveType())?DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[leaveInfo.getType()%3]):leaveInfo.getLeaveType();
-                        share(false, getString(R.string.file_name, leaveInfo.getName(), leaveType, leaveInfo.getLeaveTitle(),(new SimpleDateFormat(getString(R.string.date_type_7))).format(new Date())));
+                        share(false, getString(R.string.file_name, leaveInfo.getName(), leaveType, leaveInfo.getLeaveTitle(),(new SimpleDateFormat(getString(R.string.date_type_7), Locale.getDefault())).format(new Date())));
                     }
                 });
 
@@ -302,7 +303,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     //添加学生实习请假条
     private View addPractice() {
         View view = LayoutInflater.from(this).inflate(R.layout.leave_practice_view,null);
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4));
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4), Locale.getDefault());
 
         //编号
         Calendar calendar = Calendar.getInstance();
@@ -400,7 +401,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     //添加学生长假请假条
     private View addLongView() {
         View view = LayoutInflater.from(this).inflate(R.layout.leave_long_view,null);
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4));
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4), Locale.getDefault());
         //姓名
         ((TextView)view.findViewById(R.id.leave_name)).setText(getString(R.string.name_tip,leaveInfo.getName()));
         //事由
@@ -478,7 +479,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     //添加教师长假请假条
     private View addTeacherLongView() {
         View view = LayoutInflater.from(this).inflate(R.layout.leave_teacher_long_view,null);
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4));
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4), Locale.getDefault());
         //姓名
         ((TextView)view.findViewById(R.id.leave_name)).setText(getString(R.string.name_tip,leaveInfo.getName()));
         //事由
@@ -555,23 +556,23 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         //事由
         ((TextView)view.findViewById(R.id.leave_reason)).setText(leaveInfo.getLeaveReason());
         //时间
-        ((TextView)view.findViewById(R.id.submit_time)).setText(new SimpleDateFormat(getString(R.string.date_type_5)).format(leaveInfo.getSubmitDate()));
+        ((TextView)view.findViewById(R.id.submit_time)).setText(new SimpleDateFormat(getString(R.string.date_type_5), Locale.getDefault()).format(leaveInfo.getSubmitDate()));
         //辅导员或请假管理员意见
         ((TextView)view.findViewById(R.id.approval_content)).setText(approvalRecordList.get(0).getApprovalContent());
         //签名
         setSign((ImageView)view.findViewById(R.id.sign_img),(TextView)view.findViewById(R.id.sign_text),(ProgressBar)view.findViewById(R.id.progressBar),approvalRecordList.get(0).getApproverId(),userType);
         //签名日期
-        ((TextView)view.findViewById(R.id.sign_time)).setText(new SimpleDateFormat(getString(R.string.date_type_6)).format(approvalRecordList.get(0).getApprovalTime()));
+        ((TextView)view.findViewById(R.id.sign_time)).setText(new SimpleDateFormat(getString(R.string.date_type_6), Locale.getDefault()).format(approvalRecordList.get(0).getApprovalTime()));
 
         //<--------------存根------------------>
         //姓名
         ((TextView)view.findViewById(R.id.name_copy)).setText(leaveInfo.getName());
         //学号
-        ((TextView)view.findViewById(R.id.stuId_copy)).setText(""+leaveInfo.getUserId().intValue());
+        ((TextView)view.findViewById(R.id.stuId_copy)).setText(String.valueOf(leaveInfo.getUserId().intValue()));
         //事由
         ((TextView)view.findViewById(R.id.reason_copy)).setText(leaveInfo.getLeaveReason());
         //时间
-        ((TextView)view.findViewById(R.id.time_copy)).setText(new SimpleDateFormat(getString(R.string.date_type_5)).format(leaveInfo.getSubmitDate()));
+        ((TextView)view.findViewById(R.id.time_copy)).setText(new SimpleDateFormat(getString(R.string.date_type_5), Locale.getDefault()).format(leaveInfo.getSubmitDate()));
 
         return view;
     }

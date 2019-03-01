@@ -65,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -165,7 +166,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         setContentView(R.layout.activity_leave_off);
         ButterKnife.bind(this);
 
-        df = new SimpleDateFormat(getString(R.string.date_type));
+        df = new SimpleDateFormat(getString(R.string.date_type), Locale.getDefault());
         initView();
         initEdit();//编辑框
         initPictureList();//添加图片的列表

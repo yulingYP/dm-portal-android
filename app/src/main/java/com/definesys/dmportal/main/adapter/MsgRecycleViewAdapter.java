@@ -1,6 +1,7 @@
 package com.definesys.dmportal.main.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -38,7 +40,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public MsgRecycleViewAdapter(Context context, List<MyMessage> messages) {
         this.context = context;
         this.messages = messages;
-        this.sdf=new SimpleDateFormat(context.getString(R.string.date_type_2));
+        this.sdf=new SimpleDateFormat(context.getString(R.string.date_type_2), Locale.getDefault());
     }
 
     @NonNull
@@ -96,13 +98,15 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             if(messages.get(position).getMessageExtend2()==4){
                                 myMessage= checkDate(position);
                             }
-                            ARouter.getInstance()
-                                    .build(ARouterConstants.ApprovalLeaveInfoActivity)
-                                    .withString("leaveId",myMessage.getMessageExtend())
-                                    .withInt("type",myMessage.getMessageExtend2())
-                                    .withObject("approvalDate",myMessage.getMessageExtend3())
-                                    .withString("approvalContent",myMessage.getMessageContent())
-                                    .navigation();
+                            if(myMessage!=null) {
+                                ARouter.getInstance()
+                                        .build(ARouterConstants.ApprovalLeaveInfoActivity)
+                                        .withString("leaveId", myMessage.getMessageExtend())
+                                        .withInt("type", myMessage.getMessageExtend2())
+                                        .withObject("approvalDate", myMessage.getMessageExtend3())
+                                        .withString("approvalContent", myMessage.getMessageContent())
+                                        .navigation();
+                            }
                         }
 
                     });
@@ -116,7 +120,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     private MyMessage checkDate(int position) {
         if(position<0)
-            return null;
+            return  null;
         MyMessage myMessage = messages.get(position);
         int i;
         for( i= position-1 ; i >=0;i--){
@@ -166,7 +170,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         @BindView(R.id.main_layout_item_tit)
         LinearLayout layout;
 
-        public MsgHolder(View itemView) {
+        private MsgHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -66,6 +66,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -642,7 +643,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
      * @return
      */
     private String getSumTime(String startDateStr,String endDateStr){
-        SimpleDateFormat df = new SimpleDateFormat(getString(R.string.date_type));
+        SimpleDateFormat df = new SimpleDateFormat(getString(R.string.date_type), Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
         try {

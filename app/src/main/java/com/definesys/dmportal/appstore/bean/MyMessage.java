@@ -83,7 +83,7 @@ public class MyMessage implements Comparable<MyMessage>{
     }
 
     public String getMessageExtend() {
-        return messageExtend;
+        return messageExtend==null?"":messageExtend;
     }
 
     public void setMessageExtend(String messageExtend) {

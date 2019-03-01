@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -97,7 +98,7 @@ public class MyDatePicker extends LinearLayout {
         initStatus();//年月日设置
         //设置小时
         num_hour.setMaxValue(23);
-        tv_date.setText((new SimpleDateFormat(getContext().getString(R.string.date_type)).format(new Date())));
+        tv_date.setText((new SimpleDateFormat(getContext().getString(R.string.date_type), Locale.getDefault()).format(new Date())));
         RxView.clicks(cancelText)
                 .throttleFirst(600, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<Object>() {
@@ -193,7 +194,7 @@ public class MyDatePicker extends LinearLayout {
         tv_date.setText(date);
         Date currentDate = null;
         try {
-            currentDate = new SimpleDateFormat(getContext().getString(R.string.date_type)).parse(date);
+            currentDate = new SimpleDateFormat(getContext().getString(R.string.date_type), Locale.getDefault()).parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

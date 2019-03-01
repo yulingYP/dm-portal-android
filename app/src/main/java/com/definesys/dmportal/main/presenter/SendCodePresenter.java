@@ -20,6 +20,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Observable;
 
@@ -103,7 +104,7 @@ public class SendCodePresenter extends BasePresenter {
         ViseHttp.BASE(postRequest);
     }
     public void sendEmail(String code,String phone,String data1,String data2)  {
-        SimpleDateFormat sDateFormat = new SimpleDateFormat(mContext.getString(R.string.date_type_3));
+        SimpleDateFormat sDateFormat = new SimpleDateFormat(mContext.getString(R.string.date_type_3), Locale.getDefault());
         String date = sDateFormat.format(new Date());
         String encode = null;
         try {

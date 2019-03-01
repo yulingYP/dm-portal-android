@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -159,7 +160,7 @@ public class DensityUtil {
     public static String dateTypeToString(String type,Date date){
         if(date==null)
             return "";
-        SimpleDateFormat sDateFormat=new SimpleDateFormat(type);
+        SimpleDateFormat sDateFormat=new SimpleDateFormat(type, Locale.getDefault());
         return sDateFormat.format(date);
     }
 
@@ -229,7 +230,7 @@ public class DensityUtil {
 
         Date date=null;//请假结束日期
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(context.getString(R.string.date_type));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(context.getString(R.string.date_type), Locale.getDefault());
             date = simpleDateFormat.parse(leaveInfo.getEndTime());
         } catch (ParseException e) {
             e.printStackTrace();
@@ -326,7 +327,7 @@ public class DensityUtil {
      * @return
      */
     public  static String getSumTime(String startDateStr,String endDateStr,Context context,boolean isHour){
-        SimpleDateFormat df = new SimpleDateFormat(context.getString(R.string.date_type));
+        SimpleDateFormat df = new SimpleDateFormat(context.getString(R.string.date_type), Locale.getDefault());
         Date startDate = null;
         Date endDate = null;
         try {
