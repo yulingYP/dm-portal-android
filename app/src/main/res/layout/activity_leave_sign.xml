@@ -61,6 +61,7 @@
                     android:maxHeight="50dp"
                     android:minWidth="80dp"
                     android:minHeight="30dp"
+                    android:background="@color/white"
                     android:layout_gravity="center"
                     android:layout_toStartOf="@+id/edit_sign"
                     android:layout_centerVertical="true"
