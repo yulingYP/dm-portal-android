@@ -301,17 +301,21 @@ public class MyFragment extends Fragment {
                     PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
                             .openExternalPreview(0, localMedias);
                 }
-                if (position == 1) {//拍照
+                if (position == 1) {//从相册选择
                     PictureSelector.create(this)
                             .openGallery(PictureMimeType.ofImage())
                             .maxSelectNum(1).enableCrop(true).compress(true)
+                            .circleDimmedLayer(true)
+                            .rotateEnabled(false)
                             .withAspectRatio(1, 1)
                             .forResult(PictureConfig.CHOOSE_REQUEST);
                 }
-                if(position == 0) {//从相册选择
+                if(position == 0) {//拍照
                     PictureSelector.create(this)
                             .openCamera(PictureMimeType.ofImage())
                             .maxSelectNum(1).enableCrop(true).compress(true)
+                            .circleDimmedLayer(true)
+                            .rotateEnabled(false)
                             .withAspectRatio(1, 1)
                             .forResult(PictureConfig.CHOOSE_REQUEST);
                 }
@@ -369,7 +373,7 @@ public class MyFragment extends Fragment {
     private void requestPermissions() {
         RxPermissions rxPermission = new RxPermissions(getActivity());
         rxPermission
-                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Permission>() {
                     @Override
                     public void accept(Permission permission) throws Exception {

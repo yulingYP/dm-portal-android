@@ -339,4 +339,9 @@
     <string name="current_sign">当前签名</string>
     <string name="sign_setting">签名设置</string>
     <string name="sign_setting_des">请先去设置您的审批签名</string>
+    <string name="pre_show">效果预览</string>
+    <string name="sign_take_photo">拍照</string>
+    <string name="sign_write">手写</string>
+    <string name="sign_design">艺术字</string>
+    <string name="sign_pictures">从相册选择</string>
 </resources>

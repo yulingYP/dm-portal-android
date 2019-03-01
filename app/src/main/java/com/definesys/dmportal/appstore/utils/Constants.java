@@ -13,5 +13,6 @@ public interface Constants {
     int oneDay = 1000*60*60*24;//1天
 
     int XG_CODE = 1;//判断信鸽是否绑定
+    int SIGN_CODE = 1001;//手写签名的回调代码
     String FIRST_OPEN = "first_open";
 }

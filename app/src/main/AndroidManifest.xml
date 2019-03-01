@@ -195,7 +195,8 @@
         <activity android:name=".main.userSettingActivity.UserInfoActivity" />
         <activity android:name=".main.userSettingActivity.FeedBackActivity" />
         <activity android:name=".main.userSettingActivity.AboutActivity" />
-        <activity android:name=".appstore.LeaveSignActivity"></activity>
+        <activity android:name=".appstore.LeaveSignActivity" />
+        <activity android:name=".appstore.SignatureActivity"></activity>
     </application>
 
 </manifest>

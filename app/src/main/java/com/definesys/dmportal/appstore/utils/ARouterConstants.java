@@ -28,5 +28,7 @@ public interface ARouterConstants {
     String FeedBackActivity = "/dmportal/appstore/FeedBackActivity";//反馈建议界面
     String AboutActivity = "/dmportal/appstore/AboutActivity";//关于我们页面
     String WebViewActivity ="/dmportal/webview/WebViewActivity";//网页
+    String SignatureActivity ="/dmportal/webview/SignatureActivity";//手写签名页面
+
 
 }

@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -43,10 +47,12 @@ import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 
+import com.definesys.dmportal.appstore.customViews.BottomDialog;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
+import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.ChangeUserImagePresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -55,15 +61,20 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.tools.PictureFileUtils;
 
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
@@ -74,7 +85,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.vise.xsnow.http.ViseHttp.getContext;
+import static com.definesys.dmportal.appstore.utils.Constants.SIGN_CODE;
+
 
 @Route(path = ARouterConstants.LeaveSignActivity)
 public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
@@ -98,6 +110,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
 
     @BindView(R.id.type_layout)
     LinearLayout lg_type;
+    @BindView(R.id.show_img)
+    ImageView iv_show;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -116,10 +130,12 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             .signature(new ObjectKey(UUID.randomUUID().toString()))
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true);
-    private Dialog dialog;//编辑签名
+    private Dialog dialog;//编辑艺术字提示框
     private EditText ed_sign;//签名输入框
     private List<String> typeList;//艺术字种类列表
-
+    private BottomDialog bottomDialog;//签名生成模式选择提示框
+    private int updateMode;//更新签名的模式  0.拍照 1.手写 2.艺术字 3.从相册选择
+    private String pathName;//新签名的本地路径
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +159,14 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         RxView.clicks(iv_edit)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
-                    showMyDialog();
+                    List<String> list = new ArrayList<>();
+                    list.add(getString(R.string.sign_take_photo));
+                    list.add(getString(R.string.sign_write));
+                    list.add(getString(R.string.sign_design));
+                    list.add(getString(R.string.sign_pictures));
+
+                    showBottomDialog(list);
+                    //showMyDialog();
                 });
         //点击签名
         RxView.clicks(iv_sign)
@@ -162,6 +185,126 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         setSign();//设置签名
 
     }
+
+    //添加提交按钮
+    private void addSubmitButtom(){
+        titleBar.removeAllRightViews();
+        Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_leave_sign);
+        button.setTextSize(14);
+        //提交
+        RxView.clicks(button)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj -> {
+                    checkSelect();
+                });
+    }
+    private void showBottomDialog(List<String> list) {
+        if(dialog==null) {
+            bottomDialog = new BottomDialog(this, list);
+            bottomDialog.setOnOptionClickListener(position -> {
+                if (position == 0) {//拍照
+                    PictureSelector.create(this)
+                            .openCamera(PictureMimeType.ofImage())
+                            .maxSelectNum(1)
+                            .enableCrop(true)
+                            .rotateEnabled(false)
+                            .compress(true)
+                            .withAspectRatio(36, 17)
+                            .forResult(PictureConfig.CHOOSE_REQUEST);
+                } else if (position == 1) {//手写
+                    ARouter.getInstance().build(ARouterConstants.SignatureActivity).navigation(this, SIGN_CODE);
+                } else if (position == 2) {//艺术字
+                    showMyDialog();
+                } else if (position == 3) {//从相册查看
+                    PictureSelector.create(this)
+                            .openGallery(PictureMimeType.ofImage())
+                            .maxSelectNum(1).enableCrop(true).compress(true)
+                            .rotateEnabled(false)
+                            .withAspectRatio(36, 17)
+                            .forResult(PictureConfig.CHOOSE_REQUEST);
+                }
+                if(position!=2)
+                    addSubmitButtom();
+                updateMode = position;
+                bottomDialog.dismiss();
+            });
+        }
+
+        bottomDialog.setOnCancelButtonClickListener(view -> bottomDialog.dismiss()).show();
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST://拍照或从相册选择
+                    if(!PermissionsUtil.isNetworkConnected(this)){//网络检测
+                        Toast.makeText(this, R.string.no_net_tip_2,Toast.LENGTH_SHORT).show();
+                        //updateImg(path);
+                        return;
+                    }
+                    // 图片选择结果回调
+                    List<LocalMedia> selectImages;
+                    selectImages = PictureSelector.obtainMultipleResult(data);
+                    // 例如 LocalMedia 里面返回三种 path
+                    // 1.media.getPath(); 为原图 path
+                    // 2.media.getCutPath();为裁剪后 path，需判断 media.isCut();是否为 true
+                    // 3.media.getCompressPath();为压缩后 path，需判断 media.isCompressed();是否为 true
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+
+                    lg_type.removeAllViews();
+                    if(tv_des.getVisibility()==View.GONE)
+                        tv_des.setVisibility(View.VISIBLE);
+                    tv_des.setText(R.string.pre_show);
+                    iv_show.setVisibility(View.VISIBLE);
+                    //设置图片
+                    iv_show.setImageBitmap(BitmapFactory.decodeFile(selectImages.get(0).getCompressPath()));
+//                    handler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
+                    break;
+                case SIGN_CODE://手写签名
+                    lg_type.removeAllViews();
+                    if(tv_des.getVisibility()==View.GONE)
+                        tv_des.setVisibility(View.VISIBLE);
+                    tv_des.setText(R.string.pre_show);
+                    iv_show.setImageBitmap(BitmapFactory.decodeFile(data.getStringExtra("path")));
+                    break;
+
+            }
+        }
+    }
+    //签名选择合法性检测
+    private void checkSelect() {
+        if(updateMode==2&&(tv_selected==null||typeList==null||typeList.size()==0)){
+            Toast.makeText(this, R.string.sign_select_error,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        progressHUD.show();
+        Bitmap bitmap;
+        if(updateMode!=2){//拍照、相册选择、手写
+            bitmap =ImageUntil.convertViewToBitmap(iv_show);
+//            pathName = ImageUntil.saveBitmapFromView(bitmap, String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()), LeaveSignActivity.this, 4);
+//            iv_show.setImageBitmap(BitmapFactory.decodeFile(pathName));
+        }
+        else  {//艺术字
+            //上传签名图片
+            TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_sign_text_view, null);
+            tv.setText(tv_selected.getText().toString());
+            if(selectPosition>0)
+                tv.setTypeface(Typeface.createFromAsset(getAssets(), "ttf/"+typeList.get(selectPosition-1)));
+            tv.setDrawingCacheEnabled(true);
+            tv.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            tv.layout(0, 0, tv.getMeasuredWidth(), tv.getMeasuredHeight());
+            bitmap = Bitmap.createBitmap(tv.getDrawingCache());
+            //千万别忘最后一步
+            tv.destroyDrawingCache();
+//            pathName = ImageUntil.saveBitmapFromView(bitmap, String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()), LeaveSignActivity.this, 4);
+        }
+        pathName = ImageUntil.saveBitmapFromView(bitmap, String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()), LeaveSignActivity.this, 4);
+        File file = new File(pathName);
+
+        mPersenter.uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"1");
+
+    }
     /*
          修改头像成功
          */
@@ -172,6 +315,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         Toast.makeText(this, R.string.sign_update_success, Toast.LENGTH_SHORT).show();
         //更新本地签名信息
         SharedPreferencesUtil.getInstance().setUserSign(newUrl);
+        PictureFileUtils.deleteCacheDirFile(this);
         progressHUD.dismiss();
         finish();
     }
@@ -188,42 +332,16 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             progressHUD.dismiss();
         }
     }
-    //签名选择合法性检测
-    private void checkSelect() {
-        if(tv_selected==null||typeList==null||typeList.size()==0){
-            Toast.makeText(this, R.string.sign_select_error,Toast.LENGTH_SHORT).show();
-            return;
-        }
-        progressHUD.show();
 
-        //上传签名图片
-        TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_sign_text_view,null);
-        tv.setText(tv_selected.getText().toString());
-        tv.setDrawingCacheEnabled(true);
-        tv.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        tv.layout(0, 0, tv.getMeasuredWidth(), tv.getMeasuredHeight());
-        Bitmap bitmap = Bitmap.createBitmap(tv.getDrawingCache());
-        //千万别忘最后一步
-        tv.destroyDrawingCache();
-        String pathName=ImageUntil.saveBitmapFromView(bitmap,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()),LeaveSignActivity.this,0);
-        File file = new File(pathName);
-
-        mPersenter.uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"1");
-
-
-//        tv_selected.setTextSize(DensityUtil.dip2px(this,22));
-
-
-    }
 
     /**
      * 获取签名种类并生成相应text
      * @param content 签名
      */
     private void getTypeList(String content) {
-        if(tv_des.getVisibility()==View.GONE)
+        if(tv_des.getVisibility()==View.GONE) {
             tv_des.setVisibility(View.VISIBLE);
-
+        }
         if(lg_type.getChildCount()!=0)
             lg_type.removeAllViews();
         selectPosition = 0;
@@ -243,15 +361,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                             if (temp != null && temp.length() > 4 && ".ttf".equals(temp.substring(temp.length() - 4, temp.length()).toLowerCase()))
                                 typeList.add(typeNames[i]);
                         }
-
-                        Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_leave_sign);
-                        button.setTextSize(14);
-                        //提交
-                        RxView.clicks(button)
-                                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                                .subscribe(obj -> {
-                                    checkSelect();
-                                });
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -288,6 +397,9 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             @Override
             public void onComplete() {
                 progressHUD.dismiss();
+                addSubmitButtom();
+                tv_des.setText(R.string.edit_select_des);
+                iv_show.setVisibility(View.GONE);
                 lg_type.setVisibility(View.VISIBLE);
             }
         });
@@ -328,6 +440,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         }else {
             dialog.show();
         }
+        //设置编辑框内容----用户姓名
+        ed_sign.setText(SharedPreferencesUtil.getInstance().getUserName());
     }
 
     //检查输入框内容是否合法

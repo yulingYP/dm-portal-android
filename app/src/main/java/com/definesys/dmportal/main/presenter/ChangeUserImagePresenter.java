@@ -33,7 +33,7 @@ public class ChangeUserImagePresenter extends BasePresenter {
         MediaType type = MediaType.parse("image/"+fileName.substring(fileName.lastIndexOf(".")+1));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("userId",userId)
-                .addFormDataPart("uuid",String.valueOf(SharedPreferencesUtil.getInstance().getUserId()))
+                .addFormDataPart("uuid",userId)
                 .addFormDataPart("type",updateType)
                 .addFormDataPart("file", fileName,RequestBody.create(type,file));
 

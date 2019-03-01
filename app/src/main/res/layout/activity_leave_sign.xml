@@ -17,7 +17,7 @@
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_marginTop="12dp"
@@ -36,29 +36,36 @@
 
                 <TextView
                     android:id="@+id/no_sign_des"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
+
+                    android:layout_width="wrap_content"
                     android:textColor="@color/black"
                     android:gravity="end"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_toStartOf="@+id/edit_sign"
+                    android:layout_centerVertical="true"
                     android:layout_height="wrap_content">
                 </TextView>
                 <ProgressBar
                     android:layout_width="30dp"
                     android:id="@+id/progressBar"
                     android:layout_gravity="center"
+                    android:layout_toStartOf="@+id/edit_sign"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
                     android:layout_height="30dp" />
                 <ImageView
                     android:id="@+id/sign_img"
                     android:layout_width="wrap_content"
                     android:scaleType="fitXY"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="12dp"
                     android:adjustViewBounds="true"
                     android:maxHeight="50dp"
                     android:minWidth="80dp"
                     android:minHeight="30dp"
                     android:layout_gravity="center"
+                    android:layout_toStartOf="@+id/edit_sign"
+                    android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
                 <ImageView
                     android:layout_width="24dp"
@@ -67,9 +74,11 @@
                     android:src="@drawable/edit_icon"
                     android:layout_gravity="center"
                     android:layout_marginEnd="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_height="24dp"
                     />
-            </LinearLayout>
+            </RelativeLayout>
             <TextView
                 android:layout_marginTop="2dp"
                 android:padding="8dp"
@@ -77,10 +86,21 @@
                 android:textColor="@color/black"
                 android:background="@color/white"
                 android:textSize="16sp"
-                android:visibility="gone"
+
                 android:text="@string/edit_select_des"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/show_img"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:minWidth="80dp"
+                android:maxWidth="100dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp">
+            </ImageView>
             <!--<android.support.v7.widget.RecyclerView-->
                 <!--android:id="@+id/recycle_view"-->
                 <!--android:layout_width="match_parent"-->

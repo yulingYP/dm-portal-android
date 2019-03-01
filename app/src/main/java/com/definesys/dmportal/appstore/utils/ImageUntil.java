@@ -68,7 +68,7 @@ public class ImageUntil {
      * 保存文件的方法
      * @param code
      * @param context
-     * @param mode 0.保存到缓存 1.保存到相册 2.保存到指定目录 3.保存头像
+     * @param mode 0.保存到缓存 1.保存到相册 2.保存到指定目录 3.保存头像 4.保存到缓存缩放0.9
      * @return
      * @throws ParseException
      */
@@ -80,7 +80,8 @@ public class ImageUntil {
             bmp = code;
             // 缩小图片
             Matrix matrix = new Matrix();
-            matrix.postScale(0.5f, 0.5f); //长和宽放大缩小的比例
+            float s = mode==4?1.0f:0.5f;//缩放比例
+            matrix.postScale(s, s); //长和宽放大缩小的比例
             scaleBmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
             bmp = null;
 
@@ -112,20 +113,18 @@ public class ImageUntil {
     private static String saveBitmap(Bitmap bitmap, String bitName, Context context, int  mode){
         String fileName ="" ;
         File file ;
-        if( mode==0)
-            fileName=context.getCacheDir()+"/"+bitName;
-        else if(mode==1){
+      if(mode==1){//保存到相册
             if(Build.BRAND .equals("Xiaomi") ){ // 小米手机
                 fileName = Environment.getExternalStorageDirectory().getPath()+"/DCIM/Camera/"+bitName ;
             }else{  // Meizu 、Oppo
                 fileName = Environment.getExternalStorageDirectory().getPath()+"/DCIM/"+bitName ;
             }
-        }else if(mode==2){
+        }else if(mode==2){//保存到指定路径
             if(!new File(context.getFilesDir()+"/leaveImages/").exists()){
                 new File(context.getFilesDir()+"/leaveImages/").mkdir();
             }
             fileName=context.getFilesDir()+"/leaveImages/"+bitName;
-        }else if(mode==3){
+        }else {//保存到缓存
             fileName=context.getCacheDir()+"/"+bitName;
         }
 
@@ -140,11 +139,13 @@ public class ImageUntil {
             try {
                 out = new FileOutputStream(file);
                 // 格式为 JPEG，照相机拍出的图片为JPEG格式的，PNG格式的不能显示在相册中
-                if (bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)) {
+                Bitmap.CompressFormat format=mode==4?Bitmap.CompressFormat.PNG:Bitmap.CompressFormat.JPEG;
+                int quality =  mode==4?100:90;
+                if (bitmap.compress(format,quality , out)) {
                     out.flush();
                     out.close();
                     // 插入图库
-                    if (mode != 0)
+                    if (mode != 0&&mode!=4)
                         MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), bitName, null);
 
                 }
@@ -154,7 +155,7 @@ public class ImageUntil {
                 e.printStackTrace();
 
             }
-            if (mode != 0)// 发送广播，通知刷新图库的显示
+            if (mode != 0&&mode!=4)// 发送广播，通知刷新图库的显示
                 context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + fileName)));
 
         }

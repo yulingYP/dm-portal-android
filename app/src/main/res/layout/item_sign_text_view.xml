@@ -3,7 +3,7 @@
     android:padding="4dp"
     android:id="@+id/name_text"
     android:textColor="@color/black"
-    android:textSize="50sp"
+    android:textSize="20sp"
     android:text="@string/name"
     android:background="@color/white"
     android:layout_centerVertical="true"
