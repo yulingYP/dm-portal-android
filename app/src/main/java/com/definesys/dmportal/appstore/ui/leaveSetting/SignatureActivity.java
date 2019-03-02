@@ -1,4 +1,4 @@
-package com.definesys.dmportal.appstore;
+package com.definesys.dmportal.appstore.ui.leaveSetting;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

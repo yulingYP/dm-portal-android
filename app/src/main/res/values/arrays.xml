@@ -39,7 +39,12 @@
         <item>辅导员</item>
         <item>学院实习工作负责人</item>
         <item>学生工作领导</item>
-        <item>教学工作院长</item>
+        <item>教学院长</item>
+        <item>未知</item>
+    </string-array>
+    <string-array name="approverType_2">
+        <item>部门请假负责人</item>
+        <item>部门教学负责人</item>
         <item>未知</item>
     </string-array>
 </resources>

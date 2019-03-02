@@ -8,6 +8,7 @@ public class BaseResponse<T> {
     private String code ;
     private String msg ;
     private T data ;
+    private int extendInfo;//附加字段
 
     public String getCode() {
         return code;
@@ -33,6 +34,13 @@ public class BaseResponse<T> {
         this.data = data;
     }
 
+    public int getExtendInfo() {
+        return extendInfo;
+    }
+
+    public void setExtendInfo(int extendInfo) {
+        this.extendInfo = extendInfo;
+    }
 
     @Override
     public String toString() {

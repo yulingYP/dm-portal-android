@@ -93,6 +93,8 @@ public class MainPresenter extends BasePresenter {
     //发送验证码修改密码(忘记密码)
     public static final String SUCCESSFUL_SEND_CODE_FORGET_PSW = "SUCCESSFUL_SEND_CODE_FORGET_PSW";
 
+    //获取用户权限的详细信息
+    public static final String SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO = "SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO";
 
     //获取用户推送失败的消息列表
     public static final String SUCCESSFUL_GET_PUSH_ERROR_MSG="SUCCESSFUL_GET_PUSH_ERROR_MSG";

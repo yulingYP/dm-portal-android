@@ -91,4 +91,7 @@ public interface HttpConst {
     //提交反馈建议
     String submitFeedBack = "submitFeedBack";
 
+    //获取权限的详细描述
+    String getAuthorityDetailInfo = "getAuthorityDetailInfo";
+
 }

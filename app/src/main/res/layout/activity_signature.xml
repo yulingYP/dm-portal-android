@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/back_gray"
-    tools:context="com.definesys.dmportal.appstore.SignatureActivity"
+    tools:context="com.definesys.dmportal.appstore.ui.leaveSetting.SignatureActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
@@ -69,13 +69,13 @@
                 android:gravity="center"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:src="@drawable/img_icon"
+                    android:src="@drawable/clear_icon"
                     android:layout_width="30dp"
                     android:layout_marginStart="8dp"
                     android:layout_height="30dp"
                      />
                 <TextView
-                    android:text="清除"
+                    android:text="@string/clear"
                     android:textColor="@color/black"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
@@ -97,12 +97,12 @@
                 android:background="@color/white"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:src="@drawable/pdf_icon"
+                    android:src="@drawable/save_icon"
                     android:layout_marginStart="8dp"
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
                 <TextView
-                    android:text="保存"
+                    android:text="@string/save"
                     android:textColor="@color/black"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"

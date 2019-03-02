@@ -187,7 +187,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
     private void initMenuList(int width) {
         List<MainIcon> mainIconList = new ArrayList<>();
         mainIconList.add(new MainIcon(getString(R.string.my_sign),R.drawable.sign_icon,ARouterConstants.LeaveSignActivity));
-        mainIconList.add(new MainIcon(getString(R.string.my_authority),R.drawable.table_icon,ARouterConstants.SubjectTableActivity));
+        mainIconList.add(new MainIcon(getString(R.string.my_authority),R.drawable.table_icon,ARouterConstants.MyAuthorityActivity));
 
         GroupMenuView groupMenuView= new GroupMenuView(this);
         groupMenuView.setData(mainIconList,width);

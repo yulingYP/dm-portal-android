@@ -109,10 +109,12 @@
         <activity android:name=".main.userSettingActivity.UserInfoActivity" />
         <activity android:name=".main.userSettingActivity.FeedBackActivity" />
         <activity android:name=".main.userSettingActivity.AboutActivity" />
-        <activity android:name=".appstore.LeaveSignActivity" />
-        <activity android:name=".appstore.SignatureActivity"  android:configChanges="orientation|keyboardHidden">
-
-        </activity>
+        <activity android:name=".appstore.ui.leaveSetting.LeaveSignActivity" />
+        <activity
+            android:name=".appstore.ui.leaveSetting.SignatureActivity"
+            android:configChanges="orientation|keyboardHidden" />
+        <activity android:name=".appstore.MyAuthorityActivity" />
+        <activity android:name=".appstore.UpdateLeAutActivity"></activity>
     </application>
 
 </manifest>
