@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.definesys.dmportal.appstore.customViews.RCLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:round_corner="12dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content">
+    <TextView
+        android:text="@string/input_apply_reason"
+        android:id="@+id/des_text"
+        android:textColor="@color/blue"
+        android:textSize="20sp"
+        android:paddingTop="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit_text"
+        android:maxLength="150"
+        android:theme="@style/MyEditText"
+        android:textColor="@color/black"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        android:inputType="text"
+        android:padding="2dp"
+        android:textCursorDrawable="@color/blue"
+        android:hint="@string/hint_apply_reason"
+        android:layout_width="match_parent"
+        android:gravity="start|top"
+        android:background="@drawable/apply_edit_back"
+        android:layout_height="200dp" />
+    <View
+        android:background="@color/back_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+    </View>
+    <LinearLayout
+        android:id="@+id/confirm_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="12dp"
+            android:id="@+id/cancel_text"
+            android:text="@string/cancel"
+            android:textColor="@color/blue"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="1dp"
+            android:background="@color/back_gray"
+            android:layout_height="match_parent">
+        </View>
+        <TextView
+            android:padding="12dp"
+            android:id="@+id/confirm_text"
+            android:text="@string/confirm"
+            android:textColor="@color/blue"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</com.definesys.dmportal.appstore.customViews.RCLinearLayout>

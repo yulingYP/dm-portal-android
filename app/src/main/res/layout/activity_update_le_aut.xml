@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:overScrollMode="never"
+    android:id="@+id/scroll_view"
+    android:fitsSystemWindows="true"
     android:background="@color/back_gray"
     android:layout_height="match_parent"
     >
@@ -101,7 +103,60 @@
             android:layout_width="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:id="@+id/reason_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/des_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="12dp"
+                android:text="@string/apply_reason"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/count_word_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:padding="12dp"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/config_color_gray_4"
+                android:textSize="14sp" />
+            <LinearLayout
+                android:layout_below="@+id/des_reason"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
 
+                <EditText
+                    android:id="@+id/ed_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    android:gravity="start|top"
+                    android:hint="@string/reson_detail_tip"
+                    android:maxLength="150"
+                    android:minLines="8"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/config_color_gray_4"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>

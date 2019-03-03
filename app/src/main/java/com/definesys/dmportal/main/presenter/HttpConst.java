@@ -97,4 +97,7 @@ public interface HttpConst {
     //获取用户申请权限所需要的信息列表
     String getApplyListInfo = "getApplyListInfo";
 
+    //提交权限申请
+    String submitAuthoritiesApply = "submitAuthoritiesApply";
+
 }

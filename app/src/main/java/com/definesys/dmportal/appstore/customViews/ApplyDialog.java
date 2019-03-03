@@ -57,41 +57,44 @@ public class ApplyDialog extends Dialog {
         if(type==0){
             tv_select.setVisibility(View.VISIBLE);
 //            tv_select.setText(context.getString(R.string.select_des,"暂无"));
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择班级(单选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_1);
         }else  if(type==1){
             tv_select.setVisibility(GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择寝室成员(多选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_2);
         }else  if(type==2){
             tv_select.setVisibility(GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择班级(单选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_3);
         }else  if(type==3){
             tv_select.setVisibility(GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择院系(单选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_4);
         }else  if(type==4){
             tv_select.setVisibility(GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择班级(多选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_5);
         }else  if(type==5){
             tv_select.setVisibility(GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择院系(单选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_6);
         }else  if(type==6){
             tv_select.setVisibility(View.VISIBLE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择班级(单选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_7);
         }else  if(type==7){
             tv_select.setVisibility(View.GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择毕设学生(多选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_8);
         }else  if(type==8){
             tv_select.setVisibility(View.GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择院系(单选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_9);
         }else  if(type==9){
             tv_select.setVisibility(View.GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择班级(多选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_10);
         }else  if(type==10||type==11||type==12){
             tv_select.setVisibility(View.GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择院系(单选)");
-        }
-        else  if(type==20||type==21){
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_11);
+        } else  if(type==20||type==21){
             tv_select.setVisibility(GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText("请选择部门(单选)");
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_12);
+        } else  if(type==100){
+            tv_select.setVisibility(GONE);
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_13);
+            ((TextView)view.findViewById(R.id.title_text)).setTextColor(context.getResources().getColor(R.color.blue));
         }
         if(type==3){
             view.findViewById(R.id.confirm_layout).setVisibility(View.GONE);
@@ -158,17 +161,6 @@ public class ApplyDialog extends Dialog {
 
     public void setOnConfirmClickListener(OnConfirmClickListener onConfirmClickListener) {
         this.onConfirmClickListener = onConfirmClickListener;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     public void setContent(String content) {

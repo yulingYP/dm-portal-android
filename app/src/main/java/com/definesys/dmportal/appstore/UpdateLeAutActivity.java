@@ -1,17 +1,27 @@
 package com.definesys.dmportal.appstore;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,22 +30,23 @@ import com.definesys.base.BaseActivity;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.bean.ApplyAuthority;
 import com.definesys.dmportal.appstore.customViews.ApplyDialog;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.interfaces.OnConfirmClickListener;
 import com.definesys.dmportal.main.interfaces.OnItemClickListener;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -57,9 +68,14 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     LinearLayout lg_teaAut;
     @BindView(R.id.apply_text)
     TextView tv_show;
+    @BindView(R.id.count_word_text)
+    TextView tv_count;
+
+    @BindView(R.id.ed_reason)
+    EditText ed_reason;
 
     private ImageView iv_selected;//选择位置的imageview控件
-    private List<String>applyList;//申请的权限列表
+    private List<ApplyAuthority>applyList;//申请的权限列表
     private String content="";//保存成员内容
     private ApplyDialog tempDialog;//
     @Override
@@ -69,6 +85,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         ButterKnife.bind(this);
         content=getString(R.string.no_des);
         initView();
+        initEdit();//具体原因编辑框
     }
 
     private void initView() {
@@ -98,10 +115,62 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             initAuthorityList(getResources().getStringArray(R.array.approverType_2),lg_teaAut,1,0,1);
         }
     }
+    //具体原因编辑框设置
+    private void initEdit() {
+        tv_count.setText(getString(R.string.word_count, 0));
+        RxView.clicks(ed_reason)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    ed_reason.setCursorVisible(true);
+                });
+        //获取焦点
+        ed_reason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    ed_reason.setCursorVisible(true);
 
-    private void checkSelect() {
+                }
+            }
+        });
+        /*
+        监听输入框内容 《==》 获取输入长度显示到界面
+         */
+        ed_reason.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        // 防遮挡
+//        new HddLayoutHeight().addLayoutListener(lg_scroll, tv_count);
     }
-
+    //合法性检测
+    private void checkSelect() {
+        if(applyList==null||applyList.size()==0) {
+            Toast.makeText(this, R.string.apply_error_tip_8, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if("".equals(ed_reason.getText().toString())) {
+            Toast.makeText(this, R.string.apply_error_tip_9, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        List<String> list = new ArrayList<>();
+        for(int i = 0 ;i <applyList.size();i++){
+            list.add(applyList.get(i).getContent());
+        }
+        initDialog(list,100);
+//       showReasonDialog();
+    }
     /**
      * 初始化学生和教师权限列表
      * @param approvalers 审批权限类型数组
@@ -194,13 +263,16 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     public void getDetailInfo(BaseResponse<List<String>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this) {
             progressHUD.dismiss();
-            initDialog(data.getData(),data.getExtendInfo());
+            if(data.getExtendInfo()==100)
+                Toast.makeText(this, R.string.submit_success,Toast.LENGTH_SHORT).show();
+            else
+                initDialog(data.getData(),data.getExtendInfo());
         }
     }
 
     /**
      *
-     * @param data
+     * @param data data
      * @param type 0.寝室长权限根据facultyId获取班级名称 1.根据班级id获取班级名单 2.班长权限 根据facultyId获取班级名称
      */
     private void initDialog(List<String> data, int type) {
@@ -210,18 +282,23 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             public void onClick(int position) {
                 if(type==0){//获取该院系所有班级的id
                     tempDialog = applyDialog;
+                    progressHUD.show();
                     mPersenter.getApplyList(Integer.valueOf(data.get(position))*100,""+SharedPreferencesUtil.getInstance().getUserSex(),1);
                 }else if(type==3){//获取所有院系的名称
                     mPersenter.getApplyList(0,data.get(position),4);
+                    progressHUD.show();
                     applyDialog.dismiss();
                 }else if(type==5){//获取该院系所有班级的id
                     mPersenter.getApplyList(0,data.get(position),6);
+                    progressHUD.show();
                     applyDialog.dismiss();
                 }else if(type==6){//获取班级全部成员
                     tempDialog = applyDialog;
+                    progressHUD.show();
                     mPersenter.getApplyList(0,data.get(position),7);
                 }else if(type==8){//获取该院系所有班级的id
                     mPersenter.getApplyList(0,data.get(position),9);
+                    progressHUD.show();
                     applyDialog.dismiss();
                 }
             }
@@ -245,7 +322,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                         applyDialog.dismiss();
                         if(type==1||type==7)
                             tempDialog.setContent(content);
-                        else if(type==4||type==9) {
+                        else  {
                             tv_show.setText(checkApplyAuthority(type, content.substring(0,content.length()-2)));
                             content = getString(R.string.no_des);
                         }
@@ -261,7 +338,10 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                         else if(type==20||type==21)
                             Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_7, Toast.LENGTH_SHORT).show();
                     }
-
+                }else if(type==100){//权限提交
+                    applyDialog.dismiss();
+                    progressHUD.show();
+                    mPersenter.submitAuthoritiesApply(applyList,ed_reason.getText().toString().trim());
                 }
             }
         });
@@ -302,28 +382,6 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         return true;
     }
 
-    private boolean initText(List<String> data, List<Boolean> selectList, int type) {
-        StringBuilder content = new StringBuilder();
-        boolean flag = false;//是否有选中内容
-        for (int i = 0;i<selectList.size();i++){
-            if(selectList.get(i)){//被选中
-                content.append(data.get(i)).append(", ");
-                flag = true;
-            }
-        }
-        if(!flag){
-            Toast.makeText(this,R.string.apply_error_tip_1,Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(applyList==null){//第一次写入
-            tv_show.setGravity(Gravity.START);
-            tv_show.setText("");
-            applyList = new ArrayList<>();
-        }
-        tv_show.setText(checkApplyAuthority(type,content.toString().substring(0,content.length()-2)));;
-        return true;
-    }
-
     /**
      * 检查该权限是否已经加入列表
      * 并返回结果
@@ -334,9 +392,10 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             tv_show.setText("");
             applyList = new ArrayList<>();
         }
+
         String checkStr="";
-        boolean flag = false;//是否已经重写
-        if(type==1||type==0) checkStr = getString(R.string.apply_tag_1);//寝室长权限 寝室成员:
+//        boolean flag = false;//是否已经重写
+        if(type==0) checkStr = getString(R.string.apply_tag_1);//寝室长权限 寝室成员:
         else if(type==2)checkStr = getString(R.string.apply_tag_2);//班长权限
         else if(type==4)checkStr = getString(R.string.apply_tag_3);//班主任权限
         else if(type==6)checkStr = getString(R.string.apply_tag_4);//毕设老师权限
@@ -346,25 +405,87 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         else if(type==12)checkStr = getString(R.string.apply_tag_8);//辅导员权限
         else if(type==20)checkStr = getString(R.string.apply_tag_9);//部门请假负责人权限
         else if(type==21)checkStr = getString(R.string.apply_tag_10);//部门教学负责人权限
-        for(int i=0;i<applyList.size();i++ ){
-            if(applyList.get(i).contains(checkStr)) {//已加入过，则重写这部分内容
-                applyList.set(i, checkStr + content);
-                flag = true;
-                break;
-            }
-        }
-        if(!flag){//没有重写过
-            applyList.add(checkStr + content);
-        }
+        addItem(type,content,checkStr);
+//        for(int i=0;i<applyList.size();i++ ){
+//            if(applyList.get(i).getType()==type) {//已加入过，则重写这部分内容
+//                applyList.get(i).setContent(checkStr + content);
+//                flag = true;
+//                break;
+//            }
+//        }
+//        if(!flag){//没有重写过
+//            applyList.get(applyList.size()-1).setContent(checkStr + content);
+//        }
         StringBuilder result = new StringBuilder();
         for(int i=0;i<applyList.size();i++ ){
-            result.append(applyList.get(i));
+            result.append(applyList.get(i).getContent());
             if(i!=applyList.size()-1)
                 result.append(" \n");
         }
        return result.toString();
     }
 
+    /**
+     * 获取新的对象
+     * @param type  type
+     * @param  title 标题
+     *@param content  @return
+     */
+    private void addItem(int type, String content,String title) {
+        ApplyAuthority applyAuthority=null;
+        boolean flag = false;//是否已经添加过
+        int position ;
+        for(position = 0;position<applyList.size();position++){
+            if(applyList.get(position).getType()==type) {//已加入过，则重写这部分内容
+                applyList.get(position).setContent( title + content);
+                if(type==0||type==4||type==6||type==9)
+                    applyList.get(position).setListId(Arrays.asList(content.split(", ")));
+                else
+                    applyList.get(position).setSignId(content);
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) {//没有添加过
+            if (type == 0)
+                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")), "", 0, 0, type);//寝室长权限 寝室成员:
+            else if (type == 2)
+                applyAuthority = new ApplyAuthority(null, content, 0, 1, type);//班长权限
+            else if (type == 4)
+                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")),"", 0, 2, type);//班主任权限
+            else if (type == 6)
+                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")), "", 0, 3, type);//毕设老师权限
+            else if (type == 9)
+                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")), "", 0, 4, type);//辅导员权限
+            else if (type == 10)
+                applyAuthority = new ApplyAuthority(null, content, 0, 5, type);//实习负责人权限
+            else if (type == 11)
+                applyAuthority = new ApplyAuthority(null, content, 0, 6, type);//学生工作负责人权限
+            else if (type == 12)
+                applyAuthority = new ApplyAuthority(null, content, 0, 7, type);//教学院长权限
+            else if (type == 20)
+                applyAuthority = new ApplyAuthority(null, content, 1, 0, type);//部门请假负责人权限
+            else if (type == 21)
+                applyAuthority = new ApplyAuthority(null, content, 1, 1, type);//部门教学负责人权限
+            if(applyAuthority!=null) {
+                applyAuthority.setContent(title + content);
+                applyList.add(applyAuthority);
+            }
+        }
+
+    }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+            if(inputMethodManager.isActive()){
+                inputMethodManager.hideSoftInputFromWindow(UpdateLeAutActivity.this.getCurrentFocus().getWindowToken(), 0);
+            }
+            ed_reason.setCursorVisible(false);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
     @Override
     public LeaveAuthorityPresenter getPersenter() {
         return new LeaveAuthorityPresenter(this);

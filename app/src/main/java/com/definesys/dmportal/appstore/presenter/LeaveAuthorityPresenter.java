@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
+import com.definesys.dmportal.appstore.bean.ApplyAuthority;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.google.gson.Gson;
@@ -89,6 +90,36 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                         switch (data.getCode()){
                             case "200":
                                 data.setExtendInfo(type);
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPLY_LIST_INFO,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+    }
+    //提交权限请求
+    public void submitAuthoritiesApply(List<ApplyAuthority> applyList, String applyReason){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("applyList",applyList);
+        map.put("applyReason",applyReason);
+
+        ViseHttp.POST(HttpConst.submitAuthoritiesApply)
+                .tag(HttpConst.getAuthorityDetailInfo)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<String>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<String>> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                data.setExtendInfo(100);
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPLY_LIST_INFO,  data);
                                 break;
                             default:
