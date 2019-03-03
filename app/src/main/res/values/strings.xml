@@ -359,4 +359,29 @@
     <string name="approval_authority">申请权限</string>
     <string name="delete_auhority">删除权限</string>
 
+    <string name="apply_title">申请权限</string>
+    <string name="apply_content">申请内容:</string>
+    <string name="no_des">暂无</string>
+    <string name="apply_tag_1">寝室长权限 寝室成员:</string>
+    <string name="apply_tag_2">班长权限 班级:</string>
+    <string name="apply_tag_3">班主任权限 班级:</string>
+    <string name="apply_tag_4">毕设教师权限 成员:</string>
+    <string name="apply_tag_5">辅导员权限 班级:</string>
+    <string name="apply_tag_6">学院实习工作负责人权限 院系:</string>
+    <string name="apply_tag_7">学生工作领导权限 院系:</string>
+    <string name="apply_tag_8">教学院长权限 院系:</string>
+    <string name="apply_tag_9">部门请假负责人权限 部门:</string>
+    <string name="apply_tag_10">部门教学负责人权限 部门:</string>
+
+    <string name="select_des">已选择成员:%s</string>
+    <string name="apply_error_tip_1">请选择寝室成员</string>
+    <string name="apply_error_tip_2">教师不能申请学生寝室长权限</string>
+    <string name="apply_error_tip_3">没有找到您的院系信息，无法申请</string>
+    <string name="apply_error_tip_4">请点击班级选择寝室成员</string>
+    <string name="apply_error_tip_5">请先选择班级</string>
+    <string name="apply_error_tip_6">学生不能申请审批教师相关权限</string>
+    <string name="apply_error_tip_7">请先选择部门</string>
+
+
+
 </resources>

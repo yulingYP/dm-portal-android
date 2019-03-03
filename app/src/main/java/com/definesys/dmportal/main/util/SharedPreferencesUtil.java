@@ -47,8 +47,8 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         user.setUserId(getUserId().intValue());
         user.setUserType((short) getUserType());
         user.setName(getUserName());
-        user.setFacultId(getFaculty());
-        user.setFacultName(getFacultyName());
+        user.setFacultyId(getFaculty());
+        user.setFacultyName(getFacultyName());
         user.setClassId(getClassId());
         user.setUserSex((short)getUserSex());
         user.setLeaveAuthority(getApprpvalStudentAuthority());
@@ -119,7 +119,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                     .putString(spUserPhone, user.getPhone())//电话
                     .putInt(spUserSex, user.getUserSex())
                     .putString(spFaculty,user.getFacultyId())//院系id
-                    .putString(spFacultyName,user.getFacultName())//院系名称
+                    .putString(spFacultyName,user.getFacultyName())//院系名称
                     .putString(spClass,user.getClassId())//班级
                     .putString(spUserHead,user.getUserImage())//用户头像
                     .putString(spUserSign,user.getUserSign())//用户头像

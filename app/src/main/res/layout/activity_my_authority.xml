@@ -4,13 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:background="@color/back_gray"
+    android:layout_height="match_parent"
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:fitsSystemWindows="false"
-        android:background="@color/back_gray"
+
         android:layout_height="wrap_content"
         tools:context="com.definesys.dmportal.appstore.MyAuthorityActivity">
         <com.definesys.dmportal.commontitlebar.CustomTitleBar

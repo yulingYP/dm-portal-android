@@ -34,7 +34,7 @@ public class User{
     //《-----学生----》
     private String classId; //班级Id
 
-    private String facultId;//院系id
+    private String facultyId;//院系id
 
     private Date enrolDate;//入学时间
 
@@ -42,7 +42,7 @@ public class User{
 
     private Integer dormitorLeaderId; //寝室长id
 
-    private String facultName;//院系名称
+    private String facultyName;//院系名称
 
 
     //《-----教师----》
@@ -82,11 +82,11 @@ public class User{
     }
 
     public String getFacultyId() {
-        return facultId;
+        return facultyId;
     }
 
-    public void setFacultId(String facultId) {
-        this.facultId = facultId == null ? null : facultId.trim();
+    public void setFacultyId(String facultyId) {
+        this.facultyId = facultyId == null ? null : facultyId.trim();
     }
 
     public Date getEnrolDate() {
@@ -225,12 +225,12 @@ public class User{
         this.leaveTeacherAuthority = leaveTeacherAuthority;
     }
 
-    public String getFacultName() {
-        return facultName==null?"":facultName;
+    public String getFacultyName() {
+        return facultyName==null?"":facultyName;
     }
 
-    public void setFacultName(String facultName) {
-        this.facultName = facultName==null?"":facultName;
+    public void setFacultyName(String facultyName) {
+        this.facultyName = facultyName==null?"":facultyName;
     }
 
     public Short getUserSex() {
@@ -249,7 +249,4 @@ public class User{
         this.userSign = userSign;
     }
 
-    public String getFacultId() {
-        return facultId;
-    }
 }

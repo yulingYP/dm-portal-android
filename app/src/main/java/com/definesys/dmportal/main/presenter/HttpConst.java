@@ -94,4 +94,7 @@ public interface HttpConst {
     //获取权限的详细描述
     String getAuthorityDetailInfo = "getAuthorityDetailInfo";
 
+    //获取用户申请权限所需要的信息列表
+    String getApplyListInfo = "getApplyListInfo";
+
 }

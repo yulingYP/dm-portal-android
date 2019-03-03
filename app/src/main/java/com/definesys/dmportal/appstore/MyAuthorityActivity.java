@@ -114,8 +114,6 @@ public class MyAuthorityActivity extends BaseActivity<LeaveAuthorityPresenter> {
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     ARouter.getInstance().build(ARouterConstants.UpdateLeAutActivity)
-                            .withObject("stuList",stuAutInfoList)
-                            .withObject("teaList",teaAutInfoList)
                             .withInt("type",0)//申请权限
                             .navigation();
                 });

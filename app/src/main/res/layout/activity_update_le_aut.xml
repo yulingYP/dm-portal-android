@@ -1,9 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:overScrollMode="never"
+    android:background="@color/back_gray"
     android:layout_height="match_parent"
-    tools:context="com.definesys.dmportal.appstore.UpdateLeAutActivity">
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="false"
+        android:layout_height="wrap_content"
+        tools:context="com.definesys.dmportal.appstore.MyAuthorityActivity">
+        <com.definesys.dmportal.commontitlebar.CustomTitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            app:titlebar_bg_color="@color/customer_title"
+            android:layout_height="44dp">
+        </com.definesys.dmportal.commontitlebar.CustomTitleBar>
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/apply_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/no_des"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="6dp"
+            android:id="@+id/apply_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:id="@+id/stu_layout"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/stu_icon"
+                android:src="@drawable/authority_icon"
+                android:layout_width="20dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="20dp" />
+            <TextView
+                android:text="@string/approval_stu_des"
+                android:textSize="16sp"
+                android:layout_toEndOf="@+id/stu_icon"
+                android:textColor="@color/black"
+                android:layout_gravity="top"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:id="@+id/stu_des"
+                android:layout_marginStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="1dp"
+            android:id="@+id/stu_authority_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:id="@+id/tea_layout"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/tea_icon"
+                android:src="@drawable/authority_icon"
+                android:layout_width="20dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="20dp" />
+            <TextView
+                android:id="@+id/tea_des"
+                android:text="@string/approval_tea_des"
+                android:textSize="16sp"
+                android:layout_toEndOf="@+id/tea_icon"
+                android:textColor="@color/black"
+                android:layout_gravity="top"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"  />
+        </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="1dp"
+            android:id="@+id/tea_authority_layout"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+</ScrollView>

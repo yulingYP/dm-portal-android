@@ -96,8 +96,14 @@ public class MainPresenter extends BasePresenter {
     //获取用户权限的详细信息
     public static final String SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO = "SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO";
 
+    //获取用户申请权限所需要的信息列表
+    public static final String SUCCESSFUL_GET_APPLY_LIST_INFO="SUCCESSFUL_GET_APPLY_LIST_INFO";
+
     //获取用户推送失败的消息列表
     public static final String SUCCESSFUL_GET_PUSH_ERROR_MSG="SUCCESSFUL_GET_PUSH_ERROR_MSG";
+
+
+
 
     public MainPresenter(Context context) {
         super(context);
