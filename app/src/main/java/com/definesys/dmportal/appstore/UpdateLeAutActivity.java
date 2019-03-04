@@ -1,10 +1,7 @@
 package com.definesys.dmportal.appstore;
 
-import android.app.Dialog;
+
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,15 +10,12 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,12 +33,12 @@ import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.interfaces.OnConfirmClickListener;
 import com.definesys.dmportal.main.interfaces.OnItemClickListener;
 import com.definesys.dmportal.main.presenter.MainPresenter;
-import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 //更新请假权限
 @Route(path = ARouterConstants.UpdateLeAutActivity)
@@ -74,10 +69,17 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     @BindView(R.id.ed_reason)
     EditText ed_reason;
 
+    @BindView(R.id.des_layout)
+    RelativeLayout lg_des;
+
+    @BindView(R.id.down_icon)
+    ImageView iv_down;
+
     private ImageView iv_selected;//选择位置的imageview控件
     private List<ApplyAuthority>applyList;//申请的权限列表
     private String content="";//保存成员内容
     private ApplyDialog tempDialog;//
+    private boolean isSingleLine = true;//单行显示
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,13 +99,27 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                 .subscribe(obj->{
                     finish();
                 });
-        Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_leave_sign);
+        Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_update_le_aut);
         button.setTextSize(14);
         //提交
         RxView.clicks(button)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj -> {
                     checkSelect();
+                });
+        //点击申请内容
+        RxView.clicks(lg_des)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj -> {
+                    if(!isSingleLine){//显示一行
+                        tv_show.setSingleLine(true);
+                        iv_down.setRotation(0);
+                        isSingleLine = true;
+                    }else {//全部显示
+                        tv_show.setSingleLine(false);
+                        iv_down.setRotation(180);
+                        isSingleLine = false;
+                    }
                 });
         //审批学生权限
         initAuthorityList(getResources().getStringArray(R.array.approverType),lg_stuAut,0, SharedPreferencesUtil.getInstance().getUserType()==0?0:2,SharedPreferencesUtil.getInstance().getUserType()==0?7:1);

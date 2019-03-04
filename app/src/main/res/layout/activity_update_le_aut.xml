@@ -1,162 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="false"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:overScrollMode="never"
-    android:id="@+id/scroll_view"
-    android:fitsSystemWindows="true"
     android:background="@color/back_gray"
-    android:layout_height="match_parent"
-    >
-    <LinearLayout
+    android:layout_height="wrap_content"
+    tools:context="com.definesys.dmportal.appstore.MyAuthorityActivity">
+    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:fitsSystemWindows="false"
-        android:layout_height="wrap_content"
-        tools:context="com.definesys.dmportal.appstore.MyAuthorityActivity">
-        <com.definesys.dmportal.commontitlebar.CustomTitleBar
-            android:id="@+id/title_bar"
-            android:layout_width="match_parent"
-            app:titlebar_bg_color="@color/customer_title"
-            android:layout_height="44dp">
-        </com.definesys.dmportal.commontitlebar.CustomTitleBar>
-        <TextView
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/apply_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="@string/no_des"
-            android:gravity="center"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="6dp"
-            android:id="@+id/apply_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <RelativeLayout
-            android:id="@+id/stu_layout"
-            android:orientation="horizontal"
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/stu_icon"
-                android:src="@drawable/authority_icon"
-                android:layout_width="20dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="20dp" />
-            <TextView
-                android:text="@string/approval_stu_des"
-                android:textSize="16sp"
-                android:layout_toEndOf="@+id/stu_icon"
-                android:textColor="@color/black"
-                android:layout_gravity="top"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:id="@+id/stu_des"
-                android:layout_marginStart="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+        app:titlebar_bg_color="@color/customer_title"
+        android:layout_height="44dp">
+    </com.definesys.dmportal.commontitlebar.CustomTitleBar>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        android:layout_height="match_parent"
+        >
         <LinearLayout
             android:orientation="vertical"
-            android:layout_marginTop="1dp"
-            android:id="@+id/stu_authority_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <RelativeLayout
-            android:id="@+id/tea_layout"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/tea_icon"
-                android:src="@drawable/authority_icon"
-                android:layout_width="20dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="20dp" />
-            <TextView
-                android:id="@+id/tea_des"
-                android:text="@string/approval_tea_des"
-                android:textSize="16sp"
-                android:layout_toEndOf="@+id/tea_icon"
-                android:textColor="@color/black"
-                android:layout_gravity="top"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:layout_marginStart="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"  />
-        </RelativeLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="1dp"
-            android:id="@+id/tea_authority_layout"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_height="wrap_content" />
-        <RelativeLayout
-            android:id="@+id/reason_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/white"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/des_reason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:padding="12dp"
-                android:text="@string/apply_reason"
-                android:textColor="@color/black" />
-            <TextView
-                android:id="@+id/count_word_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="8dp"
-                android:padding="12dp"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/config_color_gray_4"
-                android:textSize="14sp" />
-            <LinearLayout
-                android:layout_below="@+id/des_reason"
+            <RelativeLayout
+                android:layout_marginTop="12dp"
+                android:id="@+id/des_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/apply_des"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/apply_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/down_icon"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/down_arrow"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:layout_below="@+id/apply_des"
+                    android:text="@string/no_des"
+                    android:gravity="center"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="6dp"
+                    android:id="@+id/apply_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/stu_layout"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/stu_icon"
+                    android:src="@drawable/authority_icon"
+                    android:layout_width="20dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:text="@string/approval_stu_des"
+                    android:textSize="16sp"
+                    android:layout_toEndOf="@+id/stu_icon"
+                    android:textColor="@color/black"
+                    android:layout_gravity="top"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:id="@+id/stu_des"
+                    android:layout_marginStart="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:id="@+id/stu_authority_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:id="@+id/tea_layout"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/tea_icon"
+                    android:src="@drawable/authority_icon"
+                    android:layout_width="20dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:id="@+id/tea_des"
+                    android:text="@string/approval_tea_des"
+                    android:textSize="16sp"
+                    android:layout_toEndOf="@+id/tea_icon"
+                    android:textColor="@color/black"
+                    android:layout_gravity="top"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"  />
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:id="@+id/tea_authority_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:id="@+id/reason_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:focusable="true"
+                android:layout_marginTop="8dp"
+                android:focusableInTouchMode="true"
+                android:layout_marginBottom="8dp"
                 android:background="@color/white"
                 android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/ed_reason"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/des_reason"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@null"
-                    android:gravity="start|top"
-                    android:hint="@string/reson_detail_tip"
-                    android:maxLength="150"
-                    android:minLines="8"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/config_color_gray_4"
+                    android:gravity="start"
+                    android:padding="12dp"
+                    android:text="@string/apply_reason"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/count_word_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="8dp"
+                    android:padding="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/config_color_gray_4"
                     android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_below="@+id/des_reason"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/ed_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@null"
+                        android:gravity="start|top"
+                        android:hint="@string/reson_detail_tip"
+                        android:maxLength="150"
+                        android:minLines="8"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/config_color_gray_4"
+                        android:textSize="14sp" />
 
-        </RelativeLayout>
-    </LinearLayout>
+                </LinearLayout>
 
-</ScrollView>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+

@@ -80,7 +80,7 @@ public class MyDatePicker extends LinearLayout {
         super(context, attrs, defStyleAttr);
         initView(context);
     }
-    @SuppressLint("ClickableViewAccessibility")
+
     private void initView(Context context) {
         mContent = context;
         LayoutInflater.from(mContent).inflate(R.layout.view_date_picker, this);
