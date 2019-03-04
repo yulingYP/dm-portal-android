@@ -146,7 +146,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     }
 
     private void initView() {
-        titleBar.setTitle(getString(R.string.my_sign));
+        titleBar.setTitle(getString(R.string.my_sign_setting));
         titleBar.setBackgroundDividerEnabled(false);
 
         //退出

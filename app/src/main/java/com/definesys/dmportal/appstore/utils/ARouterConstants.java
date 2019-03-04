@@ -29,7 +29,6 @@ public interface ARouterConstants {
     String AboutActivity = "/dmportal/appstore/AboutActivity";//关于我们页面
     String WebViewActivity ="/dmportal/webview/WebViewActivity";//网页
     String SignatureActivity ="/dmportal/webview/SignatureActivity";//手写签名页面
-    String MyAuthorityActivity ="/dmportal/webview/MyAuthorityActivity";//请假权限权限页面
+    String AuthoritySettingActivity ="/dmportal/webview/AuthoritySettingActivity";//请假权限权限页面
     String UpdateLeAutActivity = "/dmportal/webview/UpdateLeAutActivity ";//更新请假权限权限页面
-
 }

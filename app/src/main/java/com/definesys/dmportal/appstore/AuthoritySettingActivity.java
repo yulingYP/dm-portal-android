@@ -38,8 +38,8 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-@Route(path = ARouterConstants.MyAuthorityActivity)
-public class MyAuthorityActivity extends BaseActivity<LeaveAuthorityPresenter> {
+@Route(path = ARouterConstants.AuthoritySettingActivity)
+public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresenter> {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
     @BindView(R.id.approval_stu_text)
@@ -224,9 +224,9 @@ public class MyAuthorityActivity extends BaseActivity<LeaveAuthorityPresenter> {
             int authority = Integer.valueOf(data.getMsg());
             String result=content.toString()+(authority<=4&&type==0?getString(R.string.ban):" ");
             if(type==0) {//学生
-                stuAutInfoList.set(Integer.valueOf(data.getMsg()), DensityUtil.ToDBC(result+stuAutInfoList.get(authority)));
+                stuAutInfoList.set(Integer.valueOf(data.getMsg()), stuAutInfoList.get(authority)+" "+result);
             }else if(type==1){//教师
-                teaAutInfoList.set(Integer.valueOf(data.getMsg()), DensityUtil.ToDBC(result+teaAutInfoList.get(authority)));
+                teaAutInfoList.set(Integer.valueOf(data.getMsg()), teaAutInfoList.get(authority)+" "+result);
             }
 
             if(--requestCount<=0) {//请求全部完成

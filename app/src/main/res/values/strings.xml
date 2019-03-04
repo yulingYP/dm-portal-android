@@ -326,8 +326,9 @@
     <string name="leader_sign_text_2">请假管理员意见及签字</string>
     <string name="leave_teacher_long_des">教师请假条</string>
 
+    <string name="my_sign_setting">签名设置</string>
+    <string name="my_authority_setting">权限设置</string>
     <string name="my_sign">我的签名</string>
-    <string name="my_authority">我的权限</string>
     <string name="no_sign_des">暂无签名</string>
     <string name="create_sign">生成签名</string>
     <string name="sign_edit_des">请输入您的姓名(10字以内)</string>
@@ -350,7 +351,8 @@
     <string name="clear">清除</string>
     <string name="save">保存</string>
 
-    <string name="my_authority_title">我的权限</string>
+    <string name="my_authority_title">权限设置</string>
+    <string name="my_authority_des">我的权限</string>
     <string name="approval_tea_des">审批教师权限</string>
     <string name="approval_stu_des">审批学生权限</string>
     <string name="no_authority_des">暂无审批权限</string>

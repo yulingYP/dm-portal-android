@@ -113,7 +113,7 @@
         <activity
             android:name=".appstore.ui.leaveSetting.SignatureActivity"
             android:configChanges="orientation|keyboardHidden" />
-        <activity android:name=".appstore.MyAuthorityActivity" />
+        <activity android:name=".appstore.AuthoritySettingActivity" />
         <activity android:name=".appstore.UpdateLeAutActivity" android:windowSoftInputMode="adjustPan"> </activity>
     </application>
 
