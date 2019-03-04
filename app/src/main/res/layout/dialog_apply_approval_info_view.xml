@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.definesys.dmportal.appstore.customViews.RCLinearLayout
+    android:orientation="vertical"
+    app:round_corner="12dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/cusor_name_text"
+        android:text="@string/apply_result"
+        android:textSize="18sp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+        <View
+            android:background="@color/back_gray"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="4dp"
+            android:layout_height="1dp">
+        </View>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/name_text"
+                android:text="@string/approver_text"
+                android:paddingTop="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textSize="16sp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/black"
+                android:gravity="start|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/content_text"
+                android:text="@string/approval_content_text"
+                android:layout_below="@id/name_text"
+                android:paddingBottom="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:gravity="start|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/result_text"
+                android:text="@string/approval_result_text"
+                android:layout_below="@id/content_text"
+                android:paddingBottom="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:gravity="start|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/time_text"
+                android:text="@string/approval_time_text"
+                android:layout_below="@id/result_text"
+                android:paddingBottom="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:gravity="start|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    <View
+        android:background="@color/back_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+    </View>
+    <TextView
+        android:id="@+id/confirm_text"
+        android:text="@string/confirm"
+        android:padding="16dp"
+        android:textColor="@color/blue"
+        android:layout_gravity="end"
+        android:textSize="16sp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</com.definesys.dmportal.appstore.customViews.RCLinearLayout>

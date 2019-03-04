@@ -5,6 +5,7 @@ import android.content.Context;
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.ApplyAuthority;
+import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.google.gson.Gson;
@@ -106,14 +107,13 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                 });
     }
     //提交权限请求
-    public void submitAuthoritiesApply(List<ApplyAuthority> applyList, String applyReason){
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("applyList",applyList);
-        map.put("applyReason",applyReason);
-
+    public void submitAuthoritiesApply(List<ApplyInfo> applyList, String applyReason){
+        for(ApplyInfo applyInfo:applyList){
+         applyInfo.setApplyReason(applyReason.trim());
+         }
         ViseHttp.POST(HttpConst.submitAuthoritiesApply)
                 .tag(HttpConst.getAuthorityDetailInfo)
-                .setJson(new Gson().toJson(map))
+                .setJson(new Gson().toJson(applyList))
                 .request(new ACallback<BaseResponse<List<String>>>() {
                     @Override
                     public void onSuccess(BaseResponse<List<String>> data) {

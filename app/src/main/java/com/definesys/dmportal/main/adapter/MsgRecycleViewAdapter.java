@@ -84,6 +84,33 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.img.setImageResource(R.drawable.ic_leave_approving);
                     viewHolder.content.setText(context.getString(R.string.message_tip_7,id));
                 }
+            }else if(messages.get(position).getMessageType()==4){//申请人申请权限
+                if(messages.get(position).getMessageExtend2()==0) {//拒绝
+                    viewHolder.img.setImageResource(R.drawable.refuse);
+                    viewHolder.content.setText(R.string.message_tip_8);
+                }else if(messages.get(position).getMessageExtend2()==1) {//同意
+                    viewHolder.img.setImageResource(R.drawable.pass);
+                    viewHolder.content.setText(R.string.message_tip_9);
+                } else if(messages.get(position).getMessageExtend2()==4) {//已提交
+                    viewHolder.img.setImageResource(R.drawable.review);
+                    viewHolder.content.setText(R.string.message_tip_10);
+                }
+            }else if(messages.get(position).getMessageType()==5){//审批人审批权限
+                String id = messages.get(position).getMessageExtend();
+                id=id.length()>9?id.substring(0,9):id;
+                if(messages.get(position).getMessageExtend2()==0) {//拒绝
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_refuse);
+                    viewHolder.content.setText(context.getString(R.string.message_tip_11,id));
+                }else if(messages.get(position).getMessageExtend2()==1) {//同意
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_accept);
+                    viewHolder.content.setText(context.getString(R.string.message_tip_12,id));
+                }else if(messages.get(position).getMessageExtend2()==4) {//未审批
+                    viewHolder.img.setImageResource(R.drawable.ic_leave_approving);
+                    viewHolder.content.setText(context.getString(R.string.message_tip_13,id));
+                }
+            }else if(messages.get(position).getMessageType()==11){//查看权限申请记录
+                viewHolder.img.setImageResource(R.drawable.review);
+                viewHolder.content.setText(R.string.message_tip_14);
             }
             RxView.clicks(viewHolder.layout)
                     .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -107,6 +134,36 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         .withString("approvalContent", myMessage.getMessageContent())
                                         .navigation();
                             }
+                        }else if(messages.get(position).getMessageType()==4){//申请人消息
+                            ARouter.getInstance()
+                                    .build(ARouterConstants.ApplyInfoActivity)
+                                    .withString("applyId",messages.get(position).getMessageExtend())
+                                    .navigation();
+                        }else if(messages.get(position).getMessageType()==5){//审批人消息
+                            MyMessage myMessage = messages.get(position);
+                            if(messages.get(position).getMessageExtend2()==4){
+                                myMessage= checkDate(position);
+                            }
+                            if(myMessage!=null) {
+                                ARouter.getInstance()
+                                        .build(ARouterConstants.ApprovalApplyInfoActivity)
+                                        .withString("applyId", myMessage.getMessageExtend())
+                                        .withInt("type", myMessage.getMessageExtend2())
+                                        .withString("content",myMessage.getMessageContent())
+                                        .navigation();
+                            }else {
+                                ARouter.getInstance()
+                                        .build(ARouterConstants.ApprovalApplyInfoActivity)
+                                        .withString("applyId",  messages.get(position).getMessageExtend())
+                                        .withInt("type", 4)
+                                        .navigation();
+                            }
+                        }else if(messages.get(position).getMessageType()==11){//查看权限申请记录
+                            ARouter.getInstance()
+                                    .build(ARouterConstants.AppLyListActivity)
+                                    .withObject("ARouterPath",ARouterConstants.ApplyInfoActivity)
+                                    .withInt("type",1)//我的申请记录
+                                    .navigation();
                         }
 
                     });

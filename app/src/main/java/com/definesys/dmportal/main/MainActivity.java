@@ -25,6 +25,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.ApplyInfoActivity;
+import com.definesys.dmportal.appstore.ApprovalApplyInfoActivity;
 import com.definesys.dmportal.appstore.ApprovalLeaveInfoActivity;
 import com.definesys.dmportal.appstore.LeaveInfoDetailActivity;
 import com.definesys.dmportal.appstore.LeaveListActivity;
@@ -398,6 +400,12 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             }else if(myMessage.getMessageType()==2) {//新的请假请求，跳转到详细页面
                 title = getString(R.string.leave_request);
                 content = getString(R.string.leave_request_tip_1);
+            }else if(myMessage.getMessageType()==4) {//新的请假请求，跳转到详细页面
+                title = "权限申请结果";
+                content = "请查看您的权限申请结果";
+            }else if(myMessage.getMessageType()==5) {//新的请假请求，跳转到详细页面
+                title = "权限申请";
+                content = "有新的权限申请请求，请去审批";
             }else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
                 title = getString(R.string.leave_request);
                 content = getString(R.string.leave_request_tip_2);
@@ -445,6 +453,19 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 intent.putExtra("leaveId", myMessage.getMessageExtend());
                 intent.putExtra("type", 4);
             }
+        }else if(myMessage.getMessageType()==4){//申请人申请结果
+            intent = new Intent(this, ApplyInfoActivity.class);
+            intent.putExtra("applyId", myMessage.getMessageExtend());
+        }else if(myMessage.getMessageType()==5){//审批人新的审批任务，跳转到详情页
+            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
+            intent = new Intent(this, ApprovalApplyInfoActivity.class);
+            if(temp!=null) {
+                intent.putExtra("applyId", temp.getMessageExtend());
+                intent.putExtra("type", temp.getMessageExtend2());
+            }else {
+                intent.putExtra("applyId", myMessage.getMessageExtend());
+                intent.putExtra("type", 4);
+            }
         }else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
             intent = new Intent(this, LeaveListActivity.class);
             intent.putExtra("userId",(int) SharedPreferencesUtil.getInstance().getUserId());
@@ -452,7 +473,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("isAll",true);
             intent.putExtra("isSearch",false);
             intent.putExtra("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity);
-
         }
         if(intent == null) {//跳转到消息页
             intent = new Intent(this, MainActivity.class);

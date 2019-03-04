@@ -3,8 +3,10 @@ package com.definesys.dmportal.appstore;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +27,8 @@ import com.definesys.base.BaseActivity;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.bean.ApplyAuthority;
+import com.definesys.dmportal.appstore.bean.ApplyInfo;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.ApplyDialog;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
@@ -34,13 +38,13 @@ import com.definesys.dmportal.main.interfaces.OnConfirmClickListener;
 import com.definesys.dmportal.main.interfaces.OnItemClickListener;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -75,8 +79,11 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     @BindView(R.id.down_icon)
     ImageView iv_down;
 
+    @BindView(R.id.scorll_view)
+    ScrollView lg_sc;
+
     private ImageView iv_selected;//选择位置的imageview控件
-    private List<ApplyAuthority>applyList;//申请的权限列表
+    private List<ApplyInfo>applyList;//申请的权限列表
     private String content="";//保存成员内容
     private ApplyDialog tempDialog;//
     private boolean isSingleLine = true;//单行显示
@@ -122,13 +129,13 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                     }
                 });
         //审批学生权限
-        initAuthorityList(getResources().getStringArray(R.array.approverType),lg_stuAut,0, SharedPreferencesUtil.getInstance().getUserType()==0?0:2,SharedPreferencesUtil.getInstance().getUserType()==0?7:1);
+        initAuthorityList(getResources().getStringArray(R.array.approverType),lg_stuAut,0, SharedPreferencesUtil.getInstance().getUserType()==0?0:2,SharedPreferencesUtil.getInstance().getUserType()==0?7:2);
         if(SharedPreferencesUtil.getInstance().getUserType()!=1){//不是教师
             lg_tea.setVisibility(View.GONE);
             lg_teaAut.setVisibility(View.GONE);
         }else {
             //审批教师权限
-            initAuthorityList(getResources().getStringArray(R.array.approverType_2),lg_teaAut,1,0,1);
+            initAuthorityList(getResources().getStringArray(R.array.approverType_2),lg_teaAut,1,0,2);
         }
     }
     //具体原因编辑框设置
@@ -138,14 +145,15 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     ed_reason.setCursorVisible(true);
+                    sendScrollMessage(ScrollView.FOCUS_DOWN);
                 });
         //获取焦点
         ed_reason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if(hasFocus) {
                     ed_reason.setCursorVisible(true);
-
+                    sendScrollMessage(ScrollView.FOCUS_DOWN);
                 }
             }
         });
@@ -167,8 +175,19 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
 
             }
         });
-        // 防遮挡
-//        new HddLayoutHeight().addLayoutListener(lg_scroll, tv_count);
+    }
+    /**
+     * 延时发送页面滑动消息
+     * @param position 活动到的位置
+     */
+    private void sendScrollMessage(int position) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("mydemo","Height=="+lg_sc.getMeasuredHeight());
+                lg_sc.fullScroll(position);
+            }
+        }, Constants.scrollDelay);
     }
     //合法性检测
     private void checkSelect() {
@@ -178,11 +197,17 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         }
         if("".equals(ed_reason.getText().toString())) {
             Toast.makeText(this, R.string.apply_error_tip_9, Toast.LENGTH_SHORT).show();
+            lg_sc.fullScroll(ScrollView.FOCUS_DOWN);
+            ed_reason.setFocusable(true);
+            ed_reason.setFocusableInTouchMode(true);
+            ed_reason.requestFocus();
+            ed_reason.findFocus();
+
             return;
         }
         List<String> list = new ArrayList<>();
         for(int i = 0 ;i <applyList.size();i++){
-            list.add(applyList.get(i).getContent());
+            list.add(applyList.get(i).getApplyDetailContent());
         }
         initDialog(list,100);
 //       showReasonDialog();
@@ -279,8 +304,12 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     public void getDetailInfo(BaseResponse<List<String>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this) {
             progressHUD.dismiss();
-            if(data.getExtendInfo()==100)
-                Toast.makeText(this, R.string.submit_success,Toast.LENGTH_SHORT).show();
+            if(data.getExtendInfo()==100) {
+                finish();
+//                data.getData(),submitLeaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,submitLeaveInfo.getId(),null,new Date() )
+                SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)11,"",null,"",null,new Date()));
+                Toast.makeText(this, R.string.submit_success, Toast.LENGTH_SHORT).show();
+            }
             else
                 initDialog(data.getData(),data.getExtendInfo());
         }
@@ -434,7 +463,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
 //        }
         StringBuilder result = new StringBuilder();
         for(int i=0;i<applyList.size();i++ ){
-            result.append(applyList.get(i).getContent());
+            result.append(applyList.get(i).getApplyDetailContent());
             if(i!=applyList.size()-1)
                 result.append(" \n");
         }
@@ -448,44 +477,48 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      *@param content  @return
      */
     private void addItem(int type, String content,String title) {
-        ApplyAuthority applyAuthority=null;
+        ApplyInfo  applyInfo=null;
         boolean flag = false;//是否已经添加过
         int position ;
         for(position = 0;position<applyList.size();position++){
             if(applyList.get(position).getType()==type) {//已加入过，则重写这部分内容
-                applyList.get(position).setContent( title + content);
-                if(type==0||type==4||type==6||type==9)
-                    applyList.get(position).setListId(Arrays.asList(content.split(", ")));
-                else
-                    applyList.get(position).setSignId(content);
+                applyList.get(position).setApplyDetailContent( title + content);
+//                if(type==0||type==4||type==6||type==9)
+                    applyList.get(position).setApplyReason(content);
+//                else
+//                    applyList.get(position).setSignId(content);
                 flag = true;
                 break;
             }
         }
         if(!flag) {//没有添加过
+            String applyId = ""+SharedPreferencesUtil.getInstance().getUserId()+ new Date().getTime();
+//            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority,
+//            String applyRegion, Short applyStatus, int type
             if (type == 0)
-                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")), "", 0, 0, type);//寝室长权限 寝室成员:
+                applyInfo = new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,0,content,(short)0,type);//寝室长权限 寝室成员:
             else if (type == 2)
-                applyAuthority = new ApplyAuthority(null, content, 0, 1, type);//班长权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,1,content,(short)0,type);//班长权限
             else if (type == 4)
-                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")),"", 0, 2, type);//班主任权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,2,content,(short)0,type);//班主任权限
             else if (type == 6)
-                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")), "", 0, 3, type);//毕设老师权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,3,content,(short)0,type);//毕设老师权限
             else if (type == 9)
-                applyAuthority = new ApplyAuthority(Arrays.asList(content.split(", ")), "", 0, 4, type);//辅导员权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,4,content,(short)0,type);//辅导员权限
             else if (type == 10)
-                applyAuthority = new ApplyAuthority(null, content, 0, 5, type);//实习负责人权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,5,content,(short)0,type);//实习负责人权限
             else if (type == 11)
-                applyAuthority = new ApplyAuthority(null, content, 0, 6, type);//学生工作负责人权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,6,content,(short)0,type);//学生工作负责人权限
             else if (type == 12)
-                applyAuthority = new ApplyAuthority(null, content, 0, 7, type);//教学院长权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,7,content,(short)0,type);//教学院长权限
             else if (type == 20)
-                applyAuthority = new ApplyAuthority(null, content, 1, 0, type);//部门请假负责人权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,0,content,(short)0,type);//部门请假负责人权限
             else if (type == 21)
-                applyAuthority = new ApplyAuthority(null, content, 1, 1, type);//部门教学负责人权限
-            if(applyAuthority!=null) {
-                applyAuthority.setContent(title + content);
-                applyList.add(applyAuthority);
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,1,content,(short)0,type);//部门教学负责人权限
+            if(applyInfo!=null) {
+                applyInfo.setApplyDetailContent(title + content);
+                applyInfo.setApplyUserName(SharedPreferencesUtil.getInstance().getUserName());
+                applyList.add(applyInfo);
             }
         }
 

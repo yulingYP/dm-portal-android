@@ -2,6 +2,8 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:fitsSystemWindows="false"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,7 +19,7 @@
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
     <ScrollView
         android:layout_width="match_parent"
-        android:overScrollMode="never"
+        android:id="@+id/scorll_view"
         android:layout_height="match_parent"
         >
         <LinearLayout
@@ -126,10 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:focusable="true"
                 android:layout_marginTop="8dp"
-                android:focusableInTouchMode="true"
-                android:layout_marginBottom="8dp"
                 android:background="@color/white"
                 android:orientation="vertical">
                 <TextView

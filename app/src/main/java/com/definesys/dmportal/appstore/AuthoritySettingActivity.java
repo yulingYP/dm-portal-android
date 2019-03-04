@@ -58,6 +58,12 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     LinearLayout lg_apply;
     @BindView(R.id.delete_layout)
     LinearLayout lg_delete;
+    @BindView(R.id.approval_layout)
+    LinearLayout lg_approval;
+    @BindView(R.id.approval_history_layout)
+    LinearLayout lg_appHis;
+    @BindView(R.id.apply_history_layout)
+    LinearLayout lg_alyHis;
     private volatile int requestCount=0;//请求的个数
     List<String> stuAutInfoList;//审批请假学生权限列表
     List<String> teaAutInfoList;//审批请假教师权限列表
@@ -125,6 +131,33 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                             .withObject("stuList",stuAutInfoList)
                             .withObject("teaList",teaAutInfoList)
                             .withInt("type",1)//删除权限
+                            .navigation();
+                });
+        //权限审批
+        RxView.clicks(lg_approval)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
+                            .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
+                            .withInt("type",0)//权限审批
+                            .navigation();
+                });
+        //我的申请记录
+        RxView.clicks(lg_alyHis)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
+                            .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
+                            .withInt("type",1)//我的申请记录
+                            .navigation();
+                });
+        //历史审批记录
+        RxView.clicks(lg_appHis)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
+                            .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
+                            .withInt("type",2)//历史审批记录
                             .navigation();
                 });
         setShowLayout();

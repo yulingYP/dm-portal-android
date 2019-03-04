@@ -31,4 +31,8 @@ public interface ARouterConstants {
     String SignatureActivity ="/dmportal/webview/SignatureActivity";//手写签名页面
     String AuthoritySettingActivity ="/dmportal/webview/AuthoritySettingActivity";//请假权限权限页面
     String UpdateLeAutActivity = "/dmportal/webview/UpdateLeAutActivity ";//更新请假权限权限页面
+    String AppLyListActivity = "/dmportal/webview/AppLyListActivity";//权限相关列表页面
+    String ApplyInfoActivity = "/dmportal/webview/ApplyInfoActivity";//权限审批列表页面
+    String ApprovalApplyInfoActivity = "/dmportal/webview/ApprovalApplyInfoActivity";//权限相关列表页面
+
 }

@@ -100,4 +100,8 @@ public interface HttpConst {
     //提交权限申请
     String submitAuthoritiesApply = "submitAuthoritiesApply";
 
+    //根据id获取申请记录
+    String getApplyInfoById = "getApplyInfoById";
+
+
 }

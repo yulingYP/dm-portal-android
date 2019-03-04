@@ -254,7 +254,15 @@ public class DensityUtil {
         }
         return context.getString(R.string.status_tip_7);
     }
-
+    public static String getApplyStatus(Context context,int status){
+        if(status==0)
+            return context.getString(R.string.status_tip_1);
+        else if(status==100)
+            return context.getString(R.string.status_tip_2);
+        else if(status==110)
+            return context.getString(R.string.status_tip_3);
+        return context.getString(R.string.status_tip_7);
+    }
     /**
      * 根据内容设置textView的颜色
      * @param data

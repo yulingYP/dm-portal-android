@@ -102,8 +102,11 @@ public class MainPresenter extends BasePresenter {
     //获取用户推送失败的消息列表
     public static final String SUCCESSFUL_GET_PUSH_ERROR_MSG="SUCCESSFUL_GET_PUSH_ERROR_MSG";
 
+    //获取申请信息成功
+    public static final String SUCCESSFUL_GET_APPLY_INFO="SUCCESSFUL_GET_APPLY_INFO";
 
-
+    //获取审批权限信息成功
+    public static final String SUCCESSFUL_GET_APPLY_RECORD_INFO="SUCCESSFUL_GET_APPLY_RECORD_INFO";
 
     public MainPresenter(Context context) {
         super(context);
