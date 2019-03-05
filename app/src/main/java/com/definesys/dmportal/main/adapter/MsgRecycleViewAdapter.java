@@ -150,6 +150,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         .withString("applyId", myMessage.getMessageExtend())
                                         .withInt("type", myMessage.getMessageExtend2())
                                         .withString("content",myMessage.getMessageContent())
+                                        .withObject("date",myMessage.getSendTime())
                                         .navigation();
                             }else {
                                 ARouter.getInstance()

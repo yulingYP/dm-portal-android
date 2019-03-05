@@ -317,10 +317,20 @@
     <string name="setting">设置</string>
     <string name="feed_back">反馈建议</string>
     <string name="approval_result">审批结果</string>
+    <string name="approval_result_2">结果</string>
+    <string name="approval_result_3">申请结果</string>
+    <string name="approval_result_4">权限申请</string>
     <string name="approval_result_tip_1">请查看您请假请求的审批结果</string>
+    <string name="approval_result_tip_2">已批准您的请假请求</string>
+    <string name="approval_result_tip_3">已拒绝您的请假请求</string>
+    <string name="approval_result_tip_4">销假成功</string>
+    <string name="approval_result_tip_5">已拒绝您的权限申请请求</string>
+    <string name="approval_result_tip_6">已通过您的权限申请请求</string>
+    <string name="approval_result_tip_7">有新的权限申请请求，请去审批</string>
     <string name="leave_request">请假请求</string>
     <string name="leave_request_tip_1">有新的请假请求,请去审批</string>
     <string name="leave_request_tip_2">有新的请假请求,请查看</string>
+    <string name="leave_request_tip_3">有新的权限申请请求,请查看</string>
     <string name="feedback_word_hint">描述您对我们应用的建议…</string>
     <string name="feedback_img_hint">提供相关截图或照片</string>
     <string name="feedback">反馈建议</string>
@@ -421,6 +431,11 @@
     <string name="apply_authority">申请内容:\n%s</string>
     <string name="authority_reason">申请原因:\n%s</string>
     <string name="apply_result">审批结果</string>
+    <string name="approval_time">审批时间:%s</string>
+    <string name="submit_alyapr_success">提交成功</string>
+    <string name="approval_apply_title">权限审批</string>
+    <string name="check_approval_apply_title">审批详细信息</string>
+    <string name="approval_addvise_tip_4">您没有权限审批该申请</string>
 
 
 </resources>

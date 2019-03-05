@@ -28,7 +28,7 @@ public class ApplyInfo implements Serializable {
 
     private String applyUserName;
 
-    private String attribute1;
+    private Date applyUpdateDate;//更新日期
 
     private String attribute2;
 
@@ -130,12 +130,12 @@ public class ApplyInfo implements Serializable {
         this.applyUserName = applyUserName;
     }
 
-    public String getAttribute1() {
-        return attribute1;
+    public Date getApplyUpdateDate() {
+        return applyUpdateDate;
     }
 
-    public void setAttribute1(String attribute1) {
-        this.attribute1 = attribute1 == null ? null : attribute1.trim();
+    public void setApplyUpdateDate(Date applyUpdateDate) {
+        this.applyUpdateDate = applyUpdateDate;
     }
 
     public String getAttribute2() {

@@ -81,6 +81,31 @@ public class ApplyInfoPresenter extends BasePresenter {
                 });
 
     }
+    //提交审批结果
+    public void submitApplyResult(ApplyRecord applyRecord){
+        ViseHttp.POST(HttpConst.submitApplyResult)
+                .tag(HttpConst.getApplyInfoById)
+                .setJson(new Gson().toJson(applyRecord))
+                .request(new ACallback<BaseResponse<String>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<String> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_SUBMIT_APPLY_RESULT,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+
+    }
     @Override
     public void unsubscribe() {
         super.unsubscribe();

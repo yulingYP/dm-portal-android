@@ -108,6 +108,9 @@ public class MainPresenter extends BasePresenter {
     //获取审批权限信息成功
     public static final String SUCCESSFUL_GET_APPLY_RECORD_INFO="SUCCESSFUL_GET_APPLY_RECORD_INFO";
 
+    //提交审批结果成功
+    public static final String  SUCCESSFUL_SUBMIT_APPLY_RESULT="SUCCESSFUL_SUBMIT_APPLY_RESULT";
+
     public MainPresenter(Context context) {
         super(context);
     }

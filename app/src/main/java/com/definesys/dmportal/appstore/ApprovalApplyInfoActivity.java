@@ -1,5 +1,6 @@
 package com.definesys.dmportal.appstore;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -9,7 +10,10 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -28,17 +33,22 @@ import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.bean.ApplyRecord;
+import com.definesys.dmportal.appstore.bean.ApprovalRecord;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.presenter.ApplyInfoPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -84,8 +94,6 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     TextView tv_id;
     @Autowired(name = "applyInfo")
     ApplyInfo applyInfo;
-    @Autowired(name = "applyRecord")
-    ApplyRecord applyRecord;
 
     @Autowired(name = "applyId")
     String applyId;
@@ -93,7 +101,10 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     int type;//0.不同意 1.同意 4.未审批
     @Autowired(name = "content")
     String approvalContent;//审批内容
+    @Autowired(name = "date")
+    Date approvalDate;//审批内容
     private boolean isAgree = true;//是否同意
+    ApplyRecord applyRecord;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +122,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         else if(type==0||type==1){
          applyRecord = new ApplyRecord();
          applyRecord.setApplyContent(approvalContent);
+         applyRecord.setApplyDate(approvalDate==null?new Date():approvalDate);
          isAgree= type==1;
          setAgreeText();
          initEditUnable();
@@ -123,7 +135,19 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
 //        initView();
 //        initEdit();
     }
-
+    /**
+     * 获取权限详细信息失败
+     * @param msg 失败消息
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.ERROR_NETWORK)
+    }, thread = EventThread.MAIN_THREAD)
+    public void netWorkError(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            Toast.makeText(this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
+            progressHUD.dismiss();
+        }
+    }
     /**
      * 获取权限详细信息成功
      * @param data BaseResponse
@@ -138,8 +162,23 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
             initView();
         }
     }
+    /**
+     * 提交结果成功
+     * @param data BaseResponse
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_SUBMIT_APPLY_RESULT)
+    }, thread = EventThread.MAIN_THREAD)
+    public void submitSuccess(BaseResponse<String> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            Toast.makeText(this, R.string.submit_alyapr_success,Toast.LENGTH_SHORT).show();
+            SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)5,approvalContent,(short)(isAgree?1:0),applyInfo.getApplyId(),null,new Date()));
+            progressHUD.dismiss();
+            finish();
+        }
+    }
     private void initView() {
-        titleBar.setTitle(type==4?"权限审批":"审批详细信息");
+        titleBar.setTitle(type==4?getString(R.string.approval_apply_title):getString(R.string.check_approval_apply_title));
         titleBar.setBackgroundDividerEnabled(false);
 
         //退出
@@ -190,6 +229,78 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     }
     //规范性检查
     private void checkContent() {
+        if("".equals(ed_reason.getText().toString())&&!isAgree) {//不同意且未输入审批意见
+            Toast.makeText(this, R.string.approval_addvise_tip_2, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!checkAuthority()) {
+            Toast.makeText(this, R.string.approval_addvise_tip_4, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        initResultDialog();
+
+    }
+    //检查用户是否有审批权限
+    private boolean checkAuthority() {
+        int authority = applyInfo.getApplyAuthority();//申请的权限
+        //用户权限
+        int userAuthority = applyInfo.getApplyAuthorityType()==0?SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority():SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
+        if(userAuthority<=0){
+          return false;
+        }
+        if(applyInfo.getApplyAuthorityType()==0) {//审批学生权限
+            if (authority == 0) {//寝室长
+                return String.valueOf(userAuthority).contains("" + 1);//班长权限
+            } else if (authority == 1) {//班长
+                return String.valueOf(userAuthority).contains("" + 2);//班主任权限
+            } else if (authority == 2 || authority == 3) {//班主任/毕设老师
+                return String.valueOf(userAuthority).contains("" + 2);//辅导员权限
+            } else if (authority == 4 || authority == 5 || authority == 6 || authority == 7) {//辅导员/实习/教学/学生工作负责人
+                return String.valueOf(userAuthority).contains("" + 8);//院系权限审批负责人
+            }
+        }else if(applyInfo.getApplyAuthorityType()==1) {//审批老师权限
+            return String.valueOf(userAuthority).contains("" + 2);//部门权限审批负责人
+        }
+        return false;
+    }
+
+    private void initResultDialog() {
+        Dialog dialog = new Dialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.view_approval_result_confirm,null);
+
+        //审批结果
+        TextView tv_reult = (TextView) view.findViewById(R.id.approval_result_des);
+        tv_reult.setText(isAgree?R.string.agree_tip:R.string.refuse_tip);
+        tv_reult.setTextColor(isAgree?getResources().getColor(R.color.green):getResources().getColor(R.color.red_error));
+
+        //审批意见
+        approvalContent = ed_reason.getText().toString();
+        if("".equals(approvalContent)&&isAgree)
+            approvalContent= getString(R.string.agree_tip);
+        ((TextView) view.findViewById(R.id.approval_content_text)).setText(getString(R.string.approval_addvise)+":\n "+approvalContent);
+
+        //确定
+        RxView.clicks(view.findViewById(R.id.confirm_text))
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    ApplyRecord applyRecord = new ApplyRecord(applyInfo.getApplyId(), SharedPreferencesUtil.getInstance().getUserId().intValue(),
+                            (short)(isAgree?1:0),approvalContent.trim());
+                    mPersenter.submitApplyResult(applyRecord);
+                    progressHUD.show();
+                    dialog.dismiss();
+                });
+        //取消
+        RxView.clicks(view.findViewById(R.id.cancel_text))
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    dialog.dismiss();
+                });
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(view);
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
     //具体原因编辑框设置
@@ -237,7 +348,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         ed_reason.setVisibility(GONE);
         tv_approvalContent.setVisibility(VISIBLE);
         tv_approvalContent.setText(applyRecord.getApplyContent());
-        tv_count.setText(getString(R.string.word_count, tv_approvalContent.getText().toString().length()));
+        tv_count.setText(getString(R.string.approval_time, DensityUtil.dateTypeToString(getString(R.string.date_type_2),applyRecord.getApplyDate())));
     }
     /**
      * 设置同意或拒绝显示效果

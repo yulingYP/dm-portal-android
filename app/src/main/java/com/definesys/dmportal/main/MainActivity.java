@@ -25,6 +25,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.AppLyListActivity;
 import com.definesys.dmportal.appstore.ApplyInfoActivity;
 import com.definesys.dmportal.appstore.ApprovalApplyInfoActivity;
 import com.definesys.dmportal.appstore.ApprovalLeaveInfoActivity;
@@ -254,10 +255,12 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }, thread = EventThread.MAIN_THREAD)
     public void getPushErrorMsg(ArrayList<MyMessage> data) {
         for(MyMessage myMessage:data){
-            if((myMessage.getPushResult()==2)||(myMessage.getPushResult()==0&&myMessage.getMessageType()==1
-                    &&(myMessage.getMessageExtend2()==0||myMessage.getMessageExtend2()==1))){//推送失败和未读的请假结果消息
-                if(myMessage.getMessageType()==2){//新的请假请求
+            if((myMessage.getPushResult()==2)||(myMessage.getPushResult()==0&&(myMessage.getMessageType()==1||myMessage.getMessageType()==4)
+                    &&(myMessage.getMessageExtend2()==0||myMessage.getMessageExtend2()==1))){//推送失败和未读的请假、权限申请结果消息
+                if(myMessage.getMessageType()==2&&myMessage.getMessageExtend2()==4){//新的请假请求
                     myMessage.setMessageType((short)10);
+                }else if(myMessage.getMessageType()==5&&myMessage.getMessageExtend2()==4){
+                    myMessage.setMessageType((short)11);
                 }
                 hasNotify(myMessage);
             }else if(myMessage.getPushResult()==0){//未读消息
@@ -370,12 +373,17 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         }
     }
 
+    //当前时间
+    private long currentTime=0;
     //显示通知
     @Subscribe(tags = {
             @Tag("hasNotify")
     }, thread = EventThread.MAIN_THREAD)
     public void hasNotify(MyMessage myMessage) {
-        MyCongfig.checkMode(this);
+        if(System.currentTimeMillis()-currentTime>=1000*20) {//信息特别多时 在20内获得的信息只提示1次
+            MyCongfig.checkMode(this);
+            currentTime = System.currentTimeMillis();
+        }
         addMessage(myMessage);
         NotificationCompat.Builder mBuilder;
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
@@ -396,19 +404,29 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         if(myMessage!=null){
             if(myMessage.getMessageType()==1) {//请假人审批结果
                 title = getString(R.string.approval_result);
-                content = getString(R.string.approval_result_tip_1);
+                if(myMessage.getMessageExtend2()==0)content = getString(R.string.approval_result_tip_3);//拒绝
+                else if(myMessage.getMessageExtend2()==1)content = getString(R.string.approval_result_tip_2);//同意
+                else if(myMessage.getMessageExtend2()==2)content = getString(R.string.approval_result_tip_1);//未审批
+                else if(myMessage.getMessageExtend2()==3){//销假
+                    title = getString(R.string.approval_result_2);
+                    content = getString(R.string.approval_result_tip_4);
+                }
             }else if(myMessage.getMessageType()==2) {//新的请假请求，跳转到详细页面
                 title = getString(R.string.leave_request);
                 content = getString(R.string.leave_request_tip_1);
             }else if(myMessage.getMessageType()==4) {//新的请假请求，跳转到详细页面
-                title = "权限申请结果";
-                content = "请查看您的权限申请结果";
+                title = getString(R.string.approval_result_3);
+                if(myMessage.getMessageExtend2()==0)content = getString(R.string.approval_result_tip_5);//拒绝
+                else if(myMessage.getMessageExtend2()==1)content = getString(R.string.approval_result_tip_6);//同意
             }else if(myMessage.getMessageType()==5) {//新的请假请求，跳转到详细页面
-                title = "权限申请";
-                content = "有新的权限申请请求，请去审批";
+                title = getString(R.string.approval_result_4);
+                content = getString(R.string.approval_result_tip_7);
             }else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
                 title = getString(R.string.leave_request);
                 content = getString(R.string.leave_request_tip_2);
+            }else if(myMessage.getMessageType()==11){//新的权限申请请求，跳转到列表页面
+                title = getString(R.string.approval_result_4);
+                content = getString(R.string.leave_request_tip_3);
             }
 
         }
@@ -456,12 +474,16 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         }else if(myMessage.getMessageType()==4){//申请人申请结果
             intent = new Intent(this, ApplyInfoActivity.class);
             intent.putExtra("applyId", myMessage.getMessageExtend());
+            if(myMessage.getMessageExtend2()==1)//权限申请通过，重新获取权限信息
+                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
         }else if(myMessage.getMessageType()==5){//审批人新的审批任务，跳转到详情页
             MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
             intent = new Intent(this, ApprovalApplyInfoActivity.class);
             if(temp!=null) {
                 intent.putExtra("applyId", temp.getMessageExtend());
                 intent.putExtra("type", temp.getMessageExtend2());
+                intent.putExtra("content",myMessage.getMessageContent());
+                intent.putExtra("date",myMessage.getSendTime());
             }else {
                 intent.putExtra("applyId", myMessage.getMessageExtend());
                 intent.putExtra("type", 4);
@@ -473,6 +495,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("isAll",true);
             intent.putExtra("isSearch",false);
             intent.putExtra("ARouterPath",ARouterConstants.ApprovalLeaveInfoActivity);
+        }else if(myMessage.getMessageType()==11){//推送失败时收到的权限申请请求 跳转到权限审批列表页
+            intent = new Intent(this, AppLyListActivity.class);
+            intent.putExtra("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity);
+            intent.putExtra("type",0);
         }
         if(intent == null) {//跳转到消息页
             intent = new Intent(this, MainActivity.class);

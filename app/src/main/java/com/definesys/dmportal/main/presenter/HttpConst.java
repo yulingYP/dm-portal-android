@@ -103,5 +103,9 @@ public interface HttpConst {
     //根据id获取申请记录
     String getApplyInfoById = "getApplyInfoById";
 
+    //提交审批结果
+    String submitApplyResult = "submitApplyResult";
+
+
 
 }

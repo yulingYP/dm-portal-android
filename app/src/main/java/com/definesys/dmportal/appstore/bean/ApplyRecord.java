@@ -29,6 +29,13 @@ public class ApplyRecord implements Serializable {
     public String getApplyId() {
         return applyId;
     }
+    public ApplyRecord(){}
+    public ApplyRecord(String applyId, Integer applyerId, Short applyStatus, String applyContent) {
+        this.applyId = applyId;
+        this.applyerId = applyerId;
+        this.applyStatus = applyStatus;
+        this.applyContent = applyContent;
+    }
 
     public void setApplyId(String applyId) {
         this.applyId = applyId == null ? null : applyId.trim();
