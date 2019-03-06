@@ -1,7 +1,6 @@
 package com.definesys.dmportal.main.adapter;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,14 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.TextViewUniversalToast;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.main.bean.Message;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.text.SimpleDateFormat;
@@ -32,8 +29,7 @@ import butterknife.ButterKnife;
 public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<MyMessage> messages;
     private Context context;
-    //  点击事件的预留变量
-    private OnClickListener onClickListener;
+
     private SimpleDateFormat sdf;
 
 
@@ -130,7 +126,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         .build(ARouterConstants.ApprovalLeaveInfoActivity)
                                         .withString("leaveId", myMessage.getMessageExtend())
                                         .withInt("type", myMessage.getMessageExtend2())
-                                        .withObject("approvalDate", myMessage.getMessageExtend3())
+                                        .withObject("date", myMessage.getSendTime())
                                         .withString("approvalContent", myMessage.getMessageContent())
                                         .navigation();
                             }
@@ -174,7 +170,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     /**
      * 检查该记录是否已经审批
      * @param position 检测的位置
-     * @return
+     * @return r
      */
     private MyMessage checkDate(int position) {
         if(position<0)
@@ -192,7 +188,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     /**
      * 获取结果消息
-     * @return
+     * @return m
      */
     public MyMessage getMessage(MyMessage myMessage) {
         MyMessage result = null;
@@ -214,9 +210,6 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 //        holder.itemView.clearAnimation();
     }
 
-    public void setOnClickListener(OnClickListener clickListener) {
-        this.onClickListener = clickListener;
-    }
 
     class MsgHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.time_item_tit)
@@ -232,10 +225,6 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public interface OnClickListener {
-        void OnClick(int position);
     }
 
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MyMessage;
@@ -16,12 +15,9 @@ import com.example.jpushdemo.Logger;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hwangjr.rxbus.SmecRxBus;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Iterator;
-
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.data.JPushLocalNotification;
 
@@ -43,17 +39,20 @@ public class MyReceiver extends BroadcastReceiver {
 			Logger.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
 
 			if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
+				assert bundle != null;
 				String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
 				Logger.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
 				//send the Registration Id to your server...
 
 			} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+				assert bundle != null;
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
 				processCustomMessage(context, bundle);
 
 
 			} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知");
+				assert bundle != null;
 				int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
 				Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
@@ -68,6 +67,7 @@ public class MyReceiver extends BroadcastReceiver {
 				context.startActivity(i);
 
 			} else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
+				assert bundle != null;
 				Logger.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
 				//在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
 
@@ -77,7 +77,7 @@ public class MyReceiver extends BroadcastReceiver {
 			} else {
 				Logger.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
 			}
-		} catch (Exception e){
+		} catch (Exception ignored){
 
 		}
 
@@ -87,31 +87,35 @@ public class MyReceiver extends BroadcastReceiver {
 	private static String printBundle(Bundle bundle) {
 		StringBuilder sb = new StringBuilder();
 		for (String key : bundle.keySet()) {
-			if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
-				sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
-			}else if(key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)){
-				sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
-			} else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
-				if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
-					Logger.i(TAG, "This message has no Extra data");
-					continue;
-				}
-
-				try {
-					JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-					Iterator<String> it =  json.keys();
-
-					while (it.hasNext()) {
-						String myKey = it.next();
-						sb.append("\nkey:" + key + ", value: [" +
-								myKey + " - " +json.optString(myKey) + "]");
+			switch (key) {
+				case JPushInterface.EXTRA_NOTIFICATION_ID:
+					sb.append("\nkey:").append(key).append(", value:").append(bundle.getInt(key));
+					break;
+				case JPushInterface.EXTRA_CONNECTION_CHANGE:
+					sb.append("\nkey:").append(key).append(", value:").append(bundle.getBoolean(key));
+					break;
+				case JPushInterface.EXTRA_EXTRA:
+					if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
+						Logger.i(TAG, "This message has no Extra data");
+						continue;
 					}
-				} catch (JSONException e) {
-					Logger.e(TAG, "Get message extra JSON error!");
-				}
 
-			} else {
-				sb.append("\nkey:" + key + ", value:" + bundle.get(key));
+					try {
+						JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+						Iterator<String> it = json.keys();
+
+						while (it.hasNext()) {
+							String myKey = it.next();
+							sb.append("\nkey:").append(key).append(", value: [").append(myKey).append(" - ").append(json.optString(myKey)).append("]");
+						}
+					} catch (JSONException e) {
+						Logger.e(TAG, "Get message extra JSON error!");
+					}
+
+					break;
+				default:
+					sb.append("\nkey:").append(key).append(", value:").append(bundle.get(key));
+					break;
 			}
 		}
 		return sb.toString();
@@ -128,20 +132,24 @@ public class MyReceiver extends BroadcastReceiver {
 				}.getType());
 			}
 			if (MainActivity.notiManager != null)//app已初始化
+			{
+				assert myMessage != null;
 				SmecRxBus.get().post("hasNotify", myMessage);
+			}
 			else {//app未初始化
 				extra = message;
-				JPushInterface.addLocalNotification(context, createNotification(context, myMessage, message));
+				JPushInterface.addLocalNotification(context, createNotification(context, myMessage));
 			}
 		}else if("token".equals(bundle.get(JPushInterface.EXTRA_TITLE))){//单机登陆验证
 			if(!SharedPreferencesUtil.getInstance().getToken().equals(message)){
 				MainApplication.getInstances().showDialog(R.string.no_one_tip);
 			}
 		}
+		assert myMessage != null;
 		Logger.d(TAG, message+"\n"+myMessage.toString());
 	}
 	//app未初始化时尝试建立本地消息
-	public JPushLocalNotification createNotification(Context context, MyMessage myMessage, String message){
+	public JPushLocalNotification createNotification(Context context, MyMessage myMessage){
 
 		JPushLocalNotification jPushLocalNotification = new JPushLocalNotification();
 		String title="aa";//标题
@@ -153,9 +161,18 @@ public class MyReceiver extends BroadcastReceiver {
 			}else if(myMessage.getMessageType()==2) {//新的请假请求，跳转到详细页面
 				title = context.getString(R.string.leave_request);
 				content = context.getString(R.string.leave_request_tip_1);
+			}if(myMessage.getMessageType()==4) {//申请权限结果
+				title = context.getString(R.string.approval_result_3);
+				content = myMessage.getMessageExtend2()==0?context.getString(R.string.approval_result_tip_3):context.getString(R.string.approval_result_tip_2);
+			}else if(myMessage.getMessageType()==5) {//新的权限申请请求，跳转到详细页面
+				title = context.getString(R.string.approval_result_4);
+				content = context.getString(R.string.leave_request_tip_3);
 			}else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
 				title = context.getString(R.string.leave_request);
 				content = context.getString(R.string.leave_request_tip_2);
+			}else if(myMessage.getMessageType()==11){//权限申请请求，跳转到列表页面
+				title = context.getString(R.string.approval_result_4);
+				content = context.getString(R.string.approval_result_tip_7);
 			}
 		}
 

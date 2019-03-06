@@ -202,7 +202,6 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();
             ed_reason.findFocus();
-
             return;
         }
         List<String> list = new ArrayList<>();
@@ -306,7 +305,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             progressHUD.dismiss();
             if(data.getExtendInfo()==100) {
                 finish();
-//                data.getData(),submitLeaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,submitLeaveInfo.getId(),null,new Date() )
+//                data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
                 SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)11,"",null,"",null,new Date()));
                 Toast.makeText(this, R.string.submit_success, Toast.LENGTH_SHORT).show();
             }

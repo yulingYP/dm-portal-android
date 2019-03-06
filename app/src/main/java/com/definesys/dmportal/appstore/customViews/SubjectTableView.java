@@ -1,5 +1,6 @@
 package com.definesys.dmportal.appstore.customViews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
@@ -35,6 +36,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/9.
  */
 
@@ -43,8 +45,6 @@ public class SubjectTableView extends LinearLayout {
 
     @BindView(R.id.pre_week)
     TextView tv_pre;
-    @BindView(R.id.layout_scroll)
-    ScrollView lg_scroll;
     @BindView(R.id.next_week)
     TextView tv_next;
     @BindView(R.id.cur_show)
@@ -111,39 +111,33 @@ public class SubjectTableView extends LinearLayout {
         //上一周
         RxView.clicks(tv_pre)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        onClickWeek(tv_pre);
-                        if(currentShowWeek>currentWeek) {
-                            --currentShowWeek;
-                            clearTable();
-                            initTable();
-                        }
-                        else
-                            Toast.makeText(mContext, R.string.select_fail_tip_3,Toast.LENGTH_SHORT).show();
+                .subscribe(o -> {
+                    onClickWeek(tv_pre);
+                    if(currentShowWeek>currentWeek) {
+                        --currentShowWeek;
+                        clearTable();
+                        initTable();
                     }
+                    else
+                        Toast.makeText(mContext, R.string.select_fail_tip_3,Toast.LENGTH_SHORT).show();
                 });
         //下一周
         RxView.clicks(tv_next)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        onClickWeek(tv_next);
-                        if(currentShowWeek>=subjectTable.getSumWeek()) {//最后一周
-                            Toast.makeText(mContext, R.string.already_last_week,Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if(currentShowWeek-currentWeek>=1) {//下一周
-                            Toast.makeText(mContext, R.string.select_fail_tip_3, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        ++currentShowWeek;
-                        clearTable();
-                        initTable();
-
+                .subscribe(o -> {
+                    onClickWeek(tv_next);
+                    if(currentShowWeek>=subjectTable.getSumWeek()) {//最后一周
+                        Toast.makeText(mContext, R.string.already_last_week,Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    if(currentShowWeek-currentWeek>=1) {//下一周
+                        Toast.makeText(mContext, R.string.select_fail_tip_3, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    ++currentShowWeek;
+                    clearTable();
+                    initTable();
+
                 });
         RxView.clicks(tv_confirm)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
@@ -160,11 +154,11 @@ public class SubjectTableView extends LinearLayout {
     }
     /**
      * 获取每个布局中显示课程的textView
-     * @param linearLayout
+     * @param linearLayout l
      * @param pitch 第pitch节课
      */
     private void getTextView(LinearLayout linearLayout,int pitch){
-        ((TextView) linearLayout.getChildAt(0)).setText(""+pitch);
+        ((TextView) linearLayout.getChildAt(0)).setText(String.valueOf(pitch));
         for(int i=1;i<linearLayout.getChildCount();i++){
             textViewList.add((TextView) linearLayout.getChildAt(i));
         }
@@ -201,12 +195,11 @@ public class SubjectTableView extends LinearLayout {
     /**
      * 初始化课表
      */
+    @SuppressLint("SetTextI18n")
     private void initTable() {
         tv_show.setText(mContext.getString(R.string.current_show_week,currentShowWeek));
         tv_selectCount.setText(mContext.getString(R.string.select_subject_count,hashMap.size()));
-        if(subjectTable.getCursorArgList()==null||subjectTable.getCursorArgList().size()==0)
-            return;
-        else {
+        if(subjectTable.getCursorArgList()!=null&&subjectTable.getCursorArgList().size()>0) {
             List<CursorArg> list=subjectTable.getCursorArgList();
             for(int i = 0 ; i <list.size();i++){
                 if(currentShowWeek>=list.get(i).getStartWeek()&&currentShowWeek<=list.get(i).getEndWeek()&&list.get(i).getCursorName()!=null&&!"".equals(list.get(i).getCursorName())){//当前周有课
@@ -234,9 +227,9 @@ public class SubjectTableView extends LinearLayout {
                                     int finalI = i;
                                     RxView.clicks(textViewList.get(6-j+(7-k)*7))
                                             .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                                            .subscribe(obj->{
-                                                initEvent(list.get(finalI).getCursorName(),7- finalJ,8- finalK,textViewList.get(6-finalJ+(7-finalK)*7));
-                                            });
+                                            .subscribe(obj->
+                                                initEvent(list.get(finalI).getCursorName(),7- finalJ,8- finalK,textViewList.get(6-finalJ+(7-finalK)*7))
+                                            );
                                 }
                             }
                         }
@@ -244,27 +237,16 @@ public class SubjectTableView extends LinearLayout {
                 }
             }
         }
-       scrollToBottom();
     }
 
-    /**
-     * 滑动到页面底部
-     */
-    private void scrollToBottom() {
-        tv_confirm.post(new Runnable() {//滑动页面到最低端
-            @Override
-            public void run() {
-                lg_scroll.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        });
-    }
+
 
     /**
      *点击事件
      * @param cursorName 课程名
      * @param weekDay 星期几
      * @param pitch 第几节
-     * @param textView
+     * @param textView t
      */
     private void initEvent(String cursorName, int weekDay, int pitch, TextView textView) {
         if(currentShowWeek==currentWeek&&weekDay<currentDay) {
@@ -295,7 +277,7 @@ public class SubjectTableView extends LinearLayout {
 
     /**
      * 点击了上一周、下一周
-     * @param tv_temp
+     * @param tv_temp t
      */
     private void onClickWeek(TextView tv_temp) {
         tv_temp.setBackgroundColor(getResources().getColor(R.color.bg_gray));
@@ -303,12 +285,9 @@ public class SubjectTableView extends LinearLayout {
         Observable//5秒未获取数据则加载失败
                 .timer(Constants.clickdelay/2, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        tv_temp.setBackgroundColor(getResources().getColor(R.color.white));
-                        tv_temp.setTextColor(getResources().getColor(R.color.blue));
-                    }
+                .subscribe(aLong -> {
+                    tv_temp.setBackgroundColor(getResources().getColor(R.color.white));
+                    tv_temp.setTextColor(getResources().getColor(R.color.blue));
                 });
     }
 

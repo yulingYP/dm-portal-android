@@ -114,6 +114,24 @@
     <string name="sum_time_tip">时长:%s</string>
     <string name="selected_subject_tip">请假课程:%s</string>
     <string name="content_tip">具体原因:%s</string>
+
+    <string name="date_type">yyyy年MM月dd日 HH时</string>
+    <string name="date_type_2">yyyy-MM-dd HH:mm</string>
+    <string name="date_type_3">MMDDHHmmss</string>
+    <string name="date_type_4">yyyy年MM月dd日</string>
+    <string name="date_type_5">yyyy.MM.dd</string>
+    <string name="date_type_6">MM月dd日</string>
+    <string name="date_type_7">yyyyMMdd-HH:mm:ss</string>
+    <string name="date_type_8">yyyy-MM-dd HH:mm:ss</string>
+
+    <string name="status_tip_1">正在审批</string>
+    <string name="status_tip_2">已批准</string>
+    <string name="status_tip_3">已拒绝</string>
+    <string name="status_tip_4">未销假</string>
+    <string name="status_tip_5">已销假</string>
+    <string name="status_tip_6">未请假</string>
+    <string name="status_tip_7">获取失败</string>
+
     <string name="submit_success">提交成功</string>
     <string name="current_status">当前状态</string>
     <string name="report_back">销假</string>
@@ -128,21 +146,6 @@
     <string name="no_dyn_tip">暂无动态</string>
     <string name="no_history_tip">暂无记录</string>
     <string name="userId_tip">学号/工号:%d</string>
-    <string name="date_type">yyyy年MM月dd日 HH时</string>
-    <string name="date_type_2">yyyy-MM-dd HH:mm</string>
-    <string name="date_type_3">MMDDHHmmss</string>
-    <string name="date_type_4">yyyy年MM月dd日</string>
-    <string name="date_type_5">yyyy.MM.dd</string>
-    <string name="date_type_6">MM月dd日</string>
-    <string name="date_type_7">yyyyMMdd-HH:mm:ss</string>
-    <string name="date_type_8">yyyy-MM-dd HH:mm:ss</string>
-    <string name="status_tip_1">正在审批</string>
-    <string name="status_tip_2">已批准</string>
-    <string name="status_tip_3">已拒绝</string>
-    <string name="status_tip_4">未销假</string>
-    <string name="status_tip_5">已销假</string>
-    <string name="status_tip_6">未请假</string>
-    <string name="status_tip_7">获取失败</string>
     <string name="check_approval_record">查看审批记录</string>
     <string name="check_approval_record_2">查看其他人的审批意见</string>
     <string name="approval_record">历史审批记录</string>
@@ -157,17 +160,21 @@
     <string name="approval_leave_info">审批请假信息</string>
     <string name="approval_leave_info_2">审批记录详情</string>
     <string name="approval_addvise">审批意见</string>
-    <string name="approval_addvise_tip">请填写审批意见</string>
     <string name="refuse_tip">拒绝</string>
     <string name="agree_tip">同意</string>
+    <string name="approval_addvise_tip">请填写审批意见</string>
     <string name="approval_addvise_tip_2">请输入审批意见</string>
     <string name="approval_addvise_tip_3">审批内容如下,确认要提交该审批结果吗?</string>
+    <string name="approval_addvise_tip_4">您没有权限审批该申请</string>
+    <string name="approval_addvise_tip_5">审批时间有误</string>
+    <string name="approval_addvise_tip_6">该记录已被审批</string>
     <string name="approval_result_des">审批结果:</string>
     <string name="shixi">实习</string>
     <string name="subject_show_tip">点击查看他的课表及课程成绩</string>
     <string name="leaver_name">请假人姓名:%s</string>
     <string name="green_agree"><![CDATA[<font color=\'#7cb342\'>同意</font>]]></string>
     <string name="red_refuse"><![CDATA[<font color=\'#ff4444\'>不同意</font>]]></string>
+
     <string name="click_close">点击关闭(%ds)</string>
     <string name="login">登陆</string>
     <string name="forget_password">忘记密码?</string>
@@ -322,9 +329,9 @@
     <string name="approval_result_4">权限申请</string>
     <string name="approval_result_tip_1">请查看您请假请求的审批结果</string>
     <string name="approval_result_tip_2">已批准您的请假请求</string>
-    <string name="approval_result_tip_3">已拒绝您的请假请求</string>
+    <string name="approval_result_tip_3">您的请假请求已被拒绝</string>
     <string name="approval_result_tip_4">销假成功</string>
-    <string name="approval_result_tip_5">已拒绝您的权限申请请求</string>
+    <string name="approval_result_tip_5">您的权限申请请求已被拒绝</string>
     <string name="approval_result_tip_6">已通过您的权限申请请求</string>
     <string name="approval_result_tip_7">有新的权限申请请求，请去审批</string>
     <string name="leave_request">请假请求</string>
@@ -435,7 +442,7 @@
     <string name="submit_alyapr_success">提交成功</string>
     <string name="approval_apply_title">权限审批</string>
     <string name="check_approval_apply_title">审批详细信息</string>
-    <string name="approval_addvise_tip_4">您没有权限审批该申请</string>
+
 
 
 </resources>

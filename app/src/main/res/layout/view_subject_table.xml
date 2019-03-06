@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="wrap_content"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/layout_scroll"
+    android:orientation="vertical"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/layout_scroll"
+      >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:layout_height="wrap_content">
         <TextView
             android:id="@+id/hello_text"
             android:layout_width="match_parent"
@@ -33,7 +40,7 @@
             android:layout_marginEnd="24dp"
             android:orientation="horizontal"
             android:background="@color/back_gray"
-            android:padding="4px"
+            android:padding="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -52,7 +59,7 @@
                 android:padding="6dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:layout_marginStart="4px"
+                android:layout_marginStart="1dp"
                 android:id="@+id/current_show_layout"
                 android:background="@color/white"
                 android:layout_height="wrap_content">
@@ -69,7 +76,7 @@
             <TextView
                 android:id="@+id/next_week"
                 android:text="@string/next_week"
-                android:layout_marginStart="4px"
+                android:layout_marginStart="1dp"
                 android:padding="6dp"
                 android:background="@color/white"
                 android:textColor="@color/blue"
@@ -91,9 +98,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <LinearLayout
-                    android:layout_marginTop="4px"
-                    android:layout_marginBottom="4px"
-                    android:layout_marginStart="4px"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginStart="1dp"
                     android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -108,7 +115,7 @@
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
@@ -117,7 +124,7 @@
                         android:text="@string/Monday"
                         android:gravity="center"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
@@ -126,7 +133,7 @@
                         android:text="@string/Tuesday"
                         android:gravity="center"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
@@ -135,7 +142,7 @@
                         android:text="@string/Wednesday"
                         android:gravity="center"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
@@ -144,7 +151,7 @@
                         android:text="@string/Thursday"
                         android:gravity="center"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
@@ -153,7 +160,7 @@
                         android:text="@string/Friday"
                         android:gravity="center"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
@@ -162,7 +169,7 @@
                         android:text="@string/Saturday"
                         android:gravity="center"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
@@ -171,7 +178,7 @@
                         android:text="@string/Sunday"
                         android:gravity="center"
                         android:background="@color/white"
-                        android:layout_marginEnd="4px"
+                        android:layout_marginEnd="1dp"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -184,8 +191,8 @@
                     android:layout_width="0dp"
                     android:id="@+id/first_layout"
                     android:layout_weight="1"
-                    android:layout_marginStart="4px"
-                    android:layout_marginBottom="4px"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_height="match_parent"
                     layout="@layout/item_table_subject_row">
                 </include>
@@ -198,8 +205,8 @@
                     android:layout_width="0dp"
                     android:id="@+id/second_layout"
                     android:layout_weight="1"
-                    android:layout_marginStart="4px"
-                    android:layout_marginBottom="4px"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_height="match_parent"
                     layout="@layout/item_table_subject_row">
                 </include>
@@ -212,8 +219,8 @@
                     android:layout_width="0dp"
                     android:id="@+id/third_layout"
                     android:layout_weight="1"
-                    android:layout_marginStart="4px"
-                    android:layout_marginBottom="4px"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_height="match_parent"
                     layout="@layout/item_table_subject_row">
                 </include>
@@ -226,8 +233,8 @@
                     android:layout_width="0dp"
                     android:id="@+id/fourth_layout"
                     android:layout_weight="1"
-                    android:layout_marginStart="4px"
-                    android:layout_marginBottom="4px"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_height="match_parent"
                     layout="@layout/item_table_subject_row">
                 </include>
@@ -240,8 +247,8 @@
                     android:layout_width="0dp"
                     android:id="@+id/fifth_layout"
                     android:layout_weight="1"
-                    android:layout_marginStart="4px"
-                    android:layout_marginBottom="4px"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_height="match_parent"
                     layout="@layout/item_table_subject_row">
                 </include>
@@ -254,36 +261,50 @@
                     android:layout_width="0dp"
                     android:id="@+id/sixth_layout"
                     android:layout_weight="1"
-                    android:layout_marginStart="4px"
-                    android:layout_marginBottom="4px"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_height="match_parent"
                     layout="@layout/item_table_subject_row">
                 </include>
             </TableRow>
         </TableLayout>
-        <RelativeLayout
-            android:layout_marginTop="12dp"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="12dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/confirm_text"
-                android:text="@string/confirm"
-                android:padding="8dp"
-                android:textColor="@color/blue"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/cancel_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/confirm_text"
-                android:layout_marginEnd="20dp"
-                android:padding="8dp"
-                android:text="@string/cancel"
-                android:textColor="@color/blue" />
-        </RelativeLayout>
     </LinearLayout>
-</ScrollView>
+    </ScrollView>
+    <View
+
+        android:layout_width="match_parent"
+        android:background="@color/back_gray"
+        android:layout_height="1dp">
+    </View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/cancel_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/cancel"
+            android:textColor="@color/blue" />
+        <View
+            android:layout_width="1dp"
+            android:background="@color/back_gray"
+            android:layout_height="match_parent">
+
+        </View>
+        <TextView
+            android:id="@+id/confirm_text"
+            android:text="@string/confirm"
+            android:textColor="@color/blue"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

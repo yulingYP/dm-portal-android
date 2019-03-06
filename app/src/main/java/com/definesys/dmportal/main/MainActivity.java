@@ -467,10 +467,11 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             if(temp!=null) {
                 intent.putExtra("leaveId", temp.getMessageExtend());
                 intent.putExtra("type", temp.getMessageExtend2());
-                intent.putExtra("approvalDate", temp.getSendTime());
+                intent.putExtra("date", temp.getSendTime());
                 intent.putExtra("approvalContent", temp.getMessageContent());
             }else {
                 intent.putExtra("leaveId", myMessage.getMessageExtend());
+                intent.putExtra("msgId",myMessage.getMessageId());
                 intent.putExtra("type", 4);
             }
         }else if(myMessage.getMessageType()==4){//申请人申请结果

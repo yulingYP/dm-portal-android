@@ -39,8 +39,8 @@ public interface HttpConst {
     //根据请假Id获取审批记录
     String getApprovalRecordById = "getApprovalRecordById";
 
-    //根据请假Id和审批时间获取审批记录
-    String getApprovalRecordByDate = "getApprovalRecordByDate";
+    //根据请假Id和审批时间或msgId获取审批记录
+    String getApprovalRecordByDate = "getApprovalRecord";
 
     //根据请假Id获取请假信息
     String getLeaveInfoByLeaveId = "getLeaveInfoByLeaveId";

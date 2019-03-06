@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/10.
  */
 
@@ -60,8 +61,8 @@ public class SubmitLeaveInfoView extends LinearLayout {
     ImageView img_2;
     @BindView(R.id.img_3)
     ImageView img_3;
-    @BindView(R.id.layout_scroll)
-    ScrollView lg_scroll;
+//    @BindView(R.id.layout_scroll)
+//    ScrollView lg_scroll;
     private Context mContext;
     private OnClickListener onClickConfirmListener;
     public SubmitLeaveInfoView(Context context) {
@@ -99,7 +100,7 @@ public class SubmitLeaveInfoView extends LinearLayout {
     /**
      * 设置数据
      * @param submitLeaveInfo 各种信息
-     * @param selectImages
+     * @param selectImages s
      *
      */
     public void setDate(LeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
@@ -133,12 +134,8 @@ public class SubmitLeaveInfoView extends LinearLayout {
                 }
             }
         }
-        tv_confirm.post(new Runnable() {//滑动页面到最低端
-            @Override
-            public void run() {
-                lg_scroll.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        });
+//        //滑动页面到最低端
+//        tv_confirm.post(() -> lg_scroll.fullScroll(ScrollView.FOCUS_DOWN));
     }
 
     /**

@@ -25,16 +25,20 @@ public class ApprovalRecord {
 
     private int leaverId;//请假人id
 
+    private String messageId;//发送给审批人的消息的id
     public ApprovalRecord() {
 
     }
 
-    public ApprovalRecord(String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType,int leaverId) {
+    public ApprovalRecord(String approvalContent, Date approvalTime) {
+        this.approvalContent = approvalContent;
+        this.approvalTime = approvalTime;
+    }
+    public ApprovalRecord(String leaveInfoId, int approverId, String approvalContent, Short approvalResult, int approverType,int leaverId) {
         this.leaveInfoId = leaveInfoId;
         this.approverId = approverId;
         this.approvalContent = approvalContent;
         this.approvalResult = approvalResult;
-        this.approvalTime = approvalTime;
         this.approverType = approverType;
         this.leaverId = leaverId;
     }

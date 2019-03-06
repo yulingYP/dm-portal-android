@@ -170,7 +170,7 @@ public class MyMessage implements Comparable<MyMessage>{
     }
 
     public String getMessageId() {
-        return messageId;
+        return messageId==null?"":messageId;
     }
 
     public void setMessageId(String messageId) {

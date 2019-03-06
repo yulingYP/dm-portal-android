@@ -2,7 +2,6 @@ package com.definesys.dmportal.appstore;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -18,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -111,7 +109,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     ScrollView lg_scoll;
 
     @Autowired(name = "leaveInfo")
-    LeaveInfo submitLeaveInfo;
+    LeaveInfo leaveInfo;
     @Autowired(name = "leaveId")
     String leaveId;
     @Autowired(name = "title")
@@ -125,11 +123,11 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         ARouter.getInstance().inject(this);
         setNoLayout(true);
         initTitle();
-        if(submitLeaveInfo!=null)
+        if(leaveInfo !=null)
             initView();
         else if(leaveId!=null&&!"".equals(leaveId)){
             mPersenter.getLeaveInfoById(leaveId);
-        } else {
+        } else {//进度查询
             progressHUD.show();
             (new GetCurrentLeaveInfoPresenter(this)).getCurrentLeaveInfo(SharedPreferencesUtil.getInstance().getUserId());
         }
@@ -149,46 +147,46 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     }
     private void initView() {
         setNoLayout(false);
-        if(submitLeaveInfo.getType()==3)//实习
-            submitLeaveInfo.setType(2);
+        if(leaveInfo.getType()==3)//实习
+            leaveInfo.setType(2);
         //姓名
-        tv_name.setText(getString(R.string.name_tip,submitLeaveInfo.getName()));
+        tv_name.setText(getString(R.string.name_tip, leaveInfo.getName()));
 
         //请假类型
-        tv_type.setText(getString(R.string.type_tip, DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[submitLeaveInfo.getType()%3])));
+        tv_type.setText(getString(R.string.type_tip, DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[leaveInfo.getType()%3])));
 
         //请假原因
-        tv_title.setText(getString(R.string.leave_title,submitLeaveInfo.getLeaveTitle()));
+        tv_title.setText(getString(R.string.leave_title, leaveInfo.getLeaveTitle()));
 
         //具体原因
-        tv_content.setText(getString(R.string.content_tip,submitLeaveInfo.getLeaveReason()));
+        tv_content.setText(getString(R.string.content_tip, leaveInfo.getLeaveReason()));
 
         //请假时间
-        tv_submitTime.setText(getString(R.string.submit_time,DensityUtil.dateTypeToString(getString(R.string.date_type_2),submitLeaveInfo.getSubmitDate())));
+        tv_submitTime.setText(getString(R.string.submit_time,DensityUtil.dateTypeToString(getString(R.string.date_type_2), leaveInfo.getSubmitDate())));
 
         //审批状态
-        tv_status.setText(DensityUtil.getApprovalStatus(submitLeaveInfo,this,false));
+        tv_status.setText(DensityUtil.getApprovalStatus(leaveInfo,this,false));
         DensityUtil.setTVcolor(tv_status.getText().toString(),tv_status,this);
 
         //开始时间
-        tv_startTime.setText(getString(R.string.start_time_tip,submitLeaveInfo.getStartTime()));
+        tv_startTime.setText(getString(R.string.start_time_tip, leaveInfo.getStartTime()));
 
         //结束时间
-        tv_endTime.setText(getString(R.string.end_time_tip,submitLeaveInfo.getEndTime()));
+        tv_endTime.setText(getString(R.string.end_time_tip, leaveInfo.getEndTime()));
 
-        if(submitLeaveInfo.getType()==0){//课假
+        if(leaveInfo.getType()==0){//课假
 
             //课程选择
-            tv_selectedSubject.setText(Html.fromHtml(getString(R.string.selected_subject_tip,submitLeaveInfo.getSelectedSubject())));
+            tv_selectedSubject.setText(Html.fromHtml(getString(R.string.selected_subject_tip, leaveInfo.getSelectedSubject())));
 
             //时长 2*‘#’的个数
-            tv_sumTime.setText(getString(R.string.sum_time_tip,getString(R.string.off_suject,(2*(submitLeaveInfo.getSelectedSubject().split("\\#").length-1)))));
+            tv_sumTime.setText(getString(R.string.sum_time_tip,getString(R.string.off_suject,(2*(leaveInfo.getSelectedSubject().split("\\#").length-1)))));
         }else {//长假或短假
            
             tv_selectedSubject.setVisibility(GONE);
 
             //时长
-            tv_sumTime.setText(getString(R.string.sum_time_tip,DensityUtil.getSumTime(submitLeaveInfo.getStartTime(),submitLeaveInfo.getEndTime(),this,true)));
+            tv_sumTime.setText(getString(R.string.sum_time_tip,DensityUtil.getSumTime(leaveInfo.getStartTime(), leaveInfo.getEndTime(),this,true)));
         }
 
         //查看审批记录
@@ -196,45 +194,43 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     progressHUD.show();
-                    mPersenter.getApprovalRecordList(submitLeaveInfo.getId(),"need");
+                    mPersenter.getApprovalRecordList(leaveInfo.getId(),"need");
 
                 });
 
         //状态为已批准
-        if(submitLeaveInfo!=null&&(getString(R.string.status_tip_2).equals(tv_status.getText().toString())||getString(R.string.status_tip_4).equals(tv_status.getText().toString())||getString(R.string.status_tip_5).equals(tv_status.getText().toString()))){
+        if(leaveInfo !=null&&(getString(R.string.status_tip_2).equals(tv_status.getText().toString())||getString(R.string.status_tip_4).equals(tv_status.getText().toString())||getString(R.string.status_tip_5).equals(tv_status.getText().toString()))){
             lg_share.setVisibility(VISIBLE);
             //生成请假条
             RxView.clicks(lg_share)
                     .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                    .subscribe(obj->{
+                    .subscribe(obj->
                         ARouter.getInstance().build(ARouterConstants.LeaveTextActivity)
-                                .withObject("leaveInfo",submitLeaveInfo)
-                                .navigation(this);
-                    });
+                                .withObject("leaveInfo", leaveInfo)
+                                .navigation(this)
+                    );
 
         }else {
             lg_share.setVisibility(GONE);
         }
 
         //长假且审批未拒绝
-        if(submitLeaveInfo.getType()==2&&submitLeaveInfo.getApprovalStatus()==100){
+        if(leaveInfo.getType()==2&& leaveInfo.getApprovalStatus()==100){
             lg_cancel.setVisibility(VISIBLE);
             //销假
             RxView.clicks(lg_cancel)
                     .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                    .subscribe(obj->{
-                      showSubDialog();
-                    });
+                    .subscribe(obj-> showSubDialog());
         }else {
             lg_cancel.setVisibility(GONE);
         }
 
-        if(submitLeaveInfo.getPicUrl()==null||"".equals(submitLeaveInfo.getPicUrl().trim())) {//没有图片
+        if(leaveInfo.getPicUrl()==null||"".equals(leaveInfo.getPicUrl().trim())) {//没有图片
             lg_img.setVisibility(GONE);
             return;
         }
         localMediaList = new ArrayList<>();
-        String[] picUrls=submitLeaveInfo.getPicUrl().split("\\*");
+        String[] picUrls= leaveInfo.getPicUrl().split("\\*");
 
         if(picUrls.length==0)
             lg_img.setVisibility(GONE);
@@ -261,43 +257,36 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
                 .setMessage(R.string.back_report_tip)
                 .setNegativeButton(R.string.cancel,null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        progressHUD.show();
+                .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                    dialog.dismiss();
+                    progressHUD.show();
 //                        String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType,int leaverId
-                        mPersenter.updateApprovalStatusById(new ApprovalRecord(submitLeaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),getString(R.string.status_tip_3),(short)2,null,-10,SharedPreferencesUtil.getInstance().getUserId().intValue()));
-                    }
+                    mPersenter.updateApprovalStatusById(new ApprovalRecord(leaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),getString(R.string.status_tip_3),(short)2,-10,SharedPreferencesUtil.getInstance().getUserId().intValue()));
                 });
         alertDialog.show();
     }
 
     /**
      * 审批记录提示框
-     * @param list
+     * @param list 审批记录
      */
     private void initDialog(List<ApprovalRecord> list) {
         Dialog dialog = new Dialog(this);
         ReasonTypeListLayout checkApprovalView = new ReasonTypeListLayout(this);
         checkApprovalView .getTitleText().setText(R.string.approval_record);
         checkApprovalView.setApprovalRecord(list);
-        checkApprovalView .setMyOnConfirmClickListener(new ReasonTypeListLayout.MyOnConfirmClickListener() {
-            @Override
-            public void onClick() {
-                dialog.dismiss();
-            }
-        });
+        checkApprovalView .setMyOnConfirmClickListener(dialog::dismiss);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(checkApprovalView);
         dialog.setCancelable(true);
+        if(dialog.getWindow()!=null)
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
     /**
      * 加载图片
-     * @param img
-     * @param picUrl
+     * @param img 图片
+     * @param picUrl url
      */
     private void initImg(ImageView img, String picUrl,int position) {
         Glide.with(this)
@@ -308,7 +297,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                  @Override
                  public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                      img.setImageBitmap(resource);
-                     String path="";
+                     String path;
                      path=ImageUntil.saveBitmapFromView(resource,picUrl,LeaveInfoDetailActivity.this,0);
                      localMediaList.get(position).setPosition(position);
                      localMediaList.get(position).setPath(path);
@@ -334,13 +323,14 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
 
     /**
      * 获取审批记录失败
-     * @param msg
+     * @param msg m
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
     }, thread = EventThread.MAIN_THREAD)
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            setNoLayout(true);
             Toast.makeText(LeaveInfoDetailActivity.this,("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
         }
@@ -348,7 +338,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
 
     /**
      * 根据leaveId获取请假信息成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_INFO)
@@ -361,14 +351,14 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                 Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
                 return;
             }
-            submitLeaveInfo = data.getData();
+            leaveInfo = data.getData();
             initView();
         }
     }
 
     /**
      * 获取审批记录成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_APPRVAL_RECORD)
@@ -386,7 +376,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     }
     /**
      * 更新审批状态成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_UPDATE_APPRVAL_RECORD)
@@ -394,16 +384,16 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     public void updateApprovalStatus(BaseResponse<String> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             progressHUD.dismiss();
-            SmecRxBus.get().post("cancelLeaveSuccess",submitLeaveInfo.getId());
+            SmecRxBus.get().post("cancelLeaveSuccess", leaveInfo.getId());
             Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             //请假人销假成功
-            SmecRxBus.get().post("addMessage",new MyMessage(data.getData(),submitLeaveInfo.getUserId(), (short) 1, "", (short)3 ,submitLeaveInfo.getId(),null, new Date()));
+            SmecRxBus.get().post("addMessage",new MyMessage(data.getData(), leaveInfo.getUserId(), (short) 1, "", (short)3 , leaveInfo.getId(),null, new Date()));
             finish();
         }
     }
     /**
      * 获取最近一次请假信息成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_CURRENT_LEAVE_INFO)
@@ -416,7 +406,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                 Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
                 return;
             }
-            submitLeaveInfo = data.getData();
+            leaveInfo = data.getData();
             initView();
         }
     }

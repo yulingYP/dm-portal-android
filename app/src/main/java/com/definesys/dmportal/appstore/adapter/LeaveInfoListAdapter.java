@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
@@ -18,11 +17,11 @@ import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/15.
  */
 
@@ -63,6 +62,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
                             ARouter.getInstance()
                                     .build(ARouterPath)//跳转页面
                                     .withObject("leaveInfo", submitLeaveInfoList.get(position))//请假信息
+                                    .withInt("type",4)
                                     .withInt("title", 0)//页面标题
                                     .navigation()
                     );
@@ -76,7 +76,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
             } else {
                 holder.tv_id.setVisibility(View.GONE);
                 holder.tv_name.setText(submitLeaveInfoList.get(position).getName());
-                holder.tv_status.setText("" + submitLeaveInfoList.get(position).getUserId());
+                holder.tv_status.setText(String.valueOf(submitLeaveInfoList.get(position).getUserId()) );
             }
             if (submitLeaveInfoList.get(position).getType() == 3)//实习
                 submitLeaveInfoList.get(position).setType(2);
@@ -88,7 +88,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
             //请假时间
             holder.tv_time.setText(DensityUtil.dateTypeToString(mContext.getString(R.string.date_type_2), submitLeaveInfoList.get(position).getSubmitDate()));
         }
-        else {//审批列表
+        else {//历史审批记录
 
             //点击事件
             RxView.clicks(holder.itemView)
@@ -96,7 +96,10 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
                     .subscribe(obj ->
                             ARouter.getInstance()
                                     .build(ARouterPath)//跳转页面
-                                    .withObject("approvalRecord",approvalRecordList.get(position))//请假信息
+                                    .withObject("date",approvalRecordList.get(position).getApprovalTime())//审批时间
+                                    .withString("leaveId",approvalRecordList.get(position).getLeaveInfoId())//请假id
+                                    .withInt("type",approvalRecordList.get(position).getApprovalResult())//审批结果
+                                    .withString("approvalContent",approvalRecordList.get(position).getApprovalContent())//审批内容
                                     .navigation()
                     );
 
@@ -105,7 +108,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
             //请假人姓名
             holder.tv_name.setText(approvalRecordList.get(position).getLeaverName());
             //学号
-            holder.tv_status.setText("" + approvalRecordList.get(position).getLeaverId());
+            holder.tv_status.setText(String.valueOf(approvalRecordList.get(position).getLeaverId()));
             //审批结果
             String result=mContext.getString(R.string.approval_result_text, approvalRecordList.get(position).getApprovalResult()==1?mContext.getString(R.string.green_agree):mContext.getString(R.string.red_refuse));
             holder.tv_title.setText(Html.fromHtml(result));

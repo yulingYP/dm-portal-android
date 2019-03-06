@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/20.
  */
 
@@ -25,9 +26,9 @@ public class GetCurrentLeaveInfoPresenter extends BasePresenter {
         super(context);
     }
     public void getCurrentLeaveInfo(Number userId){
-        Map map = new HashMap();
+        Map<String,Number> map = new HashMap<>();
         map.put("userId",userId);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap", new Gson().toJson(map));
         ViseHttp.POST(HttpConst.getCurrentLeaveInfoById)
                 .tag(HttpConst.getCurrentLeaveInfoById)
                 .setJson(new Gson().toJson(map))

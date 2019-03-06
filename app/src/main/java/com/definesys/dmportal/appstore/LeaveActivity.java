@@ -1,10 +1,12 @@
 package com.definesys.dmportal.appstore;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -119,8 +121,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @BindView(R.id.leave_day_count_layout)
     LinearLayout lg_timeCount;
 
-   @BindView(R.id.scoll_view)
-    ScrollView sc_scoll;
+   @BindView(R.id.scorll_view)
+    ScrollView sc_scroll;
 
     @BindView(R.id.end_time_text)
     TextView tv_timeEnd;
@@ -137,14 +139,32 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @BindView(R.id.ed_reason)
     EditText ed_reason;
 
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    sc_scroll.scrollTo(0,(int)lg_reason.getY());//滑动scrollView到具体原因位置
+                    mHandler.sendEmptyMessageDelayed(2,200);//容错处理 再次滑动
+                    break;
+                case 2:
+                    sc_scroll.scrollTo(0,(int)lg_reason.getY());//滑动scrollView到具体原因位置
+                    break;
+            }
+            return false;
+        }
+    });
+
+
     private ReasonImageAdapter leaveImgAdapter;//图片适配器
     private List<LocalMedia> selectImages;//选择的图片
 
     private Date startDate;
     private Date endDate;
     private SimpleDateFormat df;
-    private boolean isVisible =false;//光标是否可见
-    private boolean isScroll;//是否滑动页面
+//    private boolean isVisible =false;//光标是否可见
+//    private boolean isScroll;//是否滑动页面
     private boolean isStart;//用户点击的是开始日期还是结束日期
     private Dialog dateDialog;//日期选择提示框
     private MyDatePicker datePick;//日期选择Picker
@@ -175,8 +195,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         setLatoutVisibility();//根据请假类型设定显示的内容
 
         //防遮挡
-        buttonBeyondKeyboardLayout(lg_reason,lg_reason);
-        isScroll=true;
+//        buttonBeyondKeyboardLayout(lg_reason,lg_reason);
+//        isScroll=true;
     }
 
     private void initView() {
@@ -186,13 +206,10 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         //titleBar.setBackground(null);
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        Intent intent = new Intent();
-                        setResult(RESULT_CANCELED,intent);
-                        finish();
-                    }
+                .subscribe(o -> {
+                    Intent intent = new Intent();
+                    setResult(RESULT_CANCELED,intent);
+                    finish();
                 });
         Button button = titleBar.addRightTextButton(getString(R.string.submit),R.layout.activity_leave_off);
         button.setTextSize(14);
@@ -241,19 +258,18 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
-                    isScroll = true;
-                    isVisible = true;
+//                    isScroll = true;
+//                    isVisible = true;
                     ed_reason.setCursorVisible(true);
+                    mHandler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
                 });
         //获取焦点
-        ed_reason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    ed_reason.setCursorVisible(true);
-                    isScroll = true;
-                    isVisible = true;
-                }
+        ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                ed_reason.setCursorVisible(true);
+//                isScroll = true;
+//                isVisible = true;
+                mHandler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
             }
         });
         /*
@@ -329,20 +345,18 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         ReasonTypeListLayout reasonTypeListLayout = new ReasonTypeListLayout(this);
         reasonTypeListLayout.getTitleText().setText(R.string.reason_des);
         reasonTypeListLayout.setReasonlist(getResources().getStringArray(R.array.leave_type));
-        reasonTypeListLayout.setMyClickListener(new ReasonTypeListLayout.MyClickListener() {
-            @Override
-            public void onClick(String type,int position) {
-                tv_type.setText(DensityUtil.setTypeText(type));
-                if(selectTypePosition!=position) {
-                    selectTypePosition = position;
-                    setLatoutVisibility();
-                }
-                typeDialog.dismiss();
+        reasonTypeListLayout.setMyClickListener((type, position) -> {
+            tv_type.setText(DensityUtil.setTypeText(type));
+            if(selectTypePosition!=position) {
+                selectTypePosition = position;
+                setLatoutVisibility();
             }
+            typeDialog.dismiss();
         });
         typeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         typeDialog.setContentView(reasonTypeListLayout);
         typeDialog.setCancelable(true);
+        if(typeDialog.getWindow()!=null)
         typeDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
@@ -386,7 +400,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             });
             dateDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Window window = dateDialog.getWindow();
-            window.setGravity(Gravity.BOTTOM);
+            if(window!=null)
+                window.setGravity(Gravity.BOTTOM);
             dateDialog.setContentView(datePick);
             dateDialog.setCancelable(true);
             dateDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -400,6 +415,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     /**
      * 计算并显示开始时间与结束时间之间的差值
      */
+    @SuppressLint("SetTextI18n")
     private void initTime() {
         startDate = null;
         endDate = null;
@@ -446,6 +462,11 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         }
         if("".equals(ed_reason.getText().toString())){
             Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
+            mHandler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
+            ed_reason.setFocusable(true);
+            ed_reason.setFocusableInTouchMode(true);
+            ed_reason.requestFocus();
+            ed_reason.findFocus();
             return;
         }
         if(getString(R.string.shixi).equals(tv_typeReason.getText().toString())){//如果是实习，进行规范性检测
@@ -473,7 +494,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         String endTime = selectTypePosition==0?"":tv_timeEnd.getText().toString();
         String sumTime = tv_dayOffCount.getText().toString();
         String content = "\n  "+ed_reason.getText().toString().trim();
-        String selectedSubject="";
+        StringBuilder selectedSubject= new StringBuilder();
         int type = selectTypePosition;
 //        if(selectTypePosition>1&&getString(R.string.shixi).equals(tv_typeReason.getText().toString()))
 //            type=3;
@@ -486,7 +507,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                 int week = entry.getKey() / 100;//第几周
                 int day = entry.getKey() % 100 / 10;//星期几
                 int pitch = entry.getKey() % 10;//第几节课
-                selectedSubject += "<br />" + "<font color='#37a0d2'>" + getString(R.string.subject_count_tip, i) + "</font>" + entry.getValue() + "<br />" + "&nbsp;&nbsp;&nbsp;" + getString(R.string.selected_subject_info, week, day, pitch);
+                selectedSubject.append("<br />" + "<font color='#37a0d2'>").append(getString(R.string.subject_count_tip, i)).append("</font>").append(entry.getValue()).append("<br />").append("&nbsp;&nbsp;&nbsp;").append(getString(R.string.selected_subject_info, week, day, pitch));
                 ++i;
             }
             //结束时间
@@ -496,7 +517,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         }
 
         //(Number id,String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject)
-        LeaveInfo submitLeaveInfo = new LeaveInfo(id,name,content,startTime,endTime,title,sumTime,selectedSubject,type,SharedPreferencesUtil.getInstance().getUserType());
+        LeaveInfo submitLeaveInfo = new LeaveInfo(id,name,content,startTime,endTime,title,sumTime, selectedSubject.toString(),type,SharedPreferencesUtil.getInstance().getUserType());
 
         Dialog dialog = new Dialog(this);
         SubmitLeaveInfoView submitLeaveInfoView = new SubmitLeaveInfoView(this);
@@ -518,7 +539,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(submitLeaveInfoView);
         dialog.setCancelable(true);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if(dialog.getWindow()!=null)
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
 
@@ -526,7 +548,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
      * 根据请假类型设置接下来要进行设置的选项
      */
     private void setLatoutVisibility(){
-        isScroll = false;
+//        isScroll = false;
         ViseHttp.cancelTag(HttpConst.getTable);//停止申请课表的网络请求
         if(selectTypePosition==0){//课假
             lg_table.setVisibility(View.VISIBLE);
@@ -557,7 +579,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
 
     /**
      * 获取课表信息失败
-     * @param msg
+     * @param msg m
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
@@ -571,7 +593,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
 
     /**
      * 获取课表信息成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_TABLE_INFO)
@@ -593,7 +615,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
 
     /**
      * 提交请假申请成功
-     * @param msg
+     * @param msg m
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST)
@@ -647,6 +669,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             subjectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             subjectDialog.setContentView(subjectTableView);
             subjectDialog.setCancelable(true);
+            if(subjectDialog.getWindow()!=null)
             subjectDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         if(isShow)
@@ -663,22 +686,20 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             reasonListView = new ReasonTypeListLayout(this);
             reasonListView.getTitleText().setText(R.string.type_reason);
             reasonListView.setReasonlist(getResources().getStringArray(selectTypePosition == 1 ? R.array.leave_short_reason : R.array.leave_long_reason));
-            reasonListView.setMyClickListener(new ReasonTypeListLayout.MyClickListener() {
-                @Override
-                public void onClick(String type, int position) {
-                    tv_typeReason.setText(type);
-                    if(getString(R.string.shixi).equals(type)){//实习
-                        ed_reason.setHint(R.string.reson_detail_tip_2);
-                    }else {//不是实习
-                        ed_reason.setHint(R.string.reson_detail_tip);
-                    }
-                    reasonDialog.dismiss();
+            reasonListView.setMyClickListener((type, position) -> {
+                tv_typeReason.setText(type);
+                if(getString(R.string.shixi).equals(type)){//实习
+                    ed_reason.setHint(R.string.reson_detail_tip_2);
+                }else {//不是实习
+                    ed_reason.setHint(R.string.reson_detail_tip);
                 }
+                reasonDialog.dismiss();
             });
             reasonDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             reasonDialog.setContentView(reasonListView);
             reasonDialog.setCancelable(true);
-            reasonDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if(reasonDialog.getWindow()!=null)
+                reasonDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
 
@@ -702,16 +723,12 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             selectedSubjectView = new ReasonTypeListLayout(this);
             selectedSubjectView.getTitleText().setText(R.string.select_subject);
             selectedSubjectView.setSelectSubject(arr);
-            selectedSubjectView.setMyOnConfirmClickListener(new ReasonTypeListLayout.MyOnConfirmClickListener() {
-                @Override
-                public void onClick() {
-                    subjectelectDialog.dismiss();
-                }
-            });
+            selectedSubjectView.setMyOnConfirmClickListener(() -> subjectelectDialog.dismiss());
             subjectelectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             subjectelectDialog.setContentView(selectedSubjectView);
             subjectelectDialog.setCancelable(true);
-            subjectelectDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if(subjectelectDialog.getWindow()!=null)
+                subjectelectDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }else {
             selectedSubjectView.setSelectSubject(arr);
         }
@@ -721,11 +738,11 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     public boolean dispatchKeyEvent(KeyEvent event) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-            if(inputMethodManager.isActive()){
+            if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
                 inputMethodManager.hideSoftInputFromWindow(LeaveActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
             ed_reason.setCursorVisible(false);
-            isVisible = false;
+//            isVisible = false;
             return true;
         }
         return super.dispatchKeyEvent(event);
@@ -758,7 +775,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @Override
     protected void onStop() {
         super.onStop();
-        isVisible = ed_reason.isFocused();
+//        isVisible = ed_reason.isFocused();
         ed_reason.setCursorVisible(ed_reason.isFocused());
     }
 
@@ -767,36 +784,33 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     public LeaveRequestPresenter getPersenter() {
         return new LeaveRequestPresenter(this);
     }
-    int count=0;
-    private void buttonBeyondKeyboardLayout(final View root, final View button) {
-        // 监听根布局的视图变化
-        root.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        Log.d("mydemo","entry"+isScroll);
-                        if (isScroll) {
-                            if (ed_reason.isCursorVisible() && isVisible) {
-                                sc_scoll.scrollTo(0, (int) button.getY());
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        sc_scoll.scrollTo(0, (int) lg_reason.getY());
-                                        Log.d("mydemo","scroll_delay");
-                                    }
-                                }, Constants.scrollDelay);
-
-                            } else {
-                                // 键盘隐藏
-                                root.scrollTo(0, 0);
-                                if (!isVisible && ++count > 1) {
-                                    isVisible = true;
-                                }
-                            }
-                        }
-                    }
-                });
-    }
+//    int count=0;
+//    private void buttonBeyondKeyboardLayout(final View root, final View button) {
+//        // 监听根布局的视图变化
+//        root.getViewTreeObserver().addOnGlobalLayoutListener(
+//                () -> {
+//                    Log.d("mydemo","entry"+isScroll);
+//                    if (isScroll) {
+//                        if (ed_reason.isCursorVisible() && isVisible) {
+//                            sc_scroll.scrollTo(0, (int) button.getY());
+//                            new Handler().postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    sc_scroll.scrollTo(0, (int) lg_reason.getY());
+//                                    Log.d("mydemo","scroll_delay");
+//                                }
+//                            }, Constants.scrollDelay);
+//
+//                        } else {
+//                            // 键盘隐藏
+//                            root.scrollTo(0, 0);
+//                            if (!isVisible && ++count > 1) {
+//                                isVisible = true;
+//                            }
+//                        }
+//                    }
+//                });
+//    }
 
 
 }

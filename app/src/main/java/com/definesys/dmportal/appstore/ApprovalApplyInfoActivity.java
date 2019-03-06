@@ -63,7 +63,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
     @BindView(R.id.layout_scroll)
-    ScrollView lg_scoll;
+    ScrollView lg_scroll;
     @BindView(R.id.count_word_text)
     TextView tv_count;
     @BindView(R.id.ed_reason)
@@ -103,6 +103,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     String approvalContent;//审批内容
     @Autowired(name = "date")
     Date approvalDate;//审批内容
+
     private boolean isAgree = true;//是否同意
     ApplyRecord applyRecord;
     @Override
@@ -231,6 +232,11 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     private void checkContent() {
         if("".equals(ed_reason.getText().toString())&&!isAgree) {//不同意且未输入审批意见
             Toast.makeText(this, R.string.approval_addvise_tip_2, Toast.LENGTH_SHORT).show();
+            lg_scroll.fullScroll(ScrollView.FOCUS_DOWN);
+            ed_reason.setFocusable(true);
+            ed_reason.setFocusableInTouchMode(true);
+            ed_reason.requestFocus();
+            ed_reason.findFocus();
             return;
         }
 
@@ -374,8 +380,8 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("mydemo","Height=="+lg_scoll.getMeasuredHeight());
-                lg_scoll.fullScroll(position);
+                Log.d("mydemo","Height=="+lg_scroll.getMeasuredHeight());
+                lg_scroll.fullScroll(position);
             }
         }, Constants.scrollDelay);
     }
