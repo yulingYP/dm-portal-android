@@ -375,14 +375,16 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
 
     //当前时间
     private long currentTime=0;
+    private int msgType = 0;
     //显示通知
     @Subscribe(tags = {
             @Tag("hasNotify")
     }, thread = EventThread.MAIN_THREAD)
     public void hasNotify(MyMessage myMessage) {
-        if(System.currentTimeMillis()-currentTime>=1000*20) {//信息特别多时 在20内获得的信息只提示1次
+        if(System.currentTimeMillis()-currentTime>=1000*20||(myMessage!=null&&myMessage.getMessageType()!=msgType)) {//信息特别多时 在20内获得的相同类型的信息只提示1次
             MyCongfig.checkMode(this);
             currentTime = System.currentTimeMillis();
+            msgType=myMessage.getMessageType();
         }
         addMessage(myMessage);
         NotificationCompat.Builder mBuilder;

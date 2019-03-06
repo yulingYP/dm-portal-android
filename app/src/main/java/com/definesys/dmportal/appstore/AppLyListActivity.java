@@ -20,6 +20,7 @@ import com.definesys.dmportal.appstore.adapter.LeaveInfoListAdapter;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.bean.ApprovalRecord;
 import com.definesys.dmportal.appstore.bean.LeaveInfo;
+import com.definesys.dmportal.appstore.presenter.ApplyInfoPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
@@ -37,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @Route(path = ARouterConstants.AppLyListActivity)
-public class AppLyListActivity extends BaseActivity {
+public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
 
@@ -136,12 +137,7 @@ public class AppLyListActivity extends BaseActivity {
     }
 
     @Override
-    public BasePresenter getPersenter() {
-        return new BasePresenter(this) {
-            @Override
-            public void subscribe() {
-                super.subscribe();
-            }
-        };
+    public ApplyInfoPresenter getPersenter() {
+        return new ApplyInfoPresenter(this);
     }
 }

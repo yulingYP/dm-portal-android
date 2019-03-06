@@ -194,8 +194,11 @@ public class ReasonTypeListLayout extends LinearLayout {
         @Override
         public void onBindViewHolder(@NonNull CheckApprovalAdapter.ViewHolder holder, int position) {
             //审批人 班长 寝室长 班主任 辅导员..
-            holder.tv_name.setText(mContext.getString(R.string.approver_text,mContext.getResources().getStringArray(R.array.approverType)[setPosition(approvalRecordList.get(position).getApproverType()%9)]));
-
+            if(approvalRecordList.get(position).getApproverType()<10&&approvalRecordList.get(position).getApproverType()>=0)
+                holder.tv_name.setText(mContext.getString(R.string.approver_text,mContext.getResources().getStringArray(R.array.approverType)[setPosition(approvalRecordList.get(position).getApproverType()%8)]));
+            else if(approvalRecordList.get(position).getApproverType()>=100){//100.部门请假负责人 101.部门教学负责人
+                holder.tv_name.setText(mContext.getString(R.string.approver_text,mContext.getResources().getStringArray(R.array.approverType_2)[setPosition(approvalRecordList.get(position).getApproverType()%2)]));
+            }
             //审批意见
             holder.tv_content.setText(mContext.getString(R.string.approval_content_text,approvalRecordList.get(position).getApprovalContent()));
 

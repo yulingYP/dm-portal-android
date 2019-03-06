@@ -9,7 +9,7 @@
     <View
         android:background="@color/back_gray"
         android:layout_width="match_parent"
-        android:layout_height="2px">
+        android:layout_height="1dp">
     </View>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -69,6 +69,6 @@
         android:id="@+id/bottom_line"
         android:background="@color/back_gray"
         android:layout_width="match_parent"
-        android:layout_height="2px">
+        android:layout_height="1dp">
     </View>
 </LinearLayout>
