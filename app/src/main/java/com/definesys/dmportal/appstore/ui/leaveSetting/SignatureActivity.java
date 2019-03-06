@@ -3,9 +3,7 @@ package com.definesys.dmportal.appstore.ui.leaveSetting;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -18,7 +16,6 @@ import com.definesys.dmportal.appstore.customViews.LinePathView;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
-import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.UUID;
@@ -60,9 +57,9 @@ public class SignatureActivity extends BaseActivity {
         //清除
         RxView.clicks(lg_clear)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                   lg_sign.clear();
-                });
+                .subscribe(o ->
+                   lg_sign.clear()
+                );
         //保存
         RxView.clicks(lg_save)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

@@ -2,13 +2,7 @@ package com.definesys.dmportal.appstore;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,24 +10,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.base.BasePresenter;
-import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.adapter.TypeListAdapter;
 import com.definesys.dmportal.appstore.customViews.FlowLayout;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.main.adapter.GruopInfoRecycleViewAdapter;
-import com.definesys.dmportal.main.bean.GroupInfo;
-import com.definesys.dmportal.main.interfaces.OnItemClickListener;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -43,8 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.vise.xsnow.http.ViseHttp.getContext;
 
 @Route(path = ARouterConstants.LeaveListSearchActivity)
 public class LeaveListSearchActivity extends BaseActivity {
@@ -59,7 +42,6 @@ public class LeaveListSearchActivity extends BaseActivity {
      //种类列表
      @BindView(R.id.type_view)
      FlowLayout fl_type;
-     private List<String> typeList;
 
 
     //搜索列表
@@ -94,7 +76,7 @@ public class LeaveListSearchActivity extends BaseActivity {
      * 种类列表
      */
     private void initTpyeList() {
-        typeList = new ArrayList<>();
+        List<String> typeList = new ArrayList<>();
         typeList.add(getString(R.string.all));
         if(type==0) {
             typeList.add(getString(R.string.tag_1));
@@ -150,26 +132,21 @@ public class LeaveListSearchActivity extends BaseActivity {
      * 添加单个tag
      * @param content 内容
      * @param check 是否需要做重复内容检测
-     * @return
+     * @return r
      */
     private TextView addTagItem(String content,boolean check) {
         TextView tv = (TextView) LayoutInflater.from(this).inflate(
                 R.layout.item_history_list, fl_history, false);
         tv.setText(content);
         //点击事件
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goSearch(content,check);
-            }
-        });
+        tv.setOnClickListener(v -> goSearch(content,check));
         return  tv;
     }
 
     /**
      * 搜索的最终入口
      * @param check 是否需要做重复内容检查
-     * @param content
+     * @param content r
      */
     private void goSearch(String content,boolean check){
         this.clickCheck =check;
@@ -206,23 +183,21 @@ public class LeaveListSearchActivity extends BaseActivity {
         //清除历史记录
         RxView.clicks(tv_delete)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
+                .subscribe(o ->
                     new AlertDialog.Builder(this)
                             .setMessage(R.string.detele_history)
                             .setNegativeButton(R.string.cancel,null)
-                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    SharedPreferencesUtil.getInstance().setHistoryData(type,null);
-                                    historyList.clear();
-                                    fl_history.removeAllViews();
-                                    initHistoryList();
-                                    dialog.dismiss();
-                                }
+                            .setPositiveButton(R.string.confirm, (dialog, id) -> {
+                                SharedPreferencesUtil.getInstance().setHistoryData(type,null);
+                                historyList.clear();
+                                fl_history.removeAllViews();
+                                initHistoryList();
+                                dialog.dismiss();
                             })
                             .create()
-                            .show();
+                            .show()
 
-                });
+                );
     }
 
     /*
@@ -238,8 +213,8 @@ public class LeaveListSearchActivity extends BaseActivity {
 
     /**
      * 检测是否与历史记录中的记录重复
-     * @param item
-     * @return
+     * @param item i
+     * @return r
      */
     private boolean checkSearchItem(String item){
         if(item==null||"".equals(item))
@@ -256,7 +231,7 @@ public class LeaveListSearchActivity extends BaseActivity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if(inputMethodManager!=null&&inputMethodManager.isActive()){
+            if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
                 inputMethodManager.hideSoftInputFromWindow(LeaveListSearchActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
             edSearch();

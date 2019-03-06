@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.definesys.base.BaseActivity;
 import com.definesys.base.BaseResponse;
@@ -34,8 +33,6 @@ import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
-import com.definesys.dmportal.main.interfaces.OnConfirmClickListener;
-import com.definesys.dmportal.main.interfaces.OnItemClickListener;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -103,17 +100,17 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    finish();
-                });
+                .subscribe(obj->
+                    finish()
+                );
         Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_update_le_aut);
         button.setTextSize(14);
         //提交
         RxView.clicks(button)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj -> {
-                    checkSelect();
-                });
+                .subscribe(obj ->
+                    checkSelect()
+                );
         //点击申请内容
         RxView.clicks(lg_des)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -148,13 +145,10 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                     sendScrollMessage(ScrollView.FOCUS_DOWN);
                 });
         //获取焦点
-        ed_reason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    ed_reason.setCursorVisible(true);
-                    sendScrollMessage(ScrollView.FOCUS_DOWN);
-                }
+        ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus) {
+                ed_reason.setCursorVisible(true);
+                sendScrollMessage(ScrollView.FOCUS_DOWN);
             }
         });
         /*
@@ -181,12 +175,9 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      * @param position 活动到的位置
      */
     private void sendScrollMessage(int position) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("mydemo","Height=="+lg_sc.getMeasuredHeight());
-                lg_sc.fullScroll(position);
-            }
+        new Handler().postDelayed(() -> {
+            Log.d("mydemo","Height=="+lg_sc.getMeasuredHeight());
+            lg_sc.fullScroll(position);
         }, Constants.scrollDelay);
     }
     //合法性检测
@@ -221,13 +212,13 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      */
     private void initAuthorityList(String[] approvalers,LinearLayout lg_aut,int type,int start,int end) {
         for(int i = start; i<approvalers.length-end;i++)
-            lg_aut.addView(addItemView(approvalers[i],i,type));
+            lg_aut.addView(addItemView(lg_aut,approvalers[i],i,type));
 
     }
-    private View addItemView( String content, int authority,int type) {
-        View view= LayoutInflater.from(this).inflate(R.layout.item_sign_type_view,null);
-        TextView textView=(TextView) view.findViewById(R.id.name_text);//权限名称
-        ImageView imageView=(ImageView) view.findViewById(R.id.select_img);//是否选择
+    private View addItemView(LinearLayout parent, String content, int authority,int type) {
+        View view= LayoutInflater.from(this).inflate(R.layout.item_sign_type_view,parent,false);
+        TextView textView=view.findViewById(R.id.name_text);//权限名称
+        ImageView imageView=view.findViewById(R.id.select_img);//是否选择
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         textView.setText(content);
         RxView.clicks(view)
@@ -321,82 +312,73 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      */
     private void initDialog(List<String> data, int type) {
         ApplyDialog applyDialog = new ApplyDialog(this,data,type);
-        applyDialog.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
-                if(type==0){//获取该院系所有班级的id
-                    tempDialog = applyDialog;
-                    progressHUD.show();
-                    mPersenter.getApplyList(Integer.valueOf(data.get(position))*100,""+SharedPreferencesUtil.getInstance().getUserSex(),1);
-                }else if(type==3){//获取所有院系的名称
-                    mPersenter.getApplyList(0,data.get(position),4);
-                    progressHUD.show();
-                    applyDialog.dismiss();
-                }else if(type==5){//获取该院系所有班级的id
-                    mPersenter.getApplyList(0,data.get(position),6);
-                    progressHUD.show();
-                    applyDialog.dismiss();
-                }else if(type==6){//获取班级全部成员
-                    tempDialog = applyDialog;
-                    progressHUD.show();
-                    mPersenter.getApplyList(0,data.get(position),7);
-                }else if(type==8){//获取该院系所有班级的id
-                    mPersenter.getApplyList(0,data.get(position),9);
-                    progressHUD.show();
-                    applyDialog.dismiss();
-                }
+        applyDialog.setOnItemClickListener(position -> {
+            if(type==0){//获取该院系所有班级的id
+                tempDialog = applyDialog;
+                progressHUD.show();
+                mPersenter.getApplyList(Integer.valueOf(data.get(position))*100,""+SharedPreferencesUtil.getInstance().getUserSex(),1);
+            }else if(type==3){//获取所有院系的名称
+                mPersenter.getApplyList(0,data.get(position),4);
+                progressHUD.show();
+                applyDialog.dismiss();
+            }else if(type==5){//获取该院系所有班级的id
+                mPersenter.getApplyList(0,data.get(position),6);
+                progressHUD.show();
+                applyDialog.dismiss();
+            }else if(type==6){//获取班级全部成员
+                tempDialog = applyDialog;
+                progressHUD.show();
+                mPersenter.getApplyList(0,data.get(position),7);
+            }else if(type==8){//获取该院系所有班级的id
+                mPersenter.getApplyList(0,data.get(position),9);
+                progressHUD.show();
+                applyDialog.dismiss();
             }
         });
 
         //点击确定
-        applyDialog.setOnConfirmClickListener(new OnConfirmClickListener() {
-            @Override
-            public void onClick() {
-                if (type == 0||type==6) {//寝室长权限
-                    if(getString(R.string.no_des).equals(content)){//未填写内容
-                        Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_4,Toast.LENGTH_SHORT).show();
-                    }else{
-                        tv_show.setText(checkApplyAuthority(type,content.substring(0,content.length()-2)));
-                        applyDialog.dismiss();
+        applyDialog.setOnConfirmClickListener(() -> {
+            if (type == 0||type==6) {//寝室长权限
+                if(getString(R.string.no_des).equals(content)){//未填写内容
+                    Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_4,Toast.LENGTH_SHORT).show();
+                }else{
+                    tv_show.setText(checkApplyAuthority(type,content.substring(0,content.length()-2)));
+                    applyDialog.dismiss();
+                    content = getString(R.string.no_des);
+                }
+            } else if(type==1||type==4||type==7||type==9) {//班级成员选择 选择班级
+//                    if (initText(data, applyDialog.getApplyAuthorityAdapter().getSelectList(), type))
+                if(checkContent(data, applyDialog.getApplyAuthorityAdapter().getSelectList())) {
+                    applyDialog.dismiss();
+                    if(type==1||type==7)
+                        tempDialog.setContent(content);
+                    else  {
+                        tv_show.setText(checkApplyAuthority(type, content.substring(0,content.length()-2)));
                         content = getString(R.string.no_des);
                     }
-                } else if(type==1||type==4||type==7||type==9) {//班级成员选择 选择班级
-//                    if (initText(data, applyDialog.getApplyAuthorityAdapter().getSelectList(), type))
-                    if(checkContent(data, applyDialog.getApplyAuthorityAdapter().getSelectList())) {
-                        applyDialog.dismiss();
-                        if(type==1||type==7)
-                            tempDialog.setContent(content);
-                        else  {
-                            tv_show.setText(checkApplyAuthority(type, content.substring(0,content.length()-2)));
-                            content = getString(R.string.no_des);
-                        }
 
-                    }
-                } else if(type==2||type==10||type==11||type==12||type==20||type==21) {//班长、实习、学生、教学工作负责人、部门请假负责人、部门教学管理人权限
-                    if(applyDialog.getApplyAuthorityAdapter().getSelectPosition()!=-1) {
-                        tv_show.setText(checkApplyAuthority(type,data.get(applyDialog.getApplyAuthorityAdapter().getSelectPosition())));
-                        applyDialog.dismiss();
-                    }else {
-                        if(type==2)
-                            Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
-                        else if(type==20||type==21)
-                            Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_7, Toast.LENGTH_SHORT).show();
-                    }
-                }else if(type==100){//权限提交
-                    applyDialog.dismiss();
-                    progressHUD.show();
-                    mPersenter.submitAuthoritiesApply(applyList,ed_reason.getText().toString().trim());
                 }
+            } else if(type==2||type==10||type==11||type==12||type==20||type==21) {//班长、实习、学生、教学工作负责人、部门请假负责人、部门教学管理人权限
+                if(applyDialog.getApplyAuthorityAdapter().getSelectPosition()!=-1) {
+                    tv_show.setText(checkApplyAuthority(type,data.get(applyDialog.getApplyAuthorityAdapter().getSelectPosition())));
+                    applyDialog.dismiss();
+                }else {
+                    if(type==2)
+                        Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
+                    else if(type==20||type==21)
+                        Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_7, Toast.LENGTH_SHORT).show();
+                }
+            }else if(type==100){//权限提交
+                applyDialog.dismiss();
+                progressHUD.show();
+                mPersenter.submitAuthoritiesApply(applyList,ed_reason.getText().toString().trim());
             }
         });
         //点击取消
-        applyDialog.setOnCancelClickListener(new OnConfirmClickListener() {
-            @Override
-            public void onClick() {
-                applyDialog.dismiss();
-                if(type==0||type==5)
-                    content = getString(R.string.no_des);
-            }
+        applyDialog.setOnCancelClickListener(() -> {
+            applyDialog.dismiss();
+            if(type==0||type==5)
+                content = getString(R.string.no_des);
         });
         applyDialog.show();
         if(type==0||type==6)
@@ -526,7 +508,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     public boolean dispatchKeyEvent(KeyEvent event) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-            if(inputMethodManager.isActive()){
+            if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
                 inputMethodManager.hideSoftInputFromWindow(UpdateLeAutActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
             ed_reason.setCursorVisible(false);

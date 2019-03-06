@@ -1,7 +1,7 @@
 package com.definesys.dmportal.appstore.ui.leaveSetting;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -27,7 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
@@ -57,8 +56,6 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.PictureFileUtils;
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,7 +65,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -77,7 +73,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.definesys.dmportal.appstore.utils.Constants.SIGN_CODE;
 
-
+@SuppressLint("InflateParams")
 @Route(path = ARouterConstants.LeaveSignActivity)
 public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     @BindView(R.id.title_bar)
@@ -111,16 +107,13 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     LinearLayout lg_type;
     @BindView(R.id.show_img)
     ImageView iv_show;
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0://延迟0.3秒设置艺术字
-                    getTypeList(msg.obj.toString());
-                    break;
-            }
-            return false;
+    private Handler handler = new Handler(msg -> {
+        switch (msg.what) {
+            case 0://延迟0.3秒设置艺术字
+                getTypeList(msg.obj.toString());
+                break;
         }
+        return false;
     });
     private int selectPosition;//选择的样式的位置
     private ImageView iv_selected;//选择位置的imageview控件
@@ -152,9 +145,9 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    finish();
-                });
+                .subscribe(obj->
+                    finish()
+                );
         //编辑
         RxView.clicks(iv_edit)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -211,9 +204,9 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         //提交
         RxView.clicks(button)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj -> {
-                    checkSelect();
-                });
+                .subscribe(obj ->
+                    checkSelect()
+                );
     }
     private void showBottomDialog(List<String> list) {
         if(dialog==null) {
@@ -299,7 +292,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             bitmap =ImageUntil.convertViewToBitmap(iv_show);
         }
         else  {//艺术字
-            //上传签名图片
+
             TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_sign_text_view, null);
             tv.setText(tv_selected.getText().toString());
             if(selectPosition>0)
@@ -333,7 +326,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     }
     /**
      * 上传失败
-     * @param msg
+     * @param msg msg
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
@@ -354,36 +347,33 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         if(lg_type.getChildCount()!=0)
             lg_type.removeAllViews();
         selectPosition = 0;
-        Observable.create(new ObservableOnSubscribe<View>() {
-            @Override
-            public void subscribe(ObservableEmitter<View> emitter) throws Exception {
-                if(typeList ==null||typeList.size()==0) {//获取艺术字种类列表
-                    AssetManager assetManager = getAssets();
-                    String[] typeNames = null;
-                    try {
-                        typeNames = assetManager.list("ttf");
-                        typeList = new ArrayList<>();
-                        String temp;
-                        for (int i = typeNames.length - 1; i >= 0; i--) {
-                            temp = typeNames[i];
-                            //检测文件类型是否正确
-                            if (temp != null && temp.length() > 4 && ".ttf".equals(temp.substring(temp.length() - 4, temp.length()).toLowerCase()))
-                                typeList.add(typeNames[i]);
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        emitter.onError(e);
+        Observable.create((ObservableOnSubscribe<View>) emitter -> {
+            if(typeList ==null||typeList.size()==0) {//获取艺术字种类列表
+                AssetManager assetManager = getAssets();
+                String[] typeNames ;
+                try {
+                    typeNames = assetManager.list("ttf");
+                    typeList = new ArrayList<>();
+                    String temp;
+                    for (int i = typeNames.length - 1; i >= 0; i--) {
+                        temp = typeNames[i];
+                        //检测文件类型是否正确
+                        if (temp != null && temp.length() > 4 && ".ttf".equals(temp.substring(temp.length() - 4, temp.length()).toLowerCase()))
+                            typeList.add(typeNames[i]);
                     }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    emitter.onError(e);
                 }
-                //添加系统文字类型
-                emitter.onNext(addItemView(0,content,""));
-                for(int i = 0 ; i <typeList.size();i++){
-                    //添加艺术字文字类型
-                    emitter.onNext(addItemView(i+1,content,typeList.get(i)));
-                }
-                emitter.onComplete();
             }
+            //添加系统文字类型
+            emitter.onNext(addItemView(0,content,""));
+            for(int i = 0 ; i <typeList.size();i++){
+                //添加艺术字文字类型
+                emitter.onNext(addItemView(i+1,content,typeList.get(i)));
+            }
+            emitter.onComplete();
         }).observeOn(Schedulers.io())
          .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Observer<View>() {
@@ -416,16 +406,16 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     private void showMyDialog() {
         if(dialog==null){
             dialog = new Dialog(this);
-             View view = LayoutInflater.from(this).inflate(R.layout.view_edit_sign,null);
+            View view = LayoutInflater.from(this).inflate(R.layout.view_edit_sign,null);
             //编辑框
-            EditText editText = (EditText)view.findViewById(R.id.edit_text);
+            EditText editText = view.findViewById(R.id.edit_text);
             ed_sign = editText;
             //取消
             RxView.clicks(view.findViewById(R.id.cancel_text))
                     .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                    .subscribe(obj -> {
-                        dialog.dismiss();
-                    });
+                    .subscribe(obj ->
+                        dialog.dismiss()
+                    );
             //生成
             RxView.clicks(view.findViewById(R.id.yes_text))
                     .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -437,12 +427,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             dialog.setCancelable(true);
             if(dialog.getWindow()!=null)
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    editText.setText("");
-                }
-            });
+            dialog.setOnDismissListener(dialog -> editText.setText(""));
             dialog.show();
 
         }else {
@@ -475,12 +460,12 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
      * @param positon 点击位置
      * @param content 艺术字内容
      * @param type 艺术字类型
-     * @return
+     * @return r
      */
     private View addItemView(int positon,String content,String type) {
-        View view= LayoutInflater.from(this).inflate(R.layout.item_sign_type_view,null);
-        TextView textView=(TextView) view.findViewById(R.id.name_text);//签名
-        ImageView imageView=(ImageView) view.findViewById(R.id.select_img);//是否选择
+        View view= LayoutInflater.from(this).inflate(R.layout.item_sign_type_view,lg_type,false);
+        TextView textView=view.findViewById(R.id.name_text);//签名
+        ImageView imageView= view.findViewById(R.id.select_img);//是否选择
         if(positon==selectPosition) {//选中
             iv_selected = imageView;
             tv_selected = textView;

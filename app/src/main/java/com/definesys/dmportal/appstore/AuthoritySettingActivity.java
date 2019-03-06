@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
@@ -16,10 +15,8 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
-import com.definesys.dmportal.appstore.ui.LeaveMainActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
@@ -27,7 +24,6 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -81,9 +77,9 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    finish();
-                });
+                .subscribe(obj->
+                    finish()
+                );
         //点击审批学生权限箭头
         RxView.clicks(lg_stu)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -118,48 +114,48 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         //申请权限
         RxView.clicks(lg_apply)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
+                .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.UpdateLeAutActivity)
                             .withInt("type",0)//申请权限
-                            .navigation();
-                });
+                            .navigation()
+                );
         //删除权限
         RxView.clicks(lg_delete)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
+                .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.UpdateLeAutActivity)
                             .withObject("stuList",stuAutInfoList)
                             .withObject("teaList",teaAutInfoList)
                             .withInt("type",1)//删除权限
-                            .navigation();
-                });
+                            .navigation()
+                );
         //权限审批
         RxView.clicks(lg_approval)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
+                .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
                             .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
                             .withInt("type",0)//权限审批
-                            .navigation();
-                });
+                            .navigation()
+                );
         //我的申请记录
         RxView.clicks(lg_alyHis)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
+                .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
                             .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
                             .withInt("type",1)//我的申请记录
-                            .navigation();
-                });
+                            .navigation()
+                );
         //历史审批记录
         RxView.clicks(lg_appHis)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
+                .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
                             .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
                             .withInt("type",2)//历史审批记录
-                            .navigation();
-                });
+                            .navigation()
+                );
         setShowLayout();
 
     }
@@ -184,7 +180,6 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     /**
      * 添加权限描述
      * @param type 0.审批学生权限 1.审批老师权限
-     * @return 权限描述
      */
     private void httpPost(int type) {
         String authorityStr=null;//用户权限
@@ -208,7 +203,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
             if(authorityStr.contains(""+i)){
                 if(type==0){
                     stuAutInfoList.add(approverTypes[i]);
-                }else if(type==1){
+                }else {
                     teaAutInfoList.add(approverTypes[i]);
                 }
                 ++requestCount;
@@ -216,7 +211,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
             }else {
                 if (type == 0) {
                     stuAutInfoList.add("");
-                } else if (type == 1) {
+                } else {
                     teaAutInfoList.add("");
                 }
             }

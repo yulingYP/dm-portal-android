@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
-import com.definesys.dmportal.appstore.bean.ApplyAuthority;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -17,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ *
  * Created by 羽翎 on 2019/3/2.
  */
 
