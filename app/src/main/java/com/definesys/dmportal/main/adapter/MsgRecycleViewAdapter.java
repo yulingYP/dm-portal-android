@@ -125,7 +125,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApprovalLeaveInfoActivity)
                                         .withString("leaveId", myMessage.getMessageExtend())
-                                        .withInt("type", myMessage.getMessageExtend2())
+                                        .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withObject("date", myMessage.getSendTime())
                                         .withString("approvalContent", myMessage.getMessageContent())
                                         .navigation();
@@ -144,7 +144,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApprovalApplyInfoActivity)
                                         .withString("applyId", myMessage.getMessageExtend())
-                                        .withInt("type", myMessage.getMessageExtend2())
+                                        .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withString("content",myMessage.getMessageContent())
                                         .withObject("date",myMessage.getSendTime())
                                         .navigation();

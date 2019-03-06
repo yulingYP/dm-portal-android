@@ -14,21 +14,30 @@
         android:background="@color/white"
         android:layout_height="wrap_content"
         >
+        <TextView
+            android:text="@string/approval_addvise_tip_3"
+            android:textSize="16sp"
+            android:id="@+id/des_text"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="14dp"
+            android:textColor="@color/blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/back_gray"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_height="1dp">
+        </View>
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
-                android:text="@string/approval_addvise_tip_3"
-                android:textSize="16sp"
-                android:id="@+id/des_text"
-                android:layout_margin="20dp"
-                android:textColor="@color/buttonBlue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/approval_result_text"
-                android:layout_below="@+id/des_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
@@ -40,9 +49,8 @@
                 android:id="@+id/approval_result_des"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/approval_result_text"
-                android:layout_below="@+id/des_text"
-                android:text="@string/approval_result_text"
+                android:layout_toEndOf="@+id/approval_result_text"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="16sp" />
             <TextView
@@ -58,28 +66,41 @@
                 android:textSize="16sp" />
 
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_marginBottom="12dp"
+        <View
             android:layout_width="match_parent"
+            android:background="@color/back_gray"
+            android:layout_height="1dp">
+        </View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/cancel_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/cancel"
+                android:textColor="@color/blue" />
+            <View
+                android:layout_width="1dp"
+                android:background="@color/back_gray"
+                android:layout_height="match_parent">
+
+            </View>
             <TextView
                 android:id="@+id/confirm_text"
                 android:text="@string/confirm"
-                android:padding="8dp"
                 android:textColor="@color/blue"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/cancel_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/confirm_text"
-                android:layout_marginEnd="20dp"
-                android:padding="8dp"
-                android:text="@string/cancel"
-                android:textColor="@color/blue" />
-        </RelativeLayout>
+        </LinearLayout>
     </com.definesys.dmportal.appstore.customViews.RCLinearLayout>
 </ScrollView>

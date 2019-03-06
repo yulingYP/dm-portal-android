@@ -163,7 +163,7 @@ public class MyDatePicker extends LinearLayout {
     private void initStatus() {
         //设置年份
         num_year.setMinValue(currentYear);
-        num_year.setMaxValue(9999);
+        num_year.setMaxValue(currentYear+4);
         num_year.setValue(currentYear);
         //设置月份
         num_month.setMinValue(currentMonth);

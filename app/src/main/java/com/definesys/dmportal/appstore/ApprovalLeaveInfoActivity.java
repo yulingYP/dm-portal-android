@@ -156,6 +156,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     private boolean isAgree = true;//是否同意
     private ApprovalRecord approvalRecord;
     private int requestCount=0;//请求的数量
+    private boolean isInit=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -594,7 +595,8 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 if(leaveInfo!=null){
                     initView();
                     initEdit();
-                }
+                }else
+                    isInit = true;
 
             }else {
                 MyMessage myMessage = data.getData();
@@ -634,7 +636,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
 //                }else if(!checkAuthority()){
 //
 //                }
-                else if(type==4&&(msgId==null||"".equals(msgId))){
+                else if(type==4&&((msgId==null||"".equals(msgId))||isInit)){
                     initView();
                     initEdit();
                 }

@@ -13,10 +13,16 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="14dp"
         android:textColor="@color/blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/back_gray"
+        android:layout_marginBottom="2dp"
+        android:layout_height="1dp">
+    </View>
     <ScrollView
         android:id="@+id/layout_scroll"
         android:layout_width="match_parent"

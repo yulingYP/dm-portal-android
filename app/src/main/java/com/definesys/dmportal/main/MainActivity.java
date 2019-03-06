@@ -34,6 +34,7 @@ import com.definesys.dmportal.appstore.LeaveListActivity;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
+import com.definesys.dmportal.appstore.receiver.NotificationBroadcastReceiver;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.config.MyCongfig;
@@ -168,12 +169,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         if(mViewPager.getAdapter()!=null)mViewPager.getAdapter().notifyDataSetChanged();
 
         titleIndicator = new CustomTitleIndicator(this, null);
-        titleIndicator.setOnTitleClickListener(new CustomTitleIndicator.OnTitleClickListener() {
-            @Override
-            public void onClick(int position) {
-                titleIndicator.setFocus(position);
-                contactFragment.getmViewpager().setCurrentItem(position);
-            }
+        titleIndicator.setOnTitleClickListener(position -> {
+            titleIndicator.setFocus(position);
+            contactFragment.getmViewpager().setCurrentItem(position);
         });
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -235,7 +233,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }
     /**
      * 获取网络头像成功
-     * @param str
+     * @param str s
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_USER_INFO)
@@ -273,7 +271,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
 
         //存储所有的fragment
         private List<Fragment> fragmentList;
-        public MainFragmentPagerAdapter(FragmentManager fm, List<Fragment> list) {
+        private MainFragmentPagerAdapter(FragmentManager fm, List<Fragment> list) {
             super(fm);
             this.fragmentList=list;
             // TODO Auto-generated constructor stub
@@ -314,8 +312,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         else if(message.contains("{")){
             myMessage= new Gson().fromJson(message, new TypeToken<MyMessage>() {
             }.getType());
-        }else
-            startActivity(setResultIntent(myMessage));
+        }
+        startActivity(setResultIntent(myMessage));
     }
 
     /**
@@ -401,8 +399,17 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
 
         String title="aa";//标题
         String content="bb";//内容
+
+        //点击事件
+//        Intent intentClick = new Intent(this, NotificationBroadcastReceiver.class);
+//        intentClick.setAction("notification_clicked");
+//        intentClick.putExtra(NotificationBroadcastReceiver.TYPE, ++notifyID);
+//        intentClick.putExtra("message",new Gson().toJson(myMessage));
+//        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(this, notifyID, intentClick, PendingIntent.FLAG_UPDATE_CURRENT);
         Intent intent = setResultIntent(myMessage);
-        PendingIntent pendingIntent =  PendingIntent.getActivity(this, 0,  intent, PendingIntent.FLAG_UPDATE_CURRENT) ;
+        PendingIntent pendingIntentClick =  PendingIntent.getActivity(this, ++notifyID,  intent, PendingIntent.FLAG_UPDATE_CURRENT) ;
+        content = myMessage.getMessageId();
+
         if(myMessage!=null){
             if(myMessage.getMessageType()==1) {//请假人审批结果
                 title = getString(R.string.approval_result);
@@ -430,7 +437,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 title = getString(R.string.approval_result_4);
                 content = getString(R.string.leave_request_tip_3);
             }
-
         }
         Notification notification = mBuilder
                 .setContentTitle(title)
@@ -439,14 +445,14 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.app_icon))
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pendingIntentClick)
                 .setDefaults(NotificationCompat.FLAG_ONLY_ALERT_ONCE)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setSound(null)
                 .setLights(Color.GREEN, 1000, 1000)
                 .build();
 
-        notiManager.notify(++notifyID,notification );
+        notiManager.notify(notifyID,notification );
     }
 
     //设置跳转的intent
@@ -462,18 +468,21 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent = new Intent(this, LeaveInfoDetailActivity.class);
             intent.putExtra("leaveId",myMessage.getMessageExtend());
         }else if(myMessage.getMessageType()==2){//审批人新的审批任务，跳转到详情页
-            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
+//            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
             intent = new Intent(this, ApprovalLeaveInfoActivity.class);
-            if(temp!=null) {
-                intent.putExtra("leaveId", temp.getMessageExtend());
-                intent.putExtra("type", temp.getMessageExtend2());
-                intent.putExtra("date", temp.getSendTime());
-                intent.putExtra("approvalContent", temp.getMessageContent());
-            }else {
-                intent.putExtra("leaveId", myMessage.getMessageExtend());
-                intent.putExtra("msgId",myMessage.getMessageId());
-                intent.putExtra("type", 4);
-            }
+            intent.putExtra("leaveId", myMessage.getMessageExtend());
+            intent.putExtra("msgId",myMessage.getMessageId());
+            intent.putExtra("type", myMessage.getMessageExtend2().intValue());
+//            if(temp!=null) {
+//                intent.putExtra("leaveId", temp.getMessageExtend());
+//                intent.putExtra("type", temp.getMessageExtend2());
+//                intent.putExtra("date", temp.getSendTime());
+//                intent.putExtra("approvalContent", temp.getMessageContent());
+//            }else {
+//                intent.putExtra("leaveId", myMessage.getMessageExtend());
+//                intent.putExtra("msgId",myMessage.getMessageId());
+//                intent.putExtra("type", myMessage.getMessageExtend2());
+//            }
         }else if(myMessage.getMessageType()==4){//申请人申请结果
             intent = new Intent(this, ApplyInfoActivity.class);
             intent.putExtra("applyId", myMessage.getMessageExtend());
@@ -510,5 +519,12 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         return intent;
     }
 
+
+//    @Subscribe(tags = {
+//            @Tag("startActivity")
+//    }, thread = EventThread.MAIN_THREAD)
+//    public void startMyActivity(MyMessage myMessage){
+//        startActivity(setResultIntent(myMessage));
+//    }
 
 }

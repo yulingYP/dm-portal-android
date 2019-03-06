@@ -131,10 +131,9 @@ public class MyReceiver extends BroadcastReceiver {
 				myMessage = new Gson().fromJson(message, new TypeToken<MyMessage>() {
 				}.getType());
 			}
-			if (MainActivity.notiManager != null)//app已初始化
-			{
-				assert myMessage != null;
-				SmecRxBus.get().post("hasNotify", myMessage);
+			if (MainActivity.notiManager != null){//app已初始化
+				if(myMessage!=null)
+					SmecRxBus.get().post("hasNotify", myMessage);
 			}
 			else {//app未初始化
 				extra = message;
