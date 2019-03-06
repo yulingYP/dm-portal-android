@@ -25,7 +25,6 @@ public class ApprovalRecord {
 
     private int leaverId;//请假人id
 
-    private String messageId;//发送给审批人的消息的id
     public ApprovalRecord() {
 
     }

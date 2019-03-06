@@ -626,7 +626,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             progressHUD.dismiss();
             PictureFileUtils.deleteCacheDirFile(this);
             //请假人提交请假申请成功
-            SmecRxBus.get().post("addMessage",new MyMessage(msg,SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,null,new Date()));
+            SmecRxBus.get().post("addMessage",new MyMessage(msg,SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,new Date()));
             finish();
 
         }

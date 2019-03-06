@@ -20,7 +20,6 @@ public class MyMessage implements Comparable<MyMessage>{
 
     private Short messageExtend2;//扩展字段 number型 可用于保存审批结果、请假结果  0.不同意 1.同意  2.正在审核 3.销假
 
-    private Date messageExtend3;//扩展字段 date型 可用户保存审批提交的时间等
 
     private Date sendTime;//发送时间
 
@@ -39,7 +38,7 @@ public class MyMessage implements Comparable<MyMessage>{
     public MyMessage(){
 
     }
-    public MyMessage(String messageId,Number userId, Short messageType, String messageContent, Short messageExtend2, String messageExtend,Date messageExtend3, Date sendTime) {
+    public MyMessage(String messageId,Number userId, Short messageType, String messageContent, Short messageExtend2, String messageExtend, Date sendTime) {
         this.messageId =messageId;
         this.userId = userId;
         this.messageType = messageType;
@@ -47,7 +46,6 @@ public class MyMessage implements Comparable<MyMessage>{
         this.messageExtend2 = messageExtend2;
         this.messageExtend = messageExtend;
         this.sendTime = sendTime;
-        this.messageExtend3 = messageExtend3;
     }
 
     public Number getUserId() {
@@ -143,13 +141,6 @@ public class MyMessage implements Comparable<MyMessage>{
         return  o.getSendTime().compareTo(this.getSendTime());
     }
 
-    public Date getMessageExtend3() {
-        return messageExtend3;
-    }
-
-    public void setMessageExtend3(Date messageExtend3) {
-        this.messageExtend3 = messageExtend3;
-    }
 
     @Override
     public String toString() {
@@ -159,7 +150,6 @@ public class MyMessage implements Comparable<MyMessage>{
                 ", messageContent='" + messageContent + '\'' +
                 ", messageExtend='" + messageExtend + '\'' +
                 ", messageExtend2=" + messageExtend2 +
-                ", messageExtend3=" + messageExtend3 +
                 ", sendTime=" + sendTime +
                 ", attribute1='" + attribute1 + '\'' +
                 ", attribute2='" + attribute2 + '\'' +

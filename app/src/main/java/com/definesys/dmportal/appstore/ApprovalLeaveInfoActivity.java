@@ -574,7 +574,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             String content = ed_reason.getText().toString();  //审批意见
             if("".equals(content)&&isAgree)
                 content = getString(R.string.agree_tip);
-            SmecRxBus.get().post("addMessage",new MyMessage(data.getData(), leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) , leaveInfo.getId(),null,new Date() ));
+            SmecRxBus.get().post("addMessage",new MyMessage(data.getData(), leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) , leaveInfo.getId(),new Date() ));
             Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             finish();
         }
