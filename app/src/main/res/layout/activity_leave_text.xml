@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    tools:ignore="ContentDescription"
     android:background="@color/back_gray"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
@@ -24,7 +25,7 @@
             <LinearLayout
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:paddingBottom="8dp"
+                android:paddingBottom="12dp"
                 android:background="@color/white"
                 android:layout_marginTop="12dp"
                 android:id="@+id/absence_layout"
@@ -34,11 +35,11 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/share_layout"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="12dp"
+                android:layout_marginTop="2dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:baselineAligned="false">
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -51,7 +52,8 @@
                         android:src="@drawable/img_icon"
                         android:layout_width="30dp"
                         android:layout_marginStart="8dp"
-                        android:layout_height="30dp" />
+                        android:layout_height="30dp"
+                         />
                     <TextView
                         android:text="@string/share_img"
                         android:textColor="@color/black"

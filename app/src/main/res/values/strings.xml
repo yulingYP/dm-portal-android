@@ -280,9 +280,10 @@
     <string name="leave_practice_des">离校登记表</string>
     <string name="leave_long_des">学生请假条</string>
     <string name="leave_practice_content">  因工业实习，申请离校前往%s地，%s公司，时间为%s至%s。具体情况已与父母陈述清楚。在离校前，承诺会整理好个人物品，保持寝室整洁；离校期间，会遵纪守法，完成实习各项要求，注意个人人身及财产安全。</string>
-    <string name="leave_practive_copy_des">离校登记表存根</string>
+    <string name="practice_des">工业实习</string>
+    <string name="leave_practice_copy_des">离校登记表存根</string>
     <string name="leave_practice_copy_content">   %d班 %s 同学因实习离校，预计于 %s 返校，请做好相关的教育管理工作。</string>
-    <string name="leave_practive_number">%d年%s号</string>
+    <string name="leave_practice_number">%d年%s号</string>
     <string name="stu_sign">学生签字：%s</string>
     <string name="stu_id">学号：%d</string>
     <string name="leave_tag_0">寝室长</string>
@@ -301,6 +302,10 @@
     <string name="get_name_fail">获取失败</string>
     <string name="file_name">%s-%s-%s-%s</string>
     <string name="leave_stop_title">销假</string>
+    <string name="teaId">工号</string>
+    <string name="leader_sign_text_2">请假管理员意见及签字</string>
+    <string name="leave_teacher_long_des">教师请假条</string>
+
     <string name="cursor">课程</string>
     <string name="back_report_tip">您确定要销假吗？</string>
     <string name="date_des">%04d年%02d月%02d日 %02d时</string>
@@ -338,17 +343,17 @@
     <string name="leave_request_tip_1">有新的请假请求,请去审批</string>
     <string name="leave_request_tip_2">有新的请假请求,请查看</string>
     <string name="leave_request_tip_3">有新的权限申请请求,请查看</string>
+
     <string name="feedback_word_hint">描述您对我们应用的建议…</string>
     <string name="feedback_img_hint">提供相关截图或照片</string>
+
     <string name="feedback">反馈建议</string>
     <string name="app_version_name">V%s</string>
     <string name="us_aboutus">关于我们</string>
     <string name="about_check">版本更新</string>
     <string name="use_protocol">用户协议</string>
     <string name="us_protocol_url">"file:///android_asset/user_protocol.html"</string>
-    <string name="teaId">工号</string>
-    <string name="leader_sign_text_2">请假管理员意见及签字</string>
-    <string name="leave_teacher_long_des">教师请假条</string>
+
 
     <string name="my_sign_setting">签名设置</string>
     <string name="my_authority_setting">权限设置</string>

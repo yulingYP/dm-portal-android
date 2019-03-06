@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hwangjr.rxbus.SmecRxBus;
 
 /**
+ *
  * Created by 羽翎 on 2019/3/6.
  */
 

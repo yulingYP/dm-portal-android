@@ -406,9 +406,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
 //        intentClick.putExtra(NotificationBroadcastReceiver.TYPE, ++notifyID);
 //        intentClick.putExtra("message",new Gson().toJson(myMessage));
 //        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(this, notifyID, intentClick, PendingIntent.FLAG_UPDATE_CURRENT);
+//        content = myMessage.getMessageId();
         Intent intent = setResultIntent(myMessage);
         PendingIntent pendingIntentClick =  PendingIntent.getActivity(this, ++notifyID,  intent, PendingIntent.FLAG_UPDATE_CURRENT) ;
-        content = myMessage.getMessageId();
+
 
         if(myMessage!=null){
             if(myMessage.getMessageType()==1) {//请假人审批结果
@@ -437,6 +438,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 title = getString(R.string.approval_result_4);
                 content = getString(R.string.leave_request_tip_3);
             }
+//            title = myMessage.getMessageId();
         }
         Notification notification = mBuilder
                 .setContentTitle(title)

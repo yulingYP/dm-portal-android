@@ -62,7 +62,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -157,14 +156,10 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
      * @param fileName 用户名-请假类型-请假标题-yyyyMMdd-HH:mm:ss
      */
     private void share(boolean isImage,String fileName){
-        Observable.create(new ObservableOnSubscribe<File>() {
-            @Override
-            public void subscribe(ObservableEmitter<File> emitter) throws Exception {
-                File file=isImage?ImageUntil.saveBitmap(ImageUntil.convertViewToBitmap(lg_absence),fileName):ImageUntil.viewToPdf(lg_absence,fileName);
-                emitter.onNext(file);
-                emitter.onComplete();
-            }
-
+        Observable.create((ObservableOnSubscribe<File>) emitter -> {
+            File file=isImage?ImageUntil.saveBitmap(ImageUntil.convertViewToBitmap(lg_absence),fileName):ImageUntil.viewToPdf(lg_absence,fileName);
+            emitter.onNext(file);
+            emitter.onComplete();
         }).subscribeOn(Schedulers.io())// 指定 subscribe() 发生在 IO 线程
                 .doOnSubscribe(disposable -> progressHUD.show())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -198,7 +193,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
 
     /**
      * 获取审批记录失败
-     * @param msg
+     * @param msg m
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
@@ -212,7 +207,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
 
     /**
      * 获取审批记录成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_APPRVAL_RECORD)
@@ -231,7 +226,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     }
     /**
      * 获取用户姓名成功
-     * @param hash
+     * @param hash h
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_USER_NAME)
@@ -277,12 +272,12 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
 
             //长假且不是实习
             else if (leaveInfo.getType() == 2 && !getString(R.string.shixi).equals(leaveInfo.getLeaveTitle())) {
-                lg_absence.addView(addLongView());
+                lg_absence.addView(addLongView(""));
             }
 
             //长假且是实习
             else if (leaveInfo.getType() == 2 && getString(R.string.shixi).equals(leaveInfo.getLeaveTitle()) || leaveInfo.getType() == 3) {
-                lg_absence.addView(addLongView());
+                lg_absence.addView(addLongView(getString(R.string.practice_des)));
                 lg_absence.addView(addPractice());
             }
         }else if(leaveInfo.getUserType()==1){//教师
@@ -302,13 +297,13 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
 
     //添加学生实习请假条
     private View addPractice() {
-        View view = LayoutInflater.from(this).inflate(R.layout.leave_practice_view,null);
+        View view = LayoutInflater.from(this).inflate(R.layout.leave_practice_view,lg_absence,false);
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4), Locale.getDefault());
 
         //编号
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(leaveInfo.getSubmitDate());
-        ((TextView)view.findViewById(R.id.leave_number)).setText(getString(R.string.leave_practive_number,calendar.get(Calendar.YEAR),"         "));
+        ((TextView)view.findViewById(R.id.leave_number)).setText(getString(R.string.leave_practice_number,calendar.get(Calendar.YEAR),"         "));
 
         //学生签名
         ((TextView)view.findViewById(R.id.stu_sign)).setText(getString(R.string.stu_sign,leaveInfo.getName()));
@@ -322,7 +317,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
             int approvalAuthority  = approvalRecord.getApproverType();
             if(approvalAuthority==0){//宿舍长
                 //签字
-                setSign((ImageView)view.findViewById(R.id.sign_img_0),(TextView)view.findViewById(R.id.sign_text_0),(ProgressBar)view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),0);
+                setSign(view.findViewById(R.id.sign_img_0),view.findViewById(R.id.sign_text_0), view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),0);
             }else if(approvalAuthority<0){//销假签字
                 //返校后签字
                 ((TextView)view.findViewById(R.id.sign_text_8)).setText(leaveInfo.getName());
@@ -332,34 +327,34 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                     int authority = approvalAuthority%10;
                     if(authority==0) {//宿舍长
                         //签字
-                        setSign((ImageView) view.findViewById(R.id.sign_img_0), (TextView) view.findViewById(R.id.sign_text_0), (ProgressBar) view.findViewById(R.id.progressBar0), approvalRecord.getApproverId(), 0);
+                        setSign( view.findViewById(R.id.sign_img_0),  view.findViewById(R.id.sign_text_0),  view.findViewById(R.id.progressBar0), approvalRecord.getApproverId(), 0);
                     }else if(authority==1){//班长
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_1),(TextView)view.findViewById(R.id.sign_text_1),(ProgressBar)view.findViewById(R.id.progressBar1),approvalRecord.getApproverId(),0);
+                        setSign(view.findViewById(R.id.sign_img_1),view.findViewById(R.id.sign_text_1),view.findViewById(R.id.progressBar1),approvalRecord.getApproverId(),0);
 
                     }else if(authority==2){//班主任
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_2),(TextView)view.findViewById(R.id.sign_text_2),(ProgressBar)view.findViewById(R.id.progressBar2),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_2),view.findViewById(R.id.sign_text_2),view.findViewById(R.id.progressBar2),approvalRecord.getApproverId(),1);
 
                     }else if(authority==3){//毕设导师
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_3),(TextView)view.findViewById(R.id.sign_text_3),(ProgressBar)view.findViewById(R.id.progressBar3),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_3),view.findViewById(R.id.sign_text_3),view.findViewById(R.id.progressBar3),approvalRecord.getApproverId(),1);
 
                     }else if(authority==4){//辅导员
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_4),(TextView)view.findViewById(R.id.sign_text_4),(ProgressBar)view.findViewById(R.id.progressBar4),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_4),view.findViewById(R.id.sign_text_4),view.findViewById(R.id.progressBar4),approvalRecord.getApproverId(),1);
 
                     }else if(authority==5){//实习工作负责人
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_5),(TextView)view.findViewById(R.id.sign_text_5),(ProgressBar)view.findViewById(R.id.progressBar5),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_5),view.findViewById(R.id.sign_text_5),view.findViewById(R.id.progressBar5),approvalRecord.getApproverId(),1);
 
                     }else if(authority==6){//学习工作负责人
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_6),(TextView)view.findViewById(R.id.sign_text_6),(ProgressBar)view.findViewById(R.id.progressBar6),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_6),view.findViewById(R.id.sign_text_6),view.findViewById(R.id.progressBar6),approvalRecord.getApproverId(),1);
 
                     }else if(authority==7){//教学工作负责人
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_7),(TextView)view.findViewById(R.id.sign_text_7),(ProgressBar)view.findViewById(R.id.progressBar7),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_7),view.findViewById(R.id.sign_text_7),view.findViewById(R.id.progressBar7),approvalRecord.getApproverId(),1);
                     }
                     approvalAuthority/=10;
                 }
@@ -367,7 +362,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         }
         //《-----------------------存根-----------------------------》
         //编号
-        ((TextView)view.findViewById(R.id.leave_copy_number)).setText(getString(R.string.leave_practive_number,calendar.get(Calendar.YEAR),"         "));
+        ((TextView)view.findViewById(R.id.leave_copy_number)).setText(getString(R.string.leave_practice_number,calendar.get(Calendar.YEAR),"         "));
         //签名时间
         ((TextView)view.findViewById(R.id.copy_time)).setText(sdf.format(leaveInfo.getSubmitDate()));
 
@@ -399,13 +394,13 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     }
 
     //添加学生长假请假条
-    private View addLongView() {
-        View view = LayoutInflater.from(this).inflate(R.layout.leave_long_view,null);
+    private View addLongView(String leaveReason) {
+        View view = LayoutInflater.from(this).inflate(R.layout.leave_long_view,lg_absence,false);
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4), Locale.getDefault());
         //姓名
         ((TextView)view.findViewById(R.id.leave_name)).setText(getString(R.string.name_tip,leaveInfo.getName()));
         //事由
-        ((TextView)view.findViewById(R.id.leave_reason)).setText(getString(R.string.leave_title,"\n"+leaveInfo.getLeaveReason()));
+        ((TextView)view.findViewById(R.id.leave_reason)).setText(getString(R.string.leave_title,"\n"+("".equals(leaveReason)?leaveInfo.getLeaveReason():leaveReason)));
         //时长
         ((TextView)view.findViewById(R.id.leave_sum)).setText(getString(R.string.sum_time, DensityUtil.getSumTime(leaveInfo.getStartTime(),leaveInfo.getEndTime(),this,false)));
         try {
@@ -437,35 +432,35 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                         //意见
                         ((TextView)view.findViewById(R.id.agree_text_1)).setText(getString(R.string.agree_tip_1,"  "+approvalRecord.getApprovalContent()));
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_1),(TextView)view.findViewById(R.id.sign_text_1),(ProgressBar)view.findViewById(R.id.progressBar1),approvalRecord.getApproverId(),0);
+                        setSign(view.findViewById(R.id.sign_img_1),view.findViewById(R.id.sign_text_1),view.findViewById(R.id.progressBar1),approvalRecord.getApproverId(),0);
                         //签名日期
                         ((TextView)view.findViewById(R.id.sign_time_1)).setText(sdf.format(approvalRecord.getApprovalTime()));
                     }else if(authority==2){//班主任
                         //意见
                         ((TextView)view.findViewById(R.id.agree_text_2)).setText(getString(R.string.agree_tip_2,"  "+approvalRecord.getApprovalContent()));
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_2),(TextView)view.findViewById(R.id.sign_text_2),(ProgressBar)view.findViewById(R.id.progressBar2),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_2),view.findViewById(R.id.sign_text_2),view.findViewById(R.id.progressBar2),approvalRecord.getApproverId(),1);
                         //签名日期
                         ((TextView)view.findViewById(R.id.sign_time_2)).setText(sdf.format(approvalRecord.getApprovalTime()));
                     }else if(authority==4){//辅导员
                         //意见
                         ((TextView)view.findViewById(R.id.agree_text_3)).setText(getString(R.string.agree_tip_3,"  "+approvalRecord.getApprovalContent()));
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_3),(TextView)view.findViewById(R.id.sign_text_3),(ProgressBar)view.findViewById(R.id.progressBar3),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_3),view.findViewById(R.id.sign_text_3),view.findViewById(R.id.progressBar3),approvalRecord.getApproverId(),1);
                         //签名日期
                         ((TextView)view.findViewById(R.id.sign_time_3)).setText(sdf.format(approvalRecord.getApprovalTime()));
                     }else if(authority==6){//学生工作负责人
                         //意见
                         ((TextView)view.findViewById(R.id.agree_text_4)).setText(getString(R.string.agree_tip_4,"  "+approvalRecord.getApprovalContent()));
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_4),(TextView)view.findViewById(R.id.sign_text_4),(ProgressBar)view.findViewById(R.id.progressBar4),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_4),view.findViewById(R.id.sign_text_4),view.findViewById(R.id.progressBar4),approvalRecord.getApproverId(),1);
                         //签名日期
                         ((TextView)view.findViewById(R.id.sign_time_4)).setText(sdf.format(approvalRecord.getApprovalTime()));
                     }else if(authority==7){//教学工作负责人
                         //意见
                         ((TextView)view.findViewById(R.id.agree_text_5)).setText(getString(R.string.agree_tip_5,"  "+approvalRecord.getApprovalContent()));
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_5),(TextView)view.findViewById(R.id.sign_text_5),(ProgressBar)view.findViewById(R.id.progressBar5),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_5),view.findViewById(R.id.sign_text_5),view.findViewById(R.id.progressBar5),approvalRecord.getApproverId(),1);
                         //签名日期
                         ((TextView)view.findViewById(R.id.sign_time_5)).setText(sdf.format(approvalRecord.getApprovalTime()));
                     }
@@ -478,7 +473,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     }
     //添加教师长假请假条
     private View addTeacherLongView() {
-        View view = LayoutInflater.from(this).inflate(R.layout.leave_teacher_long_view,null);
+         View view = LayoutInflater.from(this).inflate(R.layout.leave_teacher_long_view,lg_absence,false);
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_type_4), Locale.getDefault());
         //姓名
         ((TextView)view.findViewById(R.id.leave_name)).setText(getString(R.string.name_tip,leaveInfo.getName()));
@@ -509,7 +504,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                 ((TextView)view.findViewById(R.id.return_time)).setText(getString(R.string.return_time,sdf.format(leaveInfo.getSubmitDate())));
             }else if(approvalAuthority==0){//请假负责人
                 //签字
-                setSign((ImageView)view.findViewById(R.id.sign_img_0),(TextView)view.findViewById(R.id.sign_text_0),(ProgressBar)view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),1);
+                setSign(view.findViewById(R.id.sign_img_0),view.findViewById(R.id.sign_text_0),view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),1);
                 //意见
                 ((TextView)view.findViewById(R.id.agree_text_0)).setText(getString(R.string.agree_tip_6,"  "+approvalRecord.getApprovalContent()));
                 //签名日期
@@ -520,7 +515,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                     int authority = approvalAuthority%10;
                     if(authority==0){//请假负责人
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_0),(TextView)view.findViewById(R.id.sign_text_0),(ProgressBar)view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_0),view.findViewById(R.id.sign_text_0),view.findViewById(R.id.progressBar0),approvalRecord.getApproverId(),1);
                         //意见
                         ((TextView)view.findViewById(R.id.agree_text_0)).setText(getString(R.string.agree_tip_6,"  "+approvalRecord.getApprovalContent()));
                         //签名日期
@@ -529,7 +524,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                         //意见
                         ((TextView)view.findViewById(R.id.agree_text_1)).setText(getString(R.string.agree_tip_7,"  "+approvalRecord.getApprovalContent()));
                         //签字
-                        setSign((ImageView)view.findViewById(R.id.sign_img_1),(TextView)view.findViewById(R.id.sign_text_1),(ProgressBar)view.findViewById(R.id.progressBar1),approvalRecord.getApproverId(),1);
+                        setSign(view.findViewById(R.id.sign_img_1),view.findViewById(R.id.sign_text_1),view.findViewById(R.id.progressBar1),approvalRecord.getApproverId(),1);
                         //签名日期
                         ((TextView)view.findViewById(R.id.sign_time_1)).setText(sdf.format(approvalRecord.getApprovalTime()));
                     }
@@ -546,13 +541,13 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
      * @param userType 用户类型 0.学生 1.教师
      */
     private View addShortView(int userType) {
-        View view = LayoutInflater.from(this).inflate(userType==0?R.layout.leave_short_view:R.layout.leave_teacher_short_view,null);
+        View view = LayoutInflater.from(this).inflate(userType==0?R.layout.leave_short_view:R.layout.leave_teacher_short_view,lg_absence,false);
         //请假标题
         ((TextView)view.findViewById(R.id.short_leave_des)).setText(getString(R.string.leave_short_des, SharedPreferencesUtil.getInstance().getFacultyName()));
         //姓名
         ((TextView)view.findViewById(R.id.name_text)).setText(leaveInfo.getName());
         //学号
-        ((TextView)view.findViewById(R.id.stuId_text)).setText(""+leaveInfo.getUserId().intValue());
+        ((TextView)view.findViewById(R.id.stuId_text)).setText(String.valueOf(leaveInfo.getUserId().intValue()));
         //事由
         ((TextView)view.findViewById(R.id.leave_reason)).setText(leaveInfo.getLeaveReason());
         //时间
@@ -560,7 +555,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
         //辅导员或请假管理员意见
         ((TextView)view.findViewById(R.id.approval_content)).setText(approvalRecordList.get(0).getApprovalContent());
         //签名
-        setSign((ImageView)view.findViewById(R.id.sign_img),(TextView)view.findViewById(R.id.sign_text),(ProgressBar)view.findViewById(R.id.progressBar),approvalRecordList.get(0).getApproverId(),userType);
+        setSign(view.findViewById(R.id.sign_img),view.findViewById(R.id.sign_text),view.findViewById(R.id.progressBar),approvalRecordList.get(0).getApproverId(),userType);
         //签名日期
         ((TextView)view.findViewById(R.id.sign_time)).setText(new SimpleDateFormat(getString(R.string.date_type_6), Locale.getDefault()).format(approvalRecordList.get(0).getApprovalTime()));
 
