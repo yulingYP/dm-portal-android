@@ -180,7 +180,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             tv_selectedSubject.setText(Html.fromHtml(getString(R.string.selected_subject_tip, leaveInfo.getSelectedSubject())));
 
             //时长 2*‘#’的个数
-            tv_sumTime.setText(getString(R.string.sum_time_tip,getString(R.string.off_suject,(2*(leaveInfo.getSelectedSubject().split("\\#").length-1)))));
+            tv_sumTime.setText(getString(R.string.sum_time_tip,getString(R.string.off_suject,(2*(leaveInfo.getSelectedSubject().split("#").length-1)))));
         }else {//长假或短假
            
             tv_selectedSubject.setVisibility(GONE);

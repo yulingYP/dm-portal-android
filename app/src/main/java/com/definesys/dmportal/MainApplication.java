@@ -1,9 +1,9 @@
 package com.definesys.dmportal;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -23,9 +23,7 @@ import com.vise.xsnow.http.ViseHttp;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
-
 import cn.jpush.android.api.JPushInterface;
-import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -33,6 +31,7 @@ import okio.Buffer;
 import okio.BufferedSource;
 
 /**
+ *
  * Created by mobile on 2018/8/2.
  */
 public class MainApplication extends Application {
@@ -104,6 +103,7 @@ public class MainApplication extends Application {
                             .build();
                     Response response = chain.proceed(request);
                     ResponseBody responseBody = response.body();
+                    assert responseBody != null;
                     long contentLength = responseBody.contentLength();
 
                     BufferedSource source = responseBody.source();
@@ -111,7 +111,7 @@ public class MainApplication extends Application {
                     Buffer buffer = source.buffer();
 
                     Charset charset = Charset.forName("UTF-8");
-                    MediaType contentType = responseBody.contentType();
+//                    MediaType contentType = responseBody.contentType();
 
                     String string = "" ;
                     if (contentLength != 0) {
@@ -150,6 +150,8 @@ public class MainApplication extends Application {
 
     }
 
+
+    @SuppressLint("StaticFieldLeak")
     public synchronized void showDialog(int msgId) {
         if((alert!=null&&alert.isShowing())||MyActivityManager.getInstance().getCurrentActivity() instanceof LoginActivity)
             return;
@@ -161,12 +163,11 @@ public class MainApplication extends Application {
         AlertDialog.Builder builder = new AlertDialog.Builder(MyActivityManager.getInstance().getCurrentActivity());
         builder.setMessage(msgId)
                 .setCancelable(false)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean(getString(R.string.exit_en), true).navigation(MyActivityManager.getInstance().getCurrentActivity());
-                        dialog.cancel();
-                    }
+                .setPositiveButton(R.string.confirm, (dialog, id) -> {
+                    ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean(getString(R.string.exit_en), true).navigation(MyActivityManager.getInstance().getCurrentActivity());
+                    dialog.cancel();
                 });
+
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... voids) {
@@ -190,27 +191,6 @@ public class MainApplication extends Application {
     public static MainApplication getInstances() {
         return instances;
     }
-    /**
-     * 设置greenDao
-     */
-//    private void setDatabase() {
-//        // 通过 DaoMaster 的内部类 DevOpenHelper，你可以得到一个便利的 SQLiteOpenHelper 对象。
-//        // 可能你已经注意到了，你并不需要去编写「CREATE TABLE」这样的 SQL 语句，因为 greenDAO 已经帮你做了。
-//        // 注意：默认的 DaoMaster.DevOpenHelper 会在数据库升级时，删除所有的表，意味着这将导致数据的丢失。
-//        // 所以，在正式的项目中，你还应该做一层封装，来实现数据库的安全升级。
-//        // 此处sport-db表示数据库名称 可以任意填写
-//        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(this, "face-db", null);
-//        db = mHelper.getWritableDatabase();
-//        // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
-//        mDaoMaster = new DaoMaster(db);
-//        mDaoSession = mDaoMaster.newSession();
-//    }
-//    public DaoSession getDaoSession() {
-//        return mDaoSession;
-//    }
-//    public SQLiteDatabase getDb() {
-//        return db;
-//    }
 
     @Override
     @Subscribe

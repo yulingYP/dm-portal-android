@@ -14,6 +14,7 @@ import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,16 +55,17 @@ public class ApplyInfoPresenter extends BasePresenter {
 
     }
     //获取 applyId对应的信息实体
-    public void getApplyRecordById(String applyId){
+    public void getApplyRecordById(String applyId,Integer userId){
         Map<String,String>map = new HashMap<>();
         map.put("applyId",applyId);
+        map.put("userId",String.valueOf(userId));
         map.put("type","record");
         ViseHttp.POST(HttpConst.getApplyInfoById)
                 .tag(HttpConst.getApplyInfoById)
                 .setJson(new Gson().toJson(map))
-                .request(new ACallback<BaseResponse<ApplyRecord>>() {
+                .request(new ACallback<BaseResponse<List<ApplyRecord>>>() {
                     @Override
-                    public void onSuccess(BaseResponse<ApplyRecord> data) {
+                    public void onSuccess(BaseResponse<List<ApplyRecord>> data) {
                         switch (data.getCode()){
                             case "200":
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPLY_RECORD_INFO,  data);
@@ -110,23 +112,25 @@ public class ApplyInfoPresenter extends BasePresenter {
     /**
      * 获取提交的权限申请
      * @param userId 用户id
-     * @param authority 用户权限
+     * @param stuAut 审批学生的权限
+     * @param teaAut 审批教师的权限
      * @param type 1.未审批申请 2.已审批
      */
-    public void getApplyInfoList(Number userId,Integer authority,int type){
+    public void getApplyInfoList(Number userId,Number stuAut,Number teaAut,Number type){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("userAuthority",authority);
+        map.put("stuAut",stuAut);
+        map.put("teaAut",teaAut);
         map.put("type",type);
-        ViseHttp.POST(HttpConst.submitApplyResult)
+        ViseHttp.POST(HttpConst.getRequestApplyList)
                 .tag(HttpConst.getApplyInfoById)
                 .setJson(new Gson().toJson(map))
-                .request(new ACallback<BaseResponse<String>>() {
+                .request(new ACallback<BaseResponse<List<ApplyInfo>>>() {
                     @Override
-                    public void onSuccess(BaseResponse<String> data) {
+                    public void onSuccess(BaseResponse<List<ApplyInfo>> data) {
                         switch (data.getCode()){
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_SUBMIT_APPLY_RESULT,  data);
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_REQUEST_APPLY_LIST,  data);
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
@@ -146,18 +150,18 @@ public class ApplyInfoPresenter extends BasePresenter {
      * 获取历史审批记录
      * @param userId
      */
-    public void getHistoryApprovalApplyList(Number userId,Integer authority){
+    public void getHistoryApprovalApplyList(Number userId){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        ViseHttp.POST(HttpConst.submitApplyResult)
+        ViseHttp.POST(HttpConst.getRequestApplyList)
                 .tag(HttpConst.getApplyInfoById)
                 .setJson(new Gson().toJson(map))
-                .request(new ACallback<BaseResponse<String>>() {
+                .request(new ACallback<BaseResponse<List<ApplyRecord>>>() {
                     @Override
-                    public void onSuccess(BaseResponse<String> data) {
+                    public void onSuccess(BaseResponse<List<ApplyRecord>> data) {
                         switch (data.getCode()){
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_SUBMIT_APPLY_RESULT,  data);
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_REQUEST_APPLY_LIST , data);
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());

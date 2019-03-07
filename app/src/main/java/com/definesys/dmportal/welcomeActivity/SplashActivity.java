@@ -99,13 +99,12 @@ private String message;
 
     @Override
     public BasePresenter getPersenter() {
-        BasePresenter basePresenter = new BasePresenter(this) {
+        return new BasePresenter(SplashActivity.this) {
             @Override
             public void subscribe() {
                 super.subscribe();
             }
         };
-        return basePresenter;
     }
 }
 

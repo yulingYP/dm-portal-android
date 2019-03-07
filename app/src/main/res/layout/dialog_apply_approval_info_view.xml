@@ -24,60 +24,67 @@
             android:layout_marginBottom="4dp"
             android:layout_height="1dp">
         </View>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/name_text"
-                android:text="@string/approver_text"
-                android:paddingTop="4dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:textSize="16sp"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/black"
-                android:gravity="start|center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/content_text"
-                android:text="@string/approval_content_text"
-                android:layout_below="@id/name_text"
-                android:paddingBottom="4dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:gravity="start|center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/result_text"
-                android:text="@string/approval_result_text"
-                android:layout_below="@id/content_text"
-                android:paddingBottom="4dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:gravity="start|center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/time_text"
-                android:text="@string/approval_time_text"
-                android:layout_below="@id/result_text"
-                android:paddingBottom="4dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="8dp"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:gravity="start|center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_marginStart="24dp"-->
+            <!--android:layout_marginEnd="24dp"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<TextView-->
+                <!--android:id="@+id/name_text"-->
+                <!--android:text="@string/approver_text"-->
+                <!--android:paddingTop="4dp"-->
+                <!--android:paddingStart="4dp"-->
+                <!--android:paddingEnd="4dp"-->
+                <!--android:textSize="16sp"-->
+                <!--android:layout_marginEnd="20dp"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:gravity="start|center"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+            <!--<TextView-->
+                <!--android:id="@+id/content_text"-->
+                <!--android:text="@string/approval_content_text"-->
+                <!--android:layout_below="@id/name_text"-->
+                <!--android:paddingBottom="4dp"-->
+                <!--android:paddingStart="4dp"-->
+                <!--android:paddingEnd="4dp"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:gravity="start|center"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+            <!--<TextView-->
+                <!--android:id="@+id/result_text"-->
+                <!--android:text="@string/approval_result_text"-->
+                <!--android:layout_below="@id/content_text"-->
+                <!--android:paddingBottom="4dp"-->
+                <!--android:paddingStart="4dp"-->
+                <!--android:paddingEnd="4dp"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:gravity="start|center"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+            <!--<TextView-->
+                <!--android:id="@+id/time_text"-->
+                <!--android:text="@string/approval_time_text"-->
+                <!--android:layout_below="@id/result_text"-->
+                <!--android:paddingBottom="4dp"-->
+                <!--android:paddingStart="4dp"-->
+                <!--android:paddingEnd="8dp"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:gravity="start|center"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
+        <!--</RelativeLayout>-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
     <View
         android:background="@color/back_gray"
         android:layout_width="match_parent"

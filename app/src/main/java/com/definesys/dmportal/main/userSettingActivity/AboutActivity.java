@@ -2,7 +2,6 @@ package com.definesys.dmportal.main.userSettingActivity;
 
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,8 +20,6 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.vector.update_app.UpdateAppBean;
 import com.vector.update_app.UpdateAppManager;
 import com.vector.update_app.UpdateCallback;
-import com.vector.update_app.listener.ExceptionHandler;
-import com.vector.update_app.listener.IUpdateDialogFragmentListener;
 import com.vector.update_app.utils.AppUpdateUtils;
 
 import org.json.JSONException;
@@ -45,8 +42,6 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
     @BindView(R.id.title_bar_att_about)
     CustomTitleBar titleBar;
 
-    private String appVersionName;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,15 +61,16 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
 
         ((TextView) use_protocol.findViewById(R.id.title_item_itr)).setText(getResources().getString(R.string.use_protocol));
         ((ImageView) use_protocol.findViewById(R.id.img_item_itr)).setImageResource(R.mipmap.user_protocol);
-        check_update.setOnClickListener(view -> {
-            updateDiy();
-        });
+        check_update.setOnClickListener(view ->
+            updateDiy()
+        );
 
         //用户协议
         use_protocol.setOnClickListener(view -> ARouter.getInstance()
                 .build(ARouterConstants.WebViewActivity)
                 .withString("url", getString(R.string.us_protocol_url)).navigation());
         //设置版本信息
+        String appVersionName;
         try {
             appVersionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -101,12 +97,7 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
                 //必须设置，更新地址
                 .setUpdateUrl(mUpdateUrl)
                 //全局异常捕获
-                .handleException(new ExceptionHandler() {
-                    @Override
-                    public void onException(Exception e) {
-                        e.printStackTrace();
-                    }
-                })
+                .handleException(Throwable::printStackTrace)
                 //以下设置，都是可选
                 //设置请求方式，默认get
                 .setPost(true)
@@ -126,12 +117,9 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
 //                .setTargetPath(path)
 //  设置appKey，默认从AndroidManifest.xml获取，如果，使用自定义参数，则此项无效
 //                .setAppKey("ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f")
-                .setUpdateDialogFragmentListener(new IUpdateDialogFragmentListener() {
-                    @Override
-                    public void onUpdateNotifyDialogCancel(UpdateAppBean updateApp) {
-                        //用户点击关闭按钮，取消了更新，如果是下载完，用户取消了安装，则可以在 onActivityResult 监听到。
+                .setUpdateDialogFragmentListener(updateApp -> {
+                    //用户点击关闭按钮，取消了更新，如果是下载完，用户取消了安装，则可以在 onActivityResult 监听到。
 
-                    }
                 })
                 //不自动，获取
 //                .setIgnoreDefParams(true)
@@ -156,7 +144,7 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
                             final JSONObject data = jsonObject.getJSONObject("data");
                             final String newVersion = data.optString("versionNumber");
 
-                            String status = "";
+                            String status ;
                             if(ComparisonString(newVersion,version)){
                                 status = "Yes";
                             }else {

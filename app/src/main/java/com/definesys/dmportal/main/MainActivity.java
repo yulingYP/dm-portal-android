@@ -34,7 +34,6 @@ import com.definesys.dmportal.appstore.LeaveListActivity;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
-import com.definesys.dmportal.appstore.receiver.NotificationBroadcastReceiver;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.config.MyCongfig;

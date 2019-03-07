@@ -143,6 +143,7 @@
     <string name="leave_detail">请假详情</string>
     <string name="no_msg_tip">暂无消息</string>
     <string name="no_net_tip">暂无网络</string>
+    <string name="no_aut_tip">暂无权限</string>
     <string name="no_dyn_tip">暂无动态</string>
     <string name="no_history_tip">暂无记录</string>
     <string name="userId_tip">学号/工号:%d</string>
@@ -448,6 +449,7 @@
     <string name="approval_apply_title">权限审批</string>
     <string name="check_approval_apply_title">审批详细信息</string>
 
-
-
+    <string name="aut_error_tip_1">您当前没有审批权限</string>
+    <string name="authority_tip">权限:%s</string>
+    <string name="region_tip">范围:%s</string>
 </resources>

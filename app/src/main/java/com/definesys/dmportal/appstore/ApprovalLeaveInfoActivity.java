@@ -156,7 +156,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     private boolean isAgree = true;//是否同意
     private ApprovalRecord approvalRecord;
     private int requestCount=0;//请求的数量
-    private boolean isInit=false;
+    private boolean isInit=false;//是否初始化界面
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -394,7 +394,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     @SuppressLint("SetTextI18n")
     private void initResultDialog() {
         Dialog dialog = new Dialog(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.view_approval_result_confirm,null);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.view_approval_result_confirm,null);
 
         //审批结果
         TextView tv_result = view.findViewById(R.id.approval_result_des);

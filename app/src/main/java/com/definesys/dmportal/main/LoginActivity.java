@@ -6,7 +6,6 @@ import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -34,17 +33,13 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
-import com.vise.xsnow.permission.Permission;
 import com.vise.xsnow.permission.RxPermissions;
-
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 @Route(path = ARouterConstants.LoginAcitvity)
 public class LoginActivity extends BaseActivity<LoginPresenter> {
@@ -259,19 +254,16 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         RxPermissions rxPermission = new RxPermissions(this);
         rxPermission
                 .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Permission>() {
-                    @Override
-                    public void accept(Permission permission) throws Exception {
-                        if (permission.granted) {
-                            // 用户已经同意该权限
-                            Log.d("mydemo", permission.name + " is granted.");
-                        } else if (permission.shouldShowRequestPermissionRationale) {
-                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
-                            Log.d("mydemo", permission.name + " is denied. More info should be provided.");
-                        } else {
-                            // 用户拒绝了该权限，并且选中『不再询问』
-                            Log.d("mydemo", permission.name + " is denied.");
-                        }
+                .subscribe(permission -> {
+                    if (permission.granted) {
+                        // 用户已经同意该权限
+                        Log.d("mydemo", permission.name + " is granted.");
+                    } else if (permission.shouldShowRequestPermissionRationale) {
+                        // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                        Log.d("mydemo", permission.name + " is denied. More info should be provided.");
+                    } else {
+                        // 用户拒绝了该权限，并且选中『不再询问』
+                        Log.d("mydemo", permission.name + " is denied.");
                     }
                 });
     }

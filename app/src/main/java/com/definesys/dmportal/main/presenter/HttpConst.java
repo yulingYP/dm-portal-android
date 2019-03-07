@@ -106,6 +106,7 @@ public interface HttpConst {
     //提交审批结果
     String submitApplyResult = "submitApplyResult";
 
-
+    //获取请求的申请列表或审批记录
+    String getRequestApplyList = "getRequestApplyList";
 
 }

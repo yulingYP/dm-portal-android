@@ -138,7 +138,7 @@ public class MyMessage implements Comparable<MyMessage>{
 
     @Override
     public int compareTo(@NonNull MyMessage o) {
-        return  o.getSendTime().compareTo(this.getSendTime());
+        return  o.getMessageId().compareTo(this.getMessageId());
     }
 
 

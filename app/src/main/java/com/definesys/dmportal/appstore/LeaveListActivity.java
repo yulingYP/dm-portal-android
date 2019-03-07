@@ -1,7 +1,5 @@
 package com.definesys.dmportal.appstore;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,19 +26,12 @@ import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
-import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -117,44 +108,38 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    finish();
-                });
+                .subscribe(obj->
+                    finish()
+                );
         //下拉刷新监听
-        smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                requestPage = 1;
-                if(submitLeaveInfoList!=null&&submitLeaveInfoList.size()>0) {
-                    submitLeaveInfoList.clear();
-                    if(leaveInfoListAdapter!=null)
-                        leaveInfoListAdapter.notifyDataSetChanged();
-                }else if(approvalRecordList!=null&&approvalRecordList.size()>0){
-                    approvalRecordList.clear();
-                    if(leaveInfoListAdapter!=null)
-                        leaveInfoListAdapter.notifyDataSetChanged();
-                }
-                httpPost();
+        smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
+            requestPage = 1;
+            if(submitLeaveInfoList!=null&&submitLeaveInfoList.size()>0) {
+                submitLeaveInfoList.clear();
+                if(leaveInfoListAdapter!=null)
+                    leaveInfoListAdapter.notifyDataSetChanged();
+            }else if(approvalRecordList!=null&&approvalRecordList.size()>0){
+                approvalRecordList.clear();
+                if(leaveInfoListAdapter!=null)
+                    leaveInfoListAdapter.notifyDataSetChanged();
             }
+            httpPost();
         });
         //加载更多
-        smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                ++requestPage;
-                httpPost();
-            }
+        smartRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            ++requestPage;
+            httpPost();
         });
 
         //搜索
         RxView.clicks(iv_search)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
+                .subscribe(o ->
                    ARouter.getInstance()
                            .build(ARouterConstants.LeaveListSearchActivity)
                            .withInt("type",type)
-                           .navigation();
-                });
+                           .navigation()
+                );
         //隐藏暂无页面
         lg_no.setVisibility(View.GONE);
         smartRefreshLayout.autoRefresh();
@@ -219,7 +204,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
 
     /**
      * 获取请假信息失败
-     * @param msg
+     * @param msg m
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
@@ -237,7 +222,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
 
     /**
      * 获取请假信息成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_INFO_LIST)
@@ -258,10 +243,8 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             }
             else {//有数据
                 int currentSize = submitLeaveInfoList.size();
-                List<LeaveInfo> leaveInfos = data.getData();
-                submitLeaveInfoList.addAll(leaveInfos);
+                submitLeaveInfoList.addAll(data.getData());
                 //排序
-                Collections.sort(submitLeaveInfoList);
                 setNoLayout(0);
                 if(leaveInfoListAdapter==null)
                     initList();
@@ -272,7 +255,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }
     /**
      * 获取审批记录成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_APPROVAL_HISTORY_LIST)
@@ -336,7 +319,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
 
     /**
      * 更新审批状态成功
-     * @param leaveId
+     * @param leaveId l
      */
     @Subscribe(tags = {
             @Tag("updateSuccess")
@@ -356,7 +339,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
 
     /**
      * 销假成功
-     * @param leaveId
+     * @param leaveId l
      */
     @Subscribe(tags = {
             @Tag("cancelLeaveSuccess")

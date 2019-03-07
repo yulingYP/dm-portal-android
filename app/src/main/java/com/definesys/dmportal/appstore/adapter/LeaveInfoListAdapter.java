@@ -67,14 +67,11 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
                                     .navigation()
                     );
             if (type == 0||type==3) {
-                holder.tv_id.setVisibility(View.GONE);
                 holder.tv_name.setVisibility(View.GONE);
-
                 //审批状态
                 holder.tv_status.setText(DensityUtil.getApprovalStatus(submitLeaveInfoList.get(position), mContext, false));
                 DensityUtil.setTVcolor(holder.tv_status.getText().toString(), holder.tv_status, mContext);
             } else {
-                holder.tv_id.setVisibility(View.GONE);
                 holder.tv_name.setText(submitLeaveInfoList.get(position).getName());
                 holder.tv_status.setText(String.valueOf(submitLeaveInfoList.get(position).getUserId()) );
             }
@@ -103,7 +100,6 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
                                     .navigation()
                     );
 
-            holder.tv_id.setVisibility(View.GONE);
             holder.tv_type.setVisibility(View.GONE);
             //请假人姓名
             holder.tv_name.setText(approvalRecordList.get(position).getLeaverName());
@@ -129,8 +125,6 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.id_text)
-        TextView tv_id;
 
         @BindView(R.id.name_text)
         TextView tv_name;

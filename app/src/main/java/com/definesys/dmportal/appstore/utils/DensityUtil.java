@@ -6,9 +6,7 @@ import android.widget.TextView;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.CursorArg;
 import com.definesys.dmportal.appstore.bean.LeaveInfo;
-
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +24,7 @@ import java.util.regex.Pattern;
 import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
 
 /**
+ *
  * Created by 羽翎 on 2018/11/24.
  */
 
@@ -61,9 +60,9 @@ public class DensityUtil {
     /***
      * 把中文替换为指定字符<br>
      * 注意:一次只匹配一个中文字符
-     * @param source
-     * @param replacement
-     * @return
+     * @param source s
+     * @param replacement r
+     * @return r
      */
     public static String replaceChinese(String source, String replacement){
 
@@ -79,9 +78,9 @@ public class DensityUtil {
     /**
      * 将px值转换为sp值，保证文字大小不变
      *
-     * @param pxValue
-     * @param
-     * @return
+     * @param pxValue p
+     * @param context c
+     * @return r
      */
     public static float px2sp( Context context,float pxValue) {
         float scale = context.getResources().getDisplayMetrics().density;
@@ -91,7 +90,7 @@ public class DensityUtil {
     /**
      * 获取当前数的2进制形式
      * @param item 16进制
-     * @return
+     * @return r
      */
     public static String getPitchString(char item){
         String [] allresults = {"0000","0001","0010","0011","0100","0101",
@@ -101,9 +100,9 @@ public class DensityUtil {
 
     /**
      * 设置某天的开始或结束时间
-     * @param date
+     * @param date d
      * @param isStart 是不是设置开始时间
-     * @return
+     * @return r
      */
     public static Date setDate(Date date,boolean isStart){
         if(date==null)
@@ -132,7 +131,7 @@ public class DensityUtil {
      * 检查要显示的教室格式
      * @param weekDay 星期几
      * @param classroom 教室 可能为null，MMM或（xMMM,xMMM）
-     * @return
+     * @return r
      */
     public static String checkClassRoom(int weekDay, String classroom) {
         if(classroom==null)
@@ -155,7 +154,7 @@ public class DensityUtil {
      * 返回指定格式的日期
      * @param type 格式
      * @param date 日期
-     * @return
+     * @return r
      */
     public static String dateTypeToString(String type,Date date){
         if(date==null)
@@ -166,7 +165,7 @@ public class DensityUtil {
 
     /**
      * 设置请假类型
-     * @param type
+     * @param type t
      */
     public static String setTypeText(String type) {
         int hasPostion = type.indexOf("(");//是否包含括号
@@ -176,18 +175,13 @@ public class DensityUtil {
     /**
      * 返回排序后的list
      * @param hashMap 待排序map
-     * @return
+     * @return r
      */
     public static List<Map.Entry<Integer,String>> sort(HashMap<Integer,String> hashMap) {
-        List<Map.Entry<Integer,String>> list = new ArrayList<Map.Entry<Integer,String>>(hashMap.entrySet());
+        List<Map.Entry<Integer,String>> list = new ArrayList<>(hashMap.entrySet());
         //然后通过比较器来实现排序
-        Collections.sort(list,new Comparator<Map.Entry<Integer,String>>() {
-            //升序排序
-            public int compare(Map.Entry<Integer, String> o1,
-                               Map.Entry<Integer, String> o2) {
-                return o1.getKey().compareTo(o2.getKey());
-            }
-        });
+        //升序排序
+        Collections.sort(list, (o1, o2) -> o1.getKey().compareTo(o2.getKey()));
         return list;
     }
 
@@ -220,9 +214,9 @@ public class DensityUtil {
     }
     /**
      * 返回该请假信息的审批状态
-     * @param leaveInfo
+     * @param leaveInfo l
      * @param isMain 是不是请假主页
-     * @return
+     * @return r
      */
     public static String getApprovalStatus(LeaveInfo leaveInfo,Context context,boolean isMain){
         if(leaveInfo==null)//没有请假记录
@@ -265,9 +259,9 @@ public class DensityUtil {
     }
     /**
      * 根据内容设置textView的颜色
-     * @param data
-     * @param tv
-     * @param context
+     * @param data d
+     * @param tv t
+     * @param context c
      */
     public static void setTVcolor(String data, TextView tv, Context context) {
         if(context.getString(R.string.status_tip_1).equals(data))
@@ -286,8 +280,8 @@ public class DensityUtil {
 
     /**
      * 获取上课的所有班级的id
-     * @param cursorArg
-     * @return
+     * @param cursorArg c
+     * @return r
      */
     public static String getClassLisId(CursorArg cursorArg) {
         if(cursorArg==null)
@@ -295,12 +289,12 @@ public class DensityUtil {
         List<String> classList = cursorArg.getClassId();//上课的班级id
         if(classList==null)
             return "";
-        String classId = "";
+        StringBuilder classId = new StringBuilder();
         for (int m = 0; m < classList.size(); m++) {
-            if (m > 0) classId += "、" + classList.get(m);
-            else classId += classList.get(m);
+            if (m > 0) classId.append("、").append(classList.get(m));
+            else classId.append(classList.get(m));
         }
-        return  classId;
+        return classId.toString();
     }
 
     /**
@@ -320,10 +314,12 @@ public class DensityUtil {
             if(startWeek-sorcueEnd==1)//待填如周的开始与已填入周的结束相邻
                 arr1[i]=""+sorcueStart+"-"+endWeek;
         }
-        for(int i =0 ;i<arr1.length;i++ ){
-            if(i==0)sourceStr=arr1[i];
-            else sourceStr+=","+arr1[i];
+        StringBuilder sourceStrBuilder = new StringBuilder(sourceStr);
+        for(int i = 0; i<arr1.length; i++ ){
+            if(i==0) sourceStrBuilder = new StringBuilder(arr1[i]);
+            else sourceStrBuilder.append(",").append(arr1[i]);
         }
+        sourceStr = sourceStrBuilder.toString();
         return sourceStr;
     }
 
@@ -332,12 +328,12 @@ public class DensityUtil {
      * @param startDateStr 开始时间的字符串 yyyy年MM月dd日 HH时
      * @param endDateStr 结束时间的字符串 yyyy年MM月dd日 HH时
      * @param isHour 是否需要显示小时
-     * @return
+     * @return r
      */
     public  static String getSumTime(String startDateStr,String endDateStr,Context context,boolean isHour){
         SimpleDateFormat df = new SimpleDateFormat(context.getString(R.string.date_type), Locale.getDefault());
-        Date startDate = null;
-        Date endDate = null;
+        Date startDate ;
+        Date endDate ;
         try {
             startDate = df.parse(startDateStr);
             endDate = df.parse(endDateStr);

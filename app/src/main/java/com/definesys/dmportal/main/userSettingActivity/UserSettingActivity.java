@@ -1,12 +1,9 @@
 package com.definesys.dmportal.main.userSettingActivity;
 
 import android.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
@@ -86,9 +83,9 @@ public class UserSettingActivity extends BaseActivity {
         RxView.clicks(lg_about)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                        ARouter.getInstance().build(ARouterConstants.AboutActivity).navigation();
-                        }
+                .subscribe(o ->
+                        ARouter.getInstance().build(ARouterConstants.AboutActivity).navigation()
+
                 );
         //退出登录
         RxView.clicks(lg_logout).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -101,23 +98,19 @@ public class UserSettingActivity extends BaseActivity {
                                     new LogoutPresenter(this).logout( SharedPreferencesUtil.getInstance().getUserId());
                                     ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean(getString(R.string.exit_en), true).navigation(UserSettingActivity.this);
 
-                                }).create().show()
+                                })
+                                .create()
+                                .show()
                 );
 
         getConfig();
-        sw_sound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                    MyCongfig.musicOpen(UserSettingActivity.this,true);
-            }
+        sw_sound.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked)
+                MyCongfig.musicOpen(UserSettingActivity.this,true);
         });
-        sw_vibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                    MyCongfig.vibratorOpen(UserSettingActivity.this);
-            }
+        sw_vibrate.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked)
+                MyCongfig.vibratorOpen(UserSettingActivity.this);
         });
     }
 
@@ -165,4 +158,5 @@ public class UserSettingActivity extends BaseActivity {
             }
         };
     }
+
 }

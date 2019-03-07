@@ -2,7 +2,6 @@ package com.definesys.dmportal.main.userSettingActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,23 +10,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.LeaveActivity;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
-import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.bean.Feedback;
-import com.definesys.dmportal.main.interfaces.OnItemClickListener;
 import com.definesys.dmportal.main.presenter.FeedBackPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
-import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -39,9 +33,7 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.PictureFileUtils;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -152,7 +144,7 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
 
     /**
      * 申请失败
-     * @param msg
+     * @param msg a
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
@@ -165,7 +157,7 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
     }
     /**
      * 提交反馈意见成功
-     * @param msg
+     * @param msg s
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST)

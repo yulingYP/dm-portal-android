@@ -1,8 +1,7 @@
 package com.definesys.dmportal.appstore;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -18,14 +17,11 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
-import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.bean.ApplyRecord;
-import com.definesys.dmportal.appstore.bean.LeaveInfo;
-import com.definesys.dmportal.appstore.customViews.ReasonTypeListLayout;
 import com.definesys.dmportal.appstore.presenter.ApplyInfoPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
@@ -36,13 +32,10 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -95,9 +88,9 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    finish();
-                });
+                .subscribe(obj->
+                    finish()
+                );
         //姓名
         tv_name.setText(getString(R.string.name_tip,applyInfo.getApplyUserName()));
         //申请内容
@@ -113,9 +106,9 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         //查看审批记录
         RxView.clicks(lg_check)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                   mPersenter.getApplyRecordById(applyInfo.getApplyId());
-                });
+                .subscribe(obj->
+                   mPersenter.getApplyRecordById(applyInfo.getApplyId(),null)
+                );
 
     }
     /**
@@ -156,35 +149,41 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_APPLY_RECORD_INFO)
     }, thread = EventThread.MAIN_THREAD)
-    public void getApplyRecord(BaseResponse<ApplyRecord> data) {
+    public void getApplyRecord(BaseResponse<List<ApplyRecord>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             progressHUD.dismiss();
             showMyDialog(data.getData());//显示提示框
         }
     }
 
-    private void showMyDialog(ApplyRecord data) {
-        Dialog dialog = new Dialog(this);
-
-        View view=LayoutInflater.from(this).inflate(R.layout.dialog_apply_approval_info_view,null);
-        //审批人
-        ((TextView)view.findViewById(R.id.name_text)).setText(getString(R.string.approver_text,getApprovalerName()));
-        //审批内容
-        ((TextView)view.findViewById(R.id.content_text)).setText(getString(R.string.approval_content_text,data.getApplyContent()));
-        //审批结果
-        ((TextView)view.findViewById(R.id.result_text)).setText(Html.fromHtml(getString(R.string.approval_result_text,data.getApplyStatus()==0?"<font color='#ff4444'>不同意</font>":"<font color='#7cb342'>同意</font>")));
-        //审批时间
-        ((TextView)view.findViewById(R.id.time_text)).setText(getString(R.string.approval_time_text, DensityUtil.dateTypeToString(getString(R.string.date_type_2),data.getApplyDate())));
+    @SuppressLint("InflateParams")
+    private void showMyDialog(List<ApplyRecord> datas) {
+         Dialog dialog = new Dialog(this);
+         View view=LayoutInflater.from(this).inflate(R.layout.dialog_apply_approval_info_view,null);
+         LinearLayout parent = view.findViewById(R.id.parent_layout);
+         View itemView=LayoutInflater.from(this).inflate(R.layout.dialog_apply_approval_info_view,parent,false);
+         for(ApplyRecord data:datas) {
+             //审批人
+             ((TextView) view.findViewById(R.id.name_text)).setText(getString(R.string.approver_text, getApprovalerName()));
+             //审批内容
+             ((TextView) view.findViewById(R.id.content_text)).setText(getString(R.string.approval_content_text, data.getApplyContent()));
+             //审批结果
+             ((TextView) view.findViewById(R.id.result_text)).setText(Html.fromHtml(getString(R.string.approval_result_text, data.getApplyStatus() == 0 ? "<font color='#ff4444'>不同意</font>" : "<font color='#7cb342'>同意</font>")));
+             //审批时间
+             ((TextView) view.findViewById(R.id.time_text)).setText(getString(R.string.approval_time_text, DensityUtil.dateTypeToString(getString(R.string.date_type_2), data.getApprovalDate())));
+             parent.addView(itemView);
+         }
         //点击确定
         RxView.clicks(view.findViewById(R.id.confirm_text))
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(o -> {
-                    dialog.dismiss();
-                });
+                .subscribe(o ->
+                    dialog.dismiss()
+                );
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(view);
         dialog.setCancelable(true);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if(dialog.getWindow()!=null)
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
     private String getApprovalerName(){

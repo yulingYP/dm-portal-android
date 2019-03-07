@@ -6,13 +6,17 @@ import java.util.Date;
 public class ApplyRecord implements Serializable {
     private String applyId;//信息id
 
-    private Integer applyerId;//审批人id
+    private String applyerName;//申请人姓名
+
+    private Integer approverId;//审批人id
+
+    private Integer applyerId;//申请人id
 
     private Short applyStatus;//审批状态  0.不同意 1.同意
 
     private String applyContent;//审批内容
 
-    private Date applyDate;//审批日期
+    private Date approvalDate;//审批日期
 
     private String attribute;
 
@@ -20,9 +24,7 @@ public class ApplyRecord implements Serializable {
 
     private String attribute2;
 
-    private String attribute3;
 
-    private String attribute4;
 
     private static final long serialVersionUID = 1L;
 
@@ -30,8 +32,11 @@ public class ApplyRecord implements Serializable {
         return applyId;
     }
     public ApplyRecord(){}
-    public ApplyRecord(String applyId, Integer applyerId, Short applyStatus, String applyContent) {
+
+    public ApplyRecord(String applyId,Integer applyerId, String applyerName, Integer approverId,  Short applyStatus, String applyContent) {
         this.applyId = applyId;
+        this.applyerName = applyerName;
+        this.approverId = approverId;
         this.applyerId = applyerId;
         this.applyStatus = applyStatus;
         this.applyContent = applyContent;
@@ -65,12 +70,12 @@ public class ApplyRecord implements Serializable {
         this.applyContent = applyContent == null ? null : applyContent.trim();
     }
 
-    public Date getApplyDate() {
-        return applyDate;
+    public Date getApprovalDate() {
+        return approvalDate;
     }
 
-    public void setApplyDate(Date applyDate) {
-        this.applyDate = applyDate;
+    public void setApprovalDate(Date approvalDate) {
+        this.approvalDate = approvalDate;
     }
 
     public String getAttribute() {
@@ -97,19 +102,19 @@ public class ApplyRecord implements Serializable {
         this.attribute2 = attribute2 == null ? null : attribute2.trim();
     }
 
-    public String getAttribute3() {
-        return attribute3;
+    public String getApplyerName() {
+        return applyerName;
     }
 
-    public void setAttribute3(String attribute3) {
-        this.attribute3 = attribute3 == null ? null : attribute3.trim();
+    public void setApplyerName(String applyerName) {
+        this.applyerName = applyerName;
     }
 
-    public String getAttribute4() {
-        return attribute4;
+    public Integer getApproverId() {
+        return approverId;
     }
 
-    public void setAttribute4(String attribute4) {
-        this.attribute4 = attribute4 == null ? null : attribute4.trim();
+    public void setApproverId(Integer approverId) {
+        this.approverId = approverId;
     }
 }
