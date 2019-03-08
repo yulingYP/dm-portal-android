@@ -116,11 +116,12 @@ public class ApplyInfoPresenter extends BasePresenter {
      * @param teaAut 审批教师的权限
      * @param type 1.未审批申请 2.已审批
      */
-    public void getApplyInfoList(Number userId,Number stuAut,Number teaAut,Number type){
+    public void getApplyInfoList(Number userId,Number stuAut,Number teaAut,Number type,Number page){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
         map.put("stuAut",stuAut);
         map.put("teaAut",teaAut);
+        map.put("page", page);
         map.put("type",type);
         ViseHttp.POST(HttpConst.getRequestApplyList)
                 .tag(HttpConst.getApplyInfoById)
@@ -150,9 +151,10 @@ public class ApplyInfoPresenter extends BasePresenter {
      * 获取历史审批记录
      * @param userId
      */
-    public void getHistoryApprovalApplyList(Number userId){
+    public void getHistoryApprovalApplyList(Number userId,Number page){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
+        map.put("page",page);
         ViseHttp.POST(HttpConst.getRequestApplyList)
                 .tag(HttpConst.getApplyInfoById)
                 .setJson(new Gson().toJson(map))

@@ -1,6 +1,5 @@
 package com.definesys.dmportal.appstore;
 
-
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,8 +125,8 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             if(smartRefreshLayout.getState().isOpening) {
-                smartRefreshLayout.finishRefresh(false);
-                smartRefreshLayout.finishLoadMore(false);
+                smartRefreshLayout.finishRefresh(true);
+                smartRefreshLayout.finishLoadMore(true);
             }
             Toast.makeText(this,("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
             setNoLayout(1);
@@ -242,9 +241,9 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 setNoLayout(3);
             }
         }else if(type ==1){//历史申请记录
-            mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(),null,null,type);
+            mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(),null,null,type,requestPage);
         }else if(type==2){//历史审批记录
-            mPersenter.getHistoryApprovalApplyList(SharedPreferencesUtil.getInstance().getUserId());
+            mPersenter.getHistoryApprovalApplyList(SharedPreferencesUtil.getInstance().getUserId(),requestPage);
         }
     }
     //检察权限并发起请求
@@ -261,7 +260,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
             teaAut=null;
         if(stuAut==null&&teaAut==null)
             return false;
-        mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(), SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), type);
+        mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(), SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), type,requestPage);
         return true;   
         
     }

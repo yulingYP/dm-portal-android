@@ -5,6 +5,7 @@ import android.content.Context;
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
+import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.google.gson.Gson;
@@ -40,6 +41,36 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                             case "200":
                                 data.setExtendInfo(authorityType);
                                 data.setMsg(""+authority);
+//                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+    }
+    public void getUserAuthorityDetail(Number userId, int authorityType, List<String> authorities){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("userId",userId);
+        map.put("authorities",authorities); //审批老师权限的时候+10；方便以后整理textView
+        map.put("authorityType",authorityType);
+        ViseHttp.POST(HttpConst.getAuthorityDetailInfo)
+                .tag(HttpConst.getAuthorityDetailInfo)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<AuthorityDetail>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<AuthorityDetail>> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                data.setExtendInfo(authorityType);
+//                                data.setMsg(""+authority);
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO,  data);
                                 break;
                             default:
@@ -55,7 +86,6 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                     }
                 });
     }
-
     /**
      * 获取对应的数组
      * @param extendId1 type: 0/2.用户id 1.班级id *100 3/4/5/6/7/8/9/10/11/12/20/21.空

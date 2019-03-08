@@ -1,5 +1,6 @@
 package com.definesys.dmportal.appstore;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
+import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
@@ -25,6 +27,7 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -60,9 +63,8 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     LinearLayout lg_appHis;
     @BindView(R.id.apply_history_layout)
     LinearLayout lg_alyHis;
-    private volatile int requestCount=0;//请求的个数
-    List<String> stuAutInfoList;//审批请假学生权限列表
-    List<String> teaAutInfoList;//审批请假教师权限列表
+    private HashMap<Integer,String> stuMap;//审批请假学生权限Map
+    private HashMap<Integer,String> teaMap;//审批请假教师权限Map
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                         tv_stu.setVisibility(GONE);
                         iv_stu.setRotation(0);
                     }else {//未显示权限
-                        if(stuAutInfoList==null&&"".equals(tv_stu.getText().toString())){//还没有获取到详细权限
+                       if(stuMap==null&&"".equals(tv_stu.getText().toString())){//还没有获取到详细权限
                             httpPost(0);
                         }else
                             tv_stu.setVisibility(VISIBLE);
@@ -104,7 +106,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                         tv_tea.setVisibility(GONE);
                         iv_tea.setRotation(0);
                     }else {//未显示权限
-                        if(teaAutInfoList==null&& "".equals(tv_tea.getText().toString())){//还没有获取到详细权限
+                    if(teaMap==null&& "".equals(tv_tea.getText().toString())){//还没有获取到详细权限
                             httpPost(1);
                         }else
                             tv_tea.setVisibility(VISIBLE);
@@ -124,8 +126,8 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.UpdateLeAutActivity)
-                            .withObject("stuList",stuAutInfoList)
-                            .withObject("teaList",teaAutInfoList)
+                            .withObject("stuList",stuMap)
+                            .withObject("teaList",teaMap)
                             .withInt("type",1)//删除权限
                             .navigation()
                 );
@@ -165,13 +167,13 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
             lg_tea.setVisibility(GONE);
         if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0&&SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()<0)//没有任何审批权限
             lg_delete.setVisibility(GONE);
-        if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0){//审批请假学生权限
+        if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0){//没有审批请假学生权限
             tv_stu.setText(R.string.no_authority_des);
             tv_stu.setGravity(Gravity.CENTER);
         }
 
         //审批请假教师权限
-        if(SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()<0){//审批请假学生权限
+        if(SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()<0){//没有审批请假学生权限
             tv_tea.setText(R.string.no_authority_des);
             tv_tea.setGravity(Gravity.CENTER);
         }
@@ -181,41 +183,37 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
      * 添加权限描述
      * @param type 0.审批学生权限 1.审批老师权限
      */
+    @SuppressLint("UseSparseArrays")
     private void httpPost(int type) {
         String authorityStr=null;//用户权限
         String [] approverTypes = null;
         int max=0;
-//        int position=0;//元素在list中的位置
         if(type==0){//0.审批学生权限
-            stuAutInfoList = new ArrayList<>();
+            stuMap = new HashMap<>();
             authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
             max=9;
             approverTypes=getResources().getStringArray(R.array.approverType);
         }else if(type==1){//审批老师权限
-            teaAutInfoList = new ArrayList<>();
+            teaMap = new HashMap<>();
             authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
             max = 3;
             approverTypes=getResources().getStringArray(R.array.approverType_2);
         }
 
         progressHUD.show();
+        List<String> autList = new ArrayList<>();
         for(int i = 0 ; i <max;i++){
             if(authorityStr.contains(""+i)){
                 if(type==0){
-                    stuAutInfoList.add(approverTypes[i]);
+                    stuMap.put(i,approverTypes[i]+" ");
+                    autList.add(""+i);
                 }else {
-                    teaAutInfoList.add(approverTypes[i]);
-                }
-                ++requestCount;
-                mPersenter.getUserAuthorityDetail(SharedPreferencesUtil.getInstance().getUserId(),type,i);
-            }else {
-                if (type == 0) {
-                    stuAutInfoList.add("");
-                } else {
-                    teaAutInfoList.add("");
+                    teaMap.put(i,approverTypes[i]+" ");
+                    autList.add(""+(i+10));
                 }
             }
         }
+        mPersenter.getUserAuthorityDetail(SharedPreferencesUtil.getInstance().getUserId(),type,autList);
     }
 
     /**
@@ -228,67 +226,70 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             Toast.makeText(this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
-            if(--requestCount<=0)
-                progressHUD.dismiss();
+            progressHUD.dismiss();
         }
     }
 
-    /**
-     * 获取权限详细信息成功
+
+    /* * 获取权限详细信息成功
      * @param data BaseResponse
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO)
     }, thread = EventThread.MAIN_THREAD)
-    public void getDetailInfo(BaseResponse<List<String>> data) {
+    public void getDetailInfoByBean(BaseResponse<List<AuthorityDetail>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            StringBuilder content = new StringBuilder();
-            List<String> list=data.getData();//详细信息的list
+            List<AuthorityDetail> list=data.getData();//详细信息的list
             int type=data.getExtendInfo();//权限类型
-            for(int i = 0 ; i<list.size();i++){
-                content.append(list.get(i));
-                if(i<list.size()-1)content.append(", ");
+            int authority;
+            if(list!=null&&list.size()>0) {//有数据
+                for (int i = 0; i < list.size(); i++) {
+                    if (type == 0) {//审批学生学生
+                        authority = list.get(i).getUserAuthority();
+                        if (stuMap.get(authority) != null && !"".equals(stuMap.get(authority)))
+                            stuMap.put(authority, stuMap.get(authority) + list.get(i).getRegion() + ", ");
+                    } else {//审批教师
+                        authority = list.get(i).getUserAuthority() - 10;
+                        if (teaMap.get(authority) != null && !"".equals(teaMap.get(authority)))
+                            teaMap.put(authority, teaMap.get(authority) + list.get(i).getRegion() + ", ");
+                    }
+                }
+            }else {//没数据
+                Toast.makeText(this, ("".equals(data.getMsg())?getString(R.string.net_work_error):data.getMsg()),Toast.LENGTH_SHORT).show();
             }
-            int authority = Integer.valueOf(data.getMsg());
-            String result=content.toString()+(authority<=4&&type==0?getString(R.string.ban):" ");
-            if(type==0) {//学生
-                stuAutInfoList.set(Integer.valueOf(data.getMsg()), stuAutInfoList.get(authority)+" "+result);
-            }else if(type==1){//教师
-                teaAutInfoList.set(Integer.valueOf(data.getMsg()), teaAutInfoList.get(authority)+" "+result);
-            }
-
-            if(--requestCount<=0) {//请求全部完成
-                showText(type);
-                progressHUD.dismiss();
-            }
+            showTextByMap(type);
+            progressHUD.dismiss();
 
         }
     }
-
     /**
      * 展示审批的详细结果
      * @param type 0.审批学生 1.审批教师
      */
-    private void showText(int type) {
+    private void showTextByMap(int type) {
         StringBuilder content= new StringBuilder();
         if(type==0){//审批学生
-            for(int i = 0;i<stuAutInfoList.size();i++){
-                if(!"".equals(stuAutInfoList.get(i))){//有权限
-                    content.append(stuAutInfoList.get(i)).append("\n");
+            for(int i = 0;i<9;i++){
+                if(stuMap.get(i)!=null&&!"".equals(stuMap.get(i))){//有权限
+                    content.append(stuMap.get(i).substring(0,stuMap.get(i).length()-2))
+                            .append(i<=4?getString(R.string.ban):" ")
+                            .append("\n");
                 }
             }
             tv_stu.setText(content.toString().substring(0,content.length()-1));
             tv_stu.setVisibility(VISIBLE);
         }else if(type==1){//审批教师
-            for(int i = 0;i<teaAutInfoList.size();i++){
-                if(!"".equals(teaAutInfoList.get(i))){//有权限
-                    content.append(teaAutInfoList.get(i)).append("\n");
+            for(int i = 0;i<3;i++){
+                if(teaMap.get(i)!=null&&!"".equals(teaMap.get(i))){//有权限
+                    content.append(teaMap.get(i).substring(0,teaMap.get(i).length()-2))
+                            .append("\n");
                 }
             }
             tv_tea.setText(content.toString().substring(0,content.length()-1));
             tv_tea.setVisibility(VISIBLE);
         }
     }
+
 
     @Override
     public LeaveAuthorityPresenter getPersenter() {
