@@ -1,4 +1,4 @@
-package com.definesys.dmportal.appstore;
+package com.definesys.dmportal.appstore.ui.leaveSetting;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -136,7 +136,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
-                            .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
+                            .withString("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
                             .withInt("type",0)//权限审批
                             .navigation()
                 );
@@ -145,7 +145,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
-                            .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
+                            .withString("ARouterPath",ARouterConstants.ApplyInfoActivity)
                             .withInt("type",1)//我的申请记录
                             .navigation()
                 );
@@ -154,7 +154,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
-                            .withObject("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
+                            .withString("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
                             .withInt("type",2)//历史审批记录
                             .navigation()
                 );

@@ -121,7 +121,7 @@
         <activity
             android:name=".appstore.ui.leaveSetting.SignatureActivity"
             android:configChanges="orientation|keyboardHidden" />
-        <activity android:name=".appstore.AuthoritySettingActivity" />
+        <activity android:name=".appstore.ui.leaveSetting.AuthoritySettingActivity" />
         <activity android:name=".appstore.UpdateLeAutActivity"/>
         <activity android:name=".appstore.AppLyListActivity" />
         <activity android:name=".appstore.ApprovalApplyInfoActivity" />

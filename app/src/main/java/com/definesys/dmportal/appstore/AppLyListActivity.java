@@ -138,7 +138,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
      * @param data d
      */
     @Subscribe(tags = {
-            @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_INFO_LIST)
+            @Tag(MainPresenter.SUCCESSFUL_REQUEST_APPLY_LIST)
     }, thread = EventThread.MAIN_THREAD)
     public void getLeaveInfoList(BaseResponse<List<ApplyInfo>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
@@ -248,9 +248,14 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     }
     //检察权限并发起请求
     private boolean checkAuthority() {
-        Integer stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
-        Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
-        if(stuAut<=0||teaAut<=0)
+        Integer stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
+        Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批老师权限
+        if(stuAut<=0)//没有审批学生权限
+            stuAut=0;
+        if(teaAut<=0){//没有审批老师权限
+            teaAut=0;
+        }
+        if(stuAut<=0&&teaAut<=0)
             return false;
         //不包含班长、班主任或辅导员或权限审批负责人权限
         if(!(String.valueOf(stuAut).contains("1")||String.valueOf(stuAut).contains("2")||String.valueOf(stuAut).contains("4")||String.valueOf(stuAut).contains("8")))

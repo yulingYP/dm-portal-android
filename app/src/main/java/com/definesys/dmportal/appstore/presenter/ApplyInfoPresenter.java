@@ -12,12 +12,12 @@ import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ *
  * Created by 羽翎 on 2019/3/5.
  */
 
@@ -149,12 +149,13 @@ public class ApplyInfoPresenter extends BasePresenter {
 
     /**
      * 获取历史审批记录
-     * @param userId
+     * @param userId 用户id
      */
     public void getHistoryApprovalApplyList(Number userId,Number page){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
+        map.put("type",2);
         ViseHttp.POST(HttpConst.getRequestApplyList)
                 .tag(HttpConst.getApplyInfoById)
                 .setJson(new Gson().toJson(map))
@@ -163,7 +164,7 @@ public class ApplyInfoPresenter extends BasePresenter {
                     public void onSuccess(BaseResponse<List<ApplyRecord>> data) {
                         switch (data.getCode()){
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_REQUEST_APPLY_LIST , data);
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPROVAL_HISTORY_LIST , data);
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());

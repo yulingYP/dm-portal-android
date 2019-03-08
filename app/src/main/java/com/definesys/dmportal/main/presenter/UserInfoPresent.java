@@ -51,7 +51,7 @@ public class UserInfoPresent extends BasePresenter {
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
-//                                Log.d("mydemo",data.getMsg());
+                                getUserInfo(id,userType);//重新获取
                                 break;
                         }
                     }
@@ -59,6 +59,7 @@ public class UserInfoPresent extends BasePresenter {
                     @Override
                     public void onFail(int errCode, String errMsg) {
 //                        Log.d("mydemo",errMsg);
+                        getUserInfo(id,userType);//重新获取
                         SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
                     }
                 });

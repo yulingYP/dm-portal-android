@@ -106,9 +106,10 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         //查看审批记录
         RxView.clicks(lg_check)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->
-                   mPersenter.getApplyRecordById(applyInfo.getApplyId(),null)
-                );
+                .subscribe(obj-> {
+                    progressHUD.show();
+                    mPersenter.getApplyRecordById(applyInfo.getApplyId(), null);
+                });
 
     }
     /**

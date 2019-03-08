@@ -62,7 +62,7 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
                                     .withInt("title", 0)//页面标题
                                     .navigation()
                     );
-            if(type==1){
+            if(type==0){
                 //姓名
                 holder.tv_name.setText(mContext.getString(R.string.name_tip,applyInfoList.get(position).getApplyUserName()));
                 //学号或工号
@@ -75,9 +75,10 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
             }
 
             //权限类型
-            holder.tv_type.setText(mContext.getString(R.string.authority_tip,applyInfoList.get(position).getApplyDetailContent().split(" ")[0]));
+            String type=applyInfoList.get(position).getApplyDetailContent().split(" ")[0];
+            holder.tv_type.setText(mContext.getString(R.string.authority_tip,type.length()>2?type.substring(0,type.length()-2):type));
             //权限范围
-            holder.tv_title.setText(mContext.getString(R.string.authority_tip,applyInfoList.get(position).getApplyReason()));
+            holder.tv_title.setText(mContext.getString(R.string.region_tip,applyInfoList.get(position).getApplyRegion()));
             //申请时间
             holder.tv_time.setText(DensityUtil.dateTypeToString(mContext.getString(R.string.date_type_2),applyInfoList.get(position).getApplyDate()));
 

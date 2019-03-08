@@ -28,11 +28,11 @@ public interface ARouterConstants {
     String FeedBackActivity = "/dmportal/appstore/FeedBackActivity";//反馈建议界面
     String AboutActivity = "/dmportal/appstore/AboutActivity";//关于我们页面
     String WebViewActivity ="/dmportal/webview/WebViewActivity";//网页
-    String SignatureActivity ="/dmportal/webview/SignatureActivity";//手写签名页面
-    String AuthoritySettingActivity ="/dmportal/webview/AuthoritySettingActivity";//请假权限权限页面
-    String UpdateLeAutActivity = "/dmportal/webview/UpdateLeAutActivity ";//更新请假权限权限页面
-    String AppLyListActivity = "/dmportal/webview/AppLyListActivity";//权限相关列表页面
-    String ApplyInfoActivity = "/dmportal/webview/ApplyInfoActivity";//权限审批列表页面
-    String ApprovalApplyInfoActivity = "/dmportal/webview/ApprovalApplyInfoActivity";//权限相关列表页面
+    String SignatureActivity ="/dmportal/appstore/SignatureActivity";//手写签名页面
+    String AuthoritySettingActivity ="/dmportal/appstore/AuthoritySettingActivity";//请假权限权限页面
+    String UpdateLeAutActivity = "/dmportal/appstore/UpdateLeAutActivity ";//更新请假权限权限页面
+    String AppLyListActivity = "/dmportal/appstore//AppLyListActivity";//权限相关列表页面
+    String ApplyInfoActivity = "/dmportal/appstore/ApplyInfoActivity";//权限审批列表页面
+    String ApprovalApplyInfoActivity = "/dmportal/appstore/ApprovalApplyInfoActivity";//权限相关列表页面
 
 }

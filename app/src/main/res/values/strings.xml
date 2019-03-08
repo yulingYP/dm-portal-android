@@ -450,6 +450,6 @@
     <string name="check_approval_apply_title">审批详细信息</string>
 
     <string name="aut_error_tip_1">您当前没有审批权限</string>
-    <string name="authority_tip">权限:%s</string>
+    <string name="authority_tip">类型:%s</string>
     <string name="region_tip">范围:%s</string>
 </resources>
