@@ -144,7 +144,7 @@ public class MainApplication extends Application {
     public synchronized void showDialog(int msgId) {
         if(isShowing||MyActivityManager.getInstance().getCurrentActivity() instanceof LoginActivity)
             return;
-
+        isShowing = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(MyActivityManager.getInstance().getCurrentActivity());
         builder.setMessage(msgId)
                 .setCancelable(false)
@@ -163,13 +163,20 @@ public class MainApplication extends Application {
             @Override
             protected void onPostExecute(String aVoid) {
                 builder.create();
-                builder.setCancelable(false);
                 builder.show();
-                isShowing = true;
+//                isShowing = true;
             }
         }.execute("");
     }
 
+
+    public void setShowing(boolean showing) {
+        isShowing = showing;
+    }
+
+    public boolean isShowing() {
+        return isShowing;
+    }
 
     public static MainApplication getInstances() {
         return instances;

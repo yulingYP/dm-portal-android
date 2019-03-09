@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import android.annotation.SuppressLint;
@@ -74,6 +75,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         ButterKnife.bind(this);
         if(isFirst)//第一次使用APP？
             requestPermissions();
+        MainApplication.getInstances().setShowing(false);
         initView();
     }
 

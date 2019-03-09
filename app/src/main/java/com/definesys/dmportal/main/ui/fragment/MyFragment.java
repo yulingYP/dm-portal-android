@@ -27,6 +27,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
+import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.customViews.BottomDialog;
@@ -225,6 +226,8 @@ public class MyFragment extends Fragment {
      * 更新完成刷新显示用户头像
      */
     public void refreshUserImage() {
+        //提示单机登陆或账号冻结
+        if(MainApplication.getInstances().isShowing()) return;
         String str = SharedPreferencesUtil.getInstance().getUserLocal();
         if("".equals(str)){
             str = getString(R.string.get_image, HttpConst.url,SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
