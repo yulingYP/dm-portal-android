@@ -252,7 +252,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }, thread = EventThread.MAIN_THREAD)
     public void getPushErrorMsg(ArrayList<MyMessage> data) {
         for(MyMessage myMessage:data){
-            if((myMessage.getPushResult()==2)||(myMessage.getPushResult()==0&&(myMessage.getMessageType()==1||myMessage.getMessageType()==4)
+            if((myMessage.getPushResult()==2)||
+                    (myMessage.getPushResult()==0&&(myMessage.getMessageType()==1||myMessage.getMessageType()==4)
                     &&(myMessage.getMessageExtend2()==0||myMessage.getMessageExtend2()==1))){//推送失败和未读的请假、权限申请结果消息
                 if(myMessage.getMessageType()==2&&myMessage.getMessageExtend2()==4){//新的请假请求
                     myMessage.setMessageType((short)10);
@@ -260,7 +261,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                     myMessage.setMessageType((short)11);
                 }
                 hasNotify(myMessage);
-            }else if(myMessage.getPushResult()==0){//未读消息
+            }
+            else if(myMessage.getPushResult()==0&&
+                    (myMessage.getMessageType()==2||myMessage.getMessageType()==5)&&myMessage.getMessageExtend2()==4){//未读的审批请求消息
                 setRed(true);
             }
 
@@ -350,9 +353,16 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             if(message!=null) {
                 contactFragment.getMsgFragment().addMsg(message);
             }
-        } else {//显示红点
-            mTabbar.getTabAtPosition(0).showCirclePointBadge();
         }
+//        else {//显示红点
+//            if(message!=null&&(//有消息
+//              (message.getMessageType()==1&&message.getMessageType()<=1)||//请假申请被批准或者被拒绝的消息
+//              (message.getMessageType()==2&&message.getMessageType()==4)|| //请假审批人收到审批消息
+//              (message.getMessageType()==4&&message.getMessageType()<=1)||//权限申请结果
+//              (message.getMessageType()==5&&message.getMessageType()==4)//新的权限申请请求
+//            ))
+//            mTabbar.getTabAtPosition(0).showCirclePointBadge();
+//        }
     }
 
     //消息页红点
@@ -383,7 +393,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             currentTime = System.currentTimeMillis();
             msgType=myMessage.getMessageType();
         }
-        addMessage(myMessage);
+        addMessage(myMessage);//添加消息
+        setRed(true);//显示红点
         NotificationCompat.Builder mBuilder;
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
             NotificationChannel channel;
