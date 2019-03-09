@@ -120,6 +120,7 @@
         <activity android:name=".appstore.ui.leaveSetting.LeaveSignActivity" />
         <activity
             android:name=".appstore.ui.leaveSetting.SignatureActivity"
+            android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden" />
         <activity android:name=".appstore.ui.leaveSetting.AuthoritySettingActivity" />
         <activity android:name=".appstore.UpdateLeAutActivity"/>

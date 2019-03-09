@@ -2,7 +2,13 @@ package com.definesys.dmportal.appstore.ui;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -174,12 +180,8 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                     dimBackground(1.0f,0.6f);
                     popupWindow.showAsDropDown(img_list);
                 });
-        img_list.post(new Runnable() {
-            @Override
-            public void run() {
-                initMenuList(img_list.getMeasuredWidth());
-            }
-        });
+        img_list.post(() -> initMenuList(img_list.getMeasuredWidth()));
+
     }
     /**
      * 菜单列表
@@ -195,14 +197,11 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
-        popupWindow.setAnimationStyle(R.style.PopupAnimation);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
 
-                dimBackground(0.6f,1.0f);
-            }
-        });
+        popupWindow.setAnimationStyle(R.style.PopupAnimation);
+        popupWindow.setOnDismissListener(() -> dimBackground(0.6f,1.0f));
 
     }
     //屏幕变灰动画
@@ -210,20 +209,17 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
         final Window window = getWindow();
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(from, to);
         valueAnimator.setDuration(200);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                WindowManager.LayoutParams params = window.getAttributes();
-                params.alpha = (Float) animation.getAnimatedValue();
-                window.setAttributes(params);
-            }
+        valueAnimator.addUpdateListener(animation -> {
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.alpha = (Float) animation.getAnimatedValue();
+            window.setAttributes(params);
         });
         valueAnimator.start();
     }
 
     /**
      * 获取当前请假状态失败
-     * @param msg
+     * @param msg msg
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
@@ -239,7 +235,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
 
     /**
      * 获取当前请假状态成功
-     * @param data
+     * @param data d
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_CURRENT_STATUS)
@@ -264,6 +260,8 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
     public GetCurrentApprovalStatusPresenter getPersenter() {
         return new GetCurrentApprovalStatusPresenter(this);
     }
+
+
 
     @Override
     protected void onStop() {

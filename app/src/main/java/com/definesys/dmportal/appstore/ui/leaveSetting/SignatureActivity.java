@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -25,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @Route(path = ARouterConstants.SignatureActivity)
-public class SignatureActivity extends BaseActivity {
+public class SignatureActivity extends AppCompatActivity {
     @BindView(R.id.back_icon)
     ImageView iv_back;
     @BindView(R.id.sign_view)
@@ -39,10 +41,7 @@ public class SignatureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signature);
         ButterKnife.bind(this);
-        //设置横屏
-        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+
         initView();
     }
 
@@ -65,24 +64,29 @@ public class SignatureActivity extends BaseActivity {
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {
                     if(lg_sign.getTouched()) {
-
                         Intent intent = new Intent();
                         intent.putExtra("path", ImageUntil.saveBitmapFromView(lg_sign.clearBlank(lg_sign.reDraw(), 10), UUID.randomUUID().toString(), this, 4));
                         setResult(RESULT_OK, intent);
                         finish();
                     }else
-                        Toast.makeText(this,"请先输入您的签名",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.sign_text,Toast.LENGTH_SHORT).show();
 
                 });
     }
 
     @Override
-    public BasePresenter getPersenter() {
-        return new BasePresenter(this) {
-            @Override
-            public void subscribe() {
-                super.subscribe();
-            }
-        };
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //设置横屏
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
+
 }
