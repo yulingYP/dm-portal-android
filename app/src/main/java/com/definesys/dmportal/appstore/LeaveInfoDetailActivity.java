@@ -122,7 +122,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         setContentView(R.layout.activity_leave_info_detail);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-        setNoLayout(true);
+        setNoLayout(false);
         initTitle();
         if(leaveInfo !=null)
             initView();

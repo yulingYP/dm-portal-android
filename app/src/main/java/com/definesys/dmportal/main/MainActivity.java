@@ -354,15 +354,16 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 contactFragment.getMsgFragment().addMsg(message);
             }
         }
-//        else {//显示红点
-//            if(message!=null&&(//有消息
-//              (message.getMessageType()==1&&message.getMessageType()<=1)||//请假申请被批准或者被拒绝的消息
-//              (message.getMessageType()==2&&message.getMessageType()==4)|| //请假审批人收到审批消息
-//              (message.getMessageType()==4&&message.getMessageType()<=1)||//权限申请结果
-//              (message.getMessageType()==5&&message.getMessageType()==4)//新的权限申请请求
-//            ))
-//            mTabbar.getTabAtPosition(0).showCirclePointBadge();
-//        }
+        else {//显示红点
+            if(message!=null&&(//有消息
+              (message.getMessageType()==1&&message.getMessageExtend2()<=1)||//请假申请被批准或者被拒绝的消息
+              (message.getMessageType()==2&&message.getMessageExtend2()==4)|| //请假审批人收到审批消息
+              (message.getMessageType()==4&&message.getMessageExtend2()<=1)||//权限申请结果
+              (message.getMessageType()==5&&message.getMessageExtend2()==4)||//新的权限申请请求
+              message.getMessageType()==10||message.getMessageType()==11//新的权限申请请求
+            ))
+            setRed(true);
+        }
     }
 
     //消息页红点
@@ -394,7 +395,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             msgType=myMessage.getMessageType();
         }
         addMessage(myMessage);//添加消息
-        setRed(true);//显示红点
+
         NotificationCompat.Builder mBuilder;
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
             NotificationChannel channel;

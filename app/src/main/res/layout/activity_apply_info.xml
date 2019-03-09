@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables,RelativeOverlap,ContentDescription"
     android:background="@color/back_gray"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
@@ -55,7 +56,8 @@
                         android:layout_marginEnd="20dp"
                         android:textSize="16sp"
                         android:text="@string/status_tip_1"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                         />
                     <TextView
                         android:id="@+id/aut_text"
                         android:layout_below="@+id/name_text"
@@ -123,7 +125,8 @@
                         android:layout_marginEnd="12dp"
                         android:src="@drawable/entry"
                         android:layout_width="20dp"
-                        android:layout_height="30dp" />
+                        android:layout_height="30dp"
+                        />
                 </LinearLayout>
 
             </LinearLayout>
@@ -134,15 +137,17 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
             <ImageView
                 android:id="@+id/no_img"
                 android:src="@mipmap/no_history"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                 />
             <TextView
                 android:id="@+id/no_text"
-                android:text="@string/no_current_leave_info"
+                android:text="@string/apply_no_info"
                 android:gravity="center"
                 android:textSize="14sp"
                 android:layout_marginTop="20dp"

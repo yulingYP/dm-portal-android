@@ -120,7 +120,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
 
             ++requestCount;
             //查看是否已有审批记录
-            mPersenter.getApplyRecordById(applyId,null);
+            mPersenter.getApplyRecordById(applyId);
         }
         else if(type==0||type==1){
          applyRecord = new ApplyRecord();

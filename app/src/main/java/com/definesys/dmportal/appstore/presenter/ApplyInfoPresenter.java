@@ -55,12 +55,9 @@ public class ApplyInfoPresenter extends BasePresenter {
 
     }
     //获取 applyId对应的信息实体
-    public void getApplyRecordById(String applyId,Integer userId){
+    public void getApplyRecordById(String applyId){
         Map<String,String>map = new HashMap<>();
         map.put("applyId",applyId);
-        if(userId!=null) {
-            map.put("userId", String.valueOf(userId));
-        }
         map.put("type","record");
         ViseHttp.POST(HttpConst.getApplyInfoById)
                 .tag(HttpConst.getApplyInfoById)

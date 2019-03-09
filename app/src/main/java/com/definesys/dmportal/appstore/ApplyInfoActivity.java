@@ -71,14 +71,14 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         setContentView(R.layout.activity_apply_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
+        setNoLayout(true);
         if(applyInfo!=null)
             initView();
-        else if(applyId!=null&&"".equals(applyId))
-            setNoLayout(true);
-        else {
+        else if(applyId!=null&&!"".equals(applyId)){
             progressHUD.show();
             mPersenter.getApplyInfoById(applyId);
         }
+
     }
 
     private void initView() {
@@ -108,7 +108,7 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj-> {
                     progressHUD.show();
-                    mPersenter.getApplyRecordById(applyInfo.getApplyId(), null);
+                    mPersenter.getApplyRecordById(applyInfo.getApplyId());
                 });
 
     }
