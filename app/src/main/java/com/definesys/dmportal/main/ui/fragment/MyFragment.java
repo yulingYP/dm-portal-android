@@ -104,7 +104,7 @@ public class MyFragment extends Fragment {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .placeholder(R.drawable.my);
-
+    private int requestCount=0;//重新获取尝试次数
     public MyFragment() {
         // Required empty public constructor
     }
@@ -246,8 +246,12 @@ public class MyFragment extends Fragment {
 
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                        SharedPreferencesUtil.getInstance().setUserLocal("");
-                        userImage.setImageResource(R.drawable.my);
+//                        SharedPreferencesUtil.getInstance().setUserLocal("");
+//                        userImage.setImageResource(R.drawable.my);
+                        if(++requestCount<5)
+                            refreshUserImage();
+                        else
+                            userImage.setImageResource(R.drawable.my);
                     }
                 });
 

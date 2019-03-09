@@ -446,7 +446,7 @@
     <string name="authority_reason">申请原因:\n%s</string>
     <string name="apply_result">审批结果</string>
     <string name="approval_time">审批时间:%s</string>
-    <string name="submit_alyapr_success">提交成功</string>
+    <string name="submit_alyapr_success">审批成功</string>
     <string name="approval_apply_title">权限审批</string>
     <string name="check_approval_apply_title">审批详细信息</string>
 

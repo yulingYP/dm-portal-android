@@ -325,7 +325,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             @Tag("updateSuccess")
     }, thread = EventThread.MAIN_THREAD)
     public void updateSuccess(String leaveId) {
-        if(submitLeaveInfoList!=null) {
+        if(submitLeaveInfoList!=null&leaveInfoListAdapter!=null) {
             for (int i = 0; i < submitLeaveInfoList.size(); i++) {
                 if (submitLeaveInfoList.get(i).getId().equals(leaveId)) {
                     submitLeaveInfoList.remove(i);

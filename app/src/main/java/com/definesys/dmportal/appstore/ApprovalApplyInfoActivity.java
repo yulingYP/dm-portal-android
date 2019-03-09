@@ -220,6 +220,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             Toast.makeText(this, R.string.submit_alyapr_success,Toast.LENGTH_SHORT).show();
             SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)5,approvalContent,(short)(isAgree?1:0),applyInfo.getApplyId(),new Date()));
+            SmecRxBus.get().post("updateList", applyInfo.getApplyId());
             if(--requestCount<=0){
                 progressHUD.dismiss();
             }

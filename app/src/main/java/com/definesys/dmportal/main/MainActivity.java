@@ -490,17 +490,20 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             if(myMessage.getMessageExtend2()==1)//权限申请通过，重新获取权限信息
                 mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
         }else if(myMessage.getMessageType()==5){//审批人新的审批任务，跳转到详情页
-            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
+//            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
             intent = new Intent(this, ApprovalApplyInfoActivity.class);
-            if(temp!=null) {
-                intent.putExtra("applyId", temp.getMessageExtend());
-                intent.putExtra("type", temp.getMessageExtend2());
-                intent.putExtra("content",myMessage.getMessageContent());
-                intent.putExtra("date",myMessage.getSendTime());
-            }else {
-                intent.putExtra("applyId", myMessage.getMessageExtend());
-                intent.putExtra("type", 4);
-            }
+            intent.putExtra("applyId", myMessage.getMessageExtend());
+//            intent.putExtra("msgId",myMessage.getMessageId());
+            intent.putExtra("type", myMessage.getMessageExtend2().intValue());
+//            if(temp!=null) {
+//                intent.putExtra("applyId", temp.getMessageExtend());
+//                intent.putExtra("type", temp.getMessageExtend2());
+//                intent.putExtra("content",myMessage.getMessageContent());
+//                intent.putExtra("date",myMessage.getSendTime());
+//            }else {
+//                intent.putExtra("applyId", myMessage.getMessageExtend());
+//                intent.putExtra("type", 4);
+//            }
         }else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
             intent = new Intent(this, LeaveListActivity.class);
             intent.putExtra("userId",(int) SharedPreferencesUtil.getInstance().getUserId());

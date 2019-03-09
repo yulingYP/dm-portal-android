@@ -112,7 +112,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     public int getApprpvalStudentAuthority() {   return sp.getInt(spApprovalStuAut,-1);}
     public int getUserSetting() {   return sp.getInt(spUserSetting+getUserId(),1);}
     //-----------------------SET-------------------
-    public SharedPreferences.Editor setUser(User user) {
+    public void setUser(User user) {
         if(user!=null) {
             SharedPreferences.Editor editor = getSpWithEdit()
                     .putString(spUserName, user.getName())//姓名
@@ -128,11 +128,11 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                     .putInt(spApprovalTeaAut,user.getLeaveTeacherAuthority())//教师请假方面的权限
                     .putString(spUserLocalimg,"");//本地头像
             editor.apply();
-            return editor;
+            return;
         }
-        return getSpWithEdit();
+        getSpWithEdit();
     }
-    public SharedPreferences.Editor clearUser() {
+    public void clearUser() {
         SharedPreferences.Editor editor = getSpWithEdit()
                 .putString(spUserName, "")//姓名
                 .putString(spUserPhone, getUserPhone())//电话
@@ -149,7 +149,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                 .putInt(spApprovalTeaAut,-1)//请假权限
                 .putString(spUserLocalimg,"");//本地头像路径
         editor.apply();
-        return getSpWithEdit();
+        getSpWithEdit();
     }
     public void disableFirstOpen() {
         getSpWithEdit().putBoolean(isFirstOpen, false).apply();
@@ -216,7 +216,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     /**
      * 保存List和当前歌曲号
      *
-     * @param datalist
+     * @param datalist d
      */
     public SharedPreferences.Editor setHistoryData(int type, List<String> datalist) {
         if (!(null == datalist || datalist.size() <= 0)) {

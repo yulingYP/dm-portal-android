@@ -293,7 +293,24 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
             tv_no.setText(R.string.no_aut_tip);
         }
     }
-
+    /**
+     * 更新审批状态成功
+     * @param applyId l
+     */
+    @Subscribe(tags = {
+            @Tag("updateSuccess")
+    }, thread = EventThread.MAIN_THREAD)
+    public void updateSuccess(String applyId) {
+        if(applyInfoAdapter!=null&&applyInfoList != null) {
+            for (int i = 0; i < applyInfoList.size(); i++) {
+                if (applyInfoList.get(i).getApplyId().equals(applyId)) {
+                    applyInfoList.remove(i);
+                    break;
+                }
+            }
+            applyInfoAdapter.notifyDataSetChanged();
+        }
+    }
     @Override
     public ApplyInfoPresenter getPersenter() {
         return new ApplyInfoPresenter(this);

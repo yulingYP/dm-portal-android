@@ -126,7 +126,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                     }
                 });
         //审批学生权限
-        initAuthorityList(getResources().getStringArray(R.array.approverType),lg_stuAut,0, SharedPreferencesUtil.getInstance().getUserType()==0?0:2,SharedPreferencesUtil.getInstance().getUserType()==0?7:2);
+        initAuthorityList(getResources().getStringArray(R.array.approverType),lg_stuAut,0, SharedPreferencesUtil.getInstance().getUserType()==0?0:2,SharedPreferencesUtil.getInstance().getUserType()==0?8:2);
         if(SharedPreferencesUtil.getInstance().getUserType()!=1){//不是教师
             lg_tea.setVisibility(View.GONE);
             lg_teaAut.setVisibility(View.GONE);
