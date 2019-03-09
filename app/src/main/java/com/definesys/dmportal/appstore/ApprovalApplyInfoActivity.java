@@ -308,7 +308,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
             } else if (authority == 1) {//班长
                 return String.valueOf(userAuthority).contains("" + 2);//班主任权限
             } else if (authority == 2 || authority == 3) {//班主任/毕设老师
-                return String.valueOf(userAuthority).contains("" + 2);//辅导员权限
+                return String.valueOf(userAuthority).contains("" + 4);//辅导员权限
             } else if (authority == 4 || authority == 5 || authority == 6 || authority == 7) {//辅导员/实习/教学/学生工作负责人
                 return String.valueOf(userAuthority).contains("" + 8);//院系权限审批负责人
             }

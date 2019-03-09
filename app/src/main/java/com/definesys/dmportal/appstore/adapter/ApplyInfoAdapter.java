@@ -88,7 +88,7 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
             //申请人姓名
             holder.tv_name.setText(applyRecordList.get(position).getApplyerName());
             //学号
-            holder.tv_status.setText(String.valueOf(applyInfoList.get(position).getApplyId()));
+            holder.tv_status.setText(String.valueOf(applyRecordList.get(position).getApplyerId()));
             //审批结果
             String result=mContext.getString(R.string.approval_result_text, applyRecordList.get(position).getApplyStatus()==1?mContext.getString(R.string.green_agree):mContext.getString(R.string.red_refuse));
             holder.tv_title.setText(Html.fromHtml(result));
@@ -103,7 +103,7 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
                                     .withObject("date",applyRecordList.get(position).getApprovalDate())//审批时间
                                     .withString("applyId",applyRecordList.get(position).getApplyId())//申请id
                                     .withInt("type",applyRecordList.get(position).getApplyStatus())//审批结果
-                                    .withString("approvalContent",applyRecordList.get(position).getApplyContent())//审批内容
+                                    .withString("content",applyRecordList.get(position).getApplyContent())//审批内容
                                     .navigation()
                     );
         }

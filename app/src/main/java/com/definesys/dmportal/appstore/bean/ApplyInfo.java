@@ -40,13 +40,13 @@ public class ApplyInfo implements Serializable {
     public ApplyInfo(){
 
     }
-    public ApplyInfo(String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, Short applyStatus, int type) {
+    public ApplyInfo(String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, int type) {
         this.applyId = applyId;
         this.applyUserId = applyUserId;
         this.applyAuthorityType = applyAuthorityType;
         this.applyAuthority = applyAuthority;
         this.applyRegion = applyRegion;
-        this.applyStatus = applyStatus;
+        this.applyStatus = 0;
         this.type = type;
     }
 

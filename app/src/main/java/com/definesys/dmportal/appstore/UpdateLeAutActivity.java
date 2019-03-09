@@ -375,7 +375,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         applyDialog.setOnConfirmClickListener(() -> {
             if (type == 0||type==6) {//寝室长权限
                 if(getString(R.string.no_des).equals(content)){//未填写内容
-                    Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_4,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateLeAutActivity.this, type == 0?R.string.apply_error_tip_4:R.string.apply_error_tip_10,Toast.LENGTH_SHORT).show();
                 }else{
                     tv_show.setText(checkApplyAuthority(type,content.substring(0,content.length()-2)));
                     applyDialog.dismiss();
@@ -383,7 +383,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                 }
             } else if(type==1||type==4||type==7||type==9) {//班级成员选择 选择班级
 //                    if (initText(data, applyDialog.getApplyAuthorityAdapter().getSelectList(), type))
-                if(checkContent(data, applyDialog.getApplyAuthorityAdapter().getSelectList())) {
+                if(checkContent(data, applyDialog.getApplyAuthorityAdapter().getSelectList(),type)) {
                     applyDialog.dismiss();
                     if(type==1||type==7)
                         tempDialog.setContent(content);
@@ -400,7 +400,9 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                 }else {
                     if(type==2)
                         Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
-                    else if(type==20||type==21)
+                    else if(type==10||type==11||type==12)
+                        Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_12, Toast.LENGTH_SHORT).show();
+                    else
                         Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_7, Toast.LENGTH_SHORT).show();
                 }
             }else if(type==100){//权限提交
@@ -424,8 +426,9 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      * 检查学号是否重复
      * @param data 数据
      * @param selectList 是否选择的记录list
+     * @param type 提示框类型
      */
-    private boolean checkContent(List<String> data, List<Boolean> selectList) {
+    private boolean checkContent(List<String> data, List<Boolean> selectList, int type) {
         boolean flag = false;//是否有选中内容
         for (int i = 0;i<selectList.size();i++){
             if(selectList.get(i)){//被选中
@@ -437,7 +440,11 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             }
         }
         if(!flag){
-            Toast.makeText(this, R.string.apply_error_tip_1,Toast.LENGTH_SHORT).show();
+            if(type==4)
+                Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
+            else if(type==7)  Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_11, Toast.LENGTH_SHORT).show();
+            else if(type==9)  Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
+            else  Toast.makeText(this, R.string.apply_error_tip_1,Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -512,25 +519,25 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
 //            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority,
 //            String applyRegion, Short applyStatus, int type
             if (type == 0)
-                applyInfo = new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,0,content,(short)0,type);//寝室长权限 寝室成员:
+                applyInfo = new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,0,content,type);//寝室长权限 寝室成员:
             else if (type == 2)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,1,content,(short)0,type);//班长权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,1,content,type);//班长权限
             else if (type == 4)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,2,content,(short)0,type);//班主任权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,2,content,type);//班主任权限
             else if (type == 6)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,3,content,(short)0,type);//毕设老师权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,3,content,type);//毕设老师权限
             else if (type == 9)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,4,content,(short)0,type);//辅导员权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,4,content,type);//辅导员权限
             else if (type == 10)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,5,content,(short)0,type);//实习负责人权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,5,content,type);//实习负责人权限
             else if (type == 11)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,6,content,(short)0,type);//学生工作负责人权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,6,content,type);//学生工作负责人权限
             else if (type == 12)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,7,content,(short)0,type);//教学院长权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,7,content,type);//教学院长权限
             else if (type == 20)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,0,content,(short)0,type);//部门请假负责人权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,0,content,type);//部门请假负责人权限
             else if (type == 21)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,1,content,(short)0,type);//部门教学负责人权限
+                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,1,content,type);//部门教学负责人权限
             if(applyInfo!=null) {
                 applyInfo.setApplyDetailContent(title + content);
                 applyInfo.setApplyUserName(SharedPreferencesUtil.getInstance().getUserName());

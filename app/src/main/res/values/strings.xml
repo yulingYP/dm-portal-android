@@ -419,6 +419,9 @@
     <string name="apply_error_tip_7">请先选择部门</string>
     <string name="apply_error_tip_8">请先选择要申请的权限</string>
     <string name="apply_error_tip_9">请填写申请原因</string>
+    <string name="apply_error_tip_10">请点击班级选择成员</string>
+    <string name="apply_error_tip_11">请选择成员</string>
+    <string name="apply_error_tip_12">请先选择院系</string>
     <string name="apply_dialog_des_1">请选择班级(单选)</string>
     <string name="apply_dialog_des_2">请选择寝室成员(多选)</string>
     <string name="apply_dialog_des_3">请选择班级(单选)</string>
