@@ -422,6 +422,7 @@
     <string name="apply_error_tip_10">请点击班级选择成员</string>
     <string name="apply_error_tip_11">请选择成员</string>
     <string name="apply_error_tip_12">请先选择院系</string>
+    <string name="apply_error_tip_13">班主任权限每次只能申请同一年级的班级</string>
     <string name="apply_dialog_des_1">请选择班级(单选)</string>
     <string name="apply_dialog_des_2">请选择寝室成员(多选)</string>
     <string name="apply_dialog_des_3">请选择班级(单选)</string>
@@ -449,6 +450,7 @@
     <string name="authority_reason">申请原因:\n%s</string>
     <string name="apply_result">审批结果</string>
     <string name="approval_time">审批时间:%s</string>
+    <string name="approval_time_2">审批人ID:%d \n审批时间:%s</string>
     <string name="submit_alyapr_success">审批成功</string>
     <string name="approval_apply_title">权限审批</string>
     <string name="check_approval_apply_title">审批详细信息</string>

@@ -430,6 +430,18 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      */
     private boolean checkContent(List<String> data, List<Boolean> selectList, int type) {
         boolean flag = false;//是否有选中内容
+//        if(type==4) {
+//            HashSet<String> hashSet = new HashSet<>();
+//            for (int i = 0;i<selectList.size();i++){
+//                if(selectList.get(i)){//被选中
+//                    hashSet.add(data.get(i).length() > 2 ? data.get(i).substring(0, 2) : data.get(i));
+//                }
+//            }
+//            if(hashSet.size()>1){//选择了多个年级的班级
+//                Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        }
         for (int i = 0;i<selectList.size();i++){
             if(selectList.get(i)){//被选中
                 if(content.equals(getString(R.string.no_des)))//第一次添加

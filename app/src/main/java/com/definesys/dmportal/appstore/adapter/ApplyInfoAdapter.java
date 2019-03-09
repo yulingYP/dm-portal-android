@@ -103,6 +103,7 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
                                     .withObject("date",applyRecordList.get(position).getApprovalDate())//审批时间
                                     .withString("applyId",applyRecordList.get(position).getApplyId())//申请id
                                     .withInt("type",applyRecordList.get(position).getApplyStatus())//审批结果
+                                    .withInt("approverId",applyRecordList.get(position).getApproverId())//审批人id
                                     .withString("content",applyRecordList.get(position).getApplyContent())//审批内容
                                     .navigation()
                     );

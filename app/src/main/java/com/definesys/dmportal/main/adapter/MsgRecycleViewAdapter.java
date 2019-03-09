@@ -146,6 +146,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         .withString("applyId", myMessage.getMessageExtend())
                                         .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withString("content",myMessage.getMessageContent())
+                                        .withInt("approverId",myMessage.getUserId().intValue())
                                         .withObject("date",myMessage.getSendTime())
                                         .navigation();
                             }else {

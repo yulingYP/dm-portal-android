@@ -90,6 +90,8 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
 
     @Autowired(name = "applyId")
     String applyId;
+    @Autowired(name = "approverId")
+    int approverId;//审批人id
     @Autowired(name = "type")
     int type;//0.不同意 1.同意 4.未审批
     @Autowired(name = "content")
@@ -117,13 +119,14 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
             mPersenter.getApplyInfoById(applyId);
 
             ++requestCount;
-            //查看是否有请假记录
-            mPersenter.getApplyRecordById(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue());
+            //查看是否已有审批记录
+            mPersenter.getApplyRecordById(applyId,null);
         }
         else if(type==0||type==1){
          applyRecord = new ApplyRecord();
          applyRecord.setApplyContent(approvalContent);
          applyRecord.setApprovalDate(approvalDate==null?new Date():approvalDate);
+         applyRecord.setApproverId(approverId);
          isAgree= type==1;
          setAgreeText();
          initEditUnable();
@@ -401,7 +404,10 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         ed_reason.setVisibility(GONE);
         tv_approvalContent.setVisibility(VISIBLE);
         tv_approvalContent.setText(applyRecord.getApplyContent());
-        tv_count.setText(getString(R.string.approval_time, DensityUtil.dateTypeToString(getString(R.string.date_type_2),applyRecord.getApprovalDate())));
+        if(applyRecord.getApproverId().equals(SharedPreferencesUtil.getInstance().getUserId()))//本人审批
+            tv_count.setText(getString(R.string.approval_time, DensityUtil.dateTypeToString(getString(R.string.date_type_2),applyRecord.getApprovalDate())));
+        else
+            tv_count.setText(getString(R.string.approval_time_2,applyRecord.getApproverId(), DensityUtil.dateTypeToString(getString(R.string.date_type_2),applyRecord.getApprovalDate())));
     }
     /**
      * 设置同意或拒绝显示效果
