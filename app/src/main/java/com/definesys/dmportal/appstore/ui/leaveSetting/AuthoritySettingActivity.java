@@ -274,7 +274,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
             for(int i = 0;i<9;i++){
                 if(stuMap.get(i)!=null&&!"".equals(stuMap.get(i))){//有权限
                     content.append(stuMap.get(i).substring(0,stuMap.get(i).length()-2))
-                            .append(i<=4?getString(R.string.ban):" ")
+                            .append(i==1||i==2?getString(R.string.ban):" ")
                             .append("\n");
                 }
             }

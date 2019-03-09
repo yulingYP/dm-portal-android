@@ -181,6 +181,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         for( i= position-1 ; i >=0;i--){
             if(messages.get(i).getMessageExtend().equals(myMessage.getMessageExtend())&&//是不是同一条请假信息
                     messages.get(i).getMessageExtend2()!=4&&//是不是已经给出请假结果
+                    (messages.get(i).getMessageType()==5|| messages.get(i).getMessageType()==2)&&//是不是审批人消息
                     messages.get(i).getSendTime().after(myMessage.getSendTime())) {//是不是在该条信息之后
                 break;
             }
