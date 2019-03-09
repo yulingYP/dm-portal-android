@@ -56,7 +56,15 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                     }
                 });
     }
-    public void getUserAuthorityDetail(Number userId, int authorityType, List<String> authorities){
+
+    /**
+     *获取用户详细权限信息
+     * @param userId u
+     * @param authorityType 0只要学生权限 1.只要教师权限 2.获取所有权限
+     * @param authorities 0.审批学生权限 1.审批教师权限 2.全部权限  审批教师的权限为（单个权限+10）
+     * @param isShow  是否展示错误信息
+     */
+    public void getUserAuthorityDetail(Number userId, int authorityType, List<String> authorities,boolean isShow){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
         map.put("authorities",authorities); //审批老师权限的时候+10；方便以后整理textView
@@ -74,7 +82,7 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO,  data);
                                 break;
                             default:
-                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                               if(isShow) SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
                                 break;
 
                         }
@@ -82,7 +90,7 @@ public class LeaveAuthorityPresenter extends BasePresenter {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                        if(isShow) SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
                     }
                 });
     }

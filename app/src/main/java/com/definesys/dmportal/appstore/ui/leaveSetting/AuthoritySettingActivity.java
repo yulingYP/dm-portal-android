@@ -193,12 +193,12 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         if(type==0){//0.审批学生权限
             stuMap = new HashMap<>();
             authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
-            max=9;
+            max=8;
             approverTypes=getResources().getStringArray(R.array.approverType);
         }else if(type==1){//审批老师权限
             teaMap = new HashMap<>();
             authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
-            max = 3;
+            max = 2;
             approverTypes=getResources().getStringArray(R.array.approverType_2);
         }
 
@@ -215,7 +215,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 }
             }
         }
-        mPersenter.getUserAuthorityDetail(SharedPreferencesUtil.getInstance().getUserId(),type,autList);
+        mPersenter.getUserAuthorityDetail(SharedPreferencesUtil.getInstance().getUserId(),type,autList,true);
     }
 
     /**
@@ -240,7 +240,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
             @Tag(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO)
     }, thread = EventThread.MAIN_THREAD)
     public void getDetailInfoByBean(BaseResponse<List<AuthorityDetail>> data) {
-        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+        if(MyActivityManager.getInstance().getCurrentActivity() == this&&(data.getExtendInfo()==0||data.getExtendInfo()==1)){
             List<AuthorityDetail> list=data.getData();//详细信息的list
             int type=data.getExtendInfo();//权限类型
             int authority;

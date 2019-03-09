@@ -1,6 +1,7 @@
 package com.definesys.dmportal.appstore;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.ApplyDialog;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
+import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
@@ -42,6 +44,7 @@ import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -90,6 +93,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     private String content="";//保存成员内容
     private ApplyDialog tempDialog;//
     private boolean isSingleLine = false;//单行显示
+    private HashMap<Integer,String> autMap;//用户已有的全部权限
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,57 +173,94 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                     });
             iv_tea.setRotation(180);
         }
+       getMyAuthorityDetail();
     }
-    //具体原因编辑框设置
-    private void initEdit() {
-        tv_count.setText(getString(R.string.word_count, 0));
-        RxView.clicks(ed_reason)
-                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    ed_reason.setCursorVisible(true);
-                    sendScrollMessage(ScrollView.FOCUS_DOWN);
-                });
-        //获取焦点
-        ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus) {
-                ed_reason.setCursorVisible(true);
-                sendScrollMessage(ScrollView.FOCUS_DOWN);
-            }
-        });
-        /*
-        监听输入框内容 《==》 获取输入长度显示到界面
-         */
-        ed_reason.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-    }
     /**
-     * 延时发送页面滑动消息
-     * @param position 活动到的位置
+     * 获取申请权限的信息列表失败
+     * @param msg 失败消息
      */
-    private void sendScrollMessage(int position) {
-        new Handler().postDelayed(() -> {
-            Log.d("mydemo","Height=="+lg_sc.getMeasuredHeight());
-            lg_sc.fullScroll(position);
-        }, Constants.scrollDelay);
+    @Subscribe(tags = {
+            @Tag(MainPresenter.ERROR_NETWORK)
+    }, thread = EventThread.MAIN_THREAD)
+    public void netWorkError(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            progressHUD.dismiss();
+            Toast.makeText(this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 获取申请权限的信息列表成功
+     * @param data BaseResponse
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_APPLY_LIST_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getDetailInfo(BaseResponse<List<String>> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this) {
+            progressHUD.dismiss();
+            if(data.getExtendInfo()==100) {
+                finish();
+//                data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
+                SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)11,"",null,"",new Date()));
+                Toast.makeText(this, R.string.submit_success, Toast.LENGTH_SHORT).show();
+            }
+            else
+                initDialog(data.getData(),data.getExtendInfo());
+        }
+    }
+
+    /* * 获取权限详细信息成功
+     * @param data BaseResponse
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getAllDetailInfoByBean(BaseResponse<List<AuthorityDetail>> data) {
+        if(MyActivityManager.getInstance().getCurrentActivity() == this){
+            List<AuthorityDetail> list=data.getData();//详细信息的list
+            int authority;
+            if(list!=null&&list.size()>0) {//有数据
+                for (int i = 0; i < list.size(); i++) {
+                    authority = list.get(i).getUserAuthority();
+                    if (autMap.get(authority) != null && !"".equals(autMap.get(authority)))
+                        autMap.put(authority, autMap.get(authority) + list.get(i).getRegion() + ", ");
+                    else
+                        autMap.put(authority, list.get(i).getRegion() + ", ");
+                }
+            }
+        }
     }
     //合法性检测
     private void checkSelect() {
         if(applyList==null||applyList.size()==0) {
             Toast.makeText(this, R.string.apply_error_tip_8, Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        if(autMap!=null&&autMap.size()>0){//权限检查
+            int authority;
+            boolean isNo;//是否不包含
+            for(ApplyInfo applyInfo:applyList) {
+                isNo = false;
+                authority = applyInfo.getApplyAuthorityType() == 0 ? applyInfo.getApplyAuthority() : (applyInfo.getApplyAuthority() + 10);
+                if (autMap.get(authority) != null && !"".equals(autMap.get(authority))) {//用户已经有该权限
+                    //检查用户是否有选取新的权限范围
+                    String[] array = applyInfo.getApplyRegion().split(", ");//是否选取了多个权限成员
+                    for (String anArray : array) {
+                        if (!autMap.get(authority).contains(anArray)) {//有一个不包含
+                            isNo = true;
+                            break;
+                        }
+                    }
+                    if (!isNo) {//用户已经有他申请权限的全部成员
+                        Toast.makeText(this, getString(R.string.apply_error_tip_14, applyInfo.getApplyDetailContent().split(" ")[0]), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                }
+            }
         }
         if("".equals(ed_reason.getText().toString())) {
             Toast.makeText(this, R.string.apply_error_tip_9, Toast.LENGTH_SHORT).show();
@@ -230,6 +271,8 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             ed_reason.findFocus();
             return;
         }
+
+
         List<String> list = new ArrayList<>();
         for(int i = 0 ;i <applyList.size();i++){
             list.add(applyList.get(i).getApplyDetailContent());
@@ -305,40 +348,6 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         progressHUD.show();
     }
 
-    /**
-     * 获取申请权限的信息列表失败
-     * @param msg 失败消息
-     */
-    @Subscribe(tags = {
-            @Tag(MainPresenter.ERROR_NETWORK)
-    }, thread = EventThread.MAIN_THREAD)
-    public void netWorkError(String msg) {
-        if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            progressHUD.dismiss();
-            Toast.makeText(this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * 获取申请权限的信息列表成功
-     * @param data BaseResponse
-     */
-    @Subscribe(tags = {
-            @Tag(MainPresenter.SUCCESSFUL_GET_APPLY_LIST_INFO)
-    }, thread = EventThread.MAIN_THREAD)
-    public void getDetailInfo(BaseResponse<List<String>> data) {
-        if(MyActivityManager.getInstance().getCurrentActivity() == this) {
-            progressHUD.dismiss();
-            if(data.getExtendInfo()==100) {
-                finish();
-//                data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
-                SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)11,"",null,"",new Date()));
-                Toast.makeText(this, R.string.submit_success, Toast.LENGTH_SHORT).show();
-            }
-            else
-                initDialog(data.getData(),data.getExtendInfo());
-        }
-    }
 
     /**
      *
@@ -463,8 +472,10 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     }
 
     /**
-     * 检查该权限是否已经加入列表
-     * 并返回结果
+     * 检查该权限是否已经加入列表 并返回结果
+     * @param type 提示框类型
+     * @param content 选择的权限范围
+     * @return r
      */
     private String checkApplyAuthority(int type ,String content) {
         if(applyList==null){//第一次写入
@@ -509,7 +520,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      * 获取新的对象
      * @param type  type
      * @param  title 标题
-     *@param content  @return
+     *@param content 选择的权限范围
      */
     private void addItem(int type, String content,String title) {
         ApplyInfo  applyInfo=null;
@@ -519,7 +530,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             if(applyList.get(position).getType()==type) {//已加入过，则重写这部分内容
                 applyList.get(position).setApplyDetailContent( title + content);
 //                if(type==0||type==4||type==6||type==9)
-                    applyList.get(position).setApplyReason(content);
+                    applyList.get(position).setApplyRegion(content);
 //                else
 //                    applyList.get(position).setSignId(content);
                 flag = true;
@@ -558,6 +569,65 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         }
 
     }
+    //获取我的详细权限
+    @SuppressLint("UseSparseArrays")
+    private void getMyAuthorityDetail() {
+        autMap = new HashMap<>();
+        List<String> autList = new ArrayList<>();
+        if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()>=0){//有审批学生的权限
+            String authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
+            for(int i = 0 ; i <8;i++){
+                if(authorityStr.contains(""+i)){
+                    autList.add(""+i);
+                }
+            }
+        }
+        if(SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()>=0){//有审批教师的权限
+            String authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批教师权限
+            for(int i = 0 ; i <8;i++){
+                if(authorityStr.contains(""+i)){
+                    autList.add(""+(i+10));
+                }
+            }
+        }
+        mPersenter.getUserAuthorityDetail(SharedPreferencesUtil.getInstance().getUserId(),3,autList,false);
+    }
+
+    //具体原因编辑框设置
+    private void initEdit() {
+        tv_count.setText(getString(R.string.word_count, 0));
+        RxView.clicks(ed_reason)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    ed_reason.setCursorVisible(true);
+                    sendScrollMessage(ScrollView.FOCUS_DOWN);
+                });
+        //获取焦点
+        ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus) {
+                ed_reason.setCursorVisible(true);
+                sendScrollMessage(ScrollView.FOCUS_DOWN);
+            }
+        });
+        /*
+        监听输入框内容 《==》 获取输入长度显示到界面
+         */
+        ed_reason.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -570,8 +640,20 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         }
         return super.dispatchKeyEvent(event);
     }
+    /**
+     * 延时发送页面滑动消息
+     * @param position 活动到的位置
+     */
+    private void sendScrollMessage(int position) {
+        new Handler().postDelayed(() -> {
+            Log.d("mydemo","Height=="+lg_sc.getMeasuredHeight());
+            lg_sc.fullScroll(position);
+        }, Constants.scrollDelay);
+    }
     @Override
     public LeaveAuthorityPresenter getPersenter() {
         return new LeaveAuthorityPresenter(this);
     }
+
+
 }

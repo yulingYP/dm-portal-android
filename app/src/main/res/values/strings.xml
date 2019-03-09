@@ -423,6 +423,7 @@
     <string name="apply_error_tip_11">请选择成员</string>
     <string name="apply_error_tip_12">请先选择院系</string>
     <string name="apply_error_tip_13">班主任权限每次只能申请同一年级的班级</string>
+    <string name="apply_error_tip_14">您已经拥有%s所申请的范围权限</string>
     <string name="apply_dialog_des_1">请选择班级(单选)</string>
     <string name="apply_dialog_des_2">请选择寝室成员(多选)</string>
     <string name="apply_dialog_des_3">请选择班级(单选)</string>
