@@ -76,6 +76,12 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     @BindView(R.id.down_icon)
     ImageView iv_down;
 
+    @BindView(R.id.tea_down_icon)
+    ImageView iv_tea;
+
+    @BindView(R.id.stu_down_icon)
+    ImageView iv_stu;
+
     @BindView(R.id.scorll_view)
     ScrollView lg_sc;
 
@@ -83,7 +89,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     private List<ApplyInfo>applyList;//申请的权限列表
     private String content="";//保存成员内容
     private ApplyDialog tempDialog;//
-    private boolean isSingleLine = true;//单行显示
+    private boolean isSingleLine = false;//单行显示
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +131,22 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                         isSingleLine = false;
                     }
                 });
+
+        //点击审批学生权限
+        RxView.clicks(lg_stu)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj -> {
+                    if(lg_stuAut.getVisibility()==View.GONE){//显示全部可选权限
+                        lg_stuAut.setVisibility(View.VISIBLE);
+                        iv_stu.setRotation(180);
+                    }else {//隐藏
+                        lg_stuAut.setVisibility(View.GONE);
+                        iv_stu.setRotation(0);
+                    }
+                });
+
+        iv_stu.setRotation(180);
+        iv_down.setRotation(180);
         //审批学生权限
         initAuthorityList(getResources().getStringArray(R.array.approverType),lg_stuAut,0, SharedPreferencesUtil.getInstance().getUserType()==0?0:2,SharedPreferencesUtil.getInstance().getUserType()==0?8:2);
         if(SharedPreferencesUtil.getInstance().getUserType()!=1){//不是教师
@@ -133,6 +155,19 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         }else {
             //审批教师权限
             initAuthorityList(getResources().getStringArray(R.array.approverType_2),lg_teaAut,1,0,2);
+            //点击审批教师权限
+            RxView.clicks(lg_tea)
+                    .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                    .subscribe(obj -> {
+                        if(lg_teaAut.getVisibility()==View.GONE){//显示全部可选权限
+                            lg_teaAut.setVisibility(View.VISIBLE);
+                            iv_tea.setRotation(180);
+                        }else {//隐藏
+                            lg_teaAut.setVisibility(View.GONE);
+                            iv_tea.setRotation(0);
+                        }
+                    });
+            iv_tea.setRotation(180);
         }
     }
     //具体原因编辑框设置

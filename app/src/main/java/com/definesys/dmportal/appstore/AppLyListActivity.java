@@ -298,7 +298,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
      * @param applyId l
      */
     @Subscribe(tags = {
-            @Tag("updateSuccess")
+            @Tag("updateList")
     }, thread = EventThread.MAIN_THREAD)
     public void updateSuccess(String applyId) {
         if(applyInfoAdapter!=null&&applyInfoList != null) {
