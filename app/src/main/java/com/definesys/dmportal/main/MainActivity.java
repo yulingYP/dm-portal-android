@@ -351,7 +351,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 contactFragment.getMsgFragment().addMsg(message);
             }
         } else {//显示红点
-            MainApplication.getInstances().setHasNewMessage(true);
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
         }
     }
@@ -362,7 +361,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             thread = EventThread.MAIN_THREAD
     )
     public void setRed(Boolean isRed){
-        MainApplication.getInstances().setHasNewMessage(isRed);
         if(isRed) {
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
         }

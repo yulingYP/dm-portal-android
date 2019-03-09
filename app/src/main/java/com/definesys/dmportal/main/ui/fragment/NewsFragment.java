@@ -11,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseFragment;
-import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.main.adapter.NewsRecycleViewAdapter;
 import com.definesys.dmportal.main.bean.DataContent;
@@ -25,7 +23,6 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +32,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 /**
  * 消息页的新闻子页面
@@ -65,7 +61,7 @@ public class NewsFragment extends BaseFragment<NewsPresenter> {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_news, container, false);
@@ -84,10 +80,7 @@ public class NewsFragment extends BaseFragment<NewsPresenter> {
     @Override
     public void onResume() {
         super.onResume();
-        if (MainApplication.getInstances().isHasNewMessage()) {
-            refreshLayout.autoRefresh();
-            MainApplication.getInstances().setHasNewMessage(false);
-        }
+
     }
 
     private void initView() {
@@ -97,12 +90,12 @@ public class NewsFragment extends BaseFragment<NewsPresenter> {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         myAdapter = new NewsRecycleViewAdapter(getActivity(), newsList);
         recyclerView.setAdapter(myAdapter);
-        myAdapter.setOnItemClickListener(position -> {
+        myAdapter.setOnItemClickListener(position ->
             ARouter.getInstance()
                     .build("/dmportal/webview/WebViewActivity")
                     .withString("url",newsList.get(position).getNewsUrl())
-                    .navigation();
-        });
+                    .navigation()
+        );
 
         //下拉刷新
         refreshLayout.setOnRefreshListener(refreshLayout -> {
@@ -111,13 +104,7 @@ public class NewsFragment extends BaseFragment<NewsPresenter> {
             Observable
                     .timer(5, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Long>() {
-                        @Override
-                        public void accept(Long aLong) throws Exception {
-                            refreshLayout.finishRefresh(false);
-
-                        }
-                    });
+                    .subscribe(aLong -> refreshLayout.finishRefresh(false));
         });
         //上拉加载
         refreshLayout.setOnLoadMoreListener(refreshLayout -> {
@@ -126,12 +113,7 @@ public class NewsFragment extends BaseFragment<NewsPresenter> {
                 Observable
                         .timer(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new  Consumer<Long>() {
-                            @Override
-                            public void accept(Long aLong) throws Exception {
-                                refreshLayout.finishLoadMore(false);
-                            }
-                        });
+                        .subscribe(aLong -> refreshLayout.finishLoadMore(false));
             } else {
                 refreshLayout.finishLoadMore();
             }

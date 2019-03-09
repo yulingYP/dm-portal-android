@@ -149,7 +149,8 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             Toast.makeText(this, ("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
-            progressHUD.dismiss();
+            if(--requestCount<=0)
+                progressHUD.dismiss();
         }
     }
     /**

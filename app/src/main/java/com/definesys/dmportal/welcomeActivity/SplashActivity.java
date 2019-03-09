@@ -1,27 +1,20 @@
 package com.definesys.dmportal.welcomeActivity;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.definesys.base.BaseActivity;
-import com.definesys.base.BasePresenter;
-import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 
 
 @Route(path = ARouterConstants.SplashActivity)
-public class SplashActivity extends BaseActivity {
-//    public static final int ENTRY_MAIN_CODE = 1;//进入主页面
-//    public static final int TIP_REMAIN_CODE = 2;//剩余多少秒进入主界面
-//    private int reaminTime = Constants.opendelayTime/ Constants.sendDelayTime;
-//    private View v;
-//    @BindView(R.id.tip_remain_text)
-//    TextView tipText;
+public class SplashActivity extends AppCompatActivity {
+
 private String message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +28,6 @@ private String message;
 
     }
 
-//    private void downfaceInit() {
-//        Intent intent = new Intent(SplashActivity.this,DownLoadService.class);
-//        startService(intent);
-//    }
 
     private void initView() {
         // 判断是否是第一次开启应用
@@ -90,21 +79,5 @@ private String message;
         return SharedPreferencesUtil.getInstance().getUserId().intValue() > 0 && SharedPreferencesUtil.getInstance().getToken().length()>0;
     }
 
-
-    @Override
-    protected void onDestroy() {
-        MainApplication.getInstances().disMissDialog();
-        super.onDestroy();
-    }
-
-    @Override
-    public BasePresenter getPersenter() {
-        return new BasePresenter(SplashActivity.this) {
-            @Override
-            public void subscribe() {
-                super.subscribe();
-            }
-        };
-    }
 }
 

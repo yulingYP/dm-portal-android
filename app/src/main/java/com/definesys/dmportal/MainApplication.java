@@ -36,24 +36,13 @@ import okio.BufferedSource;
  */
 public class MainApplication extends Application {
 
-//    private DaoMaster.DevOpenHelper mHelper;
-//    private SQLiteDatabase db;
-//    private DaoMaster mDaoMaster;
-//    private DaoSession mDaoSession;
+
     public static float scale;
 
-    private AlertDialog alert;//单机登陆提示框
-    private boolean hasNewMessage;
+    private boolean isShowing = false;//是否已经显示单机登陆的提示框
     public static MainApplication instances;
 
 
-    public boolean isHasNewMessage() {
-        return hasNewMessage;
-    }
-
-    public void setHasNewMessage(boolean hasNewMessage) {
-        this.hasNewMessage = hasNewMessage;
-    }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -153,19 +142,16 @@ public class MainApplication extends Application {
 
     @SuppressLint("StaticFieldLeak")
     public synchronized void showDialog(int msgId) {
-        if((alert!=null&&alert.isShowing())||MyActivityManager.getInstance().getCurrentActivity() instanceof LoginActivity)
+        if(isShowing||MyActivityManager.getInstance().getCurrentActivity() instanceof LoginActivity)
             return;
-//        SharedPreferencesUtil.getInstance().setToken("");
-
-        //信鸽解绑
-//        XGPushManager.unregisterPush(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MyActivityManager.getInstance().getCurrentActivity());
         builder.setMessage(msgId)
                 .setCancelable(false)
                 .setPositiveButton(R.string.confirm, (dialog, id) -> {
                     ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean(getString(R.string.exit_en), true).navigation(MyActivityManager.getInstance().getCurrentActivity());
-                    dialog.cancel();
+                    dialog.dismiss();
+                    isShowing = false;
                 });
 
         new AsyncTask<String, String, String>() {
@@ -176,17 +162,14 @@ public class MainApplication extends Application {
 
             @Override
             protected void onPostExecute(String aVoid) {
-                alert = builder.create();
-                alert.setCancelable(false);
-                alert.show();
+                builder.create();
+                builder.setCancelable(false);
+                builder.show();
+                isShowing = true;
             }
         }.execute("");
     }
 
-    public void disMissDialog(){
-        if(alert!=null&&alert.isShowing())
-            alert.dismiss();
-    }
 
     public static MainApplication getInstances() {
         return instances;
