@@ -45,6 +45,7 @@ import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.ChangeUserImagePresenter;
+import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -492,7 +493,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
      * 设置签名
     */
     private void setSign() {
-        Glide.with(this).asBitmap().load(getString(R.string.get_image,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue())+".png",2)).apply(option).into(new SimpleTarget<Bitmap>() {
+
+        Glide.with(this).asBitmap().load(getString(R.string.get_image, HttpConst.url,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue())+".png",2)).apply(option).into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onLoadStarted(@Nullable Drawable placeholder) {

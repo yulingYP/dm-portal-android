@@ -32,7 +32,6 @@
                     android:layout_height="wrap_content"
                     tools:ignore="RelativeOverlap" />
 
-
                 <TextView
                     android:id="@+id/no_sign_des"
                     android:layout_width="wrap_content"
@@ -44,14 +43,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content">
                 </TextView>
-                <ProgressBar
-                    android:layout_width="30dp"
-                    android:id="@+id/progressBar"
-                    android:layout_gravity="center"
-                    android:layout_toStartOf="@+id/edit_sign"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="12dp"
-                    android:layout_height="30dp" />
+
                 <ImageView
                     android:id="@+id/sign_img"
                     android:layout_width="wrap_content"
@@ -66,6 +58,14 @@
                     android:layout_toStartOf="@+id/edit_sign"
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content" />
+                 <ProgressBar
+                     android:layout_width="30dp"
+                     android:id="@+id/progressBar"
+                     android:layout_gravity="center"
+                     android:layout_toStartOf="@+id/edit_sign"
+                     android:layout_centerVertical="true"
+                     android:layout_marginEnd="12dp"
+                     android:layout_height="30dp" />
                 <ImageView
                     android:layout_width="24dp"
                     android:scaleType="fitXY"

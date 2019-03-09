@@ -177,11 +177,13 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
         RxView.clicks(img_list)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj-> {
-                    dimBackground(1.0f,0.6f);
-                    popupWindow.showAsDropDown(img_list);
+                    if(popupWindow!=null) {//未初始化
+                        dimBackground(1.0f, 0.6f);
+                        popupWindow.showAsDropDown(img_list);
+                    }else {//已初始化
+                        img_list.post(() -> initMenuList(img_list.getMeasuredWidth()));
+                    }
                 });
-        img_list.post(() -> initMenuList(img_list.getMeasuredWidth()));
-
     }
     /**
      * 菜单列表
@@ -196,12 +198,12 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
         popupWindow = new PopupWindow(groupMenuView,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, true);
-
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
-
         popupWindow.setAnimationStyle(R.style.PopupAnimation);
         popupWindow.setOnDismissListener(() -> dimBackground(0.6f,1.0f));
+        dimBackground(1.0f, 0.6f);
+        popupWindow.showAsDropDown(img_list);
 
     }
     //屏幕变灰动画

@@ -23,6 +23,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/10.
  */
 
@@ -61,7 +62,7 @@ public class LeaveRequestPresenter extends BasePresenter {
 
         //submitLeaveInfo.setSubmitDate(DensityUtil.getFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",new Date()));
 
-        Log.d("myMap",new Gson().toJson(submitLeaveInfo).toString());
+        Log.d("myMap",new Gson().toJson(submitLeaveInfo));
         RequestBody finalRequestBody = requestBody;
         ViseHttp.POST(HttpConst.submitLeaveRequest)
                 .tag(HttpConst.submitLeaveRequest)
@@ -92,7 +93,7 @@ public class LeaveRequestPresenter extends BasePresenter {
 
     /**
      * 上传请假图片
-     * @param finalRequestBody
+     * @param finalRequestBody f
      * @param msgId 消息id
      */
     private void updatePictures(RequestBody finalRequestBody,String msgId) {

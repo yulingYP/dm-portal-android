@@ -36,6 +36,7 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.main.presenter.ChangeUserImagePresenter;
+import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.LogoutPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
@@ -48,20 +49,16 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.vise.xsnow.permission.Permission;
 import com.vise.xsnow.permission.RxPermissions;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -78,10 +75,6 @@ public class MyFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private Unbinder unbinder;
 
@@ -104,10 +97,6 @@ public class MyFragment extends Fragment {
 
     @BindView(R.id.setting_layout)
     LinearLayout lg_setting;
-
-    // 用户已选择的图片
-    private List<LocalMedia> selectImages;
-    private String pathName = "";
 
     RequestOptions option = new RequestOptions()
             .centerCrop()
@@ -141,14 +130,14 @@ public class MyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+//        if (getArguments() != null) {
+//            String mParam1 = getArguments().getString(ARG_PARAM1);
+//            String mParam2 = getArguments().getString(ARG_PARAM2);
+//        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_my, container, false);
@@ -181,7 +170,7 @@ public class MyFragment extends Fragment {
                     photoStyles.add(getString(R.string.ui_photo));
                     photoStyles.add(getString(R.string.ui_galary));
                     photoStyles.add(getString(R.string.ui_check_head));
-                    show(photoStyles, 2);
+                    show(photoStyles);
                 });
 
 //        //手机绑定
@@ -238,7 +227,7 @@ public class MyFragment extends Fragment {
     public void refreshUserImage() {
         String str = SharedPreferencesUtil.getInstance().getUserLocal();
         if("".equals(str)){
-            str = getString(R.string.get_image,SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
+            str = getString(R.string.get_image, HttpConst.url,SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
         }
 
         Glide.with(this)
@@ -284,50 +273,47 @@ public class MyFragment extends Fragment {
 //        }
 
     }
-    private void show(List<String> list, int type) {
+    private void show(List<String> list) {
 
         BottomDialog bottomDialog = new BottomDialog(getContext(),list);
-        if (type == 2) {
-            bottomDialog.setOnOptionClickListener(position -> {
-                if(position==2){//查看头像
-                    String path = SharedPreferencesUtil.getInstance().getUserLocal();
-                    boolean isEmpty = "".equals(path);
-                    if(isEmpty){
-                        Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
-                        path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
-                    }
-                    LocalMedia localMedia = new LocalMedia();
-                    localMedia.setPath(path);
-                    localMedia.setPosition(0);
-                    List<LocalMedia> localMedias = new ArrayList<>();
-                    localMedias.add(localMedia);
-                    PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
-                            .openExternalPreview(0, localMedias);
-                    if(isEmpty)
-                        userImage.setImageBitmap(BitmapFactory.decodeFile(path));
+        bottomDialog.setOnOptionClickListener(position -> {
+            if(position==2){//查看头像
+                String path = SharedPreferencesUtil.getInstance().getUserLocal();
+                boolean isEmpty = "".equals(path);
+                if(isEmpty){
+                    Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
+                    path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
                 }
-                if (position == 1) {//从相册选择
-                    PictureSelector.create(this)
-                            .openGallery(PictureMimeType.ofImage())
-                            .maxSelectNum(1).enableCrop(true).compress(true)
-                            .circleDimmedLayer(true)
-                            .rotateEnabled(false)
-                            .withAspectRatio(1, 1)
-                            .forResult(PictureConfig.CHOOSE_REQUEST);
-                }
-                if(position == 0) {//拍照
-                    PictureSelector.create(this)
-                            .openCamera(PictureMimeType.ofImage())
-                            .maxSelectNum(1).enableCrop(true).compress(true)
-                            .circleDimmedLayer(true)
-                            .rotateEnabled(false)
-                            .withAspectRatio(1, 1)
-                            .forResult(PictureConfig.CHOOSE_REQUEST);
-                }
-                bottomDialog.dismiss();
-            });
-        }
-
+                LocalMedia localMedia = new LocalMedia();
+                localMedia.setPath(path);
+                localMedia.setPosition(0);
+                List<LocalMedia> localMedias = new ArrayList<>();
+                localMedias.add(localMedia);
+                PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
+                        .openExternalPreview(0, localMedias);
+                if(isEmpty)
+                    userImage.setImageBitmap(BitmapFactory.decodeFile(path));
+            }
+            if (position == 1) {//从相册选择
+                PictureSelector.create(this)
+                        .openGallery(PictureMimeType.ofImage())
+                        .maxSelectNum(1).enableCrop(true).compress(true)
+                        .circleDimmedLayer(true)
+                        .rotateEnabled(false)
+                        .withAspectRatio(1, 1)
+                        .forResult(PictureConfig.CHOOSE_REQUEST);
+            }
+            if(position == 0) {//拍照
+                PictureSelector.create(this)
+                        .openCamera(PictureMimeType.ofImage())
+                        .maxSelectNum(1).enableCrop(true).compress(true)
+                        .circleDimmedLayer(true)
+                        .rotateEnabled(false)
+                        .withAspectRatio(1, 1)
+                        .forResult(PictureConfig.CHOOSE_REQUEST);
+            }
+            bottomDialog.dismiss();
+        });
         bottomDialog.setOnCancelButtonClickListener(view -> bottomDialog.dismiss()).show();
     }
 
@@ -364,7 +350,7 @@ public class MyFragment extends Fragment {
     }
     /**
      * 上传失败
-     * @param msg
+     * @param msg msg
      */
     @Subscribe(tags = {
             @Tag(MainPresenter.ERROR_NETWORK)
@@ -376,12 +362,11 @@ public class MyFragment extends Fragment {
     }
     //申请权限
     private void requestPermissions() {
-        RxPermissions rxPermission = new RxPermissions(getActivity());
-        rxPermission
-                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Permission>() {
-                    @Override
-                    public void accept(Permission permission) throws Exception {
+        if(getActivity()!=null) {
+            RxPermissions rxPermission = new RxPermissions(getActivity());
+            rxPermission
+                    .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .subscribe(permission -> {
                         if (permission.granted) {
                             // 用户已经同意该权限
                             Log.d("mydemo", permission.name + " is granted.");
@@ -392,8 +377,8 @@ public class MyFragment extends Fragment {
                             // 用户拒绝了该权限，并且选中『不再询问』
                             Log.d("mydemo", permission.name + " is denied.");
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override
@@ -408,14 +393,14 @@ public class MyFragment extends Fragment {
                         return;
                     }
                     // 图片选择结果回调
-                    selectImages = PictureSelector.obtainMultipleResult(data);
+                    List<LocalMedia> selectImages = PictureSelector.obtainMultipleResult(data);
                     // 例如 LocalMedia 里面返回三种 path
                     // 1.media.getPath(); 为原图 path
                     // 2.media.getCutPath();为裁剪后 path，需判断 media.isCut();是否为 true
                     // 3.media.getCompressPath();为压缩后 path，需判断 media.isCompressed();是否为 true
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
 
-                    pathName = selectImages.get(0).getCompressPath();
+                    String pathName = selectImages.get(0).getCompressPath();
                     File file = new File(pathName);
                     new ChangeUserImagePresenter(getContext()).uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"0");
                     break;

@@ -7,23 +7,20 @@ import android.widget.TextView;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
-import com.definesys.dmportal.appstore.bean.ApprovalRecord;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.bean.User;
 import com.definesys.dmportal.config.MyCongfig;
-import com.definesys.dmportal.main.bean.Message;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/25.
  */
 
@@ -34,10 +31,10 @@ public class UserInfoPresent extends BasePresenter {
     }
     //获取用户信息
     public void getUserInfo(Number id,int userType){
-        Map map = new HashMap();
+        Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
         map.put("userType",userType);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
         ViseHttp.POST(HttpConst.getUserInfo)
                 .tag(HttpConst.getUserInfo)
                 .setJson(new Gson().toJson(map))
@@ -60,7 +57,7 @@ public class UserInfoPresent extends BasePresenter {
                     public void onFail(int errCode, String errMsg) {
 //                        Log.d("mydemo",errMsg);
                         getUserInfo(id,userType);//重新获取
-                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
+//                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
                     }
                 });
 
@@ -69,10 +66,10 @@ public class UserInfoPresent extends BasePresenter {
 
     //获取用户姓名
     public void getUserName(Number id, int userType, TextView textView, ProgressBar progressBar){
-        Map map = new HashMap();
+        Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
         map.put("userType",userType);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
         HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("tv_name",textView);
         hashMap.put("progress",progressBar);
@@ -101,10 +98,9 @@ public class UserInfoPresent extends BasePresenter {
     }
     //获取发送失败和未读的信息
     public void getPushErrorReadMsg(Number id){
-        Map map = new HashMap();
+        Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
-        Log.d("myMap",new Gson().toJson(map).toString());
-        HashMap<String,Object> hashMap = new HashMap<>();
+        Log.d("myMap",new Gson().toJson(map));
         ViseHttp.POST(HttpConst.getPushErrorMessage)
                 .tag(HttpConst.getUserInfo)
                 .setJson(new Gson().toJson(map))

@@ -38,6 +38,7 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
+import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -291,7 +292,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     private void initImg(ImageView img, String picUrl,int position) {
         Glide.with(this)
              .asBitmap()
-             .load(getString(R.string.get_image,picUrl,SharedPreferencesUtil.getInstance().getUserType()))
+             .load(getString(R.string.get_image, HttpConst.url,picUrl,SharedPreferencesUtil.getInstance().getUserType()))
              .into(new SimpleTarget<Bitmap>() {
                  //得到图片
                  @Override

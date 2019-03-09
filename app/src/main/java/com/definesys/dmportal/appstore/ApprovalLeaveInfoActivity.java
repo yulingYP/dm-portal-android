@@ -48,6 +48,7 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
+import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -306,7 +307,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             tv_selectedSubject.setText(Html.fromHtml(getString(R.string.selected_subject_tip, leaveInfo.getSelectedSubject())));
 
             //时长 2*‘#’的个数
-            tv_sumTime.setText(getString(R.string.sum_time_tip,getString(R.string.off_suject,(2*(leaveInfo.getSelectedSubject().split("\\#").length-1)))));
+            tv_sumTime.setText(getString(R.string.sum_time_tip,getString(R.string.off_suject,(2*(leaveInfo.getSelectedSubject().split("#").length-1)))));
         }else {//长假或短假
 
             tv_selectedSubject.setVisibility(GONE);
@@ -513,7 +514,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     private void initImg(ImageView img, String picUrl,int position) {
         Glide.with(this)
                 .asBitmap()
-                .load(getString(R.string.get_image,picUrl,0))
+                .load(getString(R.string.get_image, HttpConst.url,picUrl,0))
                 .into(new SimpleTarget<Bitmap>() {
                     //得到图片
                     @Override

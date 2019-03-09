@@ -4,15 +4,11 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.definesys.base.BaseActivity;
-import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.customViews.LinePathView;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;

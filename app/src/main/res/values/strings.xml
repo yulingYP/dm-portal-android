@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">快捷校园</string>
     <string name="tab1">请假</string>
     <string name="tab2">消息</string>
@@ -15,10 +15,11 @@
     <integer name="max_code_length">6</integer>
     <string name="text_after_send_code">重新获取验证码</string>
     <string name="send_verify_code">获取验证码</string>
-    <string name="get_image">"http://192.168.43.248:9001/last_design/showImage?name=%s&amp;type=%d"</string>
+    <string name="get_image">"%sshowImage?name=%s&amp;type=%d"</string>
+
     <!--TUT倒计时提示文字-->
     <string name="tut_toast_text_time">已发送(%1$ds)</string>
-    <string name="phone_regex">^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$</string>
+    <string name="phone_regex" tools:ignore="TypographyDashes">^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$</string>
     <string name="message">消息</string>
     <string name="trends">动态</string>
     <string name="exit_en">exit</string>
@@ -297,7 +298,7 @@
     <string name="leave_tag_7">教学工作负责人</string>
     <string name="leave_tag_8">返校后签字</string>
     <string name="sub_time">时间</string>
-    <string name="get_sign">"http://192.168.43.248:9001/last_design/showImage?name=%s&amp;type=%d"</string>
+
     <string name="leave_time_start_to_end">%s至\n%s</string>
     <string name="return_date">%s年%s月%s日</string>
     <string name="get_name_fail">获取失败</string>
