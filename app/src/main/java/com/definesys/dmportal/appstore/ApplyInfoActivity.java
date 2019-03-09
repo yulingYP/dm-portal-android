@@ -153,7 +153,10 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
     public void getApplyRecord(BaseResponse<List<ApplyRecord>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             progressHUD.dismiss();
-            showMyDialog(data.getData());//显示提示框
+            if(data.getData()!=null&&data.getData().size()>0)
+                showMyDialog(data.getData());//显示提示框
+            else
+                Toast.makeText(this, ("".equals(data.getMsg())?getString(R.string.net_work_error):data.getMsg()),Toast.LENGTH_SHORT).show();
         }
     }
 
