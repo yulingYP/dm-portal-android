@@ -72,6 +72,7 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
                 holder.tv_name.setVisibility(View.GONE);
                 //状态
                 holder.tv_status.setText(DensityUtil.getApplyStatus(mContext,applyInfoList.get(position).getApplyStatus()));
+                DensityUtil.setTVcolor(holder.tv_status.getText().toString(),holder.tv_status,mContext);
             }
 
             //权限类型

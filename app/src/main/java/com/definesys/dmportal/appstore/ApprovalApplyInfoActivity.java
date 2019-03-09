@@ -200,9 +200,9 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
 
             }else {//有审批记录
                 applyRecord = data.getData().get(0);
+                type = applyRecord.getApplyStatus();
                 isAgree = type==1;
                 initEditUnable();
-                type = applyRecord.getApplyStatus();
                 if (applyInfo != null)//申请信息不为空
                     initView();//初始化界面
             }

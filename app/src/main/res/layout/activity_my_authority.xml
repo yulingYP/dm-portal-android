@@ -8,6 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
+    tools:ignore="ContentDescription,RelativeOverlap"
     tools:context="com.definesys.dmportal.appstore.ui.leaveSetting.AuthoritySettingActivity">
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
@@ -28,6 +29,7 @@
                 android:text="@string/my_authority_des"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginBottom="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <RelativeLayout
@@ -54,7 +56,8 @@
                     android:id="@+id/stu_des"
                     android:layout_marginStart="4dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
                 <TextView
                     android:textSize="14sp"
                     android:layout_below="@+id/stu_icon"
@@ -186,10 +189,34 @@
                     android:layout_height="30dp" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/approval_history_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:padding="12dp"
+                    android:text="@string/my_approval_history"
+                    android:textColor="@color/black" />
+                <ImageView
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_gravity="center"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                     />
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/apply_history_layout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="1dp"
+                android:layout_marginBottom="8dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
                 <TextView
@@ -207,29 +234,7 @@
                     android:layout_width="20dp"
                     android:layout_height="30dp" />
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/approval_history_layout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/white"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:padding="12dp"
-                    android:text="@string/my_approval_history"
-                    android:textColor="@color/black" />
-                <ImageView
-                    android:layout_marginEnd="12dp"
-                    android:src="@drawable/entry"
-                    android:layout_gravity="center"
-                    android:layout_width="20dp"
-                    android:layout_height="30dp" />
-            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

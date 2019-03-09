@@ -306,7 +306,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         if(message.equals("showMessage")){//跳转到消息也
             isFirst = false;
              mTabbar.setSelectTab(0);
-            contactFragment.freshMsgFragment();
+            if(contactFragment!=null){
+                contactFragment.freshMsgFragment();
+            }
         }
         else if(message.contains("{")){
             myMessage= new Gson().fromJson(message, new TypeToken<MyMessage>() {

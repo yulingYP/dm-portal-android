@@ -58,7 +58,9 @@ public class ApplyInfoPresenter extends BasePresenter {
     public void getApplyRecordById(String applyId,Integer userId){
         Map<String,String>map = new HashMap<>();
         map.put("applyId",applyId);
-        map.put("userId",String.valueOf(userId));
+        if(userId!=null) {
+            map.put("userId", String.valueOf(userId));
+        }
         map.put("type","record");
         ViseHttp.POST(HttpConst.getApplyInfoById)
                 .tag(HttpConst.getApplyInfoById)

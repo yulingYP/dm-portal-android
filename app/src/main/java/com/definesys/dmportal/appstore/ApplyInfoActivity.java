@@ -162,16 +162,16 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
          Dialog dialog = new Dialog(this);
          View view=LayoutInflater.from(this).inflate(R.layout.dialog_apply_approval_info_view,null);
          LinearLayout parent = view.findViewById(R.id.parent_layout);
-         View itemView=LayoutInflater.from(this).inflate(R.layout.dialog_apply_approval_info_view,parent,false);
          for(ApplyRecord data:datas) {
+             View itemView=LayoutInflater.from(this).inflate(R.layout.item_approval_record,parent,false);
              //审批人
-             ((TextView) view.findViewById(R.id.name_text)).setText(getString(R.string.approver_text, getApprovalerName()));
+             ((TextView) itemView.findViewById(R.id.name_text)).setText(getString(R.string.approver_text, getApprovalerName()));
              //审批内容
-             ((TextView) view.findViewById(R.id.content_text)).setText(getString(R.string.approval_content_text, data.getApplyContent()));
+             ((TextView) itemView.findViewById(R.id.content_text)).setText(getString(R.string.approval_content_text, data.getApplyContent()));
              //审批结果
-             ((TextView) view.findViewById(R.id.result_text)).setText(Html.fromHtml(getString(R.string.approval_result_text, data.getApplyStatus() == 0 ? "<font color='#ff4444'>不同意</font>" : "<font color='#7cb342'>同意</font>")));
+             ((TextView) itemView.findViewById(R.id.result_text)).setText(Html.fromHtml(getString(R.string.approval_result_text, data.getApplyStatus() == 0 ? "<font color='#ff4444'>不同意</font>" : "<font color='#7cb342'>同意</font>")));
              //审批时间
-             ((TextView) view.findViewById(R.id.time_text)).setText(getString(R.string.approval_time_text, DensityUtil.dateTypeToString(getString(R.string.date_type_2), data.getApprovalDate())));
+             ((TextView) itemView.findViewById(R.id.time_text)).setText(getString(R.string.approval_time_text, DensityUtil.dateTypeToString(getString(R.string.date_type_2), data.getApprovalDate())));
              parent.addView(itemView);
          }
         //点击确定

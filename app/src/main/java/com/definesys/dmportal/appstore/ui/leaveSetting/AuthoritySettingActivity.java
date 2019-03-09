@@ -165,8 +165,10 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     private void setShowLayout() {
         if(SharedPreferencesUtil.getInstance().getUserType()==0)//学生
             lg_tea.setVisibility(GONE);
-        if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0&&SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()<0)//没有任何审批权限
+        if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0&&SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()<0) {//没有任何审批权限
             lg_delete.setVisibility(GONE);
+            lg_approval.setVisibility(GONE);
+        }
         if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()<0){//没有审批请假学生权限
             tv_stu.setText(R.string.no_authority_des);
             tv_stu.setGravity(Gravity.CENTER);
