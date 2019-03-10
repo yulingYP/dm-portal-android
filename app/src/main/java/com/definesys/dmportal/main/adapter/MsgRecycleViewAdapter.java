@@ -104,7 +104,16 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.img.setImageResource(R.drawable.ic_leave_approving);
                     viewHolder.content.setText(context.getString(R.string.message_tip_13,id));
                 }
-            }else if(messages.get(position).getMessageType()==11){//查看权限申请记录
+            }else if(messages.get(position).getMessageType()==6){//查看权限申请记录
+               if("y".equals(messages.get(position).getMessageContent().toLowerCase())){//权限被删除
+                   viewHolder.img.setImageResource(R.drawable.ic_aut_delete);
+                   viewHolder.content.setText(context.getString(R.string.message_tip_15,messages.get(position).getMessageExtend()));
+               }else {//仍保留权限但范围发生变化
+                   viewHolder.img.setImageResource(R.drawable.ic_aut_change);
+                   viewHolder.content.setText(context.getString(R.string.message_tip_16,messages.get(position).getMessageExtend()));
+               }
+            }
+            else if(messages.get(position).getMessageType()==11){//查看权限申请记录
                 viewHolder.img.setImageResource(R.drawable.review);
                 viewHolder.content.setText(R.string.message_tip_14);
             }
@@ -156,7 +165,12 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         .withInt("type", 4)
                                         .navigation();
                             }
-                        }else if(messages.get(position).getMessageType()==11){//查看权限申请记录
+                        }else if(messages.get(position).getMessageType()==6){//权限发生改变
+                            ARouter.getInstance()
+                                    .build(ARouterConstants.AuthoritySettingActivity)
+                                    .navigation();
+                        }
+                        else if(messages.get(position).getMessageType()==11){//查看权限申请记录
                             ARouter.getInstance()
                                     .build(ARouterConstants.AppLyListActivity)
                                     .withObject("ARouterPath",ARouterConstants.ApplyInfoActivity)

@@ -34,6 +34,7 @@ import com.definesys.dmportal.appstore.LeaveListActivity;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
+import com.definesys.dmportal.appstore.ui.leaveSetting.AuthoritySettingActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.config.MyCongfig;
@@ -360,7 +361,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
               (message.getMessageType()==2&&message.getMessageExtend2()==4)|| //请假审批人收到审批消息
               (message.getMessageType()==4&&message.getMessageExtend2()<=1)||//权限申请结果
               (message.getMessageType()==5&&message.getMessageExtend2()==4)||//新的权限申请请求
-              message.getMessageType()==10||message.getMessageType()==11//新的权限申请请求
+               message.getMessageType()==6||//权限发生变化（部分权限被删除）
+               message.getMessageType()==10||message.getMessageType()==11//新的权限申请请求
             ))
             setRed(true);
         }
@@ -376,7 +378,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
         }
         else {
-//                notiManager.cancelAll();
+            if(currentPosition==0&&contactFragment.getCurrentitem()==0)//在消息页面
                 mTabbar.getTabAtPosition(0).hiddenBadge();
         }
     }
@@ -442,7 +444,11 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             }else if(myMessage.getMessageType()==5) {//新的请假请求，跳转到详细页面
                 title = getString(R.string.approval_result_4);
                 content = getString(R.string.approval_result_tip_7);
-            }else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
+            }else if(myMessage.getMessageType()==6){
+                title = getString(R.string.approval_result_5);
+                content = "y".equals(myMessage.getMessageContent().toLowerCase())?getString(R.string.approval_result_tip_8,myMessage.getMessageExtend()):getString(R.string.approval_result_tip_9,myMessage.getMessageExtend());
+            }
+            else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
                 title = getString(R.string.leave_request);
                 content = getString(R.string.leave_request_tip_2);
             }else if(myMessage.getMessageType()==11){//新的权限申请请求，跳转到列表页面
@@ -502,21 +508,14 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             if(myMessage.getMessageExtend2()==1)//权限申请通过，重新获取权限信息
                 mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
         }else if(myMessage.getMessageType()==5){//审批人新的审批任务，跳转到详情页
-//            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
             intent = new Intent(this, ApprovalApplyInfoActivity.class);
             intent.putExtra("applyId", myMessage.getMessageExtend());
-//            intent.putExtra("msgId",myMessage.getMessageId());
             intent.putExtra("type", myMessage.getMessageExtend2().intValue());
-//            if(temp!=null) {
-//                intent.putExtra("applyId", temp.getMessageExtend());
-//                intent.putExtra("type", temp.getMessageExtend2());
-//                intent.putExtra("content",myMessage.getMessageContent());
-//                intent.putExtra("date",myMessage.getSendTime());
-//            }else {
-//                intent.putExtra("applyId", myMessage.getMessageExtend());
-//                intent.putExtra("type", 4);
-//            }
-        }else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
+        }else if(myMessage.getMessageType()==6){////权限发生变化
+            intent = new Intent(this, AuthoritySettingActivity.class);
+            if("y".equals(myMessage.getMessageContent().toLowerCase()))//权限已被删除，重新获取权限
+                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+        } else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
             intent = new Intent(this, LeaveListActivity.class);
             intent.putExtra("userId",(int) SharedPreferencesUtil.getInstance().getUserId());
             intent.putExtra("type",1);

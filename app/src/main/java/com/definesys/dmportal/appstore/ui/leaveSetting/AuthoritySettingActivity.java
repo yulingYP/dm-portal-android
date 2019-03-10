@@ -267,14 +267,15 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     /**
      * 展示审批的详细结果
      * @param type 0.审批学生 1.审批教师
+     * stuMap.get(i).length()>4判断是为了确定用户获得的权限里还有没有成员
      */
     private void showTextByMap(int type) {
         StringBuilder content= new StringBuilder();
         if(type==0){//审批学生
             for(int i = 0;i<9;i++){
                 if(stuMap.get(i)!=null&&!"".equals(stuMap.get(i))){//有权限
-                    content.append(stuMap.get(i).substring(0,stuMap.get(i).length()-2))
-                            .append(i==1||i==2?getString(R.string.ban):" ")
+                    content.append(stuMap.get(i).length()>4?stuMap.get(i).substring(0,stuMap.get(i).length()-2):stuMap.get(i))
+                            .append((i==1||i==2)&&stuMap.get(i).length()>4?getString(R.string.ban):" ")
                             .append("\n");
                 }
             }
@@ -283,7 +284,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         }else if(type==1){//审批教师
             for(int i = 0;i<3;i++){
                 if(teaMap.get(i)!=null&&!"".equals(teaMap.get(i))){//有权限
-                    content.append(teaMap.get(i).substring(0,teaMap.get(i).length()-2))
+                    content.append(teaMap.get(i).length()>4?teaMap.get(i).substring(0,teaMap.get(i).length()-2):teaMap.get(i))
                             .append("\n");
                 }
             }
