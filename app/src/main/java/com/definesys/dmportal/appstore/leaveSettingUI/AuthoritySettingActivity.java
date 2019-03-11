@@ -1,4 +1,4 @@
-package com.definesys.dmportal.appstore.ui.leaveSetting;
+package com.definesys.dmportal.appstore.leaveSettingUI;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -118,17 +118,13 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                     ARouter.getInstance().build(ARouterConstants.UpdateLeAutActivity)
-                            .withInt("type",0)//申请权限
                             .navigation()
                 );
         //删除权限
         RxView.clicks(lg_delete)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
-                    ARouter.getInstance().build(ARouterConstants.UpdateLeAutActivity)
-                            .withObject("stuList",stuMap)
-                            .withObject("teaList",teaMap)
-                            .withInt("type",1)//删除权限
+                    ARouter.getInstance().build(ARouterConstants.AuthorityChangeActivity)
                             .navigation()
                 );
         //权限审批

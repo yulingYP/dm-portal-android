@@ -1,4 +1,4 @@
-package com.definesys.dmportal.appstore.ui.leaveSetting;
+package com.definesys.dmportal.appstore.leaveSettingUI;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

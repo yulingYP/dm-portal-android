@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     tools:ignore="ContentDescription,RelativeOverlap"
-    tools:context="com.definesys.dmportal.appstore.ui.leaveSetting.AuthoritySettingActivity">
+    tools:context=".appstore.leaveSettingUI.AuthoritySettingActivity">
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"

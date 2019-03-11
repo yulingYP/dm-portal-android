@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/back_gray"
-    tools:context="com.definesys.dmportal.appstore.ui.leaveSetting.SignatureActivity"
+    tools:context=".appstore.leaveSettingUI.SignatureActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout

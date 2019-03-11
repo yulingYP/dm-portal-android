@@ -68,7 +68,6 @@ public class LeaveAuthorityPresenter extends BasePresenter {
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
         map.put("authorities",authorities); //审批老师权限的时候+10；方便以后整理textView
-        map.put("authorityType",authorityType);
         ViseHttp.POST(HttpConst.getAuthorityDetailInfo)
                 .tag(HttpConst.getAuthorityDetailInfo)
                 .setJson(new Gson().toJson(map))

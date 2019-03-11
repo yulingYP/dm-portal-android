@@ -466,4 +466,7 @@
     <string name="authority_tip">类型:%s</string>
     <string name="region_tip">范围:%s</string>
     <string name="sign_text">请先输入您的签名</string>
+
+    <string name="delete_authority">删除权限</string>
+    <string name="my_auhority">我的权限</string>
 </resources>

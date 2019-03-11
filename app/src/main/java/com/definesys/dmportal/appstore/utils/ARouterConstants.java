@@ -34,5 +34,6 @@ public interface ARouterConstants {
     String AppLyListActivity = "/dmportal/appstore//AppLyListActivity";//权限相关列表页面
     String ApplyInfoActivity = "/dmportal/appstore/ApplyInfoActivity";//权限审批列表页面
     String ApprovalApplyInfoActivity = "/dmportal/appstore/ApprovalApplyInfoActivity";//权限相关列表页面
+    String AuthorityChangeActivity = "/dmportal/appstore/AuthorityChangeActivity ";//删除权限页面
 
 }
