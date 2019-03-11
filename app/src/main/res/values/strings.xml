@@ -1,4 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="httpUrl">http://%s:9001/last_design/</string>
     <string name="app_name">快捷校园</string>
     <string name="tab1">请假</string>
     <string name="tab2">消息</string>
@@ -179,6 +181,7 @@
 
     <string name="click_close">点击关闭(%ds)</string>
     <string name="login">登陆</string>
+    <string name="exit_2s">再按一次退出</string>
     <string name="forget_password">忘记密码?</string>
     <string name="login_text_code">短信验证码登录</string>
     <string name="copyright">哈尔滨工业大学(威海) 版权所有</string>
@@ -472,4 +475,6 @@
     <string name="my_auhority">我的权限</string>
     <string name="delete_error_tip_1">请先选择要删除的权限</string>
     <string name="delete_authority_des">%s权限\\n%s</string>
+
+
 </resources>

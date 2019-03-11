@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.definesys.dmportal.appstore.bean.User;
 import com.definesys.dmportal.main.interfaces.SharedPreferencesParams;
+import com.definesys.dmportal.main.presenter.HttpConst;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -230,6 +231,15 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
             editor.apply();
             return editor;
         }
+    }
+
+    public SharedPreferences.Editor setHttpUrl(String url) {
+        SharedPreferences.Editor editor = getSpWithEdit().putString("url", url);
+        editor.apply();
+        return editor;
+    }
+    public String getHttpUrl() {
+        return sp.getString("url", HttpConst.url);
     }
 
 }

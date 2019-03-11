@@ -582,7 +582,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
      * @param userType 用户类型 0.学生 1.教师
      */
     private void setSign(ImageView img, TextView tv_sign, ProgressBar progressBar,Number signUrl,int userType) {
-        Glide.with(this).asBitmap().load(getString(R.string.get_image, HttpConst.url,String.valueOf(signUrl.intValue())+".png",2)).apply(option).into(new SimpleTarget<Bitmap>() {
+        Glide.with(this).asBitmap().load(getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),String.valueOf(signUrl.intValue())+".png",2)).apply(option).into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onLoadStarted(@Nullable Drawable placeholder) {

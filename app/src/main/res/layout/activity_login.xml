@@ -24,7 +24,7 @@
         android:layout_marginTop="12dp"
         android:layout_toEndOf="@+id/app_img_att_login"
         android:text="@string/app_name"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:textColor="@color/gold"
         android:textSize="18sp" />
     <LinearLayout

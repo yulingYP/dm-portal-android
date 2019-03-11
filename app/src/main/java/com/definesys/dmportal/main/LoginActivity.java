@@ -1,8 +1,8 @@
 package com.definesys.dmportal.main;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.os.Bundle;
-
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.MyActivityManager;
@@ -10,10 +10,13 @@ import com.definesys.dmportal.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alibaba.android.arouter.facade.Postcard;
@@ -56,8 +59,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     @BindView(R.id.login_btn_att_log)
     Button btn;
 
-    String userPhoneNumber;
-    Number userId;
+
+    private String userPhoneNumber;//电话号码
+    private Number userId;//用户id
 
     @BindView(R.id.mainview)
     View main;
@@ -239,7 +243,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         this.btn.callOnClick();
         return true;
     }
+    //TODO 为方便调试设置的点击自动登录
+    @OnClick(R.id.app_img_att_login)
+    public void onIconClick() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        EditText editText = new EditText(this);
+        editText.setHint("请输入新的ip地址");
+        builder.setView(editText)
+                .setTitle("URL修改")
+                .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                    if("".equals(editText.getText().toString())){
+                        Toast.makeText(this,"url不能为空",Toast.LENGTH_SHORT).show();
+                    }else {
+                        MainApplication.getInstances().setUrl(editText.getText().toString().trim());
+                    }
+                })
+                .setNegativeButton(R.string.cancel,null)
+                .create()
+                .show();
 
+    }
     @Override
     protected void onDestroy() {
         inputPwd.stopCount(false);
@@ -270,13 +293,27 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                 });
     }
 
-//    /*
-//     注册成功
-//     */
-//    @Subscribe(tags = {
-//            @Tag(MainPresenter.SUCCESSFUL_REGISTER_USER)
-//    }, thread = EventThread.MAIN_THREAD)
-//    public void successfulRegister(ResultBean<LoginBean> data) {
-//        finish();
-//    }
+    /*
+ 点按两次退出
+  */
+    private boolean mIsExit = false;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mIsExit) {
+//                // 停止LBS监控上报
+//                StatGpsMonitor.getInstance().stopMonitor();
+                this.finish();
+
+            } else {
+                Toast.makeText(this, R.string.exit_2s,Toast.LENGTH_SHORT).show();
+                mIsExit = true;
+                new Handler().postDelayed(() -> mIsExit = false, 2000);
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 }

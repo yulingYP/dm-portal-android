@@ -212,6 +212,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         ApplyDialog applyDialog = new ApplyDialog(this,list,101);
         applyDialog.setOnCancelClickListener(applyDialog::dismiss);
         applyDialog.setOnConfirmClickListener(applyDialog::dismiss);
+        applyDialog.show();
     }
 
 

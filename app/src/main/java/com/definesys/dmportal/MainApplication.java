@@ -41,7 +41,7 @@ public class MainApplication extends Application {
 
     private boolean isShowing = false;//是否已经显示单机登陆的提示框
     public static MainApplication instances;
-
+    private String url = HttpConst.url;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -49,9 +49,14 @@ public class MainApplication extends Application {
 
         RePlugin.App.attachBaseContext(this);
 
-
     }
 
+    public void setUrl(String newUrl) {
+        this.url =getString(R.string.httpUrl,newUrl);
+        SharedPreferencesUtil.getInstance().setHttpUrl(url);
+        ViseHttp.CONFIG().baseUrl(url);
+
+    }
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,11 +66,12 @@ public class MainApplication extends Application {
         JPushInterface.init(getApplicationContext());
 
         RePlugin.App.onCreate();
-
+        SharedPreferencesUtil.setContext(this);
+        url = SharedPreferencesUtil.getInstance().getHttpUrl();
         ViseHttp.init(this);
         ViseHttp.CONFIG()
                 //配置请求主机地址
-                .baseUrl(HttpConst.url)
+                .baseUrl(url)
                 //配置全局请求头
                 .globalHeaders(new HashMap<>())
                 //配置全局请求参数
@@ -131,7 +137,7 @@ public class MainApplication extends Application {
         ARouter.init(this);
 
         instances = this;
-        SharedPreferencesUtil.setContext(this);
+
         //消除相机url异常
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());

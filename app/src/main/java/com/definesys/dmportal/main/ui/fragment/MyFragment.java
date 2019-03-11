@@ -230,7 +230,7 @@ public class MyFragment extends Fragment {
         if(MainApplication.getInstances().isShowing()) return;
         String str = SharedPreferencesUtil.getInstance().getUserLocal();
         if("".equals(str)){
-            str = getString(R.string.get_image, HttpConst.url,SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
+            str = getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
         }
 
         Glide.with(this)

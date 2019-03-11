@@ -494,7 +494,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     */
     private void setSign() {
 
-        Glide.with(this).asBitmap().load(getString(R.string.get_image, HttpConst.url,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue())+".png",2)).apply(option).into(new SimpleTarget<Bitmap>() {
+        Glide.with(this).asBitmap().load(getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue())+".png",2)).apply(option).into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onLoadStarted(@Nullable Drawable placeholder) {
