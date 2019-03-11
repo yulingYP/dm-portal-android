@@ -256,6 +256,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                         Toast.makeText(this,"url不能为空",Toast.LENGTH_SHORT).show();
                     }else {
                         MainApplication.getInstances().setUrl(editText.getText().toString().trim());
+                        Toast.makeText(this,"修改成功",Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(R.string.cancel,null)

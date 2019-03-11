@@ -24,7 +24,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- *
+ *   type
+ *   0.寝室长权限根据facultyId获取班级名称
+ *   1.根据班级id获取班级名单
+ *   2.班长权限 根据facultyId获取班级名称
+ *   3.班主任权限 获取院系列表
+ *   4.获取该院系所有班级的id
+ *   5.毕设老师权限 获取所有院系的名称
+ *   6.毕设老师权限 获取该院系所有班级的id
+ *   7.获取班级全部成员
+ *   8.辅导员权限 获取院系列表
+ *   9.获取所有班级id
+ *   10.学院实习工作负责人权限 获取院系列表
+ *   11.学生工作负责人权限 获取院系列表
+ *   12.教学院长权限 获取院系列表
+ *   20.部门请假负责人权限 获取所有部门的id
+ *   21.部门教学院长权限 获取所有部门的id
+ *   100，101.提交提示框
  * Created by 羽翎 on 2019/2/28.
  */
 
@@ -57,7 +73,7 @@ public class ApplyAuthorityAdapter extends RecyclerView.Adapter<ApplyAuthorityAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tv_name.setText(typeList.get(position));
-        if(type==100) {
+        if(type==100||type==101) {
             holder.iv_select.setVisibility(View.GONE);
             holder.tv_name.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
         } else

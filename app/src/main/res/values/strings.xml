@@ -474,7 +474,7 @@
     <string name="delete_authority">删除权限</string>
     <string name="my_auhority">我的权限</string>
     <string name="delete_error_tip_1">请先选择要删除的权限</string>
-    <string name="delete_authority_des">%s权限\\n%s</string>
+    <string name="delete_authority_des">%s权限\n%s</string>
 
 
 </resources>
