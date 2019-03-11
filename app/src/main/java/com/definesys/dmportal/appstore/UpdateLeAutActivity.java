@@ -315,6 +315,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
      * 展示dialog
      * @param authority 权限
      * @param type 0.审批学生权限 1.审批教师权限
+     *
      */
     private void showMyDialog(int authority, int type) {
         if(type==0){//审批学生
@@ -352,7 +353,21 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     /**
      *
      * @param data data
-     * @param type 0.寝室长权限根据facultyId获取班级名称 1.根据班级id获取班级名单 2.班长权限 根据facultyId获取班级名称
+     * @param type 0.寝室长权限根据facultyId获取班级名称
+     *             1.根据班级id获取班级名单
+     *             2.班长权限 根据facultyId获取班级名称
+     *             3.班主任权限 获取院系列表
+     *             4.获取该院系所有班级的id
+     *             5.毕设老师权限 获取所有院系的名称
+     *             6.毕设老师权限 获取该院系所有班级的id
+     *             7.获取班级全部成员
+     *             8.辅导员权限 获取院系列表
+     *             9.获取所有班级id
+     *             10.学院实习工作负责人权限 获取院系列表
+     *             11.学生工作负责人权限 获取院系列表
+     *             12.教学院长权限 获取院系列表
+     *             20.部门请假负责人权限 获取所有部门的id
+     *             21.部门教学院长权限 获取所有部门的id
      */
     private void initDialog(List<String> data, int type) {
         ApplyDialog applyDialog = new ApplyDialog(this,data,type);

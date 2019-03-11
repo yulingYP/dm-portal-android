@@ -1,5 +1,6 @@
 package com.definesys.dmportal.appstore.customViews;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import static android.view.View.GONE;
 
 /**
+ *
  * Created by 羽翎 on 2019/3/3.
  */
 
@@ -51,9 +53,28 @@ public class ApplyDialog extends Dialog {
         initView();
     }
 
+    /** type
+     *   0.寝室长权限根据facultyId获取班级名称
+     *   1.根据班级id获取班级名单
+     *   2.班长权限 根据facultyId获取班级名称
+     *   3.班主任权限 获取院系列表
+     *   4.获取该院系所有班级的id
+     *   5.毕设老师权限 获取所有院系的名称
+     *   6.毕设老师权限 获取该院系所有班级的id
+     *   7.获取班级全部成员
+     *   8.辅导员权限 获取院系列表
+     *   9.获取所有班级id
+     *   10.学院实习工作负责人权限 获取院系列表
+     *   11.学生工作负责人权限 获取院系列表
+     *   12.教学院长权限 获取院系列表
+     *   20.部门请假负责人权限 获取所有部门的id
+     *   21.部门教学院长权限 获取所有部门的id
+     *   100，101.提交提示框
+     */
+    @SuppressLint("InflateParams")
     private void initView() {
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_apply_authority_view, null);
-         tv_select  = (TextView)view.findViewById(R.id.select_text);
+         View view = LayoutInflater.from(context).inflate(R.layout.dialog_apply_authority_view, null);
+         tv_select  = view.findViewById(R.id.select_text);
         if(type==0){
             tv_select.setVisibility(View.VISIBLE);
 //            tv_select.setText(context.getString(R.string.select_des,"暂无"));
@@ -95,6 +116,10 @@ public class ApplyDialog extends Dialog {
             tv_select.setVisibility(GONE);
             ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_13);
             ((TextView)view.findViewById(R.id.title_text)).setTextColor(context.getResources().getColor(R.color.blue));
+        }else if(type==101){
+            tv_select.setVisibility(GONE);
+            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_13);
+            ((TextView)view.findViewById(R.id.title_text)).setTextColor(context.getResources().getColor(R.color.blue));
         }
         if(type==3||type==5||type==8){
             view.findViewById(R.id.confirm_layout).setVisibility(View.GONE);
@@ -115,15 +140,12 @@ public class ApplyDialog extends Dialog {
                             onCancelClickListener.onClick();
                     });
         }
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recycle_view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycle_view);
         applyAuthorityAdapter = new ApplyAuthorityAdapter(stringList,context,type);
         //点击事件
-        applyAuthorityAdapter.setMyOnClickListener(new OnItemClickListener() {
-            @Override
-            public void onClick(int position) {
-                if(onItemClickListener!=null)
-                    onItemClickListener.onClick(position);
-            }
+        applyAuthorityAdapter.setMyOnClickListener(position -> {
+            if(onItemClickListener!=null)
+                onItemClickListener.onClick(position);
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
@@ -143,17 +165,13 @@ public class ApplyDialog extends Dialog {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public OnConfirmClickListener getOnCancelClickListener() {
-        return onCancelClickListener;
-    }
+
 
     public void setOnCancelClickListener(OnConfirmClickListener onCancelClickListener) {
         this.onCancelClickListener = onCancelClickListener;
     }
 
-    public OnConfirmClickListener getOnConfirmClickListener() {
-        return onConfirmClickListener;
-    }
+
 
     public ApplyAuthorityAdapter getApplyAuthorityAdapter() {
         return applyAuthorityAdapter;

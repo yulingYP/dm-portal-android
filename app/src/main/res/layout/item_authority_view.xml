@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    tools:ignore="ContentDescription,RelativeOverlap"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:id="@+id/des_layout"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+        <ImageView
+            android:id="@+id/stu_icon"
+            android:src="@drawable/authority_icon"
+            android:layout_width="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="20dp"
+            />
+        <TextView
+            android:text="@string/approval_stu_des"
+            android:textSize="16sp"
+            android:layout_toEndOf="@+id/stu_icon"
+            android:textColor="@color/black"
+            android:layout_gravity="top"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:id="@+id/aut_des"
+            android:layout_marginStart="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <ImageView
+            android:layout_alignParentEnd="true"
+            android:id="@+id/down_icon"
+            android:layout_marginEnd="8dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/down_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            />
+
+    </RelativeLayout>
+    <View
+        android:background="@color/back_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+    </View>
+    <LinearLayout
+        android:id="@+id/item_layout"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </LinearLayout>
+</LinearLayout>
+

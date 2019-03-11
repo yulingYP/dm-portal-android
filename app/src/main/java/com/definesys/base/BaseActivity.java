@@ -1,7 +1,7 @@
 package com.definesys.base;
 
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -20,11 +20,10 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.vise.xsnow.http.ViseHttp;
 
-import static android.os.Build.VERSION.SDK;
 
 /**
+ *
  * Created by mobile on 2018/8/20.
  */
 

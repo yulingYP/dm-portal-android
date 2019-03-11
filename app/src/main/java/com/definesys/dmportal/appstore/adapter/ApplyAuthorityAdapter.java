@@ -1,7 +1,7 @@
 package com.definesys.dmportal.appstore.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ *
  * Created by 羽翎 on 2019/2/28.
  */
 
@@ -54,14 +55,13 @@ public class ApplyAuthorityAdapter extends RecyclerView.Adapter<ApplyAuthorityAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tv_name.setText(typeList.get(position));
         if(type==100) {
             holder.iv_select.setVisibility(View.GONE);
             holder.tv_name.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-        }
-        else
-            holder.iv_select.setVisibility(View.VISIBLE);;
+        } else
+            holder.iv_select.setVisibility(View.VISIBLE);
         if(type!=1&&type!=4&&type!=7&&type!=9) {//0/2班级、10/11部门
             if (selectPosition == position) {
                 holder.iv_select.setImageResource(R.drawable.right_icon);
@@ -123,9 +123,7 @@ public class ApplyAuthorityAdapter extends RecyclerView.Adapter<ApplyAuthorityAd
         return selectPosition;
     }
 
-    public void setSelectPosition(int selectPosition) {
-        this.selectPosition = selectPosition;
-    }
+
 
     public void setMyOnClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -135,7 +133,5 @@ public class ApplyAuthorityAdapter extends RecyclerView.Adapter<ApplyAuthorityAd
         return selectList;
     }
 
-    public interface MyOnClickListener{
-         void onClick(int position);
-    }
+
 }
