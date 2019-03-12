@@ -130,7 +130,8 @@ public class ImageUntil {
             try {
                 out = new FileOutputStream(file);
                 // 格式为 JPEG，照相机拍出的图片为JPEG格式的，PNG格式的不能显示在相册中
-                Bitmap.CompressFormat format=mode==4?Bitmap.CompressFormat.PNG:Bitmap.CompressFormat.JPEG;
+//                Bitmap.CompressFormat format=mode==4?Bitmap.CompressFormat.PNG:Bitmap.CompressFormat.JPEG;
+                Bitmap.CompressFormat format=Bitmap.CompressFormat.JPEG;
                 int quality =  mode==4?100:90;
                 if (bitmap.compress(format,quality , out)) {
                     out.flush();

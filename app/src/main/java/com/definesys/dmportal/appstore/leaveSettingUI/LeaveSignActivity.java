@@ -45,7 +45,6 @@ import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.ChangeUserImagePresenter;
-import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -268,7 +267,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     iv_show.setImageBitmap(BitmapFactory.decodeFile(selectImages.get(0).getCompressPath()));
                     break;
                 case SIGN_CODE://手写签名
-
                     showLaout(1);
                     addSubmitButtom();
                     //设置图片

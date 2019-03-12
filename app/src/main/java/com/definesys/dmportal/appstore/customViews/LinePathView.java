@@ -49,7 +49,7 @@ public class LinePathView extends View {
     /**
      * 画笔宽度 px；
      */
-    private int mPaintWidth = 10;
+    private int mPaintWidth = 20;
     /**
      * 前景色
      */
@@ -103,7 +103,9 @@ public class LinePathView extends View {
         //设置签名笔画样式
 //        mGesturePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         //设置笔画宽度
-        mGesturePaint.setStrokeWidth(20);
+        setPaintWidth(20);
+        setPenColor(Color.BLACK);
+        setBackColor(Color.WHITE);
         Canvas canvas = new Canvas(cachebBitmap);
         canvas.drawBitmap(cachebBitmap, 0, 0, mGesturePaint);
         // 通过画布绘制多点形成的图形
@@ -168,10 +170,10 @@ public class LinePathView extends View {
         // 两点之间的距离大于等于2时，生成贝塞尔绘制曲线
         if (dx >= 2 || dy >= 2) {
             // 设置贝塞尔曲线的操作点为起点和终点的一半
-            float cX = (x + previousX) / 2;
-            float cY = (y + previousY) / 2;
+//            float cX = (x + previousX) / 2;
+//            float cY = (y + previousY) / 2;
             // 二次贝塞尔，实现平滑曲线；previousX, previousY为操作点，cX, cY为终点
-            mPath.quadTo(previousX, previousY, cX, cY);
+            mPath.quadTo(previousX, previousY, x, y);
             // 第二次执行时，第一次结束调用的坐标值将作为第二次调用的初始坐标值
             mX = x;
             mY = y;
