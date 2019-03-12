@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -18,27 +17,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.UUID;
 
 /**
+ *
  * Created by 羽翎 on 2018/9/26.
  */
 
 public class ImageUntil {
-    public static String currentUUID;
-
-
 
     //圆角bitmap
     public static Bitmap getOvalBitmap(Bitmap bitmap){
@@ -66,14 +56,13 @@ public class ImageUntil {
 
     /**
      * 保存文件的方法
-     * @param code
-     * @param context
+     * @param code 图片
+     * @param context c
      * @param mode 0.保存到缓存 1.保存到相册 2.保存到指定目录 3.保存头像 4.保存到缓存缩放0.9
-     * @return
-     * @throws ParseException
+     * @return 路径
      */
     public static String  saveBitmapFromView(Bitmap code,String picName, Context context,int mode) {
-        String path = null;
+        String path =null;
         Bitmap bmp = null;
         Bitmap scaleBmp = null;
         try {
@@ -91,16 +80,15 @@ public class ImageUntil {
             scaleBmp = null;
 
         } catch (Exception e) {
-            throw e;
+            Log.d("mydemo",e.toString());
         }
         finally {
             if (bmp != null && !bmp.isRecycled()) {
-                bmp = null;
+                bmp.recycle();
             }
 
             if (scaleBmp != null && !scaleBmp.isRecycled()) {
                 scaleBmp.recycle();
-                scaleBmp = null;
             }
         }
 
@@ -112,7 +100,7 @@ public class ImageUntil {
  */
 
     private static String saveBitmap(Bitmap bitmap, String bitName, Context context, int  mode){
-        String fileName ="" ;
+        String fileName="" ;
         File file ;
       if(mode==1){//保存到相册
             if(Build.BRAND .equals("Xiaomi") ){ // 小米手机
@@ -121,10 +109,12 @@ public class ImageUntil {
                 fileName = Environment.getExternalStorageDirectory().getPath()+"/DCIM/"+bitName ;
             }
         }else if(mode==2){//保存到指定路径
+          boolean flag = true;
             if(!new File(context.getFilesDir()+"/leaveImages/").exists()){
-                new File(context.getFilesDir()+"/leaveImages/").mkdir();
+               flag= new File(context.getFilesDir()+"/leaveImages/").mkdir();
             }
-            fileName=context.getFilesDir()+"/leaveImages/"+bitName;
+            if(flag)
+                fileName=context.getFilesDir()+"/leaveImages/"+bitName;
         }else {//保存到缓存
             fileName=context.getCacheDir()+"/"+bitName;
         }
@@ -150,8 +140,6 @@ public class ImageUntil {
                         MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), bitName, null);
 
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
 
@@ -188,8 +176,8 @@ public class ImageUntil {
 
     /**
      * 获取view的bitmap
-     * @param view
-     * @return
+     * @param view v
+     * @return b
      */
     public static Bitmap convertViewToBitmap(View view) {
         Bitmap bitmap= Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
@@ -202,20 +190,28 @@ public class ImageUntil {
     /** * 将图片存到本地 */
     public static File saveBitmap(Bitmap bm, String picName) {
         try {
-            String dir=Environment.getExternalStorageDirectory().getAbsolutePath()+"/leavePic/"+picName+".jpg";
+            String dir=Environment.getExternalStorageDirectory().getAbsolutePath()+"/leavePic/";
             File f = new File(dir);
-            if (!f.exists()) {
-                f.getParentFile().mkdirs();
-                f.createNewFile();
+            boolean flag = true;
+            if (!f.exists()) {//不存在此文件夹
+                flag=f.mkdir();//创建
             }
-            FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.flush();
-            out.close();
+            if(flag){//文件夹存在或创建文件夹成功
+                //创建图片
+                f= new File(dir+picName+".jpg");
+            }
+            if(f.exists()){//图片已存在？
+                //删除
+                flag= f.delete();
+            }
+            if(flag) {//图片不存在或删除成功
+                FileOutputStream out = new FileOutputStream(f);
+                bm.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            }
 
             return f;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -228,15 +224,18 @@ public class ImageUntil {
         PdfDocument.Page page = document.startPage(pageInfo);
         view.draw(page.getCanvas());//3
         document.finishPage(page);//4
-        File file = null;
+        File file;
         try {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/leavePic/"+fileName+".pdf";
             file=new File(path);
+            boolean flag = true;
             if (file.exists()) {
-                file.delete();
+                flag=file.delete();
             }
-            document.writeTo(new FileOutputStream(file));
-            document.close();//5
+            if(flag) {
+                document.writeTo(new FileOutputStream(file));
+                document.close();//5
+            }
         } catch (IOException e) {
             e.printStackTrace();
             document.close();//5

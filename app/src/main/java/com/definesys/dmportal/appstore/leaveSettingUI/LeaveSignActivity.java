@@ -175,6 +175,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     localMedias.add(localMedia);
                     PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
                             .openExternalPreview(0, localMedias);
+                    iv_sign.setImageBitmap(BitmapFactory.decodeFile(path));
                 });
         //点击新建签名 展示新建签名
         RxView.clicks(iv_show)

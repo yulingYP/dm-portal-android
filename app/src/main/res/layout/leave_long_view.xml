@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="RelativeOverlap,ContentDescription">
         <TextView
             android:id="@+id/short_leave_des"
             android:layout_gravity="center"
@@ -19,14 +18,20 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:background="@color/black"
+            android:background="@drawable/leave_text_back_ground_color"
             android:padding="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
                 android:layout_width="260dp"
-                android:background="@color/white"
                 android:layout_height="match_parent">
+                <View
+                    android:id="@+id/hor_line"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/black"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent">
+                </View>
                 <TextView
                     android:id="@+id/leave_name"
                     android:textColor="@color/black"
@@ -39,20 +44,27 @@
                 <TextView
                     android:id="@+id/leave_time"
                     android:layout_marginTop="8dp"
-                    android:layout_alignParentEnd="true"
-                    android:padding="8dp"
+                    android:layout_toStartOf="@+id/hor_line"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingBottom="2dp"
                     android:text="@string/leave_time_start_to_end"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
+
                 <TextView
                     android:id="@+id/leave_sum"
-                    android:text="@string/sum_time"
-                    android:textColor="@color/black"
-                    android:layout_below="@+id/leave_time"
-                    android:layout_alignStart="@+id/leave_time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/hor_line"
+                    android:layout_below="@+id/leave_time"
+                    android:text="@string/sum_time"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:textColor="@color/black" />
                 <TextView
                     android:id="@+id/leave_reason"
                     android:text="@string/leave_title"
@@ -63,11 +75,15 @@
                     android:layout_width="wrap_content"
                     android:minHeight="150dp"
                     android:layout_height="wrap_content" />
-
+                <View
+                    android:layout_above="@+id/sign_layout_1"
+                    android:background="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp">
+                </View>
                 <LinearLayout
                     android:id="@+id/sign_layout_1"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/black"
                     android:paddingTop="1dp"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
@@ -79,17 +95,14 @@
                         android:paddingEnd="8dp"
                         android:paddingTop="8dp"
                         android:id="@+id/agree_text_1"
-                        android:background="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:background="@color/white"
                         android:layout_height="wrap_content">
                         <TextView
                             android:id="@+id/sign_name_1"
-                            android:background="@color/white"
                             android:textColor="@color/black"
                             android:gravity="end"
                             android:layout_gravity="top"
@@ -110,7 +123,8 @@
                             android:layout_gravity="bottom"
                             android:adjustViewBounds="true"
                             android:maxWidth="100dp"
-                            android:layout_height="30dp" />
+                            android:layout_height="30dp"
+                            tools:ignore="" />
                         <TextView
                             android:id="@+id/sign_text_1"
                             android:layout_weight="1"
@@ -121,11 +135,12 @@
                         </TextView>
                     </LinearLayout>
                     <TextView
-                        android:background="@color/white"
+
                         android:textColor="@color/black"
                         android:id="@+id/sign_time_1"
                         android:gravity="end"
                         android:paddingEnd="8dp"
+                        android:paddingStart="8dp"
                         android:text="@string/date_type_4"
                         android:layout_gravity="bottom"
                         android:layout_width="match_parent"
@@ -135,37 +150,28 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:background="@color/white"
                 android:layout_marginStart="1dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-               <LinearLayout
-                   android:orientation="vertical"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content">
                    <LinearLayout
-                   android:layout_width="match_parent"
-                   android:background="@color/black"
-                   android:orientation="vertical"
-
-                   android:layout_height="wrap_content">
+                       android:layout_width="match_parent"
+                       android:orientation="vertical"
+                       android:layout_height="wrap_content">
                    <TextView
                        android:textColor="@color/black"
                        android:text="@string/agree_tip_2"
                        android:paddingStart="8dp"
+                       android:paddingEnd="0dp"
                        android:id="@+id/agree_text_2"
                        android:paddingTop="8dp"
-                       android:background="@color/white"
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content" />
                    <LinearLayout
                        android:orientation="horizontal"
                        android:layout_width="match_parent"
-                       android:background="@color/white"
                        android:layout_height="wrap_content">
                        <TextView
                            android:id="@+id/sign_name_2"
-                           android:background="@color/white"
                            android:textColor="@color/black"
                            android:gravity="end"
                            android:layout_gravity="top"
@@ -196,39 +202,41 @@
                        </TextView>
                    </LinearLayout>
                    <TextView
-                       android:background="@color/white"
                        android:textColor="@color/black"
                        android:id="@+id/sign_time_2"
                        android:gravity="end"
                        android:paddingEnd="8dp"
+                       android:paddingStart="0dp"
                        android:layout_marginBottom="1dp"
                        android:text="@string/date_type_4"
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content" />
                </LinearLayout>
+                <View
+                    android:background="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp">
+                </View>
                    <LinearLayout
                        android:layout_width="match_parent"
-                       android:background="@color/black"
+                       android:background="@color/white"
                        android:orientation="vertical"
-
                        android:layout_height="wrap_content">
                        <TextView
                            android:textColor="@color/black"
                            android:text="@string/agree_tip_3"
                            android:paddingStart="8dp"
+                           android:paddingEnd="0dp"
                            android:paddingTop="8dp"
                            android:id="@+id/agree_text_3"
-                           android:background="@color/white"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content" />
                        <LinearLayout
                            android:orientation="horizontal"
                            android:layout_width="match_parent"
-                           android:background="@color/white"
                            android:layout_height="wrap_content">
                            <TextView
                                android:id="@+id/sign_name_3"
-                               android:background="@color/white"
                                android:textColor="@color/black"
                                android:gravity="end"
                                android:layout_gravity="top"
@@ -258,40 +266,43 @@
                                android:layout_height="wrap_content">
                            </TextView>
                        </LinearLayout>
+
                        <TextView
-                           android:background="@color/white"
                            android:textColor="@color/black"
                            android:id="@+id/sign_time_3"
                            android:gravity="end"
                            android:paddingEnd="8dp"
+                           android:paddingStart="0dp"
                            android:layout_marginBottom="1dp"
                            android:text="@string/date_type_4"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content" />
+                       <View
+                           android:background="@color/black"
+                           android:layout_width="match_parent"
+                           android:layout_height="1dp">
+                       </View>
                    </LinearLayout>
                    <LinearLayout
                        android:layout_width="match_parent"
-                       android:background="@color/black"
+                       android:background="@color/white"
                        android:orientation="vertical"
-
                        android:layout_height="wrap_content">
                        <TextView
                            android:textColor="@color/black"
                            android:text="@string/agree_tip_4"
                            android:paddingStart="8dp"
+                           android:paddingEnd="0dp"
                            android:id="@+id/agree_text_4"
                            android:paddingTop="8dp"
-                           android:background="@color/white"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content" />
                        <LinearLayout
                            android:orientation="horizontal"
                            android:layout_width="match_parent"
-                           android:background="@color/white"
                            android:layout_height="wrap_content">
                            <TextView
                                android:id="@+id/sign_name_4"
-                               android:background="@color/white"
                                android:textColor="@color/black"
                                android:gravity="end"
                                android:layout_gravity="top"
@@ -322,19 +333,24 @@
                            </TextView>
                        </LinearLayout>
                        <TextView
-                           android:background="@color/white"
                            android:textColor="@color/black"
                            android:id="@+id/sign_time_4"
                            android:gravity="end"
                            android:paddingEnd="8dp"
+                           android:paddingStart="0dp"
                            android:layout_marginBottom="1dp"
                            android:text="@string/date_type_4"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content" />
                    </LinearLayout>
+                <View
+                    android:background="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp">
+                </View>
                    <LinearLayout
                        android:layout_width="match_parent"
-                       android:background="@color/black"
+                       android:background="@color/white"
                        android:orientation="vertical"
                        android:layout_height="match_parent">
                        <TextView
@@ -342,18 +358,16 @@
                            android:text="@string/agree_tip_5"
                            android:paddingStart="8dp"
                            android:paddingTop="8dp"
+                           android:paddingEnd="0dp"
                            android:id="@+id/agree_text_5"
-                           android:background="@color/white"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content" />
                        <LinearLayout
                            android:orientation="horizontal"
                            android:layout_width="match_parent"
-                           android:background="@color/white"
                            android:layout_height="wrap_content">
                            <TextView
                                android:id="@+id/sign_name_5"
-                               android:background="@color/white"
                                android:textColor="@color/black"
                                android:gravity="end"
                                android:layout_gravity="top"
@@ -389,27 +403,25 @@
                            android:id="@+id/sign_time_5"
                            android:gravity="end"
                            android:paddingEnd="8dp"
+                           android:paddingStart="0dp"
                            android:text="@string/date_type_4"
                            android:layout_width="match_parent"
                            android:layout_height="wrap_content" />
                    </LinearLayout>
                </LinearLayout>
-
-            </LinearLayout>
-
-
         </LinearLayout>
         <LinearLayout
-            android:background="@color/black"
-            android:paddingStart="1dp"
-            android:paddingBottom="1dp"
-            android:paddingEnd="1dp"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <View
+                android:background="@color/black"
+                android:layout_width="1dp"
+                android:layout_height="match_parent">
+            </View>
             <TextView
                 android:textColor="@color/black"
-                android:background="@color/white"
                 android:id="@+id/return_sign"
                 android:text="@string/stu_return_sign"
                 android:padding="8dp"
@@ -417,15 +429,22 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:textColor="@color/black"
-                android:background="@color/white"
                 android:id="@+id/return_time"
                 android:text="@string/return_time"
                 android:gravity="end"
                 android:padding="8dp"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
-        
+            <View
+                android:background="@color/black"
+                android:layout_width="1dp"
+                android:layout_height="match_parent">
+            </View>
     </LinearLayout>
-
+    <View
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+    </View>
 </LinearLayout>

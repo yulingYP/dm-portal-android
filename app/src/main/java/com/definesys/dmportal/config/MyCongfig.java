@@ -52,7 +52,7 @@ public  class MyCongfig {
 
     //单机登录提示框
     @SuppressLint("StaticFieldLeak")
-    public static synchronized void showMyDialog(int msgId) {
+    public static void showMyDialog(int msgId) {
         if(isShowing|| MyActivityManager.getInstance().getCurrentActivity() instanceof LoginActivity)
             return;
         isShowing= true;
