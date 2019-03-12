@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MyMessage;
+import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.MainActivity;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.definesys.dmportal.welcomeActivity.SplashActivity;
@@ -141,7 +142,7 @@ public class MyReceiver extends BroadcastReceiver {
 			}
 		}else if("token".equals(bundle.get(JPushInterface.EXTRA_TITLE))){//单机登陆验证
 			if(!SharedPreferencesUtil.getInstance().getToken().equals(message)){
-				MainApplication.getInstances().showDialog(R.string.no_one_tip);
+				MyCongfig.showMyDialog(R.string.no_one_tip);
 			}
 		}
 		assert myMessage != null;

@@ -55,7 +55,6 @@
             android:theme="@style/Main_AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -102,7 +101,6 @@
         <receiver android:name=".appstore.receiver.MyJPushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-
                 <category android:name="com.last.design.dmportal" />
             </intent-filter>
         </receiver>
@@ -125,8 +123,8 @@
         <activity android:name=".appstore.UpdateLeAutActivity" />
         <activity android:name=".appstore.AppLyListActivity" />
         <activity android:name=".appstore.ApprovalApplyInfoActivity" />
-        <activity android:name=".appstore.ApplyInfoActivity"></activity>
-        <activity android:name=".appstore.leaveSettingUI.AuthorityChangeActivity"></activity>
+        <activity android:name=".appstore.ApplyInfoActivity" />
+        <activity android:name=".appstore.leaveSettingUI.AuthorityChangeActivity" />
     </application>
 
 </manifest>

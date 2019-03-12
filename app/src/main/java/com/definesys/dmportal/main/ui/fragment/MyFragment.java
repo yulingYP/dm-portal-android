@@ -36,6 +36,7 @@ import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
+import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.ChangeUserImagePresenter;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.LogoutPresenter;
@@ -227,7 +228,7 @@ public class MyFragment extends Fragment {
      */
     public void refreshUserImage() {
         //提示单机登陆或账号冻结
-        if(MainApplication.getInstances().isShowing()) return;
+        if(MyCongfig.isShowing) return;
         String str = SharedPreferencesUtil.getInstance().getUserLocal();
         if("".equals(str)){
             str = getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),SharedPreferencesUtil.getInstance().getUserImageUrl(),1);

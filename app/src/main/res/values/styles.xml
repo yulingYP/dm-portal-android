@@ -55,6 +55,7 @@
     <style name="Main_AppTheme.Splash" parent="Main_AppTheme.NoActionBar">
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowFullscreen">true</item>
+        <!--<item name="android:layout">@layout/activity_splash</item>-->
         <item name="android:windowBackground">@drawable/x_splash</item>
     </style>
 

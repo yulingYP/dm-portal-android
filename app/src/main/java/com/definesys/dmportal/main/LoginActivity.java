@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import android.annotation.SuppressLint;
@@ -28,6 +27,7 @@ import com.definesys.dmportal.appstore.customViews.EditDeleteText;
 import com.definesys.dmportal.appstore.customViews.EditSendText;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.LoginPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.SendCodePresenter;
@@ -79,7 +79,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         ButterKnife.bind(this);
         if(isFirst)//第一次使用APP？
             requestPermissions();
-        MainApplication.getInstances().setShowing(false);
+        MyCongfig.isShowing = false;
         initView();
     }
 
@@ -225,7 +225,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         inputTel.setText(userId.intValue()>0?""+userId:"");
         inputPwd.getSendVerifyCodeButton().setTextBackNull();
         // 防遮挡
-        new HddLayoutHeight().addLayoutListener(main, textForget);
+        new HddLayoutHeight().addLayoutListener(this,main, textForget);
     }
 
     //TODO 为方便调试设置的点击自动登录
@@ -255,7 +255,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                     if("".equals(editText.getText().toString())){
                         Toast.makeText(this,"url不能为空",Toast.LENGTH_SHORT).show();
                     }else {
-                        MainApplication.getInstances().setUrl(editText.getText().toString().trim());
+                        SharedPreferencesUtil.getInstance().setUrl(editText.getText().toString().trim());
                         Toast.makeText(this,"修改成功",Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -305,7 +305,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
             if (mIsExit) {
 //                // 停止LBS监控上报
 //                StatGpsMonitor.getInstance().stopMonitor();
-                this.finish();
+                System.exit(0);
 
             } else {
                 Toast.makeText(this, R.string.exit_2s,Toast.LENGTH_SHORT).show();

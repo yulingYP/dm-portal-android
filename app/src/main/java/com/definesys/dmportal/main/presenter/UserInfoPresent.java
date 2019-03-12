@@ -4,10 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
-import com.definesys.dmportal.MainApplication;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.bean.User;
 import com.definesys.dmportal.config.MyCongfig;
@@ -33,7 +31,7 @@ public class UserInfoPresent extends BasePresenter {
     //获取用户信息
     public void getUserInfo(Number id,int userType){
         //提示单机登陆或账号冻结
-        if(MainApplication.getInstances().isShowing()) return;
+        if(MyCongfig.isShowing) return;
         Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
         map.put("userType",userType);
@@ -102,7 +100,7 @@ public class UserInfoPresent extends BasePresenter {
     //获取发送失败和未读的信息
     public void getPushErrorReadMsg(Number id){
         //提示单机登陆或账号冻结
-        if(MainApplication.getInstances().isShowing()) return;
+        if(MyCongfig.isShowing) return;
         Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
         Log.d("myMap",new Gson().toJson(map));

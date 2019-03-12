@@ -3,11 +3,13 @@ package com.definesys.dmportal.main.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.User;
 import com.definesys.dmportal.main.interfaces.SharedPreferencesParams;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.vise.xsnow.http.ViseHttp;
 
 import java.util.List;
 
@@ -240,6 +242,13 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     }
     public String getHttpUrl() {
         return sp.getString("url", HttpConst.url);
+    }
+    //设置url
+    public void setUrl(String newUrl) {
+        String url =context.getString(R.string.httpUrl,newUrl);
+        setHttpUrl(url);
+        ViseHttp.CONFIG().baseUrl(url);
+
     }
 
 }

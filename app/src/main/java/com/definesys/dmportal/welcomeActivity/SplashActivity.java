@@ -1,6 +1,7 @@
 package com.definesys.dmportal.welcomeActivity;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.facade.Postcard;
@@ -25,7 +26,12 @@ private String message;
         setContentView(R.layout.activity_splash);
         if(getIntent()!=null)
             message = getIntent().getStringExtra("message");
+        //消除相机url异常
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
 
+        initView();
     }
 
 
@@ -68,7 +74,7 @@ private String message;
     @Override
     protected void onResume() {
         super.onResume();
-        initView();
+
 
     }
 
