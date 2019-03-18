@@ -1,7 +1,6 @@
 package com.definesys.dmportal.main.ui.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,19 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.main.adapter.MsgRecycleViewAdapter;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.SmecRxBus;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,8 +36,7 @@ public class ContactFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
     MsgFragment msgFragment;
     NewsFragment newsFragment;
 
@@ -80,14 +73,11 @@ public class ContactFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contact, container, false);
@@ -138,9 +128,6 @@ public class ContactFragment extends Fragment {
         mViewpager.setCurrentItem(0, true);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -164,7 +151,7 @@ public class ContactFragment extends Fragment {
         //存储所有的fragment
         private List<Fragment> fragmentList;
 
-        public MainFragmentPagerAdapter(FragmentManager fm, List<Fragment> list) {
+        MainFragmentPagerAdapter(FragmentManager fm, List<Fragment> list) {
             super(fm);
             this.fragmentList = list;
             // TODO Auto-generated constructor stub
@@ -185,9 +172,6 @@ public class ContactFragment extends Fragment {
         return mViewpager;
     }
 
-    public void setmViewpager(ViewPager mViewpager) {
-        this.mViewpager = mViewpager;
-    }
 
     public void freshMsgFragment(){
         if(msgFragment!=null){
@@ -203,5 +187,4 @@ public class ContactFragment extends Fragment {
         return msgFragment;
     }
 
-    public MsgRecycleViewAdapter getMsgAdapter(){return msgFragment.getMyAdapter();}
 }

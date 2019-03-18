@@ -125,7 +125,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                     .putString(spFacultyName,user.getFacultyName())//院系名称
                     .putString(spClass,user.getClassId())//班级
                     .putString(spUserHead,user.getUserImage())//用户头像
-                    .putString(spUserSign,user.getUserSign())//用户头像
+                    .putString(spUserSign,user.getUserSign())//用户签名
                     .putString(spBranchId,user.getBranchId())//请假部门id
                     .putInt(spApprovalStuAut,user.getLeaveAuthority())//学生请假方面的权限
                     .putInt(spApprovalTeaAut,user.getLeaveTeacherAuthority())//教师请假方面的权限

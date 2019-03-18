@@ -288,7 +288,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
                 lg_absence.addView(addTeacherLongView());
             }
         }
-        //        设置横屏
+        //设置横屏
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }

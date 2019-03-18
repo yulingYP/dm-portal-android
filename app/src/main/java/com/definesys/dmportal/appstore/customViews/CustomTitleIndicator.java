@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.definesys.dmportal.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,20 +43,14 @@ public class CustomTitleIndicator extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.view_textview_indicator, this);
         ButterKnife.bind(this);
 
-        this.title1.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onTitleClickListener!=null){
-                    onTitleClickListener.onClick(0);
-                }
+        this.title1.setOnClickListener(v -> {
+            if(onTitleClickListener!=null){
+                onTitleClickListener.onClick(0);
             }
         });
-        this.title2.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onTitleClickListener!=null){
-                    onTitleClickListener.onClick(1);
-                }
+        this.title2.setOnClickListener(v -> {
+            if(onTitleClickListener!=null){
+                onTitleClickListener.onClick(1);
             }
         });
     }
@@ -147,7 +139,7 @@ public class CustomTitleIndicator extends LinearLayout {
     }
 
     public interface OnTitleClickListener{
-        public void onClick(int position);
+         void onClick(int position);
     }
 
 }

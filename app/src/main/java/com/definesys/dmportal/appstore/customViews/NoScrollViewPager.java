@@ -1,5 +1,6 @@
 package com.definesys.dmportal.appstore.customViews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
+ *
  * Created by 羽翎 on 2018/9/14.
  */
 
@@ -22,15 +24,7 @@ public class NoScrollViewPager extends ViewPager {
         super(context, attrs);
     }
 
-    public NoScrollViewPager(@NonNull Context context, boolean isScroll) {
-        super(context);
-        this.isScroll = isScroll;
-    }
 
-    public NoScrollViewPager(@NonNull Context context, @Nullable AttributeSet attrs, boolean isScroll) {
-        super(context, attrs);
-        this.isScroll = isScroll;
-    }
 
     /**
      * 1.dispatchTouchEvent一般情况不做处理
@@ -50,17 +44,14 @@ public class NoScrollViewPager extends ViewPager {
         // return false;//可行,不拦截事件,
         // return true;//不行,孩子无法处理事件
         //return super.onInterceptTouchEvent(ev);//不行,会有细微移动
-        if (isScroll){
-            return super.onInterceptTouchEvent(ev);
-        }else{
-            return false;
-        }
+        return isScroll && super.onInterceptTouchEvent(ev);
     }
     /**
      * 是否消费事件
      * 消费:事件就结束
      * 不消费:往父控件传
      */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         //return false;// 可行,不消费,传给父控件
@@ -68,11 +59,8 @@ public class NoScrollViewPager extends ViewPager {
         //super.onTouchEvent(ev); //不行,
         //虽然onInterceptTouchEvent中拦截了,
         //但是如果viewpage里面子控件不是viewgroup,还是会调用这个方法.
-        if (isScroll){
-            return super.onTouchEvent(ev);
-        }else {
-            return true;// 可行,消费,拦截事件
-        }
+        return !isScroll || super.onTouchEvent(ev);
+// 可行,消费,拦截事件
     }
     public void setScroll(boolean scroll) {
         isScroll = scroll;

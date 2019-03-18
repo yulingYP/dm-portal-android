@@ -318,8 +318,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void successfulUploadUserImage(String newUrl) {
         Toast.makeText(this, R.string.sign_update_success, Toast.LENGTH_SHORT).show();
-        //更新本地签名信息
-        SharedPreferencesUtil.getInstance().setUserSign(newUrl);
+
+//        SharedPreferencesUtil.getInstance().setUserSign(newUrl);
         PictureFileUtils.deleteCacheDirFile(this);
         progressHUD.dismiss();
         finish();
@@ -493,7 +493,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     */
     private void setSign() {
 
-        Glide.with(this).asBitmap().load(getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue())+".png",2)).apply(option).into(new SimpleTarget<Bitmap>() {
+        Glide.with(this).asBitmap().load(getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),SharedPreferencesUtil.getInstance().getUserSign(),2)).apply(option).into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onLoadStarted(@Nullable Drawable placeholder) {

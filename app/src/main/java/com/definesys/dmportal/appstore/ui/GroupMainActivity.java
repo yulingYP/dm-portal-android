@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
@@ -23,11 +22,9 @@ import com.definesys.dmportal.main.adapter.GruopInfoRecycleViewAdapter;
 import com.definesys.dmportal.main.bean.GroupInfo;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -92,12 +89,7 @@ public class GroupMainActivity extends AppCompatActivity {
                     v_temp.setAnimation(AnimationUtils.loadAnimation(GroupMainActivity.this,R.anim.layout_show));
                     popupWindow.showAsDropDown(img_list);
                 });
-        img_list.post(new Runnable() {
-            @Override
-            public void run() {
-                initMenuList(img_list.getMeasuredWidth());
-            }
-        });
+        img_list.post(() -> initMenuList(img_list.getMeasuredWidth()));
     }
 
     /**
@@ -116,13 +108,10 @@ public class GroupMainActivity extends AppCompatActivity {
 
 
            popupWindow.setAnimationStyle(R.style.PopupAnimation);
-           popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-               @Override
-               public void onDismiss() {
-                   //消失动画
-                   v_temp.setAnimation(AnimationUtils.loadAnimation(GroupMainActivity.this,R.anim.layout_hide));
-                   v_temp.setVisibility(View.GONE);
-               }
+           popupWindow.setOnDismissListener(() -> {
+               //消失动画
+               v_temp.setAnimation(AnimationUtils.loadAnimation(GroupMainActivity.this,R.anim.layout_hide));
+               v_temp.setVisibility(View.GONE);
            });
 
     }

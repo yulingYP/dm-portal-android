@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/4.
  */
 
@@ -51,11 +52,11 @@ public class MainIconAdapter extends RecyclerView.Adapter<MainIconAdapter.ViewHo
         holder.tv_name.setText(mainIconList.get(position).getName());
         RxView.clicks(holder.itemView)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
+                .subscribe(obj->
                         ARouter.getInstance()
                                 .build(mainIconList.get(position).getaRounterPath())
-                                .navigation();
-                });
+                                .navigation()
+                );
         if(isMain) {//主页图标
             //宽高一致
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();

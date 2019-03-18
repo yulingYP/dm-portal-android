@@ -11,38 +11,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.definesys.base.BaseFragment;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.bean.LeaveInfo;
 import com.definesys.dmportal.appstore.bean.MyMessage;
+import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.main.adapter.MsgRecycleViewAdapter;
-import com.definesys.dmportal.main.bean.DataContent;
-import com.definesys.dmportal.main.bean.Message;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.MessagePresenter;
-import com.definesys.dmportal.main.presenter.UserInfoPresent;
-import com.definesys.dmportal.main.util.MsgIconIdUtil;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 /**
  * 消息页的 消息 子页面
@@ -101,6 +89,10 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             requestPage = 1;
             messageList.clear();
+            if(!PermissionsUtil.isNetworkConnected(getContext())){
+                hide(2);
+                return;
+            }
             if(myAdapter!=null)
                 myAdapter.notifyDataSetChanged();
             mPersenter.getMsg(SharedPreferencesUtil.getInstance().getUserId(), requestPage);
@@ -222,11 +214,5 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
      }
     }
 
-    public MsgRecycleViewAdapter getMyAdapter() {
-        return myAdapter;
-    }
 
-    public void setMyAdapter(MsgRecycleViewAdapter myAdapter) {
-        this.myAdapter = myAdapter;
-    }
 }

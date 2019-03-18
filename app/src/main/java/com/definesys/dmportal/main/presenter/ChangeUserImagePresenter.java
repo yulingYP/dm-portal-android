@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
-import com.definesys.dmportal.R;
-import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
@@ -24,13 +22,13 @@ public class ChangeUserImagePresenter extends BasePresenter {
 
     /**
      * 上传头像或签名
-     * @param userId
-     * @param file
+     * @param userId i
+     * @param file f
      * @param updateType 0.头像 1.签名
      */
     public void uploadUserImage(String userId, File file,String updateType){
         String fileName = file.getName();
-        MediaType type = MediaType.parse("image/"+fileName.substring(fileName.lastIndexOf(".")+1));
+        MediaType type = MediaType.parse("image/"+fileName.substring(fileName.lastIndexOf(".") + 1));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("userId",userId)
                 .addFormDataPart("uuid",userId)

@@ -13,7 +13,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.definesys.dmportal.MyActivityManager;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -46,8 +45,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         mPersenter = getPersenter();
         SmecRxBus.get().register(this);
         progressHUD = KProgressHUD.create(this).setLabel("loading...")
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setBackgroundColor(Color.parseColor("#00000000"))//透明背景
                 .setAnimationSpeed(1)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setDimAmount(0.5f);
 
     }

@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 currentPosition = position;
                 mViewPager.setCurrentItem(position, false);
 
-                if((position==0&& mTabbar.getTabAtPosition(position).isBadgeShow())||isFirst){
+                if(position==0&& (mTabbar.getTabAtPosition(position).isBadgeShow()||isFirst)){
                     contactFragment.freshMsgFragment();
                     isFirst = false;
                 }

@@ -9,29 +9,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestOptions;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.main.bean.GroupInfo;
 import com.jakewharton.rxbinding2.view.RxView;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.functions.Consumer;
 
 /**
+ *
  * Created by 羽翎 on 2018/11/22.
  */
 
 public class GruopInfoRecycleViewAdapter extends RecyclerView.Adapter<GruopInfoRecycleViewAdapter.ViewHolder> {
-    List<GroupInfo> list;
-    Context mContext;
+    private List<GroupInfo> list;
+    private Context mContext;
 
     public GruopInfoRecycleViewAdapter(List<GroupInfo> list, Context mContext) {
         this.list = list;
@@ -42,8 +38,7 @@ public class GruopInfoRecycleViewAdapter extends RecyclerView.Adapter<GruopInfoR
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_group_list,parent,false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -57,11 +52,8 @@ public class GruopInfoRecycleViewAdapter extends RecyclerView.Adapter<GruopInfoR
         holder.tv_des.setText(list.get(position).getGroupDes());
         RxView.clicks(holder.item_layout)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        //跳转页面展示社团详情
-                    }
+                .subscribe(o -> {
+                    //跳转页面展示社团详情
                 });
     }
 

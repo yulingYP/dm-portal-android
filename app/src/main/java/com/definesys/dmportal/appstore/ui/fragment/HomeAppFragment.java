@@ -2,23 +2,21 @@ package com.definesys.dmportal.appstore.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.definesys.base.BaseFragment;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.MainIconAdapter;
 import com.definesys.dmportal.appstore.bean.MainIcon;
 import com.definesys.dmportal.appstore.presenter.HomeAppPresenter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -35,9 +33,6 @@ public class HomeAppFragment extends BaseFragment<HomeAppPresenter> {
 
     @BindView(R.id.recycle_view)
     RecyclerView recyclerView;
-
-    private List<MainIcon> mainIconList;
-    private MainIconAdapter mainIconAdapter;
 
     private Unbinder unbinder;
 
@@ -71,7 +66,7 @@ public class HomeAppFragment extends BaseFragment<HomeAppPresenter> {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
@@ -82,11 +77,11 @@ public class HomeAppFragment extends BaseFragment<HomeAppPresenter> {
     }
 
     private void initList() {
-        mainIconList = new ArrayList<>();
+        List<MainIcon> mainIconList = new ArrayList<>();
         mainIconList.add(new MainIcon("请假",R.drawable.leave_icon,ARouterConstants.LeaveMainActivity));
         mainIconList.add(new MainIcon("课表",R.drawable.table_icon,ARouterConstants.SubjectTableActivity));
         mainIconList.add(new MainIcon("社团",R.drawable.group_icon,ARouterConstants.GroupMainActivity));
-        mainIconAdapter = new MainIconAdapter(getContext(),mainIconList,true,R.layout.item_main_icon);
+        MainIconAdapter mainIconAdapter = new MainIconAdapter(getContext(), mainIconList, true, R.layout.item_main_icon);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(mainIconAdapter);
