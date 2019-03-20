@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/back_gray"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="false"
-    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/back_gray"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription"
+    android:fitsSystemWindows="false">
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
@@ -23,7 +22,8 @@
             android:layout_marginEnd="6dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
         <ScrollView
             android:layout_width="match_parent"
@@ -121,35 +121,6 @@
                     android:layout_width="20dp"
                     android:layout_height="30dp" />
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/approval_layout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:layout_marginTop="1dp"
-                android:visibility="gone"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:text="@string/approval_processing"
-                    android:textColor="@color/black" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_marginEnd="12dp"
-                    android:src="@drawable/entry"
-                    android:layout_width="20dp"
-                    android:layout_height="30dp" />
-            </LinearLayout>
             <LinearLayout
                 android:id="@+id/progress_layout"
                 android:layout_width="match_parent"
@@ -165,6 +136,33 @@
                     android:gravity="center"
                     android:padding="12dp"
                     android:text="@string/check_progress"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/entry"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/approval_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:visibility="gone"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="@string/approval_processing"
                     android:textColor="@color/black" />
                 <TextView
                     android:layout_width="0dp"

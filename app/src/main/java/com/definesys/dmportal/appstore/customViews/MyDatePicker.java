@@ -1,41 +1,26 @@
 package com.definesys.dmportal.appstore.customViews;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
-
 import com.definesys.dmportal.R;
 import com.jakewharton.rxbinding2.view.RxView;
-
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.functions.Consumer;
 
 /**
+ *
  * Created by 羽翎 on 2018/11/21.
  */
 
@@ -60,9 +45,9 @@ public class MyDatePicker extends LinearLayout {
 
     @BindView(R.id.date_text)
     TextView tv_date;
-    private int currentYear;
-    private int currentMonth;
-    private int currentDay;
+    private int currentYear;//当前年
+    private int currentMonth;//当前月
+    private int currentDay;//当前日
     private Calendar cal = Calendar.getInstance();
     private onClickEventListener myListener;
     private Context mContent;
@@ -98,49 +83,30 @@ public class MyDatePicker extends LinearLayout {
         initStatus();//年月日设置
         //设置小时
         num_hour.setMaxValue(23);
+        //显示选择的日期
         tv_date.setText((new SimpleDateFormat(getContext().getString(R.string.date_type), Locale.getDefault()).format(new Date())));
+        //取消
         RxView.clicks(cancelText)
                 .throttleFirst(600, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        if(myListener!=null)
-                            myListener.onCancel();
-                    }
+                .subscribe(o -> {
+                    if(myListener!=null)
+                        myListener.onCancel();
                 });
+        //确定
         RxView.clicks(confirmText)
                 .throttleFirst(600, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        if(myListener!=null)
-                            myListener.onConfirm(initDate(num_year.getValue(), num_month.getValue(), num_day.getValue(), num_hour.getValue()));
-                    }
+                .subscribe(o -> {
+                    if(myListener!=null)
+                        myListener.onConfirm(initDate(num_year.getValue(), num_month.getValue(), num_day.getValue(), num_hour.getValue()));
                 });
-        num_year.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    changeStatus();
-            }
-        });
-        num_month.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                changeStatus();
-            }
-        });
-        num_day.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                tv_date.setText(initDate(num_year.getValue(), num_month.getValue(), num_day.getValue(), num_hour.getValue()));
-            }
-        });
-        num_hour.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                tv_date.setText(initDate(num_year.getValue(), num_month.getValue(), num_day.getValue(), num_hour.getValue()));
-            }
-        });
+        //年改变
+        num_year.setOnValueChangedListener((picker, oldVal, newVal) -> changeStatus());
+        //月改变
+        num_month.setOnValueChangedListener((picker, oldVal, newVal) -> changeStatus());
+        //日改变
+        num_day.setOnValueChangedListener((picker, oldVal, newVal) -> tv_date.setText(initDate(num_year.getValue(), num_month.getValue(), num_day.getValue(), num_hour.getValue())));
+        //小时改变
+        num_hour.setOnValueChangedListener((picker, oldVal, newVal) -> tv_date.setText(initDate(num_year.getValue(), num_month.getValue(), num_day.getValue(), num_hour.getValue())));
     }
 
     /**
@@ -181,8 +147,8 @@ public class MyDatePicker extends LinearLayout {
     }
 
     public interface onClickEventListener{
-        public void onCancel();
-        public void onConfirm(String date);
+         void onCancel();
+         void onConfirm(String date);
     }
 
     public void setMyListener(onClickEventListener myListener) {
@@ -212,13 +178,14 @@ public class MyDatePicker extends LinearLayout {
         else
             num_day.setMinValue(1);
         num_day.setValue(day);
+        assert currentDate != null;
         num_hour.setValue(currentDate.getHours());
 //        changeStatus();
 
     }
     /**
      * 计算当前月有多少天
-     * @return
+     * @return r
      */
     public int getDays(int year, int month) {
         int days = 0;

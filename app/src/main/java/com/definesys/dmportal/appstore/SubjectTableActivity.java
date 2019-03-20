@@ -368,7 +368,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
         if(subjectTable.getCursorArgList()!=null&&subjectTable.getCursorArgList().size()>0){//有数据
             List<CursorArg> list=subjectTable.getCursorArgList();
             HashMap<Integer,List<CursorArg>> listMap=null;
-            if(userType==1){
+            if(userType==1){//教师
                 listMap = new HashMap<>();
                 for(int i = 0;i<list.size();i++){
                     list.get(i).setResultWeek(""+list.get(i).getStartWeek()+"-"+list.get(i).getEndWeek());
@@ -411,6 +411,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
                                         List<CursorArg> templist=listMap.get(6 - j + (7 - k) * 7);
                                         String classId= DensityUtil.getClassLisId(list.get(i));//上课的班级id
                                         if(templist==null){
+
                                             templist = new ArrayList<>();
                                             templist.add((CursorArg) list.get(i).clone());
                                             listMap.put(6 - j + (7 - k) * 7,templist);

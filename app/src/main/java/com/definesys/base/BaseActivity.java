@@ -1,7 +1,5 @@
 package com.definesys.base;
 
-
-
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -45,7 +43,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         mPersenter = getPersenter();
         SmecRxBus.get().register(this);
         progressHUD = KProgressHUD.create(this).setLabel("loading...")
-                .setBackgroundColor(Color.parseColor("#00000000"))//透明背景
+//                .setBackgroundColor(Color.parseColor("#00000000"))//透明背景
                 .setAnimationSpeed(1)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setDimAmount(0.5f);

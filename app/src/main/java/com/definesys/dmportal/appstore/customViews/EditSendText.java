@@ -63,21 +63,22 @@ public class EditSendText extends ConstraintLayout {
         RxTextView.textChangeEvents(editText)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(textViewTextChangeEvent -> {
-            if (textViewTextChangeEvent.text().length() > 0) {
-                icon_delete.setVisibility(View.VISIBLE);
-            } else {
-                icon_delete.setVisibility(View.GONE);
-            }
+                    if (textViewTextChangeEvent.text().length() > 0) {
+                        icon_delete.setVisibility(View.VISIBLE);
+                    } else {
+                        icon_delete.setVisibility(View.GONE);
+                    }
         });
 
-        RxView.focusChanges(editText).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(hasFocus -> {
-                            if (hasFocus && editText.getText().toString().length() > 1) {
-                                icon_delete.setVisibility(View.VISIBLE);
-                            } else {
-                                icon_delete.setVisibility(View.GONE);
-                            }
-                        });
+        RxView.focusChanges(editText)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(hasFocus -> {
+                    if (hasFocus && editText.getText().toString().length() > 1) {
+                        icon_delete.setVisibility(View.VISIBLE);
+                    } else {
+                        icon_delete.setVisibility(View.GONE);
+                    }
+                });
     }
     /*
     设置登录类型

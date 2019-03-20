@@ -81,10 +81,12 @@
            <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>  
        </style>
 
-
+    <!--"编辑框样式"-->
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/white</item>
+        <!--"光标背景"-->
         <item name="android:textCursorDrawable">@null</item>
+        <!--"选中时水滴的颜色"-->
         <item name="colorControlActivated">@color/colorEe</item>
     </style>
     <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
