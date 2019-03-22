@@ -1,5 +1,6 @@
 package com.definesys.dmportal.main.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-
+@SuppressLint("StaticFieldLeak")
 public class SharedPreferencesUtil implements SharedPreferencesParams {
     private static SharedPreferencesUtil instance;
     private static SharedPreferences sp;
@@ -40,7 +41,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     public static void setContext(Context context) {
         SharedPreferencesUtil.context = context;
     }
-    public SharedPreferences.Editor getSpWithEdit() {
+    private SharedPreferences.Editor getSpWithEdit() {
         return sp.edit();
     }
 
@@ -163,57 +164,41 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         return editor;
     }
 
-    public SharedPreferences.Editor setUserPhone(String userPhone) {
+    public void setUserPhone(String userPhone) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserPhone, userPhone);
         editor.apply();
-        return editor;
     }
 
     public SharedPreferences.Editor setUserSex(String userSex) {
-        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserSex, userSex);
-        return editor;
+        return getSpWithEdit().putString(spUserSex, userSex);
     }
-    public SharedPreferences.Editor setUserType(Number userType) {
+    public void setUserType(Number userType) {
         SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserType, userType.intValue());
         editor.apply();
-        return editor;
     }
 
-    public SharedPreferences.Editor setToken(String sptoken) {
+    public void setToken(String sptoken) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spToken, sptoken);
         editor.apply();
-        return editor;
     }
 
-    public SharedPreferences.Editor setUserLocal(String userurl) {
+    public void setUserLocal(String userurl) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserLocalimg, userurl);
         editor.apply();
-        return editor;
     }
     public SharedPreferences.Editor setBranchId(String branchId) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spBranchId, branchId);
         editor.apply();
         return editor;
     }
-    public SharedPreferences.Editor setUserSetting(int setCode) {
+    public void setUserSetting(int setCode) {
         SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserSetting+getUserId(), setCode);
         editor.apply();
-        return editor;
     }
-    public SharedPreferences.Editor setUserImageUrl(String userurl) {
-        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserHead, userurl);
-        editor.apply();
-        return editor;
-    }
-    public SharedPreferences.Editor setUserSign(String userurl) {
-        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserSign, userurl);
-        editor.apply();
-        return editor;
-    }
-    public SharedPreferences.Editor setUserId(Number userId) {
+
+    public void setUserId(Number userId) {
         SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserId, userId.intValue());
         editor.apply();
-        return editor;
     }
 
     /**
@@ -221,24 +206,21 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
      *
      * @param datalist d
      */
-    public SharedPreferences.Editor setHistoryData(int type, List<String> datalist) {
+    public void setHistoryData(int type, List<String> datalist) {
         if (!(null == datalist || datalist.size() <= 0)) {
             Gson gson = new Gson();
             String Json = gson.toJson(datalist);
             SharedPreferences.Editor editor = getSpWithEdit().putString(spSearchHistory + type + getUserId(), Json);
             editor.apply();
-            return editor;
         }else {
             SharedPreferences.Editor editor = getSpWithEdit().putString(spSearchHistory + type + getUserId(), null);
             editor.apply();
-            return editor;
         }
     }
 
-    public SharedPreferences.Editor setHttpUrl(String url) {
+    private void setHttpUrl(String url) {
         SharedPreferences.Editor editor = getSpWithEdit().putString("url", url);
         editor.apply();
-        return editor;
     }
     public String getHttpUrl() {
         return sp.getString("url", HttpConst.url);

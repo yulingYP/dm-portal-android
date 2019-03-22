@@ -1,5 +1,6 @@
 package com.definesys.dmportal.appstore.customViews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
  * Created by 羽翎 on 2019/2/12.
  */
 
@@ -63,8 +65,7 @@ public class FlowLayout extends ViewGroup {
                     + lp.bottomMargin;
 
             // 换行 判断 当前的宽度大于 开辟新行
-            if (lineWidth + childWidth > sizeWidth - getPaddingLeft() - getPaddingRight())
-            {
+            if (lineWidth + childWidth > sizeWidth - getPaddingLeft() - getPaddingRight()) {
                 // 对比得到最大的宽度
                 width = Math.max(width, lineWidth);
                 // 重置lineWidth
@@ -73,17 +74,14 @@ public class FlowLayout extends ViewGroup {
                 height += lineHeight;
                 lineHeight = childHeight;
             }
-            else
-            // 未换行
-            {
+            else {// 未换行
                 // 叠加行宽
                 lineWidth += childWidth;
                 // 得到当前行最大的高度
                 lineHeight = Math.max(lineHeight, childHeight);
             }
             // 特殊情况,最后一个控件
-            if (i == cCount - 1)
-            {
+            if (i == cCount - 1) {
                 width = Math.max(lineWidth, width);
                 height += lineHeight;
             }
@@ -98,11 +96,11 @@ public class FlowLayout extends ViewGroup {
     /**
      * 存储所有的View
      */
-    private List<List<View>> mAllViews   = new ArrayList<List<View>>();
+    private List<List<View>> mAllViews   = new ArrayList<>();
     /**
      * 每一行的高度
      */
-    private List<Integer>   mLineHeight = new ArrayList<Integer>();
+    private List<Integer>   mLineHeight = new ArrayList<>();
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -116,7 +114,7 @@ public class FlowLayout extends ViewGroup {
         int lineHeight = 0;
 
         // 存放每一行的子view
-        List<View> lineViews = new ArrayList<View>();
+        @SuppressLint("DrawAllocation") List<View> lineViews = new ArrayList<>();
 
         int cCount = getChildCount();
 
@@ -139,7 +137,7 @@ public class FlowLayout extends ViewGroup {
                 lineWidth = 0;
                 lineHeight = childHeight + lp.topMargin + lp.bottomMargin;
                 // 重置我们的View集合
-                lineViews = new ArrayList<View>();
+                lineViews = new ArrayList<>();
             }
             lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
             lineHeight = Math.max(lineHeight, childHeight + lp.topMargin
@@ -164,8 +162,7 @@ public class FlowLayout extends ViewGroup {
             lineViews = mAllViews.get(i);
             lineHeight = mLineHeight.get(i);
 
-            for (int j = 0; j < lineViews.size(); j++)
-            {
+            for (int j = 0; j < lineViews.size(); j++) {
                 View  child = lineViews.get(j);
                 // 判断child的状态
                 if (child.getVisibility() == View.GONE) {

@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent">
-<ImageView
-    android:id="@+id/main_image"
-    android:scaleType="fitXY"
-    android:src="@drawable/main_page"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
-<LinearLayout
-    android:id="@+id/layout_des"
-    android:orientation="horizontal"
-    android:layout_alignBottom="@+id/main_image"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <com.definesys.dmportal.appstore.customViews.RCImageView
-        android:id="@+id/app_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        app:round_as_circle="true"
-        android:src="@mipmap/app_icon" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:ignore="ContentDescription"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/text_app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="6dp"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/text_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:text="@string/school_des"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-    </LinearLayout>
-</LinearLayout>
+        <ImageView
+            android:id="@+id/main_image"
+            android:scaleType="fitXY"
+            android:src="@drawable/main_page_1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            />
+        <LinearLayout
+            android:id="@+id/layout_des"
+            android:orientation="horizontal"
+            android:layout_alignBottom="@+id/main_image"
+            android:layout_width="match_parent"
+            android:background="@drawable/masking_back"
+            android:layout_height="wrap_content">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycle_view"
-        android:layout_marginTop="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:overScrollMode="never"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/main_image">
-    </android.support.v7.widget.RecyclerView>
-</RelativeLayout>
+            <com.definesys.dmportal.appstore.customViews.RCImageView
+                android:id="@+id/app_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                app:round_as_circle="true"
+                android:src="@mipmap/app_icon" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/text_app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="0dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/text_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:text="@string/school_des"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_view"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/main_image">
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+</ScrollView>

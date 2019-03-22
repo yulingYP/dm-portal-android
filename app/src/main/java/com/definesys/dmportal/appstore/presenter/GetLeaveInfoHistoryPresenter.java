@@ -13,10 +13,8 @@ import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 获取请假历史
@@ -33,7 +31,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
                 //配置读取超时时间，单位秒
@@ -75,7 +73,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         map.put("approvalStuAut",approvalStudentAuthority);
         map.put("approvalTeaAut",approvalTeacherAuthority);
         map.put("userType",userType);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
                 //配置读取超时时间，单位秒
@@ -114,7 +112,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
         map.put("page",page);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
                 //配置读取超时时间，单位秒
@@ -157,7 +155,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         map.put("checkCode",checkCode);
         map.put("type",type);
         map.put("content",content);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
                 //配置读取超时时间，单位秒
@@ -208,7 +206,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         map.put("checkCode",checkCode);
         map.put("type",type);
         map.put("content",content);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
                 //配置读取超时时间，单位秒
@@ -250,7 +248,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         map.put("checkCode",checkCode);
         map.put("type",type);
         map.put("content",content);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
                 //配置读取超时时间，单位秒

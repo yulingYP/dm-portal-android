@@ -2,7 +2,7 @@ package com.definesys.dmportal.appstore.bean;
 
 import java.util.List;
 
-/**
+/*
  * Created by 羽翎 on 2019/3/3.
  */
 

@@ -43,7 +43,6 @@ public class LeaveListSearchActivity extends BaseActivity {
      @BindView(R.id.type_view)
      FlowLayout fl_type;
 
-
     //搜索列表
     @BindView(R.id.history_view)
     FlowLayout fl_history;
@@ -56,7 +55,7 @@ public class LeaveListSearchActivity extends BaseActivity {
     TextView tv_delete;//删除历史记录
 
     @Autowired(name = "type")
-    int type;//页面类型 0.历史请假记录 1.待处理的请假记录 2.历史审批记录
+    int type;//页面类型 0.历史请假记录 1.待处理的请假记录 2.历史审批记录 3.销假
     private String clickContent;//点击的标签
     private boolean clickCheck;//是否需要进行重复内容检测
     @Override
@@ -78,7 +77,7 @@ public class LeaveListSearchActivity extends BaseActivity {
     private void initTpyeList() {
         List<String> typeList = new ArrayList<>();
         typeList.add(getString(R.string.all));
-        if(type==0) {
+        if(type==0) {//0.历史请假记录
             typeList.add(getString(R.string.tag_1));
             typeList.add(getString(R.string.tag_2));
             typeList.add(getString(R.string.tag_3));
@@ -88,14 +87,14 @@ public class LeaveListSearchActivity extends BaseActivity {
             typeList.add(getString(R.string.tag_7));
             typeList.add(getString(R.string.tag_10));
         }
-        else if(type==1) {
+        else if(type==1) {//未审批记录
             typeList.add(getString(R.string.tag_1));
             typeList.add(getString(R.string.tag_2));
             typeList.add(getString(R.string.tag_3));
-        }else if(type==2) {
+        }else if(type==2) {//已审批记录
             typeList.add(getString(R.string.tag_8));
             typeList.add(getString(R.string.tag_9));
-        }else if(type==3) {
+        }else if(type==3) {//销假列表
             typeList.add(getString(R.string.tag_4));
             typeList.add(getString(R.string.tag_7));
         }

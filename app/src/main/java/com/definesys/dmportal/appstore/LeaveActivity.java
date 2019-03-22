@@ -599,7 +599,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             subjectTableInfo = data.getData();
             //设置开始时间为00时00分00秒
             subjectTableInfo.setStartDate(DensityUtil.setDate(subjectTableInfo.getStartDate(),true));
-            //设置开始时间为23时59分59秒
+            //设置结束时间为23时59分59秒
             subjectTableInfo.setEndDate(DensityUtil.setDate(subjectTableInfo.getEndDate(),false));
             //本学期总周数
             subjectTableInfo.setSumWeek((int)Math.ceil((float)(subjectTableInfo.getEndDate().getTime()-subjectTableInfo.getStartDate().getTime())/(7*Constants.oneDay)));

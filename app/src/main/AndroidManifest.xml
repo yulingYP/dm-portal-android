@@ -77,12 +77,25 @@
         <activity android:name=".main.userSettingActivity.ChangePwdActivity" />
         <activity android:name=".main.userSettingActivity.PhoneBindActivity" />
         <activity android:name=".appstore.LeaveListSearchActivity" />
-        <activity android:name=".appstore.LeaveSearchResultActivity" />
         <activity android:name=".main.userSettingActivity.UserSettingActivity" />
         <activity
             android:name=".appstore.LeaveTextActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
+        <activity android:name=".main.userSettingActivity.UserInfoActivity" />
+        <activity android:name=".main.userSettingActivity.FeedBackActivity" />
+        <activity android:name=".main.userSettingActivity.AboutActivity" />
+        <activity android:name=".appstore.leaveSettingUI.LeaveSignActivity" />
+        <activity
+            android:name=".appstore.leaveSettingUI.SignatureActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape" />
+        <activity android:name=".appstore.leaveSettingUI.AuthoritySettingActivity" />
+        <activity android:name=".appstore.UpdateLeAutActivity" />
+        <activity android:name=".appstore.AppLyListActivity" />
+        <activity android:name=".appstore.ApprovalApplyInfoActivity" />
+        <activity android:name=".appstore.ApplyInfoActivity" />
+        <activity android:name=".appstore.leaveSettingUI.AuthorityChangeActivity" />
         <receiver
             android:name=".appstore.receiver.MyReceiver"
             android:enabled="true"
@@ -110,21 +123,6 @@
                 <action android:name="notification_clicked" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".main.userSettingActivity.UserInfoActivity" />
-        <activity android:name=".main.userSettingActivity.FeedBackActivity" />
-        <activity android:name=".main.userSettingActivity.AboutActivity" />
-        <activity android:name=".appstore.leaveSettingUI.LeaveSignActivity" />
-        <activity
-            android:name=".appstore.leaveSettingUI.SignatureActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape" />
-        <activity android:name=".appstore.leaveSettingUI.AuthoritySettingActivity" />
-        <activity android:name=".appstore.UpdateLeAutActivity" />
-        <activity android:name=".appstore.AppLyListActivity" />
-        <activity android:name=".appstore.ApprovalApplyInfoActivity" />
-        <activity android:name=".appstore.ApplyInfoActivity" />
-        <activity android:name=".appstore.leaveSettingUI.AuthorityChangeActivity" />
     </application>
 
 </manifest>

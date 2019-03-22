@@ -1,6 +1,7 @@
 package com.definesys.dmportal.appstore.utils;
 
 /**
+ *
  * Created by 羽翎 on 2018/10/31.
  */
 
@@ -21,7 +22,6 @@ public interface ARouterConstants {
     String LeaveListActivity = "/dmportal/appstore/LeaveListActivity";//请假记录页面
     String LeaveSignActivity = "/dmportal/appstore/LeaveSignActivity";//请假签名页面
     String LeaveListSearchActivity = "/dmportal/appstore/LeaveListSearchActivity";//审批或请假记录查询页
-    String LeaveSearchResultActivity = "/dmportal/appstore/LeaveSearchResultActivity";//请假搜索结果页
     String LeaveInFoDetailActivity = "/dmportal/appstore/LeaveInFoDetailActivity";//请假记录详情页面
     String LeaveTextActivity = "/dmportal/appstore/LeaveTextActivity";//生成请假条页面
     String ApprovalLeaveInfoActivity = "/dmportal/appstore/ApprovalLeaveInfoActivity";//审批请假记录页

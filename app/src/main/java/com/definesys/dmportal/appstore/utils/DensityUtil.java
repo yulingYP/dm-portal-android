@@ -11,15 +11,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
 
@@ -57,23 +55,7 @@ public class DensityUtil {
         strSort[i] = strSort[j];
         strSort[j] = t;
     }
-    /***
-     * 把中文替换为指定字符<br>
-     * 注意:一次只匹配一个中文字符
-     * @param source s
-     * @param replacement r
-     * @return r
-     */
-    public static String replaceChinese(String source, String replacement){
 
-        String reg = "[\u4e00-\u9fa5]";
-        Pattern pat = Pattern.compile(reg);
-        Matcher mat=pat.matcher(source);
-        String repickStr = mat.replaceAll(replacement);
-        StringBuilder sb = new StringBuilder(repickStr);
-        sb.replace(10, 11, "");
-        return sb.toString();
-    }
 
     /**
      * 将px值转换为sp值，保证文字大小不变

@@ -2,7 +2,7 @@ package com.definesys.dmportal.appstore.ui;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -13,7 +13,6 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
@@ -172,10 +171,10 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
         RxView.clicks(img_list)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj-> {
-                    if(popupWindow!=null) {//未初始化
+                    if(popupWindow!=null) {//已初始化
                         dimBackground(1.0f, 0.6f);
                         popupWindow.showAsDropDown(img_list);
-                    }else {//已初始化
+                    }else {//未初始化
                         img_list.post(() -> initMenuList(img_list.getMeasuredWidth()));
                     }
                 });
@@ -193,7 +192,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
         popupWindow = new PopupWindow(groupMenuView,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.clearColor)));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setAnimationStyle(R.style.PopupAnimation);
         popupWindow.setOnDismissListener(() -> dimBackground(0.6f,1.0f));

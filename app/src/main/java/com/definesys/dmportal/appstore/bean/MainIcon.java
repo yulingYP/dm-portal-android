@@ -1,6 +1,7 @@
 package com.definesys.dmportal.appstore.bean;
 
-/**
+/*
+ *
  * Created by 羽翎 on 2019/1/4.
  */
 

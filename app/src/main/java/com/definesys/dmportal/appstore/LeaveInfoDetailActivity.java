@@ -38,7 +38,6 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
-import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -49,7 +48,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
