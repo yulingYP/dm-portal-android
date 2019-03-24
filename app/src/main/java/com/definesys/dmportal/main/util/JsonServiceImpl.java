@@ -40,7 +40,7 @@ public class JsonServiceImpl implements SerializationService {
         return mGson.fromJson(input, clazz);
     }
 
-    public void checkJson() {
+   private void checkJson() {
         if (mGson == null) {
             mGson = new Gson();
         }

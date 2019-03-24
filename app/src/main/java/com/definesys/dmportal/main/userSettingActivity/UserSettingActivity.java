@@ -104,10 +104,12 @@ public class UserSettingActivity extends BaseActivity {
                 );
 
         getConfig();
+        //音乐
         sw_sound.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked)
                 MyCongfig.musicOpen(UserSettingActivity.this,true);
         });
+        //震动
         sw_vibrate.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked)
                 MyCongfig.vibratorOpen(UserSettingActivity.this);

@@ -109,7 +109,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     ImageView iv_show;
     private Handler handler = new Handler(msg -> {
         switch (msg.what) {
-            case 0://延迟0.3秒设置艺术字
+            case 0://设置艺术字
                 getTypeList(msg.obj.toString());
                 break;
         }
@@ -125,7 +125,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             .skipMemoryCache(true);
     private Dialog dialog;//编辑艺术字提示框
     private EditText ed_sign;//签名输入框
-    private List<String> typeList;//艺术字种类列表
+    private List<Typeface> typefaceList;//艺术字种类列表
     private BottomDialog bottomDialog;//签名生成模式选择提示框
     private int updateMode;//更新签名的模式  0.拍照 1.手写 2.艺术字 3.从相册选择
 //    private String pathName;//新签名的本地路径
@@ -278,7 +278,11 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     }
     //签名选择合法性检测
     private void checkSelect() {
-        if(updateMode==2&&(tv_selected==null||typeList==null||typeList.size()==0)){
+        if(PermissionsUtil.isNetworkConnected(this)){//是否网
+            Toast.makeText(this, R.string.no_net_tip_2,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(updateMode==2&&(tv_selected==null||typefaceList==null||typefaceList.size()==0)){
             Toast.makeText(this, R.string.sign_select_error,Toast.LENGTH_SHORT).show();
             return;
         }
@@ -296,7 +300,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_sign_text_view, null);
             tv.setText(tv_selected.getText().toString());
             if(selectPosition>0)
-                tv.setTypeface(Typeface.createFromAsset(getAssets(), "ttf/"+typeList.get(selectPosition-1)));
+                tv.setTypeface(typefaceList.get(selectPosition-1));
+            //textView转bitmap
             tv.setDrawingCacheEnabled(true);
             tv.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             tv.layout(0, 0, tv.getMeasuredWidth(), tv.getMeasuredHeight());
@@ -306,7 +311,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         }
         String pathName = ImageUntil.saveBitmapFromView(bitmap,UUID.randomUUID().toString(), LeaveSignActivity.this, 4);
         File file = new File(pathName);
-
         mPersenter.uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"1");
 
     }
@@ -347,44 +351,28 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         if(lg_type.getChildCount()!=0)
             lg_type.removeAllViews();
         selectPosition = 0;
-        Observable.create((ObservableOnSubscribe<View>) emitter -> {
-            if(typeList ==null||typeList.size()==0) {//获取艺术字种类列表
-                AssetManager assetManager = getAssets();
-                String[] typeNames ;
-                try {
-                    typeNames = assetManager.list("ttf");
-                    typeList = new ArrayList<>();
-                    String temp;
-                    for (int i = typeNames.length - 1; i >= 0; i--) {
-                        temp = typeNames[i];
-                        //检测文件类型是否正确
-                        if (temp != null && temp.length() > 4 && ".ttf".equals(temp.substring(temp.length() - 4, temp.length()).toLowerCase()))
-                            typeList.add(typeNames[i]);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    emitter.onError(e);
-                }
-            }
+        Observable.create((ObservableOnSubscribe<List<View>>) emitter -> {
+            List<View> list = new ArrayList<>();
             //添加系统文字类型
-            emitter.onNext(addItemView(0,content,""));
-            for(int i = 0 ; i <typeList.size();i++){
-                //添加艺术字文字类型
-                emitter.onNext(addItemView(i+1,content,typeList.get(i)));
+            list.add(addItemView(0,content,null));
+            //添加艺术字文字类型
+            for(int i = 0 ; i <typefaceList.size();i++){
+                list.add(addItemView(i+1,content,typefaceList.get(i)));
             }
+            emitter.onNext(list);
             emitter.onComplete();
-        }).observeOn(Schedulers.io())
+        }).observeOn(Schedulers.newThread())
          .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<View>() {
+        .subscribe(new Observer<List<View>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(View view) {
-                lg_type.addView(view);
+            public void onNext(List<View> list) {
+                for(int i = 0  ; i < list.size() ; i++)
+                    lg_type.addView(list.get(i));
             }
 
             @Override
@@ -442,14 +430,36 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         String content = ed_sign!=null?ed_sign.getText().toString():"";
         if("".equals(content)){
             Toast.makeText(this, R.string.edit_fail_des_1,Toast.LENGTH_SHORT).show();
-        }else {
+        }else {//合法
             progressHUD.show();
             Message message = new Message();
             message.what=0;
             message.obj=content;
 //            lg_type.setVisibility(View.GONE);
-            handler.sendMessageDelayed(message,Constants.scrollDelay);
-            //getTypeList(content);
+            if(typefaceList ==null||typefaceList.size()==0) {//获取艺术字种类列表
+                new Thread(() -> {
+                    AssetManager assetManager = getAssets();
+                    String[] typeNames ;
+                    try {
+                        typeNames = assetManager.list("ttf");
+                        typefaceList = new ArrayList<>();
+                        String temp;
+                        for (int i = typeNames.length - 1; i >= 0; i--) {
+                            temp = typeNames[i];
+                            //检测文件类型是否正确
+                            if (temp != null && temp.length() > 4 && ".ttf".equals(temp.substring(temp.length() - 4, temp.length()).toLowerCase()))
+                                typefaceList.add(Typeface.createFromAsset(getAssets(), "ttf/"+typeNames[i]));
+                        }
+                        //发送给主线程
+                        handler.sendMessage(message);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        //添加艺术字文字类型
+                    }
+                }).start();
+            }else
+                handler.sendMessageDelayed(message,Constants.scrollDelay);
+
         }
         if(dialog!=null)
             dialog.dismiss();
@@ -462,8 +472,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
      * @param type 艺术字类型
      * @return r
      */
-    private View addItemView(int positon,String content,String type) {
-        View view= LayoutInflater.from(this).inflate(R.layout.item_sign_type_view,lg_type,false);
+    private View addItemView(int positon,String content,Typeface type) {
+        View view = LayoutInflater.from(this).inflate(R.layout.item_sign_type_view,lg_type,false);
         TextView textView=view.findViewById(R.id.name_text);//签名
         ImageView imageView= view.findViewById(R.id.select_img);//是否选择
         if(positon==selectPosition) {//选中
@@ -472,8 +482,8 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             imageView.setImageResource(R.drawable.right_icon);
         }else
             imageView.setImageResource(R.drawable.no_select);
-        if(positon!=0)
-            textView.setTypeface(Typeface.createFromAsset(getAssets(), "ttf/"+type));
+        if(positon!=0)//艺术字
+            textView.setTypeface(type);
         textView.setText(content);
         RxView.clicks(view)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

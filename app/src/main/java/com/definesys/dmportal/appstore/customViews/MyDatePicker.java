@@ -135,7 +135,7 @@ public class MyDatePicker extends LinearLayout {
         num_month.setMinValue(currentMonth);
         num_month.setMaxValue(12);
         if(num_month.getValue()<currentMonth)
-        num_month.setValue(currentMonth);
+            num_month.setValue(currentMonth);
         //设置天数
         num_day.setMinValue(num_month.getValue()==currentMonth?currentDay:1);
         num_day.setMaxValue(getDays(currentYear,num_month.getValue()));

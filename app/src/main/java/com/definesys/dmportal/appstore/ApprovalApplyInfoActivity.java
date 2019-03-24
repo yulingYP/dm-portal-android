@@ -109,10 +109,10 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         setContentView(R.layout.activity_approval_apply_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-        if(type==4&&applyInfo!=null){
+        if(type==4&&applyInfo!=null){//未审批
             initEdit();
             initView();
-        }else if(type==4){
+        }else if(type==4){//未审批
             progressHUD.show();
             ++requestCount;
             //申请记录
@@ -121,8 +121,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
             ++requestCount;
             //查看是否已有审批记录
             mPersenter.getApplyRecordById(applyId);
-        }
-        else if(type==0||type==1){
+        }else if(type==0||type==1){//已审批
          applyRecord = new ApplyRecord();
          applyRecord.setApplyContent(approvalContent);
          applyRecord.setApprovalDate(approvalDate==null?new Date():approvalDate);

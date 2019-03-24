@@ -1,25 +1,23 @@
 package com.definesys.dmportal.webview.jsinterface;
 
 import android.os.Build;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
-
 import com.google.gson.Gson;
-import com.prim.primweb.core.jsloader.AgentValueCallback;
 import com.prim.primweb.core.jsloader.ICallJsLoader;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * Created by mobile on 2018/8/20.
  */
 
 public class JsInterface {
 
-    ICallJsLoader callJsLoader ;
+    private ICallJsLoader callJsLoader ;
 
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
 
     public JsInterface(ICallJsLoader callJsLoader) {
         this.callJsLoader = callJsLoader ;

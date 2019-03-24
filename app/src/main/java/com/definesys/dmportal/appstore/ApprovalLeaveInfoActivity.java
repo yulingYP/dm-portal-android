@@ -164,14 +164,14 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         setContentView(R.layout.activity_approval_leave_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-        if(type==4&& leaveInfo !=null) {
+        if(type==4&& leaveInfo !=null) {//未审批
             initView();
             initEdit();
         }else if(type==4&&leaveId!=null&&!"".equals(leaveId)){//根据leaveId获取请假信息
             progressHUD.show();
             ++requestCount;
             mPersenter.getLeaveInfoById(leaveId);
-            if(null!=msgId&&!"".equals(msgId)) {//msgId不为空，去查询是否审批记录
+            if(null!=msgId&&!"".equals(msgId)) {//msgId不为空，去查询是否有审批记录
                 ++requestCount;
                 mPersenter.getApprovalRecordByMsgId(msgId, leaveId);
             }
