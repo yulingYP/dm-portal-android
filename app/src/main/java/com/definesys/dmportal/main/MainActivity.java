@@ -118,7 +118,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         Log.d("myWidth", "" + screenWith + "  " + screenHeight);
         needSplash(splashMessage);
         initView();
-
     }
 
     private void initView() {

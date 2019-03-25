@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -107,14 +105,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     LinearLayout lg_type;
     @BindView(R.id.show_img)
     ImageView iv_show;
-    private Handler handler = new Handler(msg -> {
-        switch (msg.what) {
-            case 0://设置艺术字
-                getTypeList(msg.obj.toString());
-                break;
-        }
-        return false;
-    });
+
     private int selectPosition;//选择的样式的位置
     private ImageView iv_selected;//选择位置的imageview控件
     private TextView tv_selected;//选择位置的文本控件
@@ -348,31 +339,49 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
      * @param content 签名
      */
     private void getTypeList(String content) {
+        progressHUD.show();
         if(lg_type.getChildCount()!=0)
             lg_type.removeAllViews();
         selectPosition = 0;
-        Observable.create((ObservableOnSubscribe<List<View>>) emitter -> {
-            List<View> list = new ArrayList<>();
-            //添加系统文字类型
-            list.add(addItemView(0,content,null));
-            //添加艺术字文字类型
-            for(int i = 0 ; i <typefaceList.size();i++){
-                list.add(addItemView(i+1,content,typefaceList.get(i)));
+        Observable.create((ObservableOnSubscribe<List<Typeface>>) emitter -> {
+            if(typefaceList ==null||typefaceList.size()==0) {//获取艺术字种类列表
+                AssetManager assetManager = getAssets();
+                String[] typeNames ;
+                try {
+                    typeNames = assetManager.list("ttf");
+                    typefaceList = new ArrayList<>();
+                    String temp;
+                    for (int i = typeNames.length - 1; i >= 0; i--) {
+                        temp = typeNames[i];
+                        //检测文件类型是否正确
+                        if (temp != null && temp.length() > 4 && ".ttf".equals(temp.substring(temp.length() - 4, temp.length()).toLowerCase()))
+                            typefaceList.add(Typeface.createFromAsset(getAssets(), "ttf/"+typeNames[i]));
+                    }
+                    //发送给主线程
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    emitter.onError(e);
+                }
             }
-            emitter.onNext(list);
+
+            emitter.onNext(typefaceList);
             emitter.onComplete();
-        }).observeOn(Schedulers.newThread())
+        }).subscribeOn(Schedulers.io())
          .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<List<View>>() {
+        .subscribe(new Observer<List<Typeface>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(List<View> list) {
-                for(int i = 0  ; i < list.size() ; i++)
-                    lg_type.addView(list.get(i));
+            public void onNext(List<Typeface> list) {
+                //添加系统文字类型
+                lg_type.addView(addItemView(0,content,null));
+                //添加艺术字文字类型
+                for(int i = 0 ; i <list.size();i++){
+                    lg_type.addView(addItemView(i+1,content,list.get(i)));
+                }
             }
 
             @Override
@@ -431,35 +440,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
         if("".equals(content)){
             Toast.makeText(this, R.string.edit_fail_des_1,Toast.LENGTH_SHORT).show();
         }else {//合法
-            progressHUD.show();
-            Message message = new Message();
-            message.what=0;
-            message.obj=content;
-//            lg_type.setVisibility(View.GONE);
-            if(typefaceList ==null||typefaceList.size()==0) {//获取艺术字种类列表
-                new Thread(() -> {
-                    AssetManager assetManager = getAssets();
-                    String[] typeNames ;
-                    try {
-                        typeNames = assetManager.list("ttf");
-                        typefaceList = new ArrayList<>();
-                        String temp;
-                        for (int i = typeNames.length - 1; i >= 0; i--) {
-                            temp = typeNames[i];
-                            //检测文件类型是否正确
-                            if (temp != null && temp.length() > 4 && ".ttf".equals(temp.substring(temp.length() - 4, temp.length()).toLowerCase()))
-                                typefaceList.add(Typeface.createFromAsset(getAssets(), "ttf/"+typeNames[i]));
-                        }
-                        //发送给主线程
-                        handler.sendMessage(message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        //添加艺术字文字类型
-                    }
-                }).start();
-            }else
-                handler.sendMessageDelayed(message,Constants.scrollDelay);
-
+            getTypeList(content);
         }
         if(dialog!=null)
             dialog.dismiss();
