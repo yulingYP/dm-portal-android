@@ -267,8 +267,8 @@ public class LeaveListSearchActivity extends BaseActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStop() {
+        super.onStop();
         //添加新标签
         if(clickCheck&&checkSearchItem(clickContent)) {//重复内容检测
             historyList.add(0, clickContent);

@@ -269,7 +269,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     }
     //签名选择合法性检测
     private void checkSelect() {
-        if(PermissionsUtil.isNetworkConnected(this)){//是否网
+        if(!PermissionsUtil.isNetworkConnected(this)){//是否有网
             Toast.makeText(this, R.string.no_net_tip_2,Toast.LENGTH_SHORT).show();
             return;
         }
@@ -287,7 +287,6 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             bitmap =ImageUntil.convertViewToBitmap(iv_show);
         }
         else  {//艺术字
-
             TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_sign_text_view, null);
             tv.setText(tv_selected.getText().toString());
             if(selectPosition>0)

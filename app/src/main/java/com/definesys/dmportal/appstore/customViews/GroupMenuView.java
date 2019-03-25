@@ -37,7 +37,6 @@ public class GroupMenuView extends LinearLayout{
 
     private Context mContext;
     private List<MainIcon> mainIconList;
-    private MainIconAdapter mainIconAdapter;
     private OnLayoutClickListener onClickListener;
 
     public GroupMenuView(Context context) {
@@ -81,7 +80,7 @@ public class GroupMenuView extends LinearLayout{
     }
 
     private void initList() {
-        mainIconAdapter = new MainIconAdapter(mContext,mainIconList,false,R.layout.item_group_menu_view);
+        MainIconAdapter mainIconAdapter = new MainIconAdapter(mContext, mainIconList, false, R.layout.item_group_menu_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mainIconAdapter);

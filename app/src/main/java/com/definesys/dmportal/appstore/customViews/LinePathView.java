@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -15,8 +14,6 @@ import android.view.View;
 
 
 public class LinePathView extends View {
-
-    private Context mContext;
 
     /**
      * 笔画X坐标起点
@@ -34,14 +31,7 @@ public class LinePathView extends View {
      * 路径
      */
     private final Path mPath = new Path();
-    /**
-     * 签名画布
-     */
-    private Canvas cacheCanvas;
-    /**
-     * 签名图片
-     */
-    private Bitmap cachebBitmap;
+
     /**
      * 是否已经签名
      */
@@ -49,7 +39,7 @@ public class LinePathView extends View {
     /**
      * 画笔宽度 px；
      */
-    private int mPaintWidth = 20;
+    private int mPaintWidth = 16;
     /**
      * 前景色
      */
@@ -59,26 +49,23 @@ public class LinePathView extends View {
      */
     private int mBackColor = Color.WHITE;
 
-    //签名开始与结束
-    private Touch touch;
 
     public LinePathView(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public LinePathView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
     public LinePathView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init();
     }
 
-    public void init(Context context) {
-        this.mContext = context;
+    public void init() {
         //设置抗锯齿
         mGesturePaint.setAntiAlias(true);
         //设置签名笔画样式
@@ -89,48 +76,44 @@ public class LinePathView extends View {
         mGesturePaint.setColor(mPenColor);
     }
 
+    //layout时调用
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        //创建跟view一样大的bitmap，用来保存签名
-        cachebBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        cacheCanvas = new Canvas(cachebBitmap);
-        cacheCanvas.drawColor(mBackColor);
         isTouched = false;
     }
-    public Bitmap reDraw(){
 
-        //设置签名笔画样式
-//        mGesturePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+    /**
+     * 重新设置路径的宽度并返回bitmap
+     * @return bitmap
+     */
+    public Bitmap reDraw(){
         //设置笔画宽度
         setPaintWidth(20);
         setPenColor(Color.BLACK);
         setBackColor(Color.WHITE);
-        Canvas canvas = new Canvas(cachebBitmap);
-        canvas.drawBitmap(cachebBitmap, 0, 0, mGesturePaint);
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(mBackColor);
+        canvas.drawBitmap(bitmap, 0, 0, mGesturePaint);
         // 通过画布绘制多点形成的图形
         canvas.drawPath(mPath, mGesturePaint);
-
-        return cachebBitmap;
+        return bitmap ;
 
     }
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (touch != null) touch.OnTouch(true);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 touchDown(event);
                 break;
             case MotionEvent.ACTION_MOVE:
-                isTouched = true;
-                if (touch != null) touch.OnTouch(false);
                 touchMove(event);
+                isTouched = true;
                 break;
             case MotionEvent.ACTION_UP:
-                //将路径画到bitmap中，即一次笔画完成才去更新bitmap，而手势轨迹是实时显示在画板上的。
-                cacheCanvas.drawPath(mPath, mGesturePaint);
-//                mPath.reset();
+                //一次绘制完成,暂不处理
                 break;
         }
         // 更新绘制
@@ -141,8 +124,6 @@ public class LinePathView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //画此次笔画之前的签名
-        canvas.drawBitmap(cachebBitmap, 0, 0, mGesturePaint);
         // 通过画布绘制多点形成的图形
         canvas.drawPath(mPath, mGesturePaint);
     }
@@ -150,39 +131,23 @@ public class LinePathView extends View {
     // 手指点下屏幕时调用
     private void touchDown(MotionEvent event) {
         // 重置绘制路线
-//        mPath.reset();
-        float x = event.getX();
-        float y = event.getY();
-        mX = x;
-        mY = y;
+        mX = event.getX();
+        mY = event.getY();
         // mPath绘制的绘制起点
-        mPath.moveTo(x, y);
+        mPath.moveTo(mX,mY);
     }
 
     // 手指在屏幕上滑动时调用
     private void touchMove(MotionEvent event) {
-        final float x = event.getX();
+        final float x = event.getX();//终点
         final float y = event.getY();
-        final float previousX = mX;
+        final float previousX = mX;//起始点
         final float previousY = mY;
-        final float dx = Math.abs(x - previousX);
-        final float dy = Math.abs(y - previousY);
-        // 两点之间的距离大于等于2时，生成贝塞尔绘制曲线
-        if (dx >= 2 || dy >= 2) {
-            // 设置贝塞尔曲线的操作点为起点和终点的一半
-//            float cX = (x + previousX) / 2;
-//            float cY = (y + previousY) / 2;
-            // 二次贝塞尔，实现平滑曲线；previousX, previousY为操作点，cX, cY为终点
-            mPath.quadTo(previousX, previousY, x, y);
-            // 第二次执行时，第一次结束调用的坐标值将作为第二次调用的初始坐标值
-            mX = x;
-            mY = y;
-        }
-//        float endX = event.getX();
-//        float endY = event.getY();
-//        mPath.quadTo((endX - mX) / 2 + mX, (endY - mY) / 2 +  mY, endX, endY);
-//        mX = event.getX();
-//        mY = event.getY();
+        // 二次贝塞尔，实现平滑曲线；previousX, previousY为操作点，cX, cY为终点
+        mPath.quadTo(previousX, previousY, x, y);
+        // 第二次执行时，第一次结束调用的坐标值将作为第二次调用的初始坐标值
+        mX = x;
+        mY = y;
 
     }
 
@@ -190,42 +155,15 @@ public class LinePathView extends View {
      * 清除画板
      */
     public void clear() {
-        if (cacheCanvas != null) {
+        if (isTouched) {
             isTouched = false;
-            //更新画板信息
-            mGesturePaint.setColor(mPenColor);
-            cacheCanvas.drawColor(mBackColor, PorterDuff.Mode.CLEAR);
-            mGesturePaint.setColor(mPenColor);
+            //清空画板信息
+//            cacheCanvas.drawColor(mBackColor);
             mPath.reset();
             invalidate();
         }
     }
 
-    public interface Touch {
-        void OnTouch(boolean isTouch);
-    }
-
-    public Touch getTouch() {
-        return touch;
-    }
-
-    public void setTouch(Touch touch) {
-        this.touch = touch;
-    }
-
-
-    /**
-     * 获取画板的bitmap
-     *
-     * @return r
-     */
-    public Bitmap getBitMap() {
-        setDrawingCacheEnabled(true);
-        buildDrawingCache();
-        Bitmap bitmap = getDrawingCache();
-        setDrawingCacheEnabled(false);
-        return bitmap;
-    }
 
     /**
      * 逐行扫描 清除边界空白。
@@ -320,7 +258,6 @@ public class LinePathView extends View {
         mPaintWidth = mPaintWidth > 0 ? mPaintWidth : 10;
         this.mPaintWidth = mPaintWidth;
         mGesturePaint.setStrokeWidth(mPaintWidth);
-
     }
 
 
