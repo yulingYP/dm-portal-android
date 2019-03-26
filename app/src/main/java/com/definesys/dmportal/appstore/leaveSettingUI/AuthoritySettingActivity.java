@@ -92,8 +92,10 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                     }else {//未显示权限
                        if(stuMap==null&&"".equals(tv_stu.getText().toString())){//还没有获取到详细权限
                             httpPost(0);
-                        }else
-                            tv_stu.setVisibility(VISIBLE);
+                       }else if(stuMap!=null&&"".equals(tv_stu.getText().toString())) {//网络请求已发送但暂未获取到网络请求
+                           showTextByMap(0);
+                       }else
+                           tv_stu.setVisibility(VISIBLE);
                         iv_stu.setRotation(180);
                     }
                 });
@@ -106,8 +108,10 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                         tv_tea.setVisibility(GONE);
                         iv_tea.setRotation(0);
                     }else {//未显示权限
-                    if(teaMap==null&& "".equals(tv_tea.getText().toString())){//还没有获取到详细权限
-                            httpPost(1);
+                        if(teaMap==null&& "".equals(tv_tea.getText().toString())){//还没有获取到详细权限
+                                httpPost(1);
+                        }else if(teaMap!=null&&"".equals(tv_tea.getText().toString())){//网络请求已发送但暂未获取到网络请求
+                            showTextByMap(1);
                         }else
                             tv_tea.setVisibility(VISIBLE);
                         iv_tea.setRotation(180);
@@ -280,7 +284,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         }else if(type==1){//审批教师
             for(int i = 0;i<3;i++){
                 if(teaMap.get(i)!=null&&!"".equals(teaMap.get(i))){//有权限
-                    content.append(teaMap.get(i).length()>4?teaMap.get(i).substring(0,teaMap.get(i).length()-2):teaMap.get(i))
+                    content.append(teaMap.get(i).length()>4?teaMap.get(i).substring(0,teaMap.get(i).length()-2):teaMap.get(i))//去掉最后的“， ”
                             .append("\n");
                 }
             }
