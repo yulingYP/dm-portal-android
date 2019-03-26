@@ -54,7 +54,7 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
 
 
     private void initView() {
-        titleBar.setTitle(getResources().getString(R.string.us_aboutus));
+        titleBar.setTitle(getResources().getString(R.string.about_our));
         titleBar.addLeftBackImageButton().setOnClickListener((view) -> finish());
         ((TextView) check_update.findViewById(R.id.title_item_itr)).setText(getResources().getString(R.string.about_check));
         ((ImageView) check_update.findViewById(R.id.img_item_itr)).setImageResource(R.mipmap.ic_check_update);

@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         mTitlebar.setTitle(R.string.tab3);
         mTitlebar.setBackgroundDividerEnabled(false);
         mTitlebar.showTitleView(true);
-        mTabbar.setTitles( R.string.tab2, R.string.tab3, R.string.tab4)
+        mTabbar.setTitles( R.string.tab1, R.string.tab2, R.string.tab3)
                 .setNormalIcons(R.mipmap.tab3_normal, R.mipmap.tab1_normal ,R.mipmap.tab4_normal)
                 .setSelectedIcons( R.mipmap.tab3_selected, R.mipmap.tab1_selected ,R.mipmap.tab4_selected)
                 .generate();
@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                     titleIndicator.setVisibility(View.GONE);
                     mTitlebar.showTitleView(true);
                     if(position==1)mTitlebar.setTitle(R.string.tab3);
-                    else if(position==2)mTitlebar.setTitle(R.string.tab4);
+                    else if(position==2)mTitlebar.setTitle(R.string.tab3);
                 }
 
             }
@@ -411,16 +411,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         String title="aa";//标题
         String content="bb";//内容
 
-        //点击事件
-//        Intent intentClick = new Intent(this, NotificationBroadcastReceiver.class);
-//        intentClick.setAction("notification_clicked");
-//        intentClick.putExtra(NotificationBroadcastReceiver.TYPE, ++notifyID);
-//        intentClick.putExtra("message",new Gson().toJson(myMessage));
-//        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(this, notifyID, intentClick, PendingIntent.FLAG_UPDATE_CURRENT);
-//        content = myMessage.getMessageId();
+        //获取跳转的intent
         Intent intent = setResultIntent(myMessage);
+        //点击通知的pengdingIntent
         PendingIntent pendingIntentClick =  PendingIntent.getActivity(this, ++notifyID,  intent, PendingIntent.FLAG_UPDATE_CURRENT) ;
-
 
         if(myMessage!=null){
             if(myMessage.getMessageType()==1) {//请假人审批结果

@@ -120,13 +120,13 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         setContentView(R.layout.activity_leave_info_detail);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-        setNoLayout(false);
+        setNoLayout(true);//显示暂无页
         initTitle();
         if(leaveInfo !=null)
             initView();
         else if(leaveId!=null&&!"".equals(leaveId)){
             mPersenter.getLeaveInfoById(leaveId);
-        } else {//进度查询
+        }else {//进度查询
             progressHUD.show();
             (new GetCurrentLeaveInfoPresenter(this)).getCurrentLeaveInfo(SharedPreferencesUtil.getInstance().getUserId());
         }
@@ -329,7 +329,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     }, thread = EventThread.MAIN_THREAD)
     public void netWorkError(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            setNoLayout(true);
+//            setNoLayout(true);
             Toast.makeText(LeaveInfoDetailActivity.this,("".equals(msg)?getString(R.string.net_work_error):msg),Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
         }

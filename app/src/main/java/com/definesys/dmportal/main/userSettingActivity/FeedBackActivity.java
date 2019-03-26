@@ -68,7 +68,7 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
 
         selectImages = new ArrayList<>();
         //标题栏的设置一套
-        titleBar.setTitle(getString(R.string.feedback));
+        titleBar.setTitle(getString(R.string.feed_back));
         titleBar.setBackgroundDividerEnabled(false);
 
         //退出

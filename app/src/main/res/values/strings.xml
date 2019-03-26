@@ -3,46 +3,38 @@
     <string name="httpUrl">http://%s:9001/last_design/</string>
     <string name="app_name">快捷校园</string>
     <string name="net_work_error">网络请求出错</string>
-    <string name="tab1">请假</string>
-    <string name="tab2">消息</string>
-    <string name="tab3">主页</string>
-    <string name="tab4">我的</string>
     <string name="submit">提交</string>
     <string name="cancel">取消</string>
-    <string name="reason_des">请假类型</string>
     <string name="img_count">%1$d/3</string>
     <integer name="code_send_time">60</integer>
     <integer name="max_name_length">20</integer>
     <integer name="max_psw_length">16</integer>
     <integer name="max_phone_length">11</integer>
     <integer name="max_code_length">6</integer>
-    <string name="text_after_send_code">重新获取验证码</string>
-    <string name="send_verify_code">获取验证码</string>
+
     <string name="get_image">"%sshowImage?name=%s&amp;type=%d"</string>
 
-    <!--TUT倒计时提示文字-->
-    <string name="tut_toast_text_time">已发送(%1$ds)</string>
-    <string name="phone_regex" tools:ignore="TypographyDashes">^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$</string>
+    <string name="tab1">消息</string>
+    <string name="tab2">主页</string>
+    <string name="tab3">我的</string>
     <string name="message">消息</string>
     <string name="trends">动态</string>
     <string name="exit_en">exit</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="leave_off">请假</string>
+    <!--TUT倒计时提示文字-->
+    <string name="tut_toast_text_time">已发送(%1$ds)</string>
+    <string name="phone_regex" tools:ignore="TypographyDashes">^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$</string>
+    <string name="text_after_send_code">重新获取验证码</string>
+    <string name="send_verify_code">获取验证码</string>
 
     <string name="off_day">%d天</string>
     <string name="off_hour">%d小时</string>
-    <string name="group_des">社团</string>
-    <string name="school_des">哈工大(威海)快捷校园</string>
-    <string name="history_search">搜索历史</string>
 
     <string name="subject_table">课表</string>
+    <string name="cursor">课程</string>
     <string name="table_hello_tip">你好 %s %s,以下是您的课表,点击课程可以获取课程详细信息</string>
     <string name="table_hello_tip_2">以下是 %d 的课表,点击课程可以获取课程详细信息</string>
     <string name="table_hello_tip_3">以下是 %d 的已修课程的成绩</string>
     <string name="table_error_tip_1">课表信息有误</string>
-    <string name="help_tip">请点击要请假的课程,只能选择本周与下周的课程,最多可选择6节课</string>
     <string name="lesson">节次</string>
     <string name="Monday">周一</string>
     <string name="Tuesday">周二</string>
@@ -71,8 +63,15 @@
     <string name="alread_first_week">已经是第一周</string>
     <string name="already_last_week">已经是最后一周</string>
     <string name="current_week">本周为第%d周</string>
+    <string name="type_tip_sub">课表</string>
+    <string name="type_tip_score">成绩</string>
+    <string name="week_type">%d-%d</string>
+    <string name="cursor_name_2">课程名</string>
+    <string name="no_cursor_score">暂无课程成绩</string>
 
-    <string name="ed_search_tip">请输入种类或社团名称</string>
+    <string name="leave_off">请假</string>
+    <string name="help_tip">请点击要请假的课程,只能选择本周与下周的课程,最多可选择6节课</string>
+    <string name="reason_des">请假类型</string>
     <string name="select_subject_count">已选择%d节课</string>
     <string name="confirm">确定</string>
     <string name="cursor_name">%s(%s)</string>
@@ -121,6 +120,7 @@
     <string name="type_search">种类</string>
     <string name="submit_persion">审批人</string>
     <string name="select_subject_table">课程选择</string>
+    <string name="submit_success">提交成功</string>
 
     <string name="date_type">yyyy年MM月dd日 HH时</string>
     <string name="date_type_2">yyyy-MM-dd HH:mm</string>
@@ -139,7 +139,9 @@
     <string name="status_tip_6">未请假</string>
     <string name="status_tip_7">获取失败</string>
 
-    <string name="submit_success">提交成功</string>
+    <string name="group_des">社团</string>
+    <string name="ed_search_tip">请输入种类或社团名称</string>
+
     <string name="current_status">当前状态</string>
     <string name="report_back">销假</string>
     <string name="approval_processing">审批处理</string>
@@ -147,15 +149,19 @@
     <string name="approval_history">历史审批记录</string>
     <string name="my_leave_off_list">我的请假记录</string>
     <string name="leave_history">请假记录</string>
-    <string name="leave_detail">请假详情</string>
+
     <string name="no_msg_tip">暂无消息</string>
     <string name="no_net_tip">暂无网络</string>
     <string name="no_aut_tip">暂无权限</string>
     <string name="no_dyn_tip">暂无动态</string>
+
+    <string name="leave_detail">请假详情</string>
+    <string name="leave_progress">进度查询</string>
     <string name="no_history_tip">暂无记录</string>
     <string name="userId_tip">学号/工号:%d</string>
     <string name="check_approval_record">查看审批记录</string>
     <string name="check_approval_record_2">查看其他人的审批意见</string>
+    <string name="create_absence">生成请假条</string>
     <string name="approval_record">历史审批记录</string>
     <string name="submit_time">提交时间:%s</string>
     <string name="approver_text">审批人:%s</string>
@@ -163,7 +169,7 @@
     <string name="approval_result_text">审批结果:%s</string>
     <string name="approval_time_text">审批时间:%s</string>
     <string name="no_net_tip_2">请先连接网络</string>
-    <string name="leave_progress">进度查询</string>
+
     <string name="no_current_leave_info">暂无请假信息</string>
     <string name="approval_leave_info">审批请假信息</string>
     <string name="approval_leave_info_2">审批记录详情</string>
@@ -187,6 +193,7 @@
     <string name="login">登陆</string>
     <string name="exit_2s">再按一次退出</string>
     <string name="forget_password">忘记密码?</string>
+    <string name="send_code_err">请先获取验证码</string>
     <string name="login_text_code">短信验证码登录</string>
     <string name="copyright">哈尔滨工业大学(威海) 版权所有</string>
     <string name="msg_pls_input_userId">输入学号或工号</string>
@@ -198,13 +205,10 @@
     <string name="msg_pls_input_phone">请输入手机号</string>
     <string name="psw_input_hint_origin">输入原密码</string>
     <string name="psw_input_hint_new_confirm">再次输入新密码</string>
-    <string name="psw_input_hint">输入 6～16 位密码</string>
+    <string name="psw_input_hint">输入6～16位密码</string>
     <string name="psw_input_hint_confirm">再次输入密码</string>
     <string name="msg_pls_input_required">请填写所有必填项</string>
-    <string name="msg_err_input_psw">密码输入不一致，请重新输入</string>
-    <string name="psw_input_hint_new">输入 6~16 位新密码</string>
-    <string name="exit_des">退出登录</string>
-    <string name="logout_msg">确定要退出吗</string>
+
     <string name="no_one_tip">您的帐号已在其他设备登录，如非本人操作，请及时修改密码</string>
     <string name="no_use_tip">您的账号已被冻结,请联系管理员解冻</string>
     <string name="sex_male">男</string>
@@ -226,24 +230,21 @@
     <string name="send_email_fail_3">手机号码超过最大支持数</string>
     <string name="send_email_fail_5">平台数据库内部错误</string>
     <string name="send_email_fail_6">内部错误,请联系我们</string>
-    <string name="msg_pls_input_address">请选择地址</string>
+
+    <string name="change_pwd">修改密码</string>
     <string name="msg_err_psw">密码错误</string>
     <string name="msg_err_psw_origin">原密码错误</string>
-    <string name="change_pwd">修改密码</string>
-    <string name="send_code_err">请先获取验证码</string>
     <string name="pwd_tip">提示:初始密码为身份证后六位,如:12345x</string>
+    <string name="msg_err_input_psw">密码输入不一致，请重新输入</string>
+    <string name="psw_input_hint_new">输入6~16位新密码</string>
     <string name="change_pwd_success">修改密码成功</string>
-    <string name="about_our">关于我们</string>
     <string name="bind_phone_tip">请先去绑定手机</string>
+
     <string name="unbind_phone">手机解绑</string>
     <string name="bind_phone">手机绑定</string>
     <string name="unbind_success">解绑成功</string>
     <string name="bind_success">绑定成功</string>
-    <string name="type_tip_sub">课表</string>
-    <string name="type_tip_score">成绩</string>
-    <string name="week_type">%d-%d</string>
-    <string name="cursor_name_2">课程名</string>
-    <string name="no_cursor_score">暂无课程成绩</string>
+
     <string name="search_history">搜索历史</string>
     <string name="delete_history">清除搜索记录</string>
     <string name="history_hint_0">请输入请假的种类或请假内容</string>
@@ -262,7 +263,8 @@
     <string name="tag_9">不同意</string>
     <string name="search_result">搜索结果</string>
     <string name="tag_10">已销假</string>
-    <string name="create_absence">生成请假条</string>
+
+
     <string name="leave_absence">请假条</string>
     <string name="share_img">分享图片</string>
     <string name="share_pdf">分享PDF</string>
@@ -274,7 +276,6 @@
     <string name="leave_time">请假时间</string>
     <string name="get_sign_fail">获取签名失败</string>
     <string name="sum_time">共计：%s</string>
-
     <string name="sign">签字:</string>
     <string name="stu_return_sign">学生销假签字:%s</string>
     <string name="tea_return_sign">教师销假签字:%s</string>
@@ -315,7 +316,6 @@
     <string name="leader_sign_text_2">请假管理员意见及签字</string>
     <string name="leave_teacher_long_des">教师请假条</string>
 
-    <string name="cursor">课程</string>
     <string name="back_report_tip">您确定要销假吗？</string>
     <string name="date_des">%04d年%02d月%02d日 %02d时</string>
     <string name="message_tip_1">您的请假请求已被拒绝</string>
@@ -335,10 +335,17 @@
     <string name="message_tip_15">您的%s权限已被删除</string>
     <string name="message_tip_16">您的%s权限已被修改</string>
     <string name="request_date_type">%d-%02d-%02d %02d:%02d:%02d</string>
+
     <string name="user_info">个人信息</string>
     <string name="us_alertset">提醒方式</string>
-    <string name="setting">设置</string>
     <string name="feed_back">反馈建议</string>
+    <string name="school_des">哈工大(威海)快捷校园</string>
+    <string name="setting">设置</string>
+    <string name="sound">声音</string>
+    <string name="vibrate">震动</string>
+    <string name="exit_des">退出登录</string>
+    <string name="logout_msg">确定要退出吗</string>
+
     <string name="approval_result">审批结果</string>
     <string name="approval_result_2">结果</string>
     <string name="approval_result_3">申请结果</string>
@@ -361,13 +368,11 @@
     <string name="feedback_word_hint">描述您对我们应用的建议…</string>
     <string name="feedback_img_hint">提供相关截图或照片</string>
 
-    <string name="feedback">反馈建议</string>
+    <string name="about_our">关于我们</string>
     <string name="app_version_name">V%s</string>
-    <string name="us_aboutus">关于我们</string>
     <string name="about_check">版本更新</string>
     <string name="use_protocol">用户协议</string>
     <string name="us_protocol_url">"file:///android_asset/user_protocol.html"</string>
-
 
     <string name="my_sign_setting">签名设置</string>
     <string name="my_authority_setting">权限设置</string>
@@ -380,6 +385,7 @@
     <string name="edit_fail_des_1">请输入签名</string>
     <string name="edit_select_des">请选择签名的样式</string>
     <string name="sign_select_error">您当前并未选择签名</string>
+    <string name="sign_select_error_2">请先去编辑签名</string>
     <string name="sign_update_success">上传成功</string>
     <string name="current_sign">当前签名</string>
     <string name="sign_setting">签名设置</string>
@@ -390,7 +396,6 @@
     <string name="sign_design">艺术字</string>
     <string name="sign_pictures">从相册选择</string>
     <string name="sign_write_tip">请在方框内写入您的签名</string>
-    <string name="sign_select_error_2">请先去编辑签名</string>
     <string name="clear">清除</string>
     <string name="save">保存</string>
 
@@ -479,6 +484,7 @@
     <string name="my_auhority">我的权限</string>
     <string name="delete_error_tip_1">请先选择要删除的权限</string>
     <string name="delete_authority_des">%s权限\n%s</string>
+
 
 
 </resources>
