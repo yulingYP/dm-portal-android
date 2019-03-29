@@ -203,7 +203,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             if(data.getExtendInfo()==100) {
                 finish();
 //                data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
-                SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)11,"",null,"",new Date()));
+                SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)4,"",(short)2,"",new Date()));
                 Toast.makeText(this, R.string.submit_success, Toast.LENGTH_SHORT).show();
             }
             else

@@ -200,7 +200,6 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
                     initEdit();
                 }else//申请信息还未获取到
                     isInit = true;//置可以初始化
-
             }else {//有审批记录
                 applyRecord = data.getData().get(0);
                 type = applyRecord.getApplyStatus();
