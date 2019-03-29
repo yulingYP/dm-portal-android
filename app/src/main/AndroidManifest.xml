@@ -91,7 +91,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape" />
         <activity android:name=".appstore.leaveSettingUI.AuthoritySettingActivity" />
-        <activity android:name=".appstore.UpdateLeAutActivity" />
+        <activity android:name=".appstore.leaveSettingUI.UpdateLeAutActivity" />
         <activity android:name=".appstore.AppLyListActivity" />
         <activity android:name=".appstore.ApprovalApplyInfoActivity" />
         <activity android:name=".appstore.ApplyInfoActivity" />

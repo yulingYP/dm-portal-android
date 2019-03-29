@@ -9,11 +9,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
         <TextView
             android:id="@+id/title_text"
-            android:text="标题"
+            android:text="@string/reason_des"
             android:layout_gravity="start"
+            android:textColor="@color/blue"
             android:padding="8dp"
             android:textSize="18sp"
-            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <android.support.v7.widget.RecyclerView

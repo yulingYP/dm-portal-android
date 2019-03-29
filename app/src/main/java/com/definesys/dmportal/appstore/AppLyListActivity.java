@@ -261,7 +261,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
         if(!(String.valueOf(stuAut).contains("1")||String.valueOf(stuAut).contains("2")||String.valueOf(stuAut).contains("4")||String.valueOf(stuAut).contains("8")))
             stuAut=null;
         //不包含部门权限审批人权限
-        if(String.valueOf(stuAut).contains("3"))
+        if(String.valueOf(stuAut).contains("2"))
             teaAut=null;
         if(stuAut==null&&teaAut==null)
             return false;

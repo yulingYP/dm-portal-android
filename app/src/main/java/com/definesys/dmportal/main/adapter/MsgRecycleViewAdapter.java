@@ -127,7 +127,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                     .navigation();
                         }else if(messages.get(position).getMessageType()==2){//审批人消息
                             MyMessage myMessage = messages.get(position);
-                            if(messages.get(position).getMessageExtend2()==4){
+                            if(messages.get(position).getMessageExtend2()==4){//未审批
                                 myMessage= checkDate(position);
                             }
                             if(myMessage!=null) {
@@ -202,18 +202,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         return messages.get((i>=0?i:position));
     }
-    /**
-     * 获取结果消息
-     * @return m
-     */
-    public MyMessage getMessage(MyMessage myMessage) {
-        MyMessage result = null;
-        if(messages!=null&&messages.contains(myMessage)){
-            result = checkDate(messages.indexOf(myMessage));
-        }
 
-        return result;
-    }
 
     @Override
     public int getItemCount() {

@@ -48,7 +48,6 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
-import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -194,7 +193,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 initEditUnable();
             }
             else {//无审批记录
-                approvalRecord = new ApprovalRecord(approvalContent, new Date());
+                approvalRecord = new ApprovalRecord(approvalContent, null);
                 initEditUnable();
                 Toast.makeText(this, R.string.approval_addvise_tip_5,Toast.LENGTH_SHORT).show();
             }

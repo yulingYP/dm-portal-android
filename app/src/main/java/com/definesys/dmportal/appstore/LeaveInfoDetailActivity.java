@@ -40,6 +40,7 @@ import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -273,6 +274,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         Dialog dialog = new Dialog(this);
         ReasonTypeListLayout checkApprovalView = new ReasonTypeListLayout(this);
         checkApprovalView .getTitleText().setText(R.string.approval_record);
+        checkApprovalView .getTitleText().setTextColor(getResources().getColor(R.color.black));
         checkApprovalView.setApprovalRecord(list);
         checkApprovalView .setMyOnConfirmClickListener(dialog::dismiss);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
