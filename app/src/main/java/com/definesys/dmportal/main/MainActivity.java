@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }
 
     private void initView() {
-        mTitlebar.setTitle(R.string.tab3);
+        mTitlebar.setTitle(R.string.tab2);
         mTitlebar.setBackgroundDividerEnabled(false);
         mTitlebar.showTitleView(true);
         mTabbar.setTitles( R.string.tab1, R.string.tab2, R.string.tab3)
@@ -187,7 +187,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 } else {
                     titleIndicator.setVisibility(View.GONE);
                     mTitlebar.showTitleView(true);
-                    if(position==1)mTitlebar.setTitle(R.string.tab3);
+                    if(position==1)mTitlebar.setTitle(R.string.tab2);
                     else if(position==2)mTitlebar.setTitle(R.string.tab3);
                 }
 

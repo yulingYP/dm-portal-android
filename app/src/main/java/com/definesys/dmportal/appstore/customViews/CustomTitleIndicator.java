@@ -25,8 +25,8 @@ public class CustomTitleIndicator extends LinearLayout {
 
     private OnTitleClickListener onTitleClickListener;
     // TODO:
-    final float scale = this.getContext().getResources ().getDisplayMetrics ().density;
-    final float maxMargin = 80*scale+0.5f;
+//    final float scale = this.getContext().getResources ().getDisplayMetrics ().density;
+    float maxMargin ;
 
     public int getSelectItem() {
         return selectItem;
@@ -53,6 +53,7 @@ public class CustomTitleIndicator extends LinearLayout {
                 onTitleClickListener.onClick(1);
             }
         });
+        this.title1.post(()->maxMargin = title1.getMeasuredWidth()-title1.getPaddingEnd());
     }
 
     public void setTitle1Text(String title1) {

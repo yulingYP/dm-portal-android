@@ -7,15 +7,17 @@
     android:layout_height="wrap_content">
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_view_ti"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="30dp">
         <TextView
             android:id="@+id/title1_view_ti"
-            android:text="title1"
-            android:textColor="@color/color_white"
+            android:text="@string/message"
+            android:textColor="@color/white"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
             android:textSize="20sp"
             android:gravity="center"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -23,10 +25,12 @@
 
         <TextView
             android:id="@+id/title2_view_ti"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
             android:gravity="center"
-            android:text="title2"
+            android:text="@string/trends"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/title1_view_ti" />
