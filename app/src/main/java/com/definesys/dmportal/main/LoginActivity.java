@@ -121,7 +121,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     public void successfulLogin(String msg) {
         progressHUD.dismiss();
         //Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-        ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean("isLogin",true)
+        ARouter.getInstance().build(ARouterConstants.MainActivity)
                 .navigation(this, new NavCallback() {
                     @Override
                     public void onArrival(Postcard postcard) {
@@ -303,10 +303,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mIsExit) {
-//                // 停止LBS监控上报
-//                StatGpsMonitor.getInstance().stopMonitor();
                 System.exit(0);
-
             } else {
                 Toast.makeText(this, R.string.exit_2s,Toast.LENGTH_SHORT).show();
                 mIsExit = true;

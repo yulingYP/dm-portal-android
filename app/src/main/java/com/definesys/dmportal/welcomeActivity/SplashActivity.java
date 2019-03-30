@@ -1,9 +1,7 @@
 package com.definesys.dmportal.welcomeActivity;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
@@ -12,25 +10,17 @@ import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 
-
 @Route(path = ARouterConstants.SplashActivity)
 public class SplashActivity extends AppCompatActivity {
-
 private String message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Main_AppTheme);
         super.onCreate(savedInstanceState);
-
         // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_splash);
         if(getIntent()!=null)
             message = getIntent().getStringExtra("message");
-        //消除相机url异常
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        builder.detectFileUriExposure();
-
         initView();
     }
 
@@ -74,7 +64,6 @@ private String message;
     @Override
     protected void onResume() {
         super.onResume();
-
 
     }
 

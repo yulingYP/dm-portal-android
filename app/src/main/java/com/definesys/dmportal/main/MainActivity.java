@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,6 +24,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
+import com.definesys.dmportal.BuildConfig;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.AppLyListActivity;
 import com.definesys.dmportal.appstore.ApplyInfoActivity;
@@ -45,7 +47,6 @@ import com.definesys.dmportal.main.ui.fragment.MyFragment;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -71,13 +72,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     @BindView(R.id.mViewPager)
     NoScrollViewPager mViewPager ;
 
-    @Autowired(name = "isLogin")
-    boolean isLogin;//是否通过登陆进入主页
-
     @Autowired(name = "message")
     String splashMessage;//从跳转页得到的消息，可能是json化的Message实例
 
-    CustomTitleIndicator titleIndicator;
+    private CustomTitleIndicator titleIndicator;
     private int currentPosition=1;
 
     private ContactFragment contactFragment ;
@@ -94,9 +92,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        RxBus.get().register(this);
         ARouter.getInstance().inject(this);
-
+        initApp();
         //设置推送别名
         JPushInterface.setAlias(this,++notifyID,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()));
         //设置静默时间段
@@ -526,12 +523,22 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         return intent;
     }
 
+    //app功能相关的初始化
+    private void initApp() {
+        JPushInterface.setDebugMode(true);
+        if (BuildConfig.DEBUG) { //如果在debug模式下
+            // 打印日志,默认关闭
+            ARouter.openLog();
+            // 开启调试模式，默认关闭(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+            ARouter.openDebug();
+            // 打印日志的时候打印线程堆栈
+            ARouter.printStackTrace();
+        }
+        //消除相机url异常
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
+    }
 
-//    @Subscribe(tags = {
-//            @Tag("startActivity")
-//    }, thread = EventThread.MAIN_THREAD)
-//    public void startMyActivity(MyMessage myMessage){
-//        startActivity(setResultIntent(myMessage));
-//    }
 
 }

@@ -99,7 +99,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(positionOffset!=1 && positionOffset!=0)
-                    RxBus.get().post("scrolling", position + "," + Math.round(positionOffset * 100) / 100.0);
+                    SmecRxBus.get().post("scrolling", position + "," + Math.round(positionOffset * 100) / 100.0);
             }
 
             @Override
@@ -110,7 +110,7 @@ public class ContactFragment extends Fragment {
             public void onPageScrollStateChanged(int state) {
                 if(state == ViewPager.SCROLL_STATE_IDLE) {
                     currentitem = mViewpager.getCurrentItem();
-                    RxBus.get().post("selected",String.valueOf(currentitem));
+                    SmecRxBus.get().post("selected",String.valueOf(currentitem));
                 }
             }
         });
