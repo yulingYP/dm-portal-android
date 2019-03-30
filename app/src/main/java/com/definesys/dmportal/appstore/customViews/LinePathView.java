@@ -113,7 +113,8 @@ public class LinePathView extends View {
                 isTouched = true;
                 break;
             case MotionEvent.ACTION_UP:
-                //一次绘制完成,暂不处理
+                //一次绘制完成
+                mPath.lineTo(event.getX(),event.getY());
                 break;
         }
         // 更新绘制
@@ -143,11 +144,24 @@ public class LinePathView extends View {
         final float y = event.getY();
         final float previousX = mX;//起始点
         final float previousY = mY;
-        // 二次贝塞尔，实现平滑曲线；previousX, previousY为操作点，cX, cY为终点
-        mPath.quadTo(previousX, previousY, x, y);
-        // 第二次执行时，第一次结束调用的坐标值将作为第二次调用的初始坐标值
-        mX = x;
-        mY = y;
+//        // 二次贝塞尔，实现平滑曲线；previousX, previousY为操作点，cX, cY为终点
+//        mPath.quadTo(previousX, previousY, x, y);
+//        // 第二次执行时，第一次结束调用的坐标值将作为第二次调用的初始坐标值
+//        mX = x;
+//        mY = y;
+        final float dx = Math.abs(x - previousX);
+        final float dy = Math.abs(y - previousY);
+        // 两点之间的距离大于等于3时，生成贝塞尔绘制曲线
+        if (dx >= 3 || dy >= 3) {
+            // 设置贝塞尔曲线的操作点为起点和终点的一半
+            float cX = (x + previousX) / 2;
+            float cY = (y + previousY) / 2;
+            // 二次贝塞尔，实现平滑曲线；previousX, previousY为操作点，cX, cY为终点
+            mPath.quadTo(previousX, previousY, cX, cY);
+            // 第二次执行时，第一次结束调用的坐标值将作为第二次调用的初始坐标值
+            mX = x;
+            mY = y;
+        }
 
     }
 
