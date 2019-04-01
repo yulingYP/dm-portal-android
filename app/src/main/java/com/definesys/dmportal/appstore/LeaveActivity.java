@@ -190,9 +190,6 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         initDateDialog(false);//初始化日期选择提示框
         setLatoutVisibility();//根据请假类型设定显示的内容
 
-        //防遮挡
-//        buttonBeyondKeyboardLayout(lg_reason,lg_reason);
-//        isScroll=true;
     }
 
     private void initView() {
@@ -246,6 +243,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                 });
         //默认请假类型 短假
         tv_type.setText(DensityUtil.setTypeText(getResources().getStringArray(R.array.leave_type)[selectTypePosition]));
+        //默认请假原因 身体欠佳
+        tv_typeReason.setText(getResources().getStringArray(R.array.leave_short_reason)[0]);
     }
 
     //具体原因编辑框设置

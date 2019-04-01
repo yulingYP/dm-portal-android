@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ *
  * Created by apple on 2016/11/17.
  */
 
@@ -23,7 +24,7 @@ public final class SmecRxBus  {
     /**
      * Get the instance of {@link Bus}
      *
-     * @return
+     * @return e
      */
     public static synchronized Bus get() {
         if (sBus == null) {

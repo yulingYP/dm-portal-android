@@ -100,6 +100,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             this.finish();
         }
     }
+    //隐藏状态栏
     protected void setStatusBarFullTransparent() {
         if (Build.VERSION.SDK_INT >= 21) {//21表示5.0
             Window window = getWindow();
