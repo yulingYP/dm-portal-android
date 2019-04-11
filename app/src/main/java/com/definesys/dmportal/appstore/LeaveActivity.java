@@ -196,7 +196,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         tv_name.setText(SharedPreferencesUtil.getInstance().getUserName());
         titleBar.setTitle(getString(R.string.leave_off));
         titleBar.setBackgroundDividerEnabled(false);
-        //titleBar.setBackground(null);
+//        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(o -> {

@@ -120,6 +120,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     private void initView() {
         mTitlebar.setTitle(R.string.tab2);
         mTitlebar.setBackgroundDividerEnabled(false);
+//        mTitlebar.setBackground(getResources().getDrawable(R.drawable.title_bg));
+//        mTitlebar.setBackgroundColor(Color.RED);
         mTitlebar.showTitleView(true);
         mTabbar.setTitles( R.string.tab1, R.string.tab2, R.string.tab3)
                 .setNormalIcons(R.mipmap.tab3_normal, R.mipmap.tab1_normal ,R.mipmap.tab4_normal)

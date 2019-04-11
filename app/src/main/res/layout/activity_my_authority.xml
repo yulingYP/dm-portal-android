@@ -14,7 +14,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         app:titlebar_bg_color="@color/customer_title"
-        android:layout_height="44dp">
+        android:layout_height="?attr/titlebar_height">
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
     <ScrollView
         android:layout_width="match_parent"
