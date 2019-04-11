@@ -42,7 +42,6 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
     @BindView(R.id.title_bar_att_about)
     CustomTitleBar titleBar;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +55,7 @@ public class AboutActivity extends BaseActivity<NewsPresenter> {
     private void initView() {
         titleBar.setTitle(getResources().getString(R.string.about_our));
         titleBar.addLeftBackImageButton().setOnClickListener((view) -> finish());
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         ((TextView) check_update.findViewById(R.id.title_item_itr)).setText(getResources().getString(R.string.about_check));
         ((ImageView) check_update.findViewById(R.id.img_item_itr)).setImageResource(R.mipmap.ic_check_update);
 

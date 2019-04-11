@@ -64,12 +64,11 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
     }
 
     private void initView() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
         selectImages = new ArrayList<>();
         //标题栏的设置一套
         titleBar.setTitle(getString(R.string.feed_back));
         titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
 
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
@@ -77,6 +76,7 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> finish());
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //提交
         RxView.clicks(titleBar.addRightTextButton(R.string.submit,R.id.topbar_right_button))
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)

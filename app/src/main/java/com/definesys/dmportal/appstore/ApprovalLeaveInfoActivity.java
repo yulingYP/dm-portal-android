@@ -205,7 +205,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     private void initTitle() {
         titleBar.setTitle(type==4?getString(R.string.approval_leave_info):getString(R.string.approval_leave_info_2));
         titleBar.setBackgroundDividerEnabled(false);
-
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

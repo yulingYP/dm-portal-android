@@ -2,17 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     android:background="@color/back_gray"
     android:orientation="vertical">
-
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar_att_feedback"
         android:layout_width="match_parent"
-        app:titlebar_bg_color="?attr/colorPrimaryDark"
         android:layout_height="?attr/titlebar_height" />
-
     <ScrollView
         android:background="@color/back_gray"
         android:layout_width="match_parent"

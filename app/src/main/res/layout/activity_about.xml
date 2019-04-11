@@ -4,19 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back_gray"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/back_gray"
-        android:fitsSystemWindows="true"
         >
+        <include layout="@layout/title_top_temp"
+            android:id="@+id/status_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+        </include>
         <com.definesys.dmportal.commontitlebar.CustomTitleBar
             android:background="?attr/colorPrimaryDark"
             android:id="@+id/title_bar_att_about"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/status_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/titlebar_height"/>
         <com.makeramen.roundedimageview.RoundedImageView

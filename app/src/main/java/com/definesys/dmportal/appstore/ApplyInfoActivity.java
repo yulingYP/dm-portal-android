@@ -85,6 +85,7 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         setNoLayout(false);
         titleBar.setTitle(getString(R.string.apply_detail_info));
         titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

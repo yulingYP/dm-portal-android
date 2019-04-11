@@ -84,9 +84,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     public static int screenWith;//手机屏幕的宽度
     public static int screenHeight;//手机屏幕的高度
     private boolean isFirst = true;//第一次点击消息页
-
     public static NotificationManager notiManager;//通知栏管理
     private int notifyID=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,10 +118,11 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }
 
     private void initView() {
+        setStatusBarFullTransparent();
         mTitlebar.setTitle(R.string.tab2);
         mTitlebar.setBackgroundDividerEnabled(false);
-//        mTitlebar.setBackground(getResources().getDrawable(R.drawable.title_bg));
-//        mTitlebar.setBackgroundColor(Color.RED);
+        mTitlebar.setBackground(getResources().getDrawable(R.drawable.title_bg));
+
         mTitlebar.showTitleView(true);
         mTabbar.setTitles( R.string.tab1, R.string.tab2, R.string.tab3)
                 .setNormalIcons(R.mipmap.tab3_normal, R.mipmap.tab1_normal ,R.mipmap.tab4_normal)
@@ -134,7 +135,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             public void onTabSelect(int position) {
                 currentPosition = position;
                 mViewPager.setCurrentItem(position, false);
-
                 if(position==0&& (mTabbar.getTabAtPosition(position).isBadgeShow()||isFirst)){
                     contactFragment.freshMsgFragment();
                     isFirst = false;

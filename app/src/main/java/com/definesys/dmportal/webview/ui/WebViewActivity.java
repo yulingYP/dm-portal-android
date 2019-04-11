@@ -53,8 +53,8 @@ public class WebViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mTitlebar.setTitle("");
-
-        RxView.clicks(   mTitlebar.addLeftBackImageButton())
+        mTitlebar.setBackground(getResources().getDrawable(R.drawable.title_bg));
+        RxView.clicks(mTitlebar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(object ->{
                     if (!mAgentWeb.handlerBack()) {

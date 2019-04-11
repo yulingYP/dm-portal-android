@@ -76,6 +76,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     private void initView() {
         titleBar.setTitle(getString(R.string.my_authority_title));
         titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

@@ -4,14 +4,16 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@color/back_gray"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     >
+    <include layout="@layout/title_top_temp">
+    </include>
     <LinearLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:background="@color/customer_title"
+        android:background="@drawable/title_bg"
         android:orientation="horizontal">
         <com.definesys.dmportal.appstore.customViews.SearchBox
             android:id="@+id/search_box"

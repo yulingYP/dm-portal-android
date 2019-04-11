@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,11 +6,15 @@
     android:background="@color/back_gray"
     tools:context=".appstore.leaveSettingUI.SignatureActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fitsSystemWindows="false"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/title_top_temp"
+        android:id="@+id/status_bar">
+    </include>
     <RelativeLayout
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        android:background="@color/customer_title"
+        android:background="@drawable/title_bg"
         android:layout_height="30dp">
         <ImageView
             android:id="@+id/back_icon"
@@ -20,7 +23,8 @@
             android:src="@drawable/icon_titlebar_back"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
         <TextView
             android:layout_centerInParent="true"
             android:textSize="16sp"
@@ -73,7 +77,7 @@
                     android:layout_width="30dp"
                     android:layout_marginStart="8dp"
                     android:layout_height="30dp"
-                     />
+                    tools:ignore="ContentDescription" />
                 <TextView
                     android:text="@string/clear"
                     android:textColor="@color/black"
@@ -100,7 +104,8 @@
                     android:src="@drawable/save_icon"
                     android:layout_marginStart="8dp"
                     android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_height="30dp"
+                    tools:ignore="ContentDescription" />
                 <TextView
                     android:text="@string/save"
                     android:textColor="@color/black"

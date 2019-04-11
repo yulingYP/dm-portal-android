@@ -118,7 +118,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     private void initView() {
         titleBar.setTitle(R.string.subject_table);
         titleBar.setBackgroundDividerEnabled(false);
-        //titleBar.setBackground(null);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         tv_hello.setText(setHello());
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())

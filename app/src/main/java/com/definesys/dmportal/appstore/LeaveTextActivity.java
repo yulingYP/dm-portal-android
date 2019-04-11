@@ -105,7 +105,7 @@ public class LeaveTextActivity extends BaseActivity<GetApprovalRecordPresent> {
     private void initView() {
         titleBar.setTitle(getString(R.string.leave_absence));
         titleBar.setBackgroundDividerEnabled(false);
-
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

@@ -85,6 +85,7 @@ public class ChangePwdActivity extends BaseActivity<ChangePswPresenter> {
         e_new.setIcon_delete(resource.getDrawable(R.mipmap.my_delete));
         titleBar.setTitle(R.string.change_pwd);
         titleBar.setBackgroundColor(resource.getColor(R.color.customer_title));
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
 
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

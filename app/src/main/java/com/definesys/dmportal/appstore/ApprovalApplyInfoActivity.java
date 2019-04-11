@@ -232,7 +232,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     private void initView() {
         titleBar.setTitle(type==4?getString(R.string.approval_apply_title):getString(R.string.check_approval_apply_title));
         titleBar.setBackgroundDividerEnabled(false);
-
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

@@ -79,7 +79,8 @@ public class PhoneBindActivity extends BaseActivity<PhoneBindPresent> {
         code.setLoginType(EditSendText.VERIFY_CODE);
       
         titleBar.setTitle(isBind?getString(R.string.unbind_phone):getString(R.string.bind_phone));
-        //titleBar.setBackground(null);
+        titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
 
         if(isBind) {//已经绑定手机
             //自动填入手机号并禁用该组件

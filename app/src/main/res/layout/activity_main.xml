@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/back_gray"
     xmlns:jp="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:fitsSystemWindows="false"
     tools:context="com.definesys.dmportal.main.MainActivity">
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:gravity="top"
         android:id="@+id/mTitlebar"
-        app:titlebar_bg_color="@color/customer_title"
         android:layout_width="match_parent"
         android:layout_height="?attr/titlebar_height">
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>

@@ -8,7 +8,10 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:fitsSystemWindows="false"
+    tools:ignore="RelativeOverlap,DisableBaselineAlignment,ContentDescription"
     >
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
@@ -54,7 +57,8 @@
                     android:textSize="16sp"
                     android:textColor="@color/blue"
                     android:text=""
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
                 <TextView
                     android:id="@+id/apply_conent"
                     android:layout_below="@+id/name_text"
@@ -94,7 +98,8 @@
             <LinearLayout
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -118,7 +123,8 @@
                         android:layout_gravity="center"
                         android:visibility="invisible"
                         android:layout_width="20dp"
-                        android:layout_height="20dp" />
+                        android:layout_height="20dp"
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_weight="1"

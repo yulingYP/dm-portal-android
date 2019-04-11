@@ -99,7 +99,8 @@ public class ForgetPwdActivity extends BaseActivity<ChangePswPresenter> {
         pwd2.setInputPasswordWithLength(resources.getInteger(R.integer.max_psw_length));
 
         titleBar.setTitle(R.string.change_pwd);
-        //titleBar.setBackground(null);
+        titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
 
         if(type==2) {
             //自动填入手机号并禁用该组件

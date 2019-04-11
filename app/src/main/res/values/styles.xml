@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="Main_AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/customer_title</item>
-        <item name="colorPrimaryDark">@color/customer_title</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="config_color_divider">@color/divider</item>
         <!--标题栏主题样式-->

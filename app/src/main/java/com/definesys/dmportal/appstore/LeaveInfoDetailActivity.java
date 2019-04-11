@@ -136,6 +136,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     private void initTitle(){
         titleBar.setTitle(title==0?R.string.leave_detail:R.string.leave_progress);
         titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

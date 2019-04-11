@@ -24,7 +24,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
  * Created by mobile on 2018/8/20.
  */
 
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActivity {
 
     public static final String ACTIVITY_FINISH = "BaseActivity.finishActivity";
     public KProgressHUD progressHUD;
@@ -35,7 +35,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         // 强制竖屏显示
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -47,7 +46,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 .setAnimationSpeed(1)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setDimAmount(0.5f);
-
+        //隐藏状态栏
+        setStatusBarFullTransparent();
     }
 
     @Override
@@ -66,9 +66,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onStart() {
         super.onStart();
         mPersenter.subscribe();
-
     }
-
+    
     @Override
     protected void onStop() {
         super.onStop();
@@ -111,8 +110,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             window.setStatusBarColor(Color.TRANSPARENT);
         } else if (Build.VERSION.SDK_INT >= 19) {//19表示4.4
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //虚拟键盘也透明
-            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
     }
 }

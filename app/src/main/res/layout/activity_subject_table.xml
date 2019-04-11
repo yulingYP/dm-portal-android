@@ -7,7 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="false"
     tools:context="com.definesys.dmportal.appstore.SubjectTableActivity">
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"

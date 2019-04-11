@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/back_gray"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     android:orientation="vertical">
-
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar_att_forget"
         android:layout_width="match_parent"

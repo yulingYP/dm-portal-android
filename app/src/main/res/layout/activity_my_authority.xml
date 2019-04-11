@@ -10,6 +10,8 @@
     android:layout_height="match_parent"
     tools:ignore="ContentDescription,RelativeOverlap"
     tools:context=".appstore.leaveSettingUI.AuthoritySettingActivity">
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"

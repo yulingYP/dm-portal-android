@@ -85,7 +85,7 @@ public class LeaveMainActivity extends BaseActivity<GetCurrentApprovalStatusPres
     private void initView() {
         titleBar.setTitle(getString(R.string.leave_off));
         titleBar.setBackgroundDividerEnabled(false);
-        //titleBar.setBackground(null);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)

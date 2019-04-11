@@ -25,8 +25,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @Route(path = ARouterConstants.UserSettingActivity)
 public class UserSettingActivity extends BaseActivity {
-
-
     @BindView(R.id.title_bar_att_us)
     CustomTitleBar titleBar;
 
@@ -57,8 +55,9 @@ public class UserSettingActivity extends BaseActivity {
     }
 
     private void initView() {
-        titleBar.setBackgroundDividerEnabled(false);
         titleBar.setTitle(getString(R.string.setting));
+        titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         titleBar.addLeftBackImageButton().setOnClickListener((view) -> finish());
 

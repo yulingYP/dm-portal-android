@@ -7,13 +7,15 @@
     android:layout_height="match_parent"
     android:background="@color/back_gray"
     tools:ignore="ContentDescription"
+    android:fitsSystemWindows="false"
     tools:context=".appstore.leaveSettingUI.LeaveSignActivity">
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         app:titlebar_bg_color="@color/customer_title"
         android:layout_height="?attr/titlebar_height">
-
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
 
      <RelativeLayout

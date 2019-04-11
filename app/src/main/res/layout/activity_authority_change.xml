@@ -8,6 +8,8 @@
     android:fitsSystemWindows="false"
     android:background="@color/back_gray"
     tools:context="com.definesys.dmportal.appstore.leaveSettingUI.AuthorityChangeActivity">
+    <include layout="@layout/title_top_temp">
+    </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"

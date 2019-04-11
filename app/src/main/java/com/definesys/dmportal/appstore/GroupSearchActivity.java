@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.definesys.base.BaseActivity;
+import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.TypeListAdapter;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
@@ -26,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @Route(path = ARouterConstants.GroupSearchActivity)
-public class GroupSearchActivity extends AppCompatActivity {
+public class GroupSearchActivity extends BaseActivity {
     //搜索框
     @BindView(R.id.et_search)
     EditText ed_search;
@@ -55,6 +57,16 @@ public class GroupSearchActivity extends AppCompatActivity {
         initSerachView();//搜索框相关
         initTpyeList();//种类标签
         initGroupList();//社团标签
+    }
+
+    @Override
+    public BasePresenter getPersenter() {
+        return new BasePresenter(this) {
+            @Override
+            public void subscribe() {
+                super.subscribe();
+            }
+        };
     }
 
     private void initSerachView() {

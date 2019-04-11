@@ -1,17 +1,22 @@
 package com.definesys.dmportal.appstore.ui;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.definesys.base.BaseActivity;
+import com.definesys.base.BasePresenter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MainIcon;
 import com.definesys.dmportal.appstore.customViews.GroupMenuView;
@@ -29,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @Route(path = ARouterConstants.GroupMainActivity)
-public class GroupMainActivity extends AppCompatActivity {
+public class GroupMainActivity extends BaseActivity {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
 
@@ -41,9 +46,6 @@ public class GroupMainActivity extends AppCompatActivity {
 
     @BindView(R.id.search_layout)
     LinearLayout lg_search;
-
-    @BindView(R.id.temp_view)
-    View v_temp;
 
     //种类列表
     @BindView(R.id.group_view)
@@ -66,7 +68,8 @@ public class GroupMainActivity extends AppCompatActivity {
 
     private void initView() {
         titleBar.setBackgroundDividerEnabled(false);
-        //titleBar.setBackground(null);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
+
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -85,8 +88,7 @@ public class GroupMainActivity extends AppCompatActivity {
         RxView.clicks(img_list)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj-> {
-                    v_temp.setVisibility(View.VISIBLE);
-                    v_temp.setAnimation(AnimationUtils.loadAnimation(GroupMainActivity.this,R.anim.layout_show));
+                    dimBackground(1.0f, 0.6f);
                     popupWindow.showAsDropDown(img_list);
                 });
         img_list.post(() -> initMenuList(img_list.getMeasuredWidth()));
@@ -105,13 +107,9 @@ public class GroupMainActivity extends AppCompatActivity {
            popupWindow = new PopupWindow(groupMenuView,
                    LinearLayout.LayoutParams.WRAP_CONTENT,
                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
-
-
            popupWindow.setAnimationStyle(R.style.PopupAnimation);
            popupWindow.setOnDismissListener(() -> {
-               //消失动画
-               v_temp.setAnimation(AnimationUtils.loadAnimation(GroupMainActivity.this,R.anim.layout_hide));
-               v_temp.setVisibility(View.GONE);
+               dimBackground(0.6f, 1.0f);
            });
 
     }
@@ -136,5 +134,26 @@ public class GroupMainActivity extends AppCompatActivity {
         super.onStop();
         if(popupWindow!=null)
             popupWindow.dismiss();
+    }
+    //屏幕变灰动画
+    private void dimBackground(final float from, final float to) {
+        final Window window = getWindow();
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(from, to);
+        valueAnimator.setDuration(200);
+        valueAnimator.addUpdateListener(animation -> {
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.alpha = (Float) animation.getAnimatedValue();
+            window.setAttributes(params);
+        });
+        valueAnimator.start();
+    }
+    @Override
+    public BasePresenter getPersenter() {
+        return new BasePresenter(this) {
+            @Override
+            public void subscribe() {
+                super.subscribe();
+            }
+        };
     }
 }

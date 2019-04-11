@@ -55,6 +55,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     private void initView() {
         titleBar.setTitle(getString(R.string.delete_authority));
         titleBar.setBackgroundDividerEnabled(false);
+        titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
