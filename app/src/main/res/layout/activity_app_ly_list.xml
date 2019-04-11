@@ -7,13 +7,13 @@
     android:background="@color/back_gray"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
+    tools:ignore="ContentDescription"
     >
     <include layout="@layout/title_top_temp">
     </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
-        app:titlebar_bg_color="@color/customer_title"
         android:layout_height="?attr/titlebar_height">
         <ImageView
             android:id="@+id/search_icon"
@@ -49,7 +49,8 @@
                 android:orientation="vertical"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                tools:ignore="UseCompoundDrawables">
                 <ImageView
                     android:id="@+id/no_img"
                     android:src="@mipmap/no_history"

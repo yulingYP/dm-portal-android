@@ -139,6 +139,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
                             .withString("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
                             .withInt("type",0)//权限审批
+                            .withBoolean("isAll",true)
                             .navigation()
                 );
         //我的申请记录
@@ -148,6 +149,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
                             .withString("ARouterPath",ARouterConstants.ApplyInfoActivity)
                             .withInt("type",1)//我的申请记录
+                            .withBoolean("isAll",true)
                             .navigation()
                 );
         //历史审批记录
@@ -157,6 +159,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                     ARouter.getInstance().build(ARouterConstants.AppLyListActivity)
                             .withString("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity)
                             .withInt("type",2)//历史审批记录
+                            .withBoolean("isAll",true)
                             .navigation()
                 );
         setShowLayout();

@@ -57,8 +57,26 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
 
+    @BindView(R.id.search_icon)
+    ImageView iv_search;
+
     @Autowired(name = "type")
     int type;//页面类型 0.权限审批 1.历史申请记录 2.历史审批记录
+
+    @Autowired(name = "userId")
+    int userId;//要查询的id
+
+    @Autowired(name = "isSearch")
+    boolean isSearch;//是不是搜索页
+
+    @Autowired(name = "isAll")
+    boolean isAll;//是否查询全部记录
+
+    @Autowired(name = "checkCode")
+    int checkCode;//-1.代表编辑框输入 其他.代表点击标签
+
+    @Autowired(name = "content")
+    String content;//编辑框输入内容
 
     @Autowired(name = "ARouterPath")
     String ARouterPath;
@@ -91,6 +109,15 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                     finish()
+                );
+        //搜索
+        RxView.clicks(iv_search)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.ListSearchActivity)
+                                .withInt("type",type+10)
+                                .navigation(this)
                 );
         //下拉刷新监听
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
@@ -194,7 +221,6 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 if(applyInfoAdapter==null)
                     initList();
                 else
-//                    applyInfoAdapter.notifyDataSetChanged();
                     applyInfoAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
             }
         }
@@ -214,15 +240,20 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
      * @return 1
      */
     private int setMyTitle() {
-
+        if(isSearch) {
+            iv_search.setVisibility(View.GONE);
+            return R.string.search_result;
+        }
         if(type==0) {
+            iv_search.setVisibility(View.VISIBLE);
             return R.string.approval_list;
         }
         else if(type == 1) {
-
+            iv_search.setVisibility(View.VISIBLE);
             return R.string.apply_history_list;
         }
         else if(type==2) {
+            iv_search.setVisibility(View.VISIBLE);
             return R.string.approval_history_list;
         }
         return R.string.no_title;
@@ -235,25 +266,49 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
             setNoLayout(2);
             return;
         }
-        if(type==0){//待审批申请
-            if(!checkAuthority()) {
-                smartRefreshLayout.finishRefresh(true);
-                Toast.makeText(this, R.string.aut_error_tip_1,Toast.LENGTH_SHORT).show();
-                setNoLayout(3);
+        if(isAll) {//查询全部内容
+            if (type == 0) {//待审批申请
+                Integer stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
+                Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批老师权限
+                if (checkAuthority(stuAut,teaAut)) {
+                    mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), stuAut, teaAut, type,requestPage);
+                }else{
+                    smartRefreshLayout.finishRefresh(true);
+                    Toast.makeText(this, R.string.aut_error_tip_1, Toast.LENGTH_SHORT).show();
+                    setNoLayout(3);
+                }
+            } else if (type == 1) {//历史申请记录
+                mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), null, null, type, requestPage);
+            } else if (type == 2) {//历史审批记录
+                mPersenter.getHistoryApprovalApplyList(SharedPreferencesUtil.getInstance().getUserId(), requestPage);
             }
-        }else if(type ==1){//历史申请记录
-            mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(),null,null,type,requestPage);
-        }else if(type==2){//历史审批记录
-            mPersenter.getHistoryApprovalApplyList(SharedPreferencesUtil.getInstance().getUserId(),requestPage);
+        }else {
+            if(type==0){//待审批内容
+                Integer stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
+                Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批老师权限
+                if(checkAuthority(stuAut, teaAut))
+                    mPersenter.getSearchApplyList(type,userId,checkCode,content,requestPage,stuAut,teaAut);
+                else {
+                    smartRefreshLayout.finishRefresh(true);
+                    Toast.makeText(this, R.string.aut_error_tip_1, Toast.LENGTH_SHORT).show();
+                    setNoLayout(3);
+                }
+            }else if(type==1){//历史申请记录
+                mPersenter.getSearchApplyList(type,userId,checkCode,content,requestPage, null, null);
+            }else if(type==2){//历史审批记录
+                mPersenter.getSearchApplyList(type,userId,checkCode,content,requestPage,null, null);
+            }else {
+                smartRefreshLayout.finishRefresh(true);
+                setNoLayout(0);
+            }
         }
     }
-    //检察权限并发起请求
-    private boolean checkAuthority() {
-        Integer stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
-        Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批老师权限
-        if(stuAut<=0)//没有审批学生权限
+    //检察权限
+    private boolean checkAuthority(Integer stuAut, Integer teaAut) {
+
+        if(stuAut<0)//没有审批学生权限
             stuAut=0;
-        if(teaAut<=0){//没有审批老师权限
+        if(teaAut<0){//没有审批老师权限
             teaAut=0;
         }
         if(stuAut<=0&&teaAut<=0)
@@ -264,11 +319,8 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
         //不包含部门权限审批人权限
         if(String.valueOf(stuAut).contains("2"))
             teaAut=null;
-        if(stuAut==null&&teaAut==null)
-            return false;
-        mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(), SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), type,requestPage);
-        return true;   
-        
+        return !(stuAut == null && teaAut == null);
+
     }
 
     /**

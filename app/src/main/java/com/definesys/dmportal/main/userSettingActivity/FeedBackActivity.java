@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
+import com.definesys.dmportal.appstore.leaveSettingUI.UpdateLeAutActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
@@ -140,6 +142,18 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(charSequence ->
                         wordCount.setText(getString(R.string.word_count, content.length())));
+        //点击
+        RxView.clicks(content)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->{
+                    content.setCursorVisible(true);
+                });
+        //获取焦点
+        content.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                content.setCursorVisible(true);
+            }
+        });
     }
 
     /**
@@ -193,6 +207,18 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
                     break;
             }
         }
+    }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+            if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
+                inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            }
+            content.setCursorVisible(false);
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
     @Override
     public FeedBackPresenter getPersenter() {

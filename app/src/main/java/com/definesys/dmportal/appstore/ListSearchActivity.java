@@ -29,8 +29,8 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-@Route(path = ARouterConstants.LeaveListSearchActivity)
-public class LeaveListSearchActivity extends BaseActivity {
+@Route(path = ARouterConstants.ListSearchActivity)
+public class ListSearchActivity extends BaseActivity {
 
     //搜索框
     @BindView(R.id.et_search)
@@ -38,6 +38,9 @@ public class LeaveListSearchActivity extends BaseActivity {
 
     @BindView(R.id.cancel_text)
     TextView tv_cancel;
+
+    @BindView(R.id.type_des)
+    TextView tv_des;
 
      //种类列表
      @BindView(R.id.type_view)
@@ -55,7 +58,7 @@ public class LeaveListSearchActivity extends BaseActivity {
     TextView tv_delete;//删除历史记录
 
     @Autowired(name = "type")
-    int type;//页面类型 0.历史请假记录 1.待处理的请假记录 2.历史审批记录 3.销假
+    int type;//页面类型 0.历史请假记录 1.待处理的请假记录 2.历史请假审批记录 3.销假  10.权限审批 11.历史权限申请记录 12.历史权限审批记录
     private String clickContent;//点击的标签
     private boolean clickCheck;//是否需要进行重复内容检测
     @Override
@@ -87,21 +90,65 @@ public class LeaveListSearchActivity extends BaseActivity {
             typeList.add(getString(R.string.tag_7));
             typeList.add(getString(R.string.tag_10));
         }
-        else if(type==1) {//未审批记录
+        else if(type==1) {//请假未审批记录
             typeList.add(getString(R.string.tag_1));
             typeList.add(getString(R.string.tag_2));
             typeList.add(getString(R.string.tag_3));
-        }else if(type==2) {//已审批记录
+        }else if(type==2) {//请假已审批记录
             typeList.add(getString(R.string.tag_8));
             typeList.add(getString(R.string.tag_9));
-        }else if(type==3) {//销假列表
+        }else if(type==3) {//请假的销假列表
             typeList.add(getString(R.string.tag_4));
             typeList.add(getString(R.string.tag_7));
+        }else if(type==10) {//权限审批
+            //审批学生权限
+            int stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
+            //审批教师权限
+            int teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
+            stuAut=stuAut<0?0:stuAut;
+            teaAut=teaAut<0?0:teaAut;
+            if(stuAut>0) {//审批学生
+                String strStu = String.valueOf(stuAut);
+                if ((strStu).contains("1"))//班长权限
+                    typeList.add(getString(R.string.tag_11));
+                if ((strStu).contains("2"))//班主任权限
+                    typeList.add(getString(R.string.tag_12));
+                if ((strStu).contains("4")) {//辅导员权限
+                    typeList.add(getString(R.string.tag_12));
+                    typeList.add(getString(R.string.tag_13));
+                    typeList.add(getString(R.string.tag_14));
+                }
+                if ((strStu).contains("8")) {//权限管理人
+                    typeList.add(getString(R.string.tag_15));
+                    typeList.add(getString(R.string.tag_16));
+                    typeList.add(getString(R.string.tag_17));
+                    typeList.add(getString(R.string.tag_18));
+                }
+            }
+            if(teaAut>0) {//审批教师
+                if (("" + teaAut).contains("2")) {//权限管理人
+                    typeList.add(getString(R.string.tag_19));
+                    typeList.add(getString(R.string.tag_20));
+                }
+            }
+
+        }else if(type==11) {//历史权限申请记录
+            typeList.add(getString(R.string.tag_4));
+            typeList.add(getString(R.string.tag_5));
+            typeList.add(getString(R.string.tag_6));
+        }else if(type==12) {//历史权限审批记录
+            typeList.add(getString(R.string.tag_8));
+            typeList.add(getString(R.string.tag_9));
         }
-        //初始化列表
-        for (int i = 0; i < typeList.size(); i++) {
-            fl_type.addView(addTagItem(typeList.get(i),true));//添加到父View
+        if(typeList.size()>1){//初始化列表
+            for (int i = 0; i < typeList.size(); i++) {
+                fl_type.addView(addTagItem(typeList.get(i),true));//添加到父View
+            }
+        }else {
+            fl_type.setVisibility(View.GONE);
+            tv_des.setVisibility(View.GONE);
         }
+
 
     }
     /**
@@ -148,27 +195,34 @@ public class LeaveListSearchActivity extends BaseActivity {
      * @param content r
      */
     private void goSearch(String content,boolean check){
-        this.clickCheck =check;
-        this.clickContent =content;
-        ARouter.getInstance().build(ARouterConstants.LeaveListActivity)
-                .withInt("type",type)
+        this.clickCheck = check;
+        this.clickContent = content;
+        ARouter.getInstance()
+                .build(type<10?ARouterConstants.LeaveListActivity:ARouterConstants.AppLyListActivity)//请假列表：权限列表
+                .withInt("type",type<10?type:(type-10))
                 .withBoolean("isAll",getString(R.string.all).equals(content.trim()))
                 .withBoolean("isSearch",true)
                 .withInt("checkCode",getCode(content.trim()))
-                .withString("content",content)
+                .withString("content",content.trim())
                 .withInt("userId",SharedPreferencesUtil.getInstance().getUserId().intValue())
-                .withString("ARouterPath",type==0?ARouterConstants.LeaveInFoDetailActivity:ARouterConstants.ApprovalLeaveInfoActivity)
+                .withString("ARouterPath",type<10?(type==0?ARouterConstants.LeaveInFoDetailActivity:ARouterConstants.ApprovalLeaveInfoActivity)
+                        :(type==1?ARouterConstants.ApplyInfoActivity:ARouterConstants.ApprovalApplyInfoActivity))
                 .navigation();
     }
 
     private void initView() {
         if(type==0||type==3)//历史请假记录||销假
             ed_search.setHint(R.string.history_hint_0);
-        else if(type==1) //待处理的审批记录
+        else if(type==1) //待处理的请假审批记录
             ed_search.setHint(R.string.history_hint_1);
-        else if(type==2)//历史审批记录
+        else if(type==2)//历史请假审批记录
             ed_search.setHint(R.string.history_hint_2);
-
+        else if(type==10)//权限审批
+            ed_search.setHint(R.string.history_hint_1);
+        else if(type==11)//历史权限申请
+            ed_search.setHint(R.string.history_hint_3);
+        else if(type==12)//历史权限审批
+            ed_search.setHint(R.string.history_hint_4);
         //获取搜索框焦点
         ed_search.setFocusable(true);
         ed_search.setFocusableInTouchMode(true);
@@ -231,7 +285,7 @@ public class LeaveListSearchActivity extends BaseActivity {
         if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
-                inputMethodManager.hideSoftInputFromWindow(LeaveListSearchActivity.this.getCurrentFocus().getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(ListSearchActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
             edSearch();
             return true;
@@ -242,28 +296,67 @@ public class LeaveListSearchActivity extends BaseActivity {
 
 
     public int getCode(String trim) {
-        if(getString(R.string.tag_1).equals(trim))//课假
-            return 0;
-        else if(getString(R.string.tag_2).equals(trim))//短假
-             return 1;
-        else if(getString(R.string.tag_3).equals(trim))//长假
-            return 2;
-        else if(getString(R.string.tag_4).equals(trim))//已批准
-            return 10;
-        else if(getString(R.string.tag_5).equals(trim))//已拒绝
-            return 11;
-        else if(getString(R.string.tag_6).equals(trim))//正在审批
-            return 3;
-        else if(getString(R.string.tag_7).equals(trim))//未销假
-            return 4;
-        else if(getString(R.string.tag_8).equals(trim))//同意
-            return 1;
-        else if(getString(R.string.tag_9).equals(trim))//拒绝
-            return 0;
-        else if(getString(R.string.tag_10).equals(trim))//已销假
-            return 12;
-        else
-            return -1;
+        if (type == 0) {
+            if(getString(R.string.tag_6).equals(trim))//正在审批
+                return 3;
+            else if(getString(R.string.tag_5).equals(trim))//已拒绝
+                return 11;
+            else if(getString(R.string.tag_10).equals(trim))//已销假
+                return 12;
+
+        }
+        if(type == 0||type==1){
+            if(getString(R.string.tag_1).equals(trim))//课假
+                return 0;
+            else if(getString(R.string.tag_2).equals(trim))//短假
+                return 1;
+            else if(getString(R.string.tag_3).equals(trim))//长假
+                return 2;
+        }
+        if(type == 0||type==3){
+            if(getString(R.string.tag_7).equals(trim))//未销假
+                return 4;
+            else if(getString(R.string.tag_4).equals(trim))//已批准
+                return 10;
+        }
+        else if(type==2||type==12) {
+            if (getString(R.string.tag_8).equals(trim))//同意
+                return 1;
+            else if (getString(R.string.tag_9).equals(trim))//拒绝
+                return 0;
+        }
+       else if(type==10){
+            if(getString(R.string.tag_11).equals(trim))//寝室长权限
+                return 0;
+            else if(getString(R.string.tag_12).equals(trim))//班长
+                return 1;
+            else if(getString(R.string.tag_13).equals(trim))//班主任
+                return 2;
+            else if(getString(R.string.tag_14).equals(trim))//毕设老师
+                return 3;
+            else if(getString(R.string.tag_15).equals(trim))//辅导员
+                return 4;
+            else if(getString(R.string.tag_16).equals(trim))//实习负责人
+                return 5;
+            else if(getString(R.string.tag_17).equals(trim))//学生工作领导
+                return 6;
+            else if(getString(R.string.tag_18).equals(trim))//教学院长
+                return 7;
+            else if(getString(R.string.tag_19).equals(trim))//部门请假负责人
+                return 10;
+            else if(getString(R.string.tag_20).equals(trim))//部门教学负责人
+                return 11;
+        }
+        else if(type==11){
+            if(getString(R.string.tag_6).equals(trim))//正在审批
+                return 3;
+            else if(getString(R.string.tag_4).equals(trim))//已批准
+                return 10;
+            else if(getString(R.string.tag_5).equals(trim))//已拒绝
+                return 11;
+        }
+
+        return -1;
     }
 
     @Override

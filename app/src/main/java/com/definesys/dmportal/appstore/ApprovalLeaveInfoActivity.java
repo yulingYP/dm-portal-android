@@ -49,6 +49,7 @@ import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -133,9 +134,10 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     LinearLayout lg_no;
     @BindView(R.id.no_icon)
     ImageView iv_no;
-
     @BindView(R.id.approval_content_text)
     TextView tv_approvalContent;
+    @BindView(R.id.mainview)
+    LinearLayout main;
 
     @Autowired(name = "leaveInfo")
     LeaveInfo leaveInfo;
@@ -174,16 +176,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 ++requestCount;
                 mPersenter.getApprovalRecordByMsgId(msgId, leaveId);
             }
-//            if(type!=4&&approvalDate==null&&approvalContent!=null&&!"".equals(approvalContent)){//已审批但找不到审批记录
-//                isAgree = type==1;
-//                approvalRecord = new ApprovalRecord(leaveId,0,approvalContent,(short)type,null,0,0);
-//                if(leaveInfo!=null){//已获取到请假信息
-//                    initView();
-//                    initEditUnable();
-//                }
-//            }else if(type!=4&&approvalDate!=null){
-//                mPersenter.getApprovalRecordByDate(leaveId,approvalDate,this);
-//            }
         }else if(type==1||type==0){//已审批
             isAgree = type==1;
             ++requestCount;
@@ -243,7 +235,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     }else {//未显示更多信息
                         lg_more.setVisibility(VISIBLE);
                         iv_down.setRotation(180);
-                        sendScrollMessage(ScrollView.FOCUS_UP);
+//                        sendScrollMessage(ScrollView.FOCUS_UP);
                     }
                 });
         //点击查看课表
@@ -455,15 +447,13 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         //点击事件
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    ed_reason.setCursorVisible(true);
-                    sendScrollMessage(ScrollView.FOCUS_DOWN);
-                });
+                .subscribe(obj->
+                    ed_reason.setCursorVisible(true)
+                );
         //获取焦点
         ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus){
                 ed_reason.setCursorVisible(true);
-                sendScrollMessage(ScrollView.FOCUS_DOWN);
             }
         });
         /*
@@ -484,6 +474,9 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
 
             }
         });
+        // 防遮挡
+        new HddLayoutHeight().addLayoutListener(this,main, tv_count,1);
+
     }
 
     //设置编辑框内容
@@ -629,13 +622,9 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             }else {
                 if(approvalRecord!=null&type!=4) {
-//                    isAgree = approvalRecord.getApprovalResult() != 0;
                     initView();
                     initEditUnable();
                 }
-//                }else if(!checkAuthority()){
-//
-//                }
                 else if(type==4&&((msgId==null||"".equals(msgId))||isInit)){
                     initView();
                     initEdit();
@@ -644,34 +633,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         }
     }
 
-//    /**
-//     * 权限检测，检测该请假记录是否有权限审批
-//     * @return ture 有审批 false无权限
-//     */
-//    private boolean checkAuthority() {
-//        boolean flag = true;
-//        if(type==4){
-//            if(leaveInfo.getApprovalStatus()>=100){//已经审批
-//                flag = false;
-//            }else {
-//                int userAuthority = SharedPreferencesUtil.getInstance().getUserStudentAuthority();
-//                if(userAuthority==0&&userAuthority<leaveInfo.getApprovalStatus()){//已经审批
-//                    flag = false;
-//                }else {
-//                    int max=0;
-//                    while (userAuthority%10>=0&&userAuthority>0){
-//                        if(max<userAuthority%10)
-//                            max=userAuthority%10;
-//                        userAuthority/=10;
-//                    }
-//                    if(max<leaveInfo.getApprovalStatus())
-//                        flag = false;
-//                }
-//            }
-//
-//        }
-//        return flag;
-//    }
 
     /**
      * 获取请假时长

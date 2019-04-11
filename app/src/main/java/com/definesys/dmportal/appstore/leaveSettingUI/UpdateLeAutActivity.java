@@ -36,6 +36,7 @@ import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -87,6 +88,9 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
 
     @BindView(R.id.scorll_view)
     ScrollView lg_sc;
+
+    @BindView(R.id.mainview)
+    LinearLayout main;
 
     private ImageView iv_selected;//选择位置的imageview控件
     private List<ApplyInfo>applyList;//申请的权限列表
@@ -605,13 +609,13 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     ed_reason.setCursorVisible(true);
-                    sendScrollMessage(ScrollView.FOCUS_DOWN);
+//                    sendScrollMessage(ScrollView.FOCUS_DOWN);
                 });
         //获取焦点
         ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus) {
                 ed_reason.setCursorVisible(true);
-                sendScrollMessage(ScrollView.FOCUS_DOWN);
+//                sendScrollMessage(ScrollView.FOCUS_DOWN);
             }
         });
         /*
@@ -632,6 +636,8 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
 
             }
         });
+        // 防遮挡
+        new HddLayoutHeight().addLayoutListener(this,main, tv_count,1);
     }
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -645,16 +651,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         }
         return super.dispatchKeyEvent(event);
     }
-    /**
-     * 延时发送页面滑动消息
-     * @param position 活动到的位置
-     */
-    private void sendScrollMessage(int position) {
-        new Handler().postDelayed(() -> {
-            Log.d("mydemo","Height=="+lg_sc.getMeasuredHeight());
-            lg_sc.fullScroll(position);
-        }, Constants.scrollDelay);
-    }
+
     @Override
     public LeaveAuthorityPresenter getPersenter() {
         return new LeaveAuthorityPresenter(this);

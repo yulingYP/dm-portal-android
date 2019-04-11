@@ -247,10 +247,13 @@
 
     <string name="search_history">搜索历史</string>
     <string name="delete_history">清除搜索记录</string>
-    <string name="history_hint_0">请输入请假的种类或请假内容</string>
+    <string name="history_hint_0">请输入请假内容</string>
     <string name="history_hint_1">请输入要查询的内容</string>
-    <string name="history_hint_2">请输入审批的内容或请假人姓名</string>
+    <string name="history_hint_2">请输入审批内容或请假人姓名</string>
+    <string name="history_hint_3">请输入申请的内容</string>
+    <string name="history_hint_4">请输入审批内容或申请人姓名</string>
     <string name="detele_history">确定要清除历史记录吗</string>
+    <string name="search_result">搜索结果</string>
     <string name="all">全部</string>
     <string name="tag_1">课假</string>
     <string name="tag_2">短假</string>
@@ -261,9 +264,17 @@
     <string name="tag_7">未销假</string>
     <string name="tag_8">同意</string>
     <string name="tag_9">不同意</string>
-    <string name="search_result">搜索结果</string>
     <string name="tag_10">已销假</string>
-
+    <string name="tag_11">寝室长</string>
+    <string name="tag_12">班长</string>
+    <string name="tag_13">班主任</string>
+    <string name="tag_14">毕设导师</string>
+    <string name="tag_15">辅导员</string>
+    <string name="tag_16">学院实习工作负责人</string>
+    <string name="tag_17">学生工作领导</string>
+    <string name="tag_18">教学院长</string>
+    <string name="tag_19">部门请假负责人</string>
+    <string name="tag_20">部门教学负责人</string>
 
     <string name="leave_absence">请假条</string>
     <string name="share_img">分享图片</string>

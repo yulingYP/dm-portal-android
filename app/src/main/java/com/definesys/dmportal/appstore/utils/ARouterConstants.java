@@ -21,7 +21,7 @@ public interface ARouterConstants {
     String LeaveActivity = "/dmportal/appstore/LeaveActivity";//请假子页面
     String LeaveListActivity = "/dmportal/appstore/LeaveListActivity";//请假记录页面
     String LeaveSignActivity = "/dmportal/appstore/LeaveSignActivity";//请假签名页面
-    String LeaveListSearchActivity = "/dmportal/appstore/LeaveListSearchActivity";//审批或请假记录查询页
+    String ListSearchActivity = "/dmportal/appstore/ListSearchActivity";//搜索查询页
     String LeaveInFoDetailActivity = "/dmportal/appstore/LeaveInFoDetailActivity";//请假记录详情页面
     String LeaveTextActivity = "/dmportal/appstore/LeaveTextActivity";//生成请假条页面
     String ApprovalLeaveInfoActivity = "/dmportal/appstore/ApprovalLeaveInfoActivity";//审批请假记录页

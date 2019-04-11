@@ -6,11 +6,11 @@ import android.view.View;
 
 public class HddLayoutHeight {
 
-    public void addLayoutListener(Context context,final View main, final View scroll) {
+    public void addLayoutListener(Context context,final View main, final View scroll,float mindp) {
         final float scale = context.getResources().getDisplayMetrics().density;
         main.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             Rect rect = new Rect();
-            float minDp = scale  * 20 + 0.5f;
+            float minDp = scale  * mindp + 0.5f;//最小滑动范围
             //可见范围
             main.getWindowVisibleDisplayFrame(rect);
             //不可见高度

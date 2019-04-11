@@ -137,7 +137,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(o ->
                    ARouter.getInstance()
-                           .build(ARouterConstants.LeaveListSearchActivity)
+                           .build(ARouterConstants.ListSearchActivity)
                            .withInt("type",type)
                            .navigation()
                 );

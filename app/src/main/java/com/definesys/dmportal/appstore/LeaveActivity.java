@@ -6,11 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -46,6 +46,7 @@ import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -135,23 +136,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @BindView(R.id.ed_reason)
     EditText ed_reason;
 
-
-    private Handler mHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    sc_scroll.scrollTo(0,(int)lg_reason.getY());//滑动scrollView到具体原因位置
-                    mHandler.sendEmptyMessageDelayed(2,200);//容错处理 再次滑动
-                    break;
-                case 2:
-                    sc_scroll.scrollTo(0,(int)lg_reason.getY());//滑动scrollView到具体原因位置
-                    break;
-            }
-            return false;
-        }
-    });
-
+    @BindView(R.id.content_layout)
+    LinearLayout main;
 
     private ReasonImageAdapter leaveImgAdapter;//图片适配器
     private List<LocalMedia> selectImages;//选择的图片
@@ -159,8 +145,6 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     private Date startDate;
     private Date endDate;
     private SimpleDateFormat df;
-//    private boolean isVisible =false;//光标是否可见
-//    private boolean isScroll;//是否滑动页面
     private boolean isStart;//用户点击的是开始日期还是结束日期
     private Dialog dateDialog;//日期选择提示框
     private MyDatePicker datePick;//日期选择Picker
@@ -253,18 +237,12 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
-//                    isScroll = true;
-//                    isVisible = true;
                     ed_reason.setCursorVisible(true);
-                    mHandler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
                 });
         //获取焦点
         ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus){
                 ed_reason.setCursorVisible(true);
-//                isScroll = true;
-//                isVisible = true;
-                mHandler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
             }
         });
         /*
@@ -285,6 +263,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
 
             }
         });
+        // 防遮挡
+        new HddLayoutHeight().addLayoutListener(this,main, tv_count,1);
     }
     //照片列表
     private void initPictureList() {
@@ -457,7 +437,10 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         }
         if("".equals(ed_reason.getText().toString())){
             Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
-            mHandler.sendEmptyMessageDelayed(1,Constants.scrollDelay);
+            new Handler().postDelayed(() -> {
+                Log.d("mydemo","Height=="+sc_scroll.getMeasuredHeight());
+                sc_scroll.scrollTo(0,(int)lg_reason.getY());
+            }, Constants.scrollDelay);
             ed_reason.setFocusable(true);
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();

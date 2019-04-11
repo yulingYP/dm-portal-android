@@ -28,6 +28,7 @@ public interface HttpConst {
     //根据Id分页获取请假记录
     String getLeaveInfoById = "getLeaveInfoById";
 
+    //获取请假搜索列表
     String getLeaveSearchList = "getLeaveSearchList";
 
     //根据Id分页获取该用户未审批的请假信息
@@ -102,6 +103,9 @@ public interface HttpConst {
 
     //根据id获取申请记录
     String getApplyInfoById = "getApplyInfoById";
+
+    //获取搜索结果列表
+    String getApplySearchList = "getApplySearchList";
 
     //提交审批结果
     String submitApplyResult = "submitApplyResult";

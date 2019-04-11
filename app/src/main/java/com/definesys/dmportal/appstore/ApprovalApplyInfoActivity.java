@@ -37,6 +37,7 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -85,6 +86,8 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     TextView tv_date;
     @BindView(R.id.userId_text)
     TextView tv_id;
+    @BindView(R.id.mainview)
+    LinearLayout main;
     @Autowired(name = "applyInfo")
     ApplyInfo applyInfo;
 
@@ -367,15 +370,13 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         //点击事件
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    ed_reason.setCursorVisible(true);
-                    sendScrollMessage(ScrollView.FOCUS_DOWN);
-                });
+                .subscribe(obj->
+                    ed_reason.setCursorVisible(true)
+                );
         //获取焦点
         ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus){
                 ed_reason.setCursorVisible(true);
-                sendScrollMessage(ScrollView.FOCUS_DOWN);
             }
         });
         /*
@@ -396,6 +397,8 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
 
             }
         });
+        // 防遮挡
+        new HddLayoutHeight().addLayoutListener(this,main, tv_count,1);
     }
     //设置编辑框内容
     private void initEditUnable(){
@@ -423,15 +426,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
             tv_no.setTextColor(getResources().getColor(R.color.red_error));
         }
     }
-    /**
-     * 延时发送页面滑动消息
-     * @param position 活动到的位置
-     */
-    private void sendScrollMessage(int position) {
-        new Handler().postDelayed(() ->
-            lg_scroll.fullScroll(position)
-        , Constants.scrollDelay);
-    }
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

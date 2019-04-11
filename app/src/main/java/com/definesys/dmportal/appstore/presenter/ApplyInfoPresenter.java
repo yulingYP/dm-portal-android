@@ -1,6 +1,7 @@
 package com.definesys.dmportal.appstore.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
@@ -8,6 +9,7 @@ import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.bean.ApplyRecord;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
@@ -176,7 +178,65 @@ public class ApplyInfoPresenter extends BasePresenter {
                         SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
                     }
                 });
+    }
 
+    public void getSearchApplyList(int type, Number userId, int checkCode, String content, int page, Integer stuAut, Integer teaAut){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("userId",userId);
+        map.put("page", page);
+        map.put("checkCode",checkCode);
+        map.put("type",type);
+        map.put("content",content);
+        if(type==0&&checkCode==-1){//按内容查询待审批记录
+            map.put("stuAut",stuAut);
+            map.put("teaAut",teaAut);
+        }
+        Log.d("myMap",new Gson().toJson(map));
+        if(type==0||type==1) {
+            ViseHttp.POST(HttpConst.getApplySearchList)
+                    .tag(HttpConst.getApplyInfoById)
+                    .setJson(new Gson().toJson(map))
+                    .request(new ACallback<BaseResponse<List<ApplyInfo>>>() {
+                        @Override
+                        public void onSuccess(BaseResponse<List<ApplyInfo>> data) {
+                            switch (data.getCode()) {
+                                case "200":
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_REQUEST_APPLY_LIST, data);
+                                    break;
+                                default:
+                                    SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int errCode, String errMsg) {
+                            SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                        }
+                    });
+        }else if(type==2){
+            ViseHttp.POST(HttpConst.getApplySearchList)
+                    .tag(HttpConst.getApplyInfoById)
+                    .setJson(new Gson().toJson(map))
+                    .request(new ACallback<BaseResponse<List<ApplyRecord>>>() {
+                        @Override
+                        public void onSuccess(BaseResponse<List<ApplyRecord>> data) {
+                            switch (data.getCode()){
+                                case "200":
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPROVAL_HISTORY_LIST , data);
+                                    break;
+                                default:
+                                    SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int errCode, String errMsg) {
+                            SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                        }
+                    });
+        }
     }
     @Override
     public void unsubscribe() {

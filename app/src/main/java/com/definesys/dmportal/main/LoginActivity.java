@@ -226,7 +226,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         inputTel.setText(userId.intValue()>0?""+userId:"");
         inputPwd.getSendVerifyCodeButton().setTextBackNull();
         // 防遮挡
-        new HddLayoutHeight().addLayoutListener(this,main, textForget);
+        new HddLayoutHeight().addLayoutListener(this,main, textForget,20);
     }
 
     //TODO 为方便调试设置的点击自动登录

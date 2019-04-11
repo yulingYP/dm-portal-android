@@ -27,6 +27,7 @@
         >
         <LinearLayout
             android:orientation="vertical"
+            android:id="@+id/mainview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RelativeLayout
@@ -159,21 +160,12 @@
                     android:padding="12dp"
                     android:text="@string/apply_reason"
                     android:textColor="@color/black" />
-                <TextView
-                    android:id="@+id/count_word_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="8dp"
-                    android:padding="12dp"
-                    android:layout_alignParentEnd="true"
-                    android:textColor="@color/config_color_gray_4"
-                    android:textSize="14sp" />
                 <LinearLayout
                     android:layout_below="@+id/des_reason"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
+                    android:id="@+id/lg_ed"
                     android:orientation="vertical">
 
                     <EditText
@@ -190,9 +182,18 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/config_color_gray_4"
                         android:textSize="14sp" />
-
                 </LinearLayout>
-
+                <TextView
+                    android:id="@+id/count_word_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_below="@+id/lg_ed"
+                    android:textColor="@color/config_color_gray_4"
+                    android:layout_marginEnd="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="14sp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

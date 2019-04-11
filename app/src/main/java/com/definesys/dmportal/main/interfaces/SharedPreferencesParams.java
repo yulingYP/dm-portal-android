@@ -55,12 +55,4 @@ public interface SharedPreferencesParams {
     //sp文件中用户设置的tag
     String spUserSetting = "u_setting";
 
-    //sp文件中请假的历史记录 格式 xxx,xxx,xxx
-    String spLeaveSearchHistory0 = "u_history0";
-
-    //sp文件中待审批记录 格式 xxx,xxx,xxx
-    String spLeaveSearchHistory1 = "u_history1";
-
-    //sp文件中审批的历史记录 格式 xxx,xxx,xxx
-    String spLeaveSearchHistory2 = "u_history2";
 }

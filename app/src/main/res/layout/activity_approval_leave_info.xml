@@ -8,6 +8,7 @@
     android:background="@color/back_gray"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
+    tools:ignore="RelativeOverlap,ContentDescription"
     >
     <include layout="@layout/title_top_temp">
     </include>
@@ -19,16 +20,21 @@
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
     <ScrollView
         android:id="@+id/layout_scroll"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/clearColor"
         >
         <LinearLayout
             android:orientation="vertical"
+            android:id="@+id/mainview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+            </View>
             <RelativeLayout
                 android:orientation="vertical"
                 android:id="@+id/info_layout"
@@ -45,7 +51,8 @@
                     android:layout_marginEnd="20dp"
                     android:text="@string/name_tip"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    />
                 <TextView
                     android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
@@ -55,7 +62,6 @@
                     android:layout_marginEnd="20dp"
                     android:textSize="16sp"
                     android:textColor="@color/blue"
-                    android:text="151110414"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/type_text"
@@ -77,7 +83,8 @@
                     android:layout_marginEnd="20dp"
                     android:layout_alignTop="@+id/type_text"
                     android:src="@drawable/down_arrow"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    />
                 <TextView
                     android:id="@+id/title_text"
                     android:layout_below="@id/type_text"
@@ -234,7 +241,8 @@
             <LinearLayout
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                tools:ignore="DisableBaselineAlignment">
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -289,7 +297,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginTop="2px"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
                 android:orientation="vertical">
                 <TextView

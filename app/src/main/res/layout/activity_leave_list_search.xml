@@ -42,6 +42,7 @@
             <TextView
                 android:textColor="@color/black"
                 android:text="@string/type_search"
+                android:id="@+id/type_des"
                 android:paddingStart="12dp"
                 android:paddingEnd="0dp"
                 android:paddingTop="4dp"

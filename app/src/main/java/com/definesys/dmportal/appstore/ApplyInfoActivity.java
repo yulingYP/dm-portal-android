@@ -199,7 +199,7 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
             else if(applyInfo.getApplyAuthority()==1)//班长
                 return arr[2];//班主任
             else if(applyInfo.getApplyAuthority()==2||applyInfo.getApplyAuthority()==3)//班主任 毕设老师权限
-                return arr[4];//班主任
+                return arr[4];//辅导员
             else if(applyInfo.getApplyAuthority()==4||applyInfo.getApplyAuthority()==5||applyInfo.getApplyAuthority()==6||applyInfo.getApplyAuthority()==7)//辅导员/实习/学生/教学负责人
                 return arr[8];//权限审批负责人
 

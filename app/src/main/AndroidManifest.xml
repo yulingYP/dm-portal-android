@@ -76,7 +76,7 @@
         <activity android:name=".main.userSettingActivity.ForgetPwdActivity" />
         <activity android:name=".main.userSettingActivity.ChangePwdActivity" />
         <activity android:name=".main.userSettingActivity.PhoneBindActivity" />
-        <activity android:name=".appstore.LeaveListSearchActivity" />
+        <activity android:name=".appstore.ListSearchActivity" />
         <activity android:name=".main.userSettingActivity.UserSettingActivity" />
         <activity
             android:name=".appstore.LeaveTextActivity"
