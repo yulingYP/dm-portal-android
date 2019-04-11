@@ -27,6 +27,7 @@ import com.definesys.dmportal.appstore.customViews.EditDeleteText;
 import com.definesys.dmportal.appstore.customViews.EditSendText;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.appstore.utils.SystemUtil;
 import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.LoginPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -74,9 +75,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setStatusBarFullTransparent();
         ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
+        SystemUtil.setStatusBarFullTransparent(this);
         if(isFirst)//第一次使用APP？
             requestPermissions();
         MyCongfig.isShowing = false;

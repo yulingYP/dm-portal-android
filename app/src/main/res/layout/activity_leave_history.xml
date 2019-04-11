@@ -18,7 +18,7 @@
         android:layout_height="?attr/titlebar_height">
         <ImageView
             android:id="@+id/search_icon"
-            android:src="@drawable/search_icon"
+            android:src="@drawable/search_white"
             android:layout_width="20dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"

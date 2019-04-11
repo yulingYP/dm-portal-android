@@ -118,7 +118,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }
 
     private void initView() {
-        setStatusBarFullTransparent();
         mTitlebar.setTitle(R.string.tab2);
         mTitlebar.setBackgroundDividerEnabled(false);
         mTitlebar.setBackground(getResources().getDrawable(R.drawable.title_bg));
@@ -145,7 +144,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             public boolean onInterruptSelect(int index) {
                 return false;
             }
-
 
         });
 
