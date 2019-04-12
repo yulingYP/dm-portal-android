@@ -15,6 +15,7 @@ import com.definesys.base.BaseFragment;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MyMessage;
+import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.main.adapter.MsgRecycleViewAdapter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -138,6 +139,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
         else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
             Toast.makeText(getContext(),data.getMsg(),Toast.LENGTH_SHORT).show();
             --requestPage;
+            refreshLayout.finishLoadMoreWithNoMoreData();
         }
         else {//有数据
             int currentSize = messageList.size();
@@ -150,8 +152,10 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
             else {
                 myAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
             }
+            if(data.getData().size()< Constants.requestSize)
+                refreshLayout.finishLoadMoreWithNoMoreData();
             show();
-         mPersenter.updateMsgStatus(SharedPreferencesUtil.getInstance().getUserId(),null);
+             mPersenter.updateMsgStatus(SharedPreferencesUtil.getInstance().getUserId(),null);
         }
         SmecRxBus.get().post("setRed",false);
     }
