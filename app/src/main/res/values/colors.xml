@@ -173,4 +173,5 @@
     <color name="hint_gray">#8e8e8e</color>
     <color name="title_start_color">#068DD7</color>
     <color name="title_end_color">#87cefa</color>
+    <color name="login_start">#ddf0ed</color>
 </resources>

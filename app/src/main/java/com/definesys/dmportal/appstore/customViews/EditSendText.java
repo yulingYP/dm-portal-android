@@ -56,6 +56,7 @@ public class EditSendText extends ConstraintLayout {
 
     @SuppressLint("CheckResult")
     private void initView() {
+        //删除
         RxView.clicks(icon_delete).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(o -> editText.setText(""));
@@ -146,6 +147,8 @@ public class EditSendText extends ConstraintLayout {
         tut.startCount();
     }
 
+
+
     //设置图片
     public void setIcon_head(Drawable drawable) {
         icon_head.setImageDrawable(drawable);
@@ -170,6 +173,13 @@ public class EditSendText extends ConstraintLayout {
      */
     public void setLineColor(int color){
         line.setBackgroundColor(color);
+    }
+
+    /**
+     * 设置底部线条颜色
+     */
+    public void setSeparateLineColor(int color){
+        separateLine.setBackgroundColor(color);
     }
 
     //对应  验证码/手机号

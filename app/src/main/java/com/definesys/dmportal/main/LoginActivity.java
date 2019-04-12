@@ -2,6 +2,7 @@ package com.definesys.dmportal.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.definesys.dmportal.MyActivityManager;
@@ -27,7 +28,7 @@ import com.definesys.dmportal.appstore.customViews.EditDeleteText;
 import com.definesys.dmportal.appstore.customViews.EditSendText;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
-import com.definesys.dmportal.appstore.utils.SystemUtil;
+import com.definesys.dmportal.appstore.utils.StatusUtil;
 import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.LoginPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -77,10 +78,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         setContentView(R.layout.activity_login);
         ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
-        SystemUtil.setStatusBarFullTransparent(this);
+        StatusUtil.setStatusBarFullTransparent(this);
         if(isFirst)//第一次使用APP？
             requestPermissions();
         MyCongfig.isShowing = false;
+        StatusUtil.setAndroidNativeLightStatusBar(this,true);
         initView();
     }
 
@@ -140,11 +142,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         Resources resources = this.getResources();
         inputTel.setInputNumberWithLength(resources.getInteger(R.integer.max_phone_length));
         inputTel.setHint(R.string.msg_pls_input_userId);
-        inputTel.setIcon(resources.getDrawable(R.drawable.phone));
+        inputTel.setIcon(resources.getDrawable(R.drawable.my_phone));
+        inputTel.setIcon_delete(resources.getDrawable(R.mipmap.my_delete));
+        inputTel.setEditTextColor(Color.BLACK);
+        inputTel.setLineColor(Color.BLACK);
 
         inputPwd.setLoginType(EditSendText.PASSWORD);
         inputPwd.setHint(R.string.msg_pls_input_psw);
         inputPwd.setToastTextSize(14);
+        inputPwd.setIcon_head(resources.getDrawable(R.drawable.my_pwd));
+        inputPwd.setIcon_delete(resources.getDrawable(R.mipmap.my_delete));
+        inputPwd.setEditTextColor(Color.BLACK);
+        inputPwd.setLineColor(Color.BLACK);
+        inputPwd.setSeparateLineBackColor(Color.BLACK);
+        inputPwd.getSendVerifyCodeButton().setTextColorBlack();
 
         // 点击切换登陆方式
         textLogin.setOnClickListener(view -> {
@@ -155,14 +166,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                 inputTel.setText(userPhoneNumber);
                 inputPwd.setLoginType(EditSendText.VERIFY_CODE);
                 inputPwd.setHint(R.string.msg_pls_input_code);
-                inputPwd.setIcon_head(resources.getDrawable(R.drawable.code));
+                inputPwd.setIcon_head(resources.getDrawable(R.drawable.my_code));
             } else {
                 textLogin.setText(R.string.login_text_code);
                 inputTel.setText(userId.intValue()>0?""+userId:"");
                 inputTel.setHint(R.string.msg_pls_input_userId);
                 inputPwd.setLoginType(EditSendText.PASSWORD);
                 inputPwd.setHint(R.string.msg_pls_input_psw);
-                inputPwd.setIcon_head(resources.getDrawable(R.drawable.pwd));
+                inputPwd.setIcon_head(resources.getDrawable(R.drawable.my_pwd));
             }
         });
 
@@ -226,7 +237,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         inputTel.setText(userId.intValue()>0?""+userId:"");
         inputPwd.getSendVerifyCodeButton().setTextBackNull();
         // 防遮挡
-        new HddLayoutHeight().addLayoutListener(this,main, textForget,20);
+        new HddLayoutHeight().addLayoutListener(this,main, textForget,2);
     }
 
     //TODO 为方便调试设置的点击自动登录

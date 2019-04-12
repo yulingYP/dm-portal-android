@@ -3,7 +3,7 @@
     android:id="@+id/mainview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back"
+    android:background="@drawable/login_bg"
     android:fitsSystemWindows="false"
     android:focusable="true"
     android:focusableInTouchMode="true">
@@ -25,7 +25,7 @@
         android:layout_toEndOf="@+id/app_img_att_login"
         android:text="@string/app_name"
         android:layout_marginStart="8dp"
-        android:textColor="@color/gold"
+        android:textColor="@color/black"
         android:textSize="18sp" />
     <LinearLayout
         android:id="@+id/ed_layout"
@@ -60,10 +60,10 @@
                 android:id="@+id/login_btn_att_log"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginEnd="30dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/btn_login_style"
                 android:text="@string/login"
                 android:textColor="@color/color_white"
@@ -75,10 +75,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/login_btn_att_log"
                 android:layout_below="@+id/login_btn_att_log"
-                android:layout_marginTop="8dp"
+                android:padding="4dp"
                 android:layout_marginStart="-8dp"
                 android:text="@string/forget_password"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/text_log_att_log"
@@ -86,10 +86,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/login_btn_att_log"
                 android:layout_below="@+id/login_btn_att_log"
-                android:layout_marginTop="8dp"
+                android:padding="4dp"
                 android:layout_marginEnd="-8dp"
                 android:text="@string/login_text_code"
-                android:textColor="@color/color_white" />
+                android:textColor="@color/black" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -103,7 +103,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="@string/copyright"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
 
 </RelativeLayout>

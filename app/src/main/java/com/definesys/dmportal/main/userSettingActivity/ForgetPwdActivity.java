@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -22,6 +23,7 @@ import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.ChangePswPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.SendCodePresenter;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -51,6 +53,9 @@ public class ForgetPwdActivity extends BaseActivity<ChangePswPresenter> {
 
     @BindView(R.id.pwd2_att_forget)
     EditDeleteText pwd2;
+
+    @BindView(R.id.mainview)
+    LinearLayout main;
 
     @Autowired(name = "type")
     int type;//1.登陆前忘记密码 2.登陆后修改密码
@@ -173,6 +178,8 @@ public class ForgetPwdActivity extends BaseActivity<ChangePswPresenter> {
                         mPersenter.changePwd(null,temp_phone, "", temp_pwd, temp_code,1);
                     }
                 });
+        // 防遮挡
+        new HddLayoutHeight().addLayoutListener(this,main, pwd2,2);
     }
 
     /*

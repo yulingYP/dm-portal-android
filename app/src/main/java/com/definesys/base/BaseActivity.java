@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.definesys.dmportal.MyActivityManager;
-import com.definesys.dmportal.appstore.utils.SystemUtil;
+import com.definesys.dmportal.appstore.utils.StatusUtil;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -45,7 +45,7 @@ public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActi
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setDimAmount(0.5f);
         //隐藏状态栏
-        SystemUtil.setStatusBarFullTransparent(this);
+        StatusUtil.setStatusBarFullTransparent(this);
     }
 
     @Override

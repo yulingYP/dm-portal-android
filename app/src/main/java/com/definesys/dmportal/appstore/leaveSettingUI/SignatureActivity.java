@@ -14,7 +14,7 @@ import com.definesys.dmportal.appstore.customViews.LinePathView;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
-import com.definesys.dmportal.appstore.utils.SystemUtil;
+import com.definesys.dmportal.appstore.utils.StatusUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.UUID;
@@ -38,7 +38,7 @@ public class SignatureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signature);
         ButterKnife.bind(this);
-        SystemUtil.setStatusBarFullTransparent(this);
+        StatusUtil.setStatusBarFullTransparent(this);
         initView();
     }
 
