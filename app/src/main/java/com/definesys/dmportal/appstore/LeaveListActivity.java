@@ -241,16 +241,18 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
                 --requestPage;
+                smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
                 int currentSize = submitLeaveInfoList.size();
                 submitLeaveInfoList.addAll(data.getData());
-                //排序
                 setNoLayout(0);
                 if(leaveInfoListAdapter==null)
                     initList();
                 else
                     leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
+                if(data.getData().size()<Constants.requestSize)
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
         }
     }
@@ -274,6 +276,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
                 --requestPage;
+                smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
                 int currentSize = approvalRecordList.size();
@@ -282,8 +285,9 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 if(leaveInfoListAdapter==null)
                     initList();
                 else
-//                    leaveInfoListAdapter.notifyDataSetChanged();
                     leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
+                if(data.getData().size()<Constants.requestSize)
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
         }
     }

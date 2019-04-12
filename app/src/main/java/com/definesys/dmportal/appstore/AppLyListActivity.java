@@ -181,6 +181,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
                 --requestPage;
+                smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
                 int currentSize = applyInfoList.size();
@@ -190,6 +191,8 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                     initList();
                 else
                     applyInfoAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
+                if(data.getData().size()<Constants.requestSize)
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
         }
     }
@@ -213,6 +216,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
                 --requestPage;
+                smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
                 int currentSize = applyRecordList.size();
@@ -222,6 +226,8 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                     initList();
                 else
                     applyInfoAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
+                if(data.getData().size()<Constants.requestSize)
+                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
         }
     }
