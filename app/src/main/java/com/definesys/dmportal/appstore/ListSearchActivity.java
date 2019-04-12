@@ -114,7 +114,6 @@ public class ListSearchActivity extends BaseActivity {
                 if ((strStu).contains("2"))//班主任权限
                     typeList.add(getString(R.string.tag_12));
                 if ((strStu).contains("4")) {//辅导员权限
-                    typeList.add(getString(R.string.tag_12));
                     typeList.add(getString(R.string.tag_13));
                     typeList.add(getString(R.string.tag_14));
                 }

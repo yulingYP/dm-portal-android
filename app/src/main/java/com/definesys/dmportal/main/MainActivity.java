@@ -514,6 +514,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         }else if(myMessage.getMessageType()==11){//推送失败时收到的权限申请请求 跳转到权限审批列表页
             intent = new Intent(this, AppLyListActivity.class);
             intent.putExtra("ARouterPath",ARouterConstants.ApprovalApplyInfoActivity);
+            intent.putExtra("isAll",true);
+            intent.putExtra("isSearch",false);
             intent.putExtra("type",0);
         }
         if(intent == null) {//跳转到消息页
