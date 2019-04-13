@@ -16,6 +16,7 @@ import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.TextViewUniversalToast;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.text.SimpleDateFormat;
@@ -107,10 +108,10 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }else if(messages.get(position).getMessageType()==6){//查看权限申请记录
                if("y".equals(messages.get(position).getMessageContent().toLowerCase())){//权限被删除
                    viewHolder.img.setImageResource(R.drawable.ic_aut_delete);
-                   viewHolder.content.setText(context.getString(R.string.message_tip_15,messages.get(position).getMessageExtend()));
+                   viewHolder.content.setText(context.getString(R.string.message_tip_15, DensityUtil.getAuthorityName(context,messages.get(position).getMessageExtend2())));
                }else {//仍保留权限但范围发生变化
                    viewHolder.img.setImageResource(R.drawable.ic_aut_change);
-                   viewHolder.content.setText(context.getString(R.string.message_tip_16,messages.get(position).getMessageExtend()));
+                   viewHolder.content.setText(context.getString(R.string.message_tip_16,DensityUtil.getAuthorityName(context,messages.get(position).getMessageExtend2())));
                }
             }
             else if(messages.get(position).getMessageType()==11){//查看权限申请记录

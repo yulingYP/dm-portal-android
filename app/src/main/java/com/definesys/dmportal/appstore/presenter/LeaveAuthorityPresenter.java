@@ -147,6 +147,7 @@ public class LeaveAuthorityPresenter extends BasePresenter {
     public void submitAuthoritiesApply(List<ApplyInfo> applyList, String applyReason){
         for(ApplyInfo applyInfo:applyList){
          applyInfo.setApplyReason(applyReason.trim());
+         applyInfo.setApplyDetailContent(null);
          }
         ViseHttp.POST(HttpConst.submitAuthoritiesApply)
                 .tag(HttpConst.getAuthorityDetailInfo)

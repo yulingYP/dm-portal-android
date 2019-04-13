@@ -55,8 +55,10 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
     ApplyInfo applyInfo;
     @Autowired(name = "applyId")
     String applyId;
-    @BindView(R.id.aut_text)
-    TextView tv_aut;
+    @BindView(R.id.aut_type)
+    TextView tv_type;
+    @BindView(R.id.aut_region)
+    TextView tv_region;
     @BindView(R.id.reason_text)
     TextView tv_reason;
     @BindView(R.id.submit_time)
@@ -94,8 +96,10 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
                 );
         //姓名
         tv_name.setText(getString(R.string.name_tip,applyInfo.getApplyUserName()));
-        //申请内容
-        tv_aut.setText(getString(R.string.apply_authority,applyInfo.getApplyDetailContent()));
+        //权限类型
+        tv_type.setText(getString(R.string.apply_authority,DensityUtil.getAuthorityName(this,(short)(applyInfo.getApplyAuthority()+applyInfo.getApplyAuthorityType()*10))));
+        //权限范围
+        tv_region.setText(getString(R.string.authority_region,applyInfo.getApplyRegion()));
         //申请原因
         tv_reason.setText(getString(R.string.authority_reason,applyInfo.getApplyReason()));
         //申请时间

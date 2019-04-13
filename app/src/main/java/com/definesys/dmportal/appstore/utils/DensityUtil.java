@@ -331,4 +331,25 @@ public class DensityUtil {
         return (day>0?context.getString(R.string.off_day,day):"")+(day>0&&hour==0?"":context.getString(R.string.off_hour,hour));
         else return context.getString(R.string.off_day,day);
     }
+
+    /**
+     * 获取权限名称
+     * @param context c
+     * @param aut 权限
+     * @return 权限名称
+     */
+    public static String getAuthorityName(Context context,short aut){
+        String arr[];
+        int temp;//容错范围
+        if(aut<10) {//审批学生
+            arr = context.getResources().getStringArray(R.array.approverType);
+            temp = 9;
+        }
+        else {//审批老师
+            aut-=10;
+            arr = context.getResources().getStringArray(R.array.approverType_2);
+            temp = 3;
+        }
+        return arr[aut%temp];
+    }
 }

@@ -1,13 +1,10 @@
 package com.definesys.dmportal.appstore.leaveSettingUI;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -246,20 +243,20 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
 
         if(autMap!=null&&autMap.size()>0){//权限检查
             int authority;
-            boolean isNo;//是否不包含
+            boolean isHas;//是否包含
             for(ApplyInfo applyInfo:applyList) {
-                isNo = false;
+                isHas = true;
                 authority = applyInfo.getApplyAuthorityType() == 0 ? applyInfo.getApplyAuthority() : (applyInfo.getApplyAuthority() + 10);
                 if (autMap.get(authority) != null && !"".equals(autMap.get(authority))) {//用户已经有该权限
                     //检查用户是否有选取新的权限范围
                     String[] array = applyInfo.getApplyRegion().split(", ");//是否选取了多个权限成员
                     for (String anArray : array) {
                         if (!autMap.get(authority).contains(anArray)) {//有一个不包含
-                            isNo = true;
+                            isHas = false;
                             break;
                         }
                     }
-                    if (!isNo) {//用户已经有他申请权限的全部成员
+                    if (isHas) {//用户已经有他申请权限的全部成员
                         Toast.makeText(this, getString(R.string.apply_error_tip_14, applyInfo.getApplyDetailContent().split(" ")[0]), Toast.LENGTH_SHORT).show();
                         return;
                     }

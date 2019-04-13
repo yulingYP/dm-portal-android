@@ -16,8 +16,6 @@ public class ApplyInfo implements Serializable {
                                     // 0.部门请假负责人 1.部门教学负责人
     private String applyReason;//申请原因
 
-    private String applyDetailContent;//申请的具体内容
-
     private String applyRegion;//申请范围 班级id，学生id，院系名...
 
     private Date applyDate;//申请日期
@@ -31,6 +29,8 @@ public class ApplyInfo implements Serializable {
     private Date applyUpdateDate;//更新日期
 
     private boolean isAll;//删除权限时是否选择了该权限的所有管理范围
+
+    private String applyDetailContent;//申请的具体内容
 
     private String attribute2;
 

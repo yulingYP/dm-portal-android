@@ -77,8 +77,10 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     ImageView iv_no;
     @BindView(R.id.name_text)
     TextView tv_name;
-    @BindView(R.id.apply_conent)
-    TextView tv_content;
+    @BindView(R.id.apply_type)
+    TextView tv_type;
+    @BindView(R.id.apply_region)
+    TextView tv_region;
     @BindView(R.id.apply_resson)
     TextView tv_reason;
     @BindView(R.id.submit_time)
@@ -247,8 +249,10 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         tv_id.setText(String.valueOf(applyInfo.getApplyUserId()));
         //姓名
         tv_name.setText(getString(R.string.name_tip,applyInfo.getApplyUserName()));
-        //申请内容
-        tv_content.setText(getString(R.string.apply_authority,applyInfo.getApplyDetailContent()));
+        //权限类型
+        tv_type.setText(getString(R.string.apply_authority,DensityUtil.getAuthorityName(this,(short)(applyInfo.getApplyAuthority()+applyInfo.getApplyAuthorityType()*10))));
+        //管理范围
+        tv_region.setText(getString(R.string.authority_region,applyInfo.getApplyRegion()));
         //申请原因
         tv_reason.setText(getString(R.string.authority_reason,applyInfo.getApplyReason()));
         //申请时间
