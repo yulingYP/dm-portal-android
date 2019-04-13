@@ -172,6 +172,31 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                     }
                 });
     }
+    //删除权限
+    public void deleteAuthorities(List<ApplyInfo> applyList){
+        ViseHttp.POST(HttpConst.deleteAuthorities)
+                .tag(HttpConst.getAuthorityDetailInfo)
+                .setJson(new Gson().toJson(applyList))
+                .request(new ACallback<BaseResponse<String>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<String> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_DELETE_AUTHORITIES,  data);
+                                break;
+                            default:
+                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                break;
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+    }
     @Override
     public void unsubscribe() {
         super.unsubscribe();

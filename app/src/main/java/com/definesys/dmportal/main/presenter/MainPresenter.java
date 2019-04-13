@@ -99,6 +99,9 @@ public class MainPresenter extends BasePresenter {
     //获取用户申请权限所需要的信息列表
     public static final String SUCCESSFUL_GET_APPLY_LIST_INFO="SUCCESSFUL_GET_APPLY_LIST_INFO";
 
+    //成功删除权限
+    public static final String SUCCESSFUL_DELETE_AUTHORITIES="SUCCESSFUL_DELETE_AUTHORITIES";
+
     //获取用户推送失败的消息列表
     public static final String SUCCESSFUL_GET_PUSH_ERROR_MSG="SUCCESSFUL_GET_PUSH_ERROR_MSG";
 

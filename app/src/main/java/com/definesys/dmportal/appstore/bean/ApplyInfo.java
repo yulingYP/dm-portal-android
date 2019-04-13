@@ -26,9 +26,11 @@ public class ApplyInfo implements Serializable {
 
     private int type;//提示框种类
 
-    private String applyUserName;
+    private String applyUserName;//申请人姓名
 
     private Date applyUpdateDate;//更新日期
+
+    private boolean isAll;//删除权限时是否选择了该权限的所有管理范围
 
     private String attribute2;
 
@@ -48,6 +50,17 @@ public class ApplyInfo implements Serializable {
         this.applyRegion = applyRegion;
         this.applyStatus = 0;
         this.type = type;
+    }
+
+    public ApplyInfo(String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, Short applyStatus, String applyUserName,boolean isAll) {
+        this.applyId = applyId;
+        this.applyUserId = applyUserId;
+        this.applyAuthorityType = applyAuthorityType;
+        this.applyAuthority = applyAuthority;
+        this.applyRegion = applyRegion;
+        this.applyStatus = applyStatus;
+        this.applyUserName = applyUserName;
+        this.isAll = isAll;
     }
 
     public String getApplyId() {
@@ -160,6 +173,14 @@ public class ApplyInfo implements Serializable {
 
     public void setAttribute4(String attribute4) {
         this.attribute4 = attribute4 == null ? null : attribute4.trim();
+    }
+
+    public boolean isAll() {
+        return isAll;
+    }
+
+    public void setAll(boolean all) {
+        isAll = all;
     }
 
     public int getType() {

@@ -101,6 +101,9 @@ public interface HttpConst {
     //提交权限申请
     String submitAuthoritiesApply = "submitAuthoritiesApply";
 
+    //删除权限
+    String deleteAuthorities = "deleteAuthorities";
+
     //根据id获取申请记录
     String getApplyInfoById = "getApplyInfoById";
 

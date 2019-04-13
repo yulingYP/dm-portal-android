@@ -15,6 +15,7 @@ import com.definesys.base.BaseActivity;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.customViews.ApplyDialog;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
@@ -22,12 +23,14 @@ import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.presenter.UserInfoPresent;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +48,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     TextView tv_no;
 
     private HashMap<Integer,String> deleteMap;//用户要删除的权限<权限，范围>
+    HashMap<Integer, String> autMap;//用户的全部权限<权限，范围>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +87,12 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     public void getAllDetailInfoByBean(BaseResponse<List<AuthorityDetail>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             List<AuthorityDetail> list=data.getData();//详细信息的list
-            int authority;
             if(list!=null&&list.size()>0) {//有数据
                 tv_no.setVisibility(View.GONE);
-                HashMap<Integer, String> autMap = new HashMap<>();//用户的全部权限《权限，范围》
                 deleteMap = new HashMap<>();
+                autMap = new HashMap<>();
                 //把数据赋给权限map
+                int authority;
                 for (int i = 0; i < list.size(); i++) {
                     authority = list.get(i).getUserAuthority();
                     if (autMap.get(authority) != null && !"".equals(autMap.get(authority)))
@@ -98,7 +102,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                 }
 
                 //根据map生成权限列表
-                for(int i = 0 ;i<13;i++){
+                for(int i = 0 ;i<12;i++){
                     if(autMap.get(i)!=null&&!"".equals(autMap.get(i)))
                         initSelectList(i, autMap.get(i).split(", "));
                 }
@@ -107,7 +111,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             progressHUD.dismiss();
         }
     }
-
+    //初始化列表
     private void initSelectList(int authority, String[] region) {
         View view= LayoutInflater.from(this).inflate(R.layout.item_authority_view,lg_parent,false);
         //权限详细信息
@@ -140,12 +144,13 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             textView.setText(region[i]);
             imageView.setImageResource(R.drawable.no_select);
             int finalI = i;
+            //点击可选权限
             RxView.clicks(autView)
                     .subscribe(o -> {
-                        if(deleteMap.get(authority)!=null&&deleteMap.get(authority).contains(region[finalI])) {
+                        if(deleteMap.get(authority)!=null&&deleteMap.get(authority).contains(region[finalI])) {//删除
                             imageView.setImageResource(R.drawable.no_select);
                             deleteMap.put(authority,deleteMap.get(authority).replace(region[finalI]+", ",""));
-                        }else {
+                        }else {//添加
                             imageView.setImageResource(R.drawable.right_icon);
                             deleteMap.put(authority, (deleteMap.get(authority)==null?"":deleteMap.get(authority)) + region[finalI] + ", ");
                         }
@@ -183,7 +188,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         }
         if(SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()>=0){//有审批教师的权限
             String authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批教师权限
-            for(int i = 0 ; i <8;i++){
+            for(int i = 0 ; i <2;i++){
                 if(authorityStr.contains(""+i)){
                     autList.add(""+(i+10));
                 }
@@ -199,8 +204,16 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         List<String> list = new ArrayList<>();
         String[] stuType = getResources().getStringArray(R.array.approverType);
         String[] teaType = getResources().getStringArray(R.array.approverType_2);
-        for(int i = 0 ;i<13;i++){
+        for(int i = 0 ;i<12;i++){
             if(deleteMap.get(i)!=null&&!"".equals(deleteMap.get(i))){
+                StringBuilder oldStr = new StringBuilder(deleteMap.get(i));
+                String []arr = oldStr.toString().split(", ");
+                Arrays.sort(arr);
+                oldStr = new StringBuilder();
+                for (String anArr : arr) {
+                    oldStr.append(anArr).append(", ");
+                }
+                deleteMap.put(i,oldStr.toString());
                 if(i<10) {
                     list.add(getString(R.string.delete_authority_des,stuType[i%9],deleteMap.get(i).substring(0,deleteMap.get(i).length()-2)));
                 }else {
@@ -209,11 +222,35 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             }
         }
         ApplyDialog applyDialog = new ApplyDialog(this,list,101);
+        //取消
         applyDialog.setOnCancelClickListener(applyDialog::dismiss);
-        applyDialog.setOnConfirmClickListener(applyDialog::dismiss);
+        //确定
+        applyDialog.setOnConfirmClickListener(() -> {
+            progressHUD.show();
+            List<ApplyInfo> applyInfoList = new ArrayList<>();
+            for(int i=0;i<12;i++) {
+                if(deleteMap.get(i)!=null&&!"".equals(deleteMap.get(i))){
+//            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion
+//            applyDate, Short applyStatus, String applyUserName
+                    applyInfoList.add(new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(System.currentTimeMillis()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
+                            -1, i,deleteMap.get(i),(short)100,SharedPreferencesUtil.getInstance().getUserName(),deleteMap.get(i).equals(autMap.get(i)) ));
+                }
+            }
+            mPersenter.deleteAuthorities(applyInfoList);
+            applyDialog.dismiss();
+        });
         applyDialog.show();
     }
-
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void deleteAuthorities(BaseResponse<String> data){
+        if(MyActivityManager.getInstance().getCurrentActivity()==this){
+            Toast.makeText(this, R.string.delete_success, Toast.LENGTH_SHORT).show();
+            new UserInfoPresent(this).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+            finish();
+        }
+    }
 
     @Override
     public LeaveAuthorityPresenter getPersenter() {
