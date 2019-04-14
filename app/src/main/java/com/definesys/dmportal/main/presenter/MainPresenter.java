@@ -102,6 +102,9 @@ public class MainPresenter extends BasePresenter {
     //成功删除权限
     public static final String SUCCESSFUL_DELETE_AUTHORITIES="SUCCESSFUL_DELETE_AUTHORITIES";
 
+    //获取辅导员权限中不可删除的班级id
+    public static final String SUCCESSFUL_GET_NOABLE_CLASS_IDS="SUCCESSFUL_GET_NOABLE_CLASS_IDS";
+
     //获取用户推送失败的消息列表
     public static final String SUCCESSFUL_GET_PUSH_ERROR_MSG="SUCCESSFUL_GET_PUSH_ERROR_MSG";
 

@@ -104,6 +104,9 @@ public interface HttpConst {
     //删除权限
     String deleteAuthorities = "deleteAuthorities";
 
+    //获取辅导员权限中不可删除的班级id
+    String getNoAbleDeleteClassId = "getNoAbleDeleteClassId";
+
     //根据id获取申请记录
     String getApplyInfoById = "getApplyInfoById";
 

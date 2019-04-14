@@ -114,7 +114,8 @@ public class LeaveAuthorityPresenter extends BasePresenter {
      *             21.部门教学院长权限 获取所有部门的id
      */
     public void getApplyList(Number extendId1, String extendId2,int type){
-        if(type ==0||type==2) extendId1 = (extendId1.intValue()/10000)*100; //例151110401 则 1511100
+        if(type ==0||type==2)
+            extendId1 = (extendId1.intValue()/10000)*100; //例151110401 则 1511100
         HashMap<String,Object> map = new HashMap<>();
         map.put("extendId1",extendId1);
         map.put("extendId2",extendId2);
@@ -195,6 +196,28 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                     @Override
                     public void onFail(int errCode, String errMsg) {
                         SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, "");
+                    }
+                });
+    }
+    //获取辅导员权限中不可删除的班级id列表
+    public void getNoAbleDeleteClassId(Number userId){
+        HashMap<String,Number> map = new HashMap<>();
+        map.put("userId",userId);
+        ViseHttp.POST(HttpConst.getNoAbleDeleteClassId)
+                .tag(HttpConst.getAuthorityDetailInfo)
+                .setJson(new Gson().toJson(map))
+                .request(new ACallback<BaseResponse<List<String>>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<List<String>> data) {
+                        switch (data.getCode()){
+                            case "200":
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_NOABLE_CLASS_IDS,  data);
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
                     }
                 });
     }

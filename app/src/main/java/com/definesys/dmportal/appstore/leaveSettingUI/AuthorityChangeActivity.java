@@ -21,6 +21,7 @@ import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.UserInfoPresent;
@@ -39,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @Route(path = ARouterConstants.AuthorityChangeActivity)
-public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresenter> {
+public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresenter> implements Constants{
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
     @BindView(R.id.parent_layout)
@@ -48,7 +49,8 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     TextView tv_no;
 
     private HashMap<Integer,String> deleteMap;//用户要删除的权限<权限，范围>
-    HashMap<Integer, String> autMap;//用户的全部权限<权限，范围>
+    private HashMap<Integer, String> autMap;//用户的全部权限<权限，范围>
+    private StringBuilder classIds;//同时包含辅导员权限和学生权限负责人权限时，不可删除的班级Id列表
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +64,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         RxView.clicks(titleBar.addLeftBackImageButton())
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .throttleFirst(clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                         finish()
                 );
@@ -103,8 +105,9 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
 
                 //根据map生成权限列表
                 for(int i = 0 ;i<12;i++){
-                    if(autMap.get(i)!=null&&!"".equals(autMap.get(i)))
+                    if(autMap.get(i)!=null&&!"".equals(autMap.get(i))&&i!=aut8) {
                         initSelectList(i, autMap.get(i).split(", "));
+                    }
                 }
             }else
                 tv_no.setVisibility(View.VISIBLE);
@@ -140,21 +143,44 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             View autView= LayoutInflater.from(this).inflate(R.layout.item_sign_type_view, itemView,false);
             TextView textView=autView.findViewById(R.id.name_text);//权限名称
             ImageView imageView=autView.findViewById(R.id.select_img);//是否选择
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             textView.setText(region[i]);
-            imageView.setImageResource(R.drawable.no_select);
-            int finalI = i;
-            //点击可选权限
-            RxView.clicks(autView)
-                    .subscribe(o -> {
-                        if(deleteMap.get(authority)!=null&&deleteMap.get(authority).contains(region[finalI])) {//删除
-                            imageView.setImageResource(R.drawable.no_select);
-                            deleteMap.put(authority,deleteMap.get(authority).replace(region[finalI]+", ",""));
-                        }else {//添加
-                            imageView.setImageResource(R.drawable.right_icon);
-                            deleteMap.put(authority, (deleteMap.get(authority)==null?"":deleteMap.get(authority)) + region[finalI] + ", ");
-                        }
-                    });
+            int upAut;//上级管理权限 0-》1 1-》2 2，3-》4 4，5，6，7-》8 10,11-》12
+            if(authority==aut0)upAut=aut1;
+            else if(authority==aut1)upAut=aut2;
+            else if(authority==aut2||authority==aut3) upAut=aut4;
+            else if(authority==aut4||authority==aut5||authority==aut6||authority==aut7) upAut=aut8;
+            else if(authority==aut10||authority==aut11) upAut=aut12;
+            else upAut=-1;
+            String checkStr = authority==aut0||authority==aut3?region[i].substring(0,region[i].length()-2):region[i];
+            if(upAut==-1||
+               autMap.get(upAut)==null||
+               autMap.get(upAut).equals("")||
+               (authority!=aut4&&!autMap.get(upAut).contains(checkStr))||//不是辅导员权限时直接进行判断
+               (authority==aut4&&!classIds.toString().contains(checkStr))//是辅导员时判断该班级是否可以被删除
+                    ) {//没有管理authority的上级权限
+                imageView.setImageResource(R.drawable.no_select);
+                int finalI = i;
+                //点击可选权限
+                RxView.clicks(autView)
+                        .subscribe(o -> {
+                            if (deleteMap.get(authority) != null && deleteMap.get(authority).contains(region[finalI])) {//删除
+                                imageView.setImageResource(R.drawable.no_select);
+                                deleteMap.put(authority, deleteMap.get(authority).replace(region[finalI] + ", ", ""));
+                            } else {//添加
+                                imageView.setImageResource(R.drawable.right_icon);
+                                deleteMap.put(authority, (deleteMap.get(authority) == null ? "" : deleteMap.get(authority)) + region[finalI] + ", ");
+                            }
+                        });
+            }else {//不能被删除的权限范围
+                RxView.clicks(autView)
+                        .throttleFirst(clickdelay,TimeUnit.MILLISECONDS)
+                        .subscribe(o -> {
+                            Toast.makeText(this,getString(R.string.delete_error_tip_2, DensityUtil.getAuthorityName(this,(short)upAut)),Toast.LENGTH_SHORT).show();
+                        });
+                textView.setTextColor(getResources().getColor(R.color.text_noable));
+                imageView.setVisibility(View.GONE);
+            }
             itemView.addView(autView);
         }
         lg_parent.addView(view);
@@ -177,24 +203,31 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     //获取我的详细权限
     private void getMyAuthorityDetail() {
         progressHUD.show();
+        classIds= new StringBuilder();
         List<String> autList = new ArrayList<>();
+        boolean flag = false;//是否同时包含辅导员权限和学生权限负责人权限
         if(SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority()>=0){//有审批学生的权限
             String authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
-            for(int i = 0 ; i <8;i++){
+            for(int i = 0 ; i <=8;i++){
                 if(authorityStr.contains(""+i)){
                     autList.add(""+i);
                 }
             }
+            if(authorityStr.contains(""+aut4)&&authorityStr.contains(""+aut8))//同时包含辅导员和学生权限负责人权限
+                flag = true;
         }
         if(SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority()>=0){//有审批教师的权限
             String authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批教师权限
-            for(int i = 0 ; i <2;i++){
+            for(int i = 0 ; i <=2;i++){
                 if(authorityStr.contains(""+i)){
                     autList.add(""+(i+10));
                 }
             }
         }
+        //获取权限的所有管理范围
         mPersenter.getUserAuthorityDetail(SharedPreferencesUtil.getInstance().getUserId(),3,autList,true);
+        if(flag)//获取该权限审批人所管理院系的所有班级id
+            mPersenter.getNoAbleDeleteClassId(SharedPreferencesUtil.getInstance().getUserId());
     }
     private void checkSelect() {
         if(deleteMap==null||deleteMap.size()==0) {
@@ -241,8 +274,10 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         });
         applyDialog.show();
     }
+
+    //删除权限成功
     @Subscribe(tags = {
-            @Tag(MainPresenter.SUCCESSFUL_GET_AUTHORITY_DETAIL_INFO)
+            @Tag(MainPresenter.SUCCESSFUL_DELETE_AUTHORITIES)
     }, thread = EventThread.MAIN_THREAD)
     public void deleteAuthorities(BaseResponse<String> data){
         if(MyActivityManager.getInstance().getCurrentActivity()==this){
@@ -251,7 +286,22 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             finish();
         }
     }
+    //获取辅导员权限中不可删除的班级id列表
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_NOABLE_CLASS_IDS)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getNoAbleClassIds(BaseResponse<List<String>> data){
+        if(MyActivityManager.getInstance().getCurrentActivity()==this){
+            if(data.getData()==null||data.getData().size()==0)
+                return;
+            List<String> list = data.getData();
+            int size = list.size();
+            for(int i = 0 ; i < size ; i++){
+                classIds.append(list.get(i)).append(",");
+            }
 
+        }
+    }
     @Override
     public LeaveAuthorityPresenter getPersenter() {
         return new LeaveAuthorityPresenter(this);
