@@ -169,6 +169,13 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         editor.apply();
     }
 
+    public void setApprovalStuAut(Integer authority){
+        getSpWithEdit().putInt(spApprovalStuAut,authority).apply();
+    }
+    public void setApprovalTeaAut(Integer authority){
+        getSpWithEdit().putInt(spApprovalTeaAut,authority).apply();
+    }
+
     public SharedPreferences.Editor setUserSex(String userSex) {
         return getSpWithEdit().putString(spUserSex, userSex);
     }

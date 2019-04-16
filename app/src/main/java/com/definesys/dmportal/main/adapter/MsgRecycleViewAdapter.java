@@ -106,10 +106,10 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.content.setText(context.getString(R.string.message_tip_13,id));
                 }
             }else if(messages.get(position).getMessageType()==6){//查看权限申请记录
-               if("y".equals(messages.get(position).getMessageContent().toLowerCase())){//权限被删除
+               if("delete".equals(messages.get(position).getMessageContent().toLowerCase())){//权限被删除
                    viewHolder.img.setImageResource(R.drawable.ic_aut_delete);
                    viewHolder.content.setText(context.getString(R.string.message_tip_15, DensityUtil.getAuthorityName(context,messages.get(position).getMessageExtend2())));
-               }else {//仍保留权限但范围发生变化
+               } else  {//仍保留权限但范围发生变化
                    viewHolder.img.setImageResource(R.drawable.ic_aut_change);
                    viewHolder.content.setText(context.getString(R.string.message_tip_16,DensityUtil.getAuthorityName(context,messages.get(position).getMessageExtend2())));
                }

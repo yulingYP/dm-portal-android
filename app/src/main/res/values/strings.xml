@@ -465,7 +465,7 @@
     <string name="apply_dialog_des_11">请选择院系(单选)</string>
     <string name="apply_dialog_des_12">请选择部门(单选)</string>
     <string name="apply_dialog_des_13">您确定要提交以下权限申请吗</string>
-    <string name="apply_dialog_des_14">您确定要删除以下权限申请吗</string>
+    <string name="apply_dialog_des_14">您确定要删除以下权限吗</string>
     <string name="input_apply_reason">点击确定提交申请</string>
     <string name="hint_apply_reason">请填写申请原因(0&#8211;150字)</string>
     <string name="apply_reason">申请原因</string>

@@ -51,6 +51,8 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     private HashMap<Integer,String> deleteMap;//用户要删除的权限<权限，范围>
     private HashMap<Integer, String> autMap;//用户的全部权限<权限，范围>
     private StringBuilder classIds;//同时包含辅导员权限和学生权限负责人权限时，不可删除的班级Id列表
+    private short requestCount;//网络请求的个数
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +78,32 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                 .subscribe(obj ->
                         checkSelect()
                 );
+        //获取权限详情
         getMyAuthorityDetail();
     }
 
+    //获取辅导员权限中不可删除的班级id列表
+    @Subscribe(tags = {
+            @Tag(MainPresenter.SUCCESSFUL_GET_NOABLE_CLASS_IDS)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getNoAbleClassIds(BaseResponse<List<String>> data){
+        if(MyActivityManager.getInstance().getCurrentActivity()==this){
+            if(data.getData()==null||data.getData().size()==0) {
+                if(--requestCount<=0) progressHUD.dismiss();
+                return;
+            }
+            List<String> list = data.getData();
+            int size = list.size();
+            for(int i = 0 ; i < size ; i++){
+                classIds.append(list.get(i)).append(",");
+            }
+            if(--requestCount<=0){
+                //根据map生成权限列表
+                initSelectList();
+                progressHUD.dismiss();
+            }
+        }
+    }
     /** 获取权限详细信息成功
      * @param data BaseResponse
     */
@@ -88,8 +113,9 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     }, thread = EventThread.MAIN_THREAD)
     public void getAllDetailInfoByBean(BaseResponse<List<AuthorityDetail>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            List<AuthorityDetail> list=data.getData();//详细信息的list
-            if(list!=null&&list.size()>0) {//有数据
+            List<AuthorityDetail> list =new ArrayList<>();
+            list.addAll(data.getData());//详细信息的list
+            if(list.size()>0) {//有数据
                 tv_no.setVisibility(View.GONE);
                 deleteMap = new HashMap<>();
                 autMap = new HashMap<>();
@@ -102,20 +128,30 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                     else
                         autMap.put(authority, list.get(i).getRegion() + ", ");
                 }
-
-                //根据map生成权限列表
-                for(int i = 0 ;i<12;i++){
-                    if(autMap.get(i)!=null&&!"".equals(autMap.get(i))&&i!=aut8) {
-                        initSelectList(i, autMap.get(i).split(", "));
-                    }
-                }
             }else
                 tv_no.setVisibility(View.VISIBLE);
-            progressHUD.dismiss();
+
+            if(--requestCount<=0) {
+                //根据map生成权限列表
+                initSelectList();
+                progressHUD.dismiss();
+            }
         }
     }
     //初始化列表
-    private void initSelectList(int authority, String[] region) {
+    private void initSelectList(){
+        boolean isShow = false;//是否有可显示权限
+        for(int i = 0 ;i<12;i++){
+            if(autMap.get(i)!=null&&!"".equals(autMap.get(i))&&i!=aut8) {
+                initItemView(i, autMap.get(i).split(", "));
+                isShow = true;
+            }
+        }
+        if(!isShow)
+            tv_no.setVisibility(View.VISIBLE);
+    }
+    //初始化列表中的单个权限
+    private void initItemView(int authority, String[] region) {
         View view= LayoutInflater.from(this).inflate(R.layout.item_authority_view,lg_parent,false);
         //权限详细信息
         LinearLayout itemView= view.findViewById(R.id.item_layout);
@@ -225,9 +261,12 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             }
         }
         //获取权限的所有管理范围
+        ++requestCount;
         mPersenter.getUserAuthorityDetail(SharedPreferencesUtil.getInstance().getUserId(),3,autList,true);
-        if(flag)//获取该权限审批人所管理院系的所有班级id
+        if(flag) {//获取该权限审批人所管理院系的所有班级id
+            ++requestCount;
             mPersenter.getNoAbleDeleteClassId(SharedPreferencesUtil.getInstance().getUserId());
+        }
     }
     private void checkSelect() {
         if(deleteMap==null||deleteMap.size()==0) {
@@ -267,8 +306,16 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
 //            applyDate, Short applyStatus, String applyUserName
                     ApplyInfo applyInfo=new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(System.currentTimeMillis()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
                             -1, i,deleteMap.get(i).substring(0,deleteMap.get(i).length()-2),deleteMap.get(i).length()<autMap.get(i).length()?(short)-100:-110,SharedPreferencesUtil.getInstance().getUserName());
-                   if(applyInfo.getApplyStatus()==-110){//删除权限
-                       applyInfo.setAfterDeleteAut(getChangeAuthority(i));
+                    //删除权限
+                    if(applyInfo.getApplyStatus()==-110){
+                        //剩余权限
+                       int newAuthority = getChangeAuthority(i);
+                       //更新本地信息
+                       if(i<10)
+                        SharedPreferencesUtil.getInstance().setApprovalStuAut(newAuthority);
+                       else
+                           SharedPreferencesUtil.getInstance().setApprovalTeaAut(newAuthority);
+                       applyInfo.setAfterDeleteAut(newAuthority);
                    }
                     applyInfoList.add(applyInfo);
                 }
@@ -290,22 +337,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             finish();
         }
     }
-    //获取辅导员权限中不可删除的班级id列表
-    @Subscribe(tags = {
-            @Tag(MainPresenter.SUCCESSFUL_GET_NOABLE_CLASS_IDS)
-    }, thread = EventThread.MAIN_THREAD)
-    public void getNoAbleClassIds(BaseResponse<List<String>> data){
-        if(MyActivityManager.getInstance().getCurrentActivity()==this){
-            if(data.getData()==null||data.getData().size()==0)
-                return;
-            List<String> list = data.getData();
-            int size = list.size();
-            for(int i = 0 ; i < size ; i++){
-                classIds.append(list.get(i)).append(",");
-            }
 
-        }
-    }
     @Override
     public LeaveAuthorityPresenter getPersenter() {
         return new LeaveAuthorityPresenter(this);
