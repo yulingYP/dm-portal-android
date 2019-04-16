@@ -20,7 +20,7 @@ public class ApplyInfo implements Serializable {
 
     private Date applyDate;//申请日期
 
-    private Short applyStatus;//审批状态 0.未审批 1.已通过 2.已拒绝
+    private Short applyStatus;//审批状态 0.未审批 100.已通过 110.已拒绝 -100:修改但不删除权限 -110：删除权限
 
     private int type;//提示框种类
 
@@ -28,9 +28,9 @@ public class ApplyInfo implements Serializable {
 
     private Date applyUpdateDate;//更新日期
 
-    private boolean isAll;//删除权限时是否选择了该权限的所有管理范围
-
     private String applyDetailContent;//申请的具体内容
+
+    private Integer afterDeleteAut;//删除权限后用户剩余的权限
 
     private String attribute2;
 
@@ -52,7 +52,7 @@ public class ApplyInfo implements Serializable {
         this.type = type;
     }
 
-    public ApplyInfo(String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, Short applyStatus, String applyUserName,boolean isAll) {
+    public ApplyInfo(String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, Short applyStatus, String applyUserName) {
         this.applyId = applyId;
         this.applyUserId = applyUserId;
         this.applyAuthorityType = applyAuthorityType;
@@ -60,7 +60,6 @@ public class ApplyInfo implements Serializable {
         this.applyRegion = applyRegion;
         this.applyStatus = applyStatus;
         this.applyUserName = applyUserName;
-        this.isAll = isAll;
     }
 
     public String getApplyId() {
@@ -175,12 +174,12 @@ public class ApplyInfo implements Serializable {
         this.attribute4 = attribute4 == null ? null : attribute4.trim();
     }
 
-    public boolean isAll() {
-        return isAll;
+    public Integer getAfterDeleteAut() {
+        return afterDeleteAut;
     }
 
-    public void setAll(boolean all) {
-        isAll = all;
+    public void setAfterDeleteAut(Integer afterDeleteAut) {
+        this.afterDeleteAut = afterDeleteAut;
     }
 
     public int getType() {

@@ -175,9 +175,9 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             }else {//不能被删除的权限范围
                 RxView.clicks(autView)
                         .throttleFirst(clickdelay,TimeUnit.MILLISECONDS)
-                        .subscribe(o -> {
-                            Toast.makeText(this,getString(R.string.delete_error_tip_2, DensityUtil.getAuthorityName(this,(short)upAut)),Toast.LENGTH_SHORT).show();
-                        });
+                        .subscribe(o ->
+                            Toast.makeText(this,getString(R.string.delete_error_tip_2, DensityUtil.getAuthorityName(this,(short)upAut)),Toast.LENGTH_SHORT).show()
+                        );
                 textView.setTextColor(getResources().getColor(R.color.text_noable));
                 imageView.setVisibility(View.GONE);
             }
@@ -265,8 +265,12 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                 if(deleteMap.get(i)!=null&&!"".equals(deleteMap.get(i))){
 //            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion
 //            applyDate, Short applyStatus, String applyUserName
-                    applyInfoList.add(new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(System.currentTimeMillis()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
-                            -1, i,deleteMap.get(i),(short)100,SharedPreferencesUtil.getInstance().getUserName(),deleteMap.get(i).equals(autMap.get(i)) ));
+                    ApplyInfo applyInfo=new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(System.currentTimeMillis()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
+                            -1, i,deleteMap.get(i).substring(0,deleteMap.get(i).length()-2),deleteMap.get(i).length()<autMap.get(i).length()?(short)-100:-110,SharedPreferencesUtil.getInstance().getUserName());
+                   if(applyInfo.getApplyStatus()==-110){//删除权限
+                       applyInfo.setAfterDeleteAut(getChangeAuthority(i));
+                   }
+                    applyInfoList.add(applyInfo);
                 }
             }
             mPersenter.deleteAuthorities(applyInfoList);
@@ -308,4 +312,24 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     }
 
 
+    //获取删除权限后用户剩余的权限
+    public Integer getChangeAuthority(int deleteAut) {
+        Integer oldAut;
+        String newAut;
+        if(deleteAut<10) {//审批学生
+            oldAut = SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
+        } else{//审批教师
+            oldAut =  SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
+            deleteAut -=10;
+        }
+        newAut = String.valueOf(oldAut).replace(String.valueOf(deleteAut),"");
+        if("".equals(newAut)){
+            oldAut = -1;
+        }else if (newAut.charAt(0)=='0'){//权限0在下标为0的位置
+            oldAut = Integer.valueOf(newAut)*10;
+        }else {
+            oldAut = Integer.valueOf(newAut);
+        }
+        return oldAut;
+    }
 }
