@@ -1,11 +1,9 @@
 package com.definesys.dmportal.appstore.presenter;
 
 import android.content.Context;
-
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
-import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -13,8 +11,6 @@ import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -187,12 +183,6 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                         switch (data.getCode()){
                             case "200":
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_DELETE_AUTHORITIES,  data);
-                                //想消息页发送权限修改信息
-                                Date date = new Date();
-                                for(ApplyInfo applyInfo:applyList){
-                                    SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(date.getTime()), applyInfo.getApplyUserId(), (short) 6, "change", applyInfo.getApplyAuthority().shortValue(), "", date));
-                                    date.setTime(date.getTime()+1000);
-                                }
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());

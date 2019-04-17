@@ -16,6 +16,7 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.customViews.ApplyDialog;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
@@ -27,6 +28,7 @@ import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.UserInfoPresent;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
+import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -312,11 +314,6 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                     if(applyInfo.getApplyStatus()==-110){
                         //剩余权限
                        int newAuthority = getChangeAuthority(i);
-                       //更新本地信息
-                       if(i<10)
-                        SharedPreferencesUtil.getInstance().setApprovalStuAut(newAuthority);
-                       else
-                           SharedPreferencesUtil.getInstance().setApprovalTeaAut(newAuthority);
                        applyInfo.setAfterDeleteAut(newAuthority);
                    }
                     applyInfoList.add(applyInfo);
@@ -336,6 +333,8 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     public void deleteAuthorities(BaseResponse<String> data){
         if(MyActivityManager.getInstance().getCurrentActivity()==this){
             Toast.makeText(this, R.string.delete_success, Toast.LENGTH_SHORT).show();
+            //向消息页发送权限修改信息
+            SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date()), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, "change", (short)-1, "", new Date()));
             //重新获取用户权限
             new UserInfoPresent(this).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
             finish();

@@ -236,9 +236,9 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         tv_count.setText(getString(R.string.word_count, 0));
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    ed_reason.setCursorVisible(true);
-                });
+                .subscribe(obj->
+                    ed_reason.setCursorVisible(true)
+                );
         //获取焦点
         ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus){
@@ -418,6 +418,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         try {
             startDate = isStart?df.parse(date):df.parse(tv_timeStart.getText().toString());
             endDate = isStart?df.parse(tv_timeEnd.getText().toString()):df.parse(date);
+            if(endDate.before(new Date()))
+                return false;
             return startDate.before(endDate);
         } catch (ParseException e) {
             e.printStackTrace();
