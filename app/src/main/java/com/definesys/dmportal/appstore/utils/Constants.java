@@ -7,6 +7,7 @@ package com.definesys.dmportal.appstore.utils;
 
 public interface Constants {
     int scrollDelay =300;
+    int loadAnim = 300 ;//加载展示动画的时长
     long clickdelay = 600;
     int requestSize = 5;//每次列表请求的数量大小
     int oneDay = 1000*60*60*24;//1天

@@ -168,7 +168,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         );
         //点击权限标题 开始动画
         RxView.clicks(view.findViewById(R.id.des_layout))
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .throttleFirst(Constants.loadAnim, TimeUnit.MILLISECONDS)
                 .subscribe(obj ->
                     AnimUtils.setInstance(itemView,downIcon,itemViewHeight[0]).toggle(true)
                 );

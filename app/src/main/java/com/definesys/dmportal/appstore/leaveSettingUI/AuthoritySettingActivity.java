@@ -85,7 +85,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 );
         //点击审批学生权限箭头 开始动画
         RxView.clicks(lg_stu)
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .throttleFirst(Constants.loadAnim, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     if(tv_stu.getVisibility()== View.VISIBLE){//已显权限
                         AnimUtils.setInstance(tv_stu,iv_stu,tv_stu.getMeasuredHeight()).toggle(true);
@@ -102,7 +102,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
 
         //点击审批教师权限箭头 开始动画
         RxView.clicks(lg_tea)
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .throttleFirst(Constants.loadAnim, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     if(tv_tea.getVisibility()== View.VISIBLE){//已显权限
                         AnimUtils.setInstance(tv_tea,iv_tea,tv_tea.getMeasuredHeight()).toggle(true);

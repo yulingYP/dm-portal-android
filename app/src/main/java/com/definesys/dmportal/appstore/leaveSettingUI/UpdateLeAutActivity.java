@@ -128,22 +128,12 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         //测量之后的高度
         final int[] height = new int[SharedPreferencesUtil.getInstance().getUserType()!=1?2:3];
         tv_show.post(()-> height[0] = tv_show.getMeasuredHeight());
-        //点击申请内容
+        //点击申请内容 加载动画
         RxView.clicks(lg_des)
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .throttleFirst(Constants.loadAnim, TimeUnit.MILLISECONDS)
                 .subscribe(obj -> {
                     AnimUtils.setInstance(tv_show,iv_down,height[0]).textToggle(isSingleLine);
                     isSingleLine = !isSingleLine;
-//                    if(!isSingleLine){//显示一行
-//                        tv_show.setSingleLine(true);
-//                        iv_down.setRotation(0);
-//                        AnimUtils.setInstance(tv_show,iv_down,tv_show.getMeasuredHeight()).textToggle(isSingleLine);
-//                        isSingleLine = true;
-//                    }else {//全部显示
-//                        tv_show.setSingleLine(false);
-//                        iv_down.setRotation(180);
-//                        isSingleLine = false;
-//                    }
                 });
 
         //审批学生权限
@@ -151,7 +141,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         lg_stuAut.post(()-> height[1] = lg_stuAut.getMeasuredHeight() );
         //点击审批学生权限 开始动画
         RxView.clicks(lg_stu)
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .throttleFirst(Constants.loadAnim, TimeUnit.MILLISECONDS)
                 .subscribe(obj ->
                     AnimUtils.setInstance(lg_stuAut,iv_stu,height[1]).toggle(true)
                 );
@@ -166,7 +156,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             lg_teaAut.post(()-> height[2] = lg_teaAut.getMeasuredHeight() );
             //点击审批教师权限 开始动画
             RxView.clicks(lg_tea)
-                    .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                    .throttleFirst(Constants.loadAnim, TimeUnit.MILLISECONDS)
                     .subscribe(obj ->
                         AnimUtils.setInstance( lg_teaAut,iv_tea,height[2]).toggle(true)
                     );

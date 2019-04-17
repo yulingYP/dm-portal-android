@@ -223,7 +223,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     private void initView() {
         //点击更多 加载动画
         RxView.clicks(lg_info)
-                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .throttleFirst(Constants.loadAnim,TimeUnit.MILLISECONDS)
                 .subscribe(obj->
                     AnimUtils.setInstance(lg_more,iv_down,lg_more.getMeasuredHeight()).toggle(false)
                 );

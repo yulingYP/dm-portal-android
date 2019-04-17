@@ -125,7 +125,7 @@ public class AnimUtils {
 
     private ValueAnimator createDropAnimator(final View v, int start, int end) {
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
-        animator.setDuration(300);//动画时长
+        animator.setDuration(Constants.loadAnim);//动画时长
         animator.addUpdateListener(arg0 -> {
             int value = (int) arg0.getAnimatedValue();
             ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
