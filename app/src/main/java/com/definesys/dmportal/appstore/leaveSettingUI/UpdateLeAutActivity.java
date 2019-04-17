@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import com.definesys.dmportal.appstore.customViews.ApplyDialog;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.AnimUtils;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -123,56 +125,51 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                 .subscribe(obj ->
                     checkSelect()
                 );
+        //测量之后的高度
+        final int[] height = new int[SharedPreferencesUtil.getInstance().getUserType()!=1?2:3];
+        tv_show.post(()-> height[0] = tv_show.getMeasuredHeight());
         //点击申请内容
         RxView.clicks(lg_des)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj -> {
-                    if(!isSingleLine){//显示一行
-                        tv_show.setSingleLine(true);
-                        iv_down.setRotation(0);
-                        isSingleLine = true;
-                    }else {//全部显示
-                        tv_show.setSingleLine(false);
-                        iv_down.setRotation(180);
-                        isSingleLine = false;
-                    }
+                    AnimUtils.setInstance(tv_show,iv_down,height[0]).textToggle(isSingleLine);
+                    isSingleLine = !isSingleLine;
+//                    if(!isSingleLine){//显示一行
+//                        tv_show.setSingleLine(true);
+//                        iv_down.setRotation(0);
+//                        AnimUtils.setInstance(tv_show,iv_down,tv_show.getMeasuredHeight()).textToggle(isSingleLine);
+//                        isSingleLine = true;
+//                    }else {//全部显示
+//                        tv_show.setSingleLine(false);
+//                        iv_down.setRotation(180);
+//                        isSingleLine = false;
+//                    }
                 });
 
-        //点击审批学生权限
-        RxView.clicks(lg_stu)
-                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj -> {
-                    if(lg_stuAut.getVisibility()==View.GONE){//显示全部可选权限
-                        lg_stuAut.setVisibility(View.VISIBLE);
-                        iv_stu.setRotation(180);
-                    }else {//隐藏
-                        lg_stuAut.setVisibility(View.GONE);
-                        iv_stu.setRotation(0);
-                    }
-                });
-
-        iv_stu.setRotation(180);
-        iv_down.setRotation(180);
         //审批学生权限
         initAuthorityList(getResources().getStringArray(R.array.approverType),lg_stuAut,0, SharedPreferencesUtil.getInstance().getUserType()==0?0:2,SharedPreferencesUtil.getInstance().getUserType()==0?8:2);
+        lg_stuAut.post(()-> height[1] = lg_stuAut.getMeasuredHeight() );
+        //点击审批学生权限 开始动画
+        RxView.clicks(lg_stu)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .subscribe(obj ->
+                    AnimUtils.setInstance(lg_stuAut,iv_stu,height[1]).toggle(true)
+                );
+        iv_stu.setRotation(180);
+        iv_down.setRotation(180);
         if(SharedPreferencesUtil.getInstance().getUserType()!=1){//不是教师
             lg_tea.setVisibility(View.GONE);
             lg_teaAut.setVisibility(View.GONE);
         }else {
             //审批教师权限
             initAuthorityList(getResources().getStringArray(R.array.approverType_2),lg_teaAut,1,0,2);
-            //点击审批教师权限
+            lg_teaAut.post(()-> height[2] = lg_teaAut.getMeasuredHeight() );
+            //点击审批教师权限 开始动画
             RxView.clicks(lg_tea)
                     .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                    .subscribe(obj -> {
-                        if(lg_teaAut.getVisibility()==View.GONE){//显示全部可选权限
-                            lg_teaAut.setVisibility(View.VISIBLE);
-                            iv_tea.setRotation(180);
-                        }else {//隐藏
-                            lg_teaAut.setVisibility(View.GONE);
-                            iv_tea.setRotation(0);
-                        }
-                    });
+                    .subscribe(obj ->
+                        AnimUtils.setInstance( lg_teaAut,iv_tea,height[2]).toggle(true)
+                    );
             iv_tea.setRotation(180);
         }
        getMyAuthorityDetail();
@@ -404,6 +401,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                     Toast.makeText(UpdateLeAutActivity.this, type == 0?R.string.apply_error_tip_4:R.string.apply_error_tip_10,Toast.LENGTH_SHORT).show();
                 }else{
                     tv_show.setText(checkApplyAuthority(type,content.substring(0,content.length()-2)));
+                    reSetTextLayoutParams(tv_show);
                     applyDialog.dismiss();
                     content = getString(R.string.no_des);
                 }
@@ -415,6 +413,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                         tempDialog.setContent(content);
                     else  {
                         tv_show.setText(checkApplyAuthority(type, content.substring(0,content.length()-2)));
+                        reSetTextLayoutParams(tv_show);
                         content = getString(R.string.no_des);
                     }
 
@@ -422,6 +421,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             } else if(type==2||type==10||type==11||type==12||type==20||type==21) {//班长、实习、学生、教学工作负责人、部门请假负责人、部门教学管理人权限
                 if(applyDialog.getApplyAuthorityAdapter().getSelectPosition()!=-1) {
                     tv_show.setText(checkApplyAuthority(type,data.get(applyDialog.getApplyAuthorityAdapter().getSelectPosition())));
+                    reSetTextLayoutParams(tv_show);
                     applyDialog.dismiss();
                 }else {
                     if(type==2)
@@ -446,6 +446,16 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         applyDialog.show();
         if(type==0||type==6)
             applyDialog.setContent(content);
+    }
+
+    //重新设置textView的layoutParams为WRAP_CONTENT
+    private void reSetTextLayoutParams(TextView tv_show) {
+        if(!isSingleLine) {//多行显示
+            ViewGroup.LayoutParams layoutParams = tv_show.getLayoutParams();
+            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            tv_show.setLayoutParams(layoutParams);
+        }
+
     }
 
     /**
@@ -486,6 +496,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         if(applyList==null){//第一次写入
             tv_show.setGravity(Gravity.START);
             tv_show.setText("");
+            reSetTextLayoutParams(tv_show);
             applyList = new ArrayList<>();
         }
 

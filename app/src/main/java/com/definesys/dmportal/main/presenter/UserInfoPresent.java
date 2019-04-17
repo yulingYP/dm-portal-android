@@ -31,7 +31,8 @@ public class UserInfoPresent extends BasePresenter {
     //获取用户信息
     public void getUserInfo(Number id,int userType){
         //提示单机登陆或账号冻结
-        if(MyCongfig.isShowing) return;
+        if(MyCongfig.isShowing)
+            return;
         Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
         map.put("userType",userType);

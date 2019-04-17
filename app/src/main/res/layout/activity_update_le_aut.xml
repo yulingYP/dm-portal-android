@@ -100,13 +100,14 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_marginTop="1dp"
+                android:paddingBottom="8dp"
                 android:id="@+id/stu_authority_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <RelativeLayout
                 android:id="@+id/tea_layout"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

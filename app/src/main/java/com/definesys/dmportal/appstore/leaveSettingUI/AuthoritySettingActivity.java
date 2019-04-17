@@ -18,6 +18,7 @@ import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.AnimUtils;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -33,9 +34,8 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
+
 
 @Route(path = ARouterConstants.AuthoritySettingActivity)
 public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresenter> {
@@ -83,39 +83,37 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 .subscribe(obj->
                     finish()
                 );
-        //点击审批学生权限箭头
+        //点击审批学生权限箭头 开始动画
         RxView.clicks(lg_stu)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     if(tv_stu.getVisibility()== View.VISIBLE){//已显权限
-                        tv_stu.setVisibility(GONE);
-                        iv_stu.setRotation(0);
+                        AnimUtils.setInstance(tv_stu,iv_stu,tv_stu.getMeasuredHeight()).toggle(true);
                     }else {//未显示权限
                        if(stuMap==null&&"".equals(tv_stu.getText().toString())){//还没有获取到详细权限
                             httpPost(0);
                        }else if(stuMap!=null&&"".equals(tv_stu.getText().toString())) {//网络请求已发送但暂未获取到网络请求
                            showTextByMap(0);
-                       }else
-                           tv_stu.setVisibility(VISIBLE);
-                        iv_stu.setRotation(180);
+                       }else {
+                           AnimUtils.setInstance(tv_stu,iv_stu,Integer.valueOf(stuMap.get(-1))).toggle(true);
+                       }
                     }
                 });
 
-        //点击审批教师权限箭头
+        //点击审批教师权限箭头 开始动画
         RxView.clicks(lg_tea)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     if(tv_tea.getVisibility()== View.VISIBLE){//已显权限
-                        tv_tea.setVisibility(GONE);
-                        iv_tea.setRotation(0);
+                        AnimUtils.setInstance(tv_tea,iv_tea,tv_tea.getMeasuredHeight()).toggle(true);
                     }else {//未显示权限
                         if(teaMap==null&& "".equals(tv_tea.getText().toString())){//还没有获取到详细权限
                                 httpPost(1);
                         }else if(teaMap!=null&&"".equals(tv_tea.getText().toString())){//网络请求已发送但暂未获取到网络请求
                             showTextByMap(1);
-                        }else
-                            tv_tea.setVisibility(VISIBLE);
-                        iv_tea.setRotation(180);
+                        }else {
+                            AnimUtils.setInstance(tv_tea,iv_tea,Integer.valueOf(teaMap.get(-1))).toggle(true);
+                        }
                     }
                 });
         //申请权限
@@ -191,6 +189,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
      */
     @SuppressLint("UseSparseArrays")
     private void httpPost(int type) {
+        progressHUD.show();
         String authorityStr=null;//用户权限
         String [] approverTypes = null;
         int max=0;
@@ -206,7 +205,6 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
             approverTypes=getResources().getStringArray(R.array.approverType_2);
         }
 
-        progressHUD.show();
         List<String> autList = new ArrayList<>();
         for(int i = 0 ; i <max;i++){
             if(authorityStr.contains(""+i)){
@@ -284,7 +282,14 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 }
             }
             tv_stu.setText(content.toString().substring(0,content.length()-1));
-            tv_stu.setVisibility(VISIBLE);
+            //测量宽高
+            tv_stu.measure(0,0);
+            //获取文本高度
+            tv_stu.post(()->{
+                stuMap.put(-1,""+tv_stu.getMeasuredHeight());
+                AnimUtils.setInstance(tv_stu,iv_stu,tv_stu.getMeasuredHeight()).toggle(true);
+            });
+
         }else if(type==1){//审批教师
             for(int i = 0;i<3;i++){
                 if(teaMap.get(i)!=null&&!"".equals(teaMap.get(i))){//有权限
@@ -293,8 +298,16 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 }
             }
             tv_tea.setText(content.toString().substring(0,content.length()-1));
-            tv_tea.setVisibility(VISIBLE);
+            //测量宽高
+            tv_tea.measure(0,0);
+            //获取文本高度
+            tv_tea.post(()->{
+                teaMap.put(-1,""+tv_tea.getMeasuredHeight());
+                AnimUtils.setInstance(tv_tea,iv_tea,tv_tea.getMeasuredHeight()).toggle(true);
+            });
+
         }
+
     }
 
 

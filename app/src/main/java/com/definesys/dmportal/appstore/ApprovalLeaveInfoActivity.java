@@ -7,14 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +42,7 @@ import com.definesys.dmportal.appstore.bean.LeaveInfo;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.presenter.GetApprovalRecordPresent;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.AnimUtils;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
@@ -222,22 +221,12 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     }
 
     private void initView() {
-        //点击更多
+        //点击更多 加载动画
         RxView.clicks(lg_info)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    //获取焦点
-                    lg_info.setFocusableInTouchMode(true);
-                    lg_info.setFocusable(true);
-                    if(lg_more.getVisibility()== View.VISIBLE){//已显示更多信息
-                        lg_more.setVisibility(GONE);
-                        iv_down.setRotation(0);
-                    }else {//未显示更多信息
-                        lg_more.setVisibility(VISIBLE);
-                        iv_down.setRotation(180);
-//                        sendScrollMessage(ScrollView.FOCUS_UP);
-                    }
-                });
+                .subscribe(obj->
+                    AnimUtils.setInstance(lg_more,iv_down,lg_more.getMeasuredHeight()).toggle(false)
+                );
         //点击查看课表
         RxView.clicks(lg_subject)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
@@ -485,17 +474,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         tv_approvalContent.setVisibility(VISIBLE);
         tv_approvalContent.setText(approvalRecord.getApprovalContent());
         tv_count.setText(getString(R.string.approval_time, DensityUtil.dateTypeToString(getString(R.string.date_type_2),approvalRecord.getApprovalTime())));
-    }
-
-    /**
-     * 延时发送页面滑动消息
-     * @param position 活动到的位置
-     */
-    private void sendScrollMessage(int position) {
-        new Handler().postDelayed(() -> {
-            Log.d("mydemo","Height=="+lg_scroll.getMeasuredHeight());
-            lg_scroll.fullScroll(position);
-        }, Constants.scrollDelay);
     }
 
     /**

@@ -20,6 +20,7 @@ import com.definesys.dmportal.appstore.customViews.ApplyDialog;
 import com.definesys.dmportal.appstore.presenter.LeaveAuthorityPresenter;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.AnimUtils;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
@@ -32,6 +33,7 @@ import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -159,22 +161,20 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         ImageView downIcon = view.findViewById(R.id.down_icon);
         //权限名称
         ((TextView)view.findViewById(R.id.aut_des)).setText(authority<10?getResources().getStringArray(R.array.approverType)[authority%9]:getResources().getStringArray(R.array.approverType_2)[(authority-10)%3]);
-        //点击权限标题
+        //获取高度
+        final int[] itemViewHeight = new int[1];
+        itemView.post(()->
+            itemViewHeight[0] =itemView.getMeasuredHeight()
+        );
+        //点击权限标题 开始动画
         RxView.clicks(view.findViewById(R.id.des_layout))
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj -> {
-                    if(itemView.getVisibility()==View.GONE){//显示全部可选权限
-                        itemView.setVisibility(View.VISIBLE);
-                        downIcon.setRotation(180);
-                    }else {//隐藏
-                        itemView.setVisibility(View.GONE);
-                        downIcon.setRotation(0);
-                    }
-                });
+                .subscribe(obj ->
+                    AnimUtils.setInstance(itemView,downIcon,itemViewHeight[0]).toggle(true)
+                );
         downIcon.setRotation(180);
         //添加权限的详细信息
         int size = region.length;
-//        deleteMap.put(authority,"");
         for(int i = 0; i<size ;i++){
             View autView= LayoutInflater.from(this).inflate(R.layout.item_sign_type_view, itemView,false);
             TextView textView=autView.findViewById(R.id.name_text);//权限名称
@@ -300,12 +300,14 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         applyDialog.setOnConfirmClickListener(() -> {
             progressHUD.show();
             List<ApplyInfo> applyInfoList = new ArrayList<>();
+            Date date = new Date();
             for(int i=0;i<12;i++) {
                 if(deleteMap.get(i)!=null&&!"".equals(deleteMap.get(i))){
 //            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion
 //            applyDate, Short applyStatus, String applyUserName
-                    ApplyInfo applyInfo=new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(System.currentTimeMillis()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
+                    ApplyInfo applyInfo=new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(date.getTime()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
                             -1, i,deleteMap.get(i).substring(0,deleteMap.get(i).length()-2),deleteMap.get(i).length()<autMap.get(i).length()?(short)-100:-110,SharedPreferencesUtil.getInstance().getUserName());
+                    applyInfo.setApplyReason("");
                     //删除权限
                     if(applyInfo.getApplyStatus()==-110){
                         //剩余权限
@@ -318,6 +320,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                        applyInfo.setAfterDeleteAut(newAuthority);
                    }
                     applyInfoList.add(applyInfo);
+                    date.setTime(date.getTime()+100);
                 }
             }
             mPersenter.deleteAuthorities(applyInfoList);
@@ -333,6 +336,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     public void deleteAuthorities(BaseResponse<String> data){
         if(MyActivityManager.getInstance().getCurrentActivity()==this){
             Toast.makeText(this, R.string.delete_success, Toast.LENGTH_SHORT).show();
+            //重新获取用户权限
             new UserInfoPresent(this).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
             finish();
         }
