@@ -144,11 +144,11 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     public void disableFirstOpen() {
         getSpWithEdit().putBoolean(isFirstOpen, false).apply();
     }
-    public SharedPreferences.Editor setUserName(String userName) {
-        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserName, userName);
-        editor.apply();
-        return editor;
-    }
+//    public SharedPreferences.Editor setUserName(String userName) {
+//        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserName, userName);
+//        editor.apply();
+//        return editor;
+//    }
 
     public void setUserPhone(String userPhone) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserPhone, userPhone);
@@ -226,7 +226,6 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         String url =context.getString(R.string.httpUrl,newUrl);
         setHttpUrl(url);
         ViseHttp.CONFIG().baseUrl(url);
-
     }
 
 }

@@ -33,7 +33,6 @@ public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // 强制竖屏显示
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -57,7 +56,6 @@ public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActi
     protected void onDestroy() {
         super.onDestroy();
         SmecRxBus.get().unregister(this);
-//        keyboardWatcher.destroy();
     }
 
     @Override

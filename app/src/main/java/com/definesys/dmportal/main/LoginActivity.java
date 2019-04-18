@@ -61,7 +61,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     @BindView(R.id.login_btn_att_log)
     Button btn;
 
-
     private String userPhoneNumber;//电话号码
     private Number userId;//用户id
 
@@ -82,8 +81,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         if(isFirst)//第一次使用APP？
             requestPermissions();
         MyCongfig.isShowing = false;
+        //设置状态栏字体颜色为黑色
         StatusUtil.setAndroidNativeLightStatusBar(this,true);
         initView();
+
     }
 
     /*
@@ -137,7 +138,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     @SuppressLint("CheckResult")
     private void initView() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
         //设置输入类型
         Resources resources = this.getResources();
         inputTel.setInputNumberWithLength(resources.getInteger(R.integer.max_phone_length));
@@ -159,7 +159,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
 
         // 点击切换登陆方式
         textLogin.setOnClickListener(view -> {
-
             if (textLogin.getText().toString().equals(getString(R.string.login_text_code))) {
                 textLogin.setText(R.string.login_text_pwd);
                 inputTel.setHint(R.string.msg_pls_input_phone);
