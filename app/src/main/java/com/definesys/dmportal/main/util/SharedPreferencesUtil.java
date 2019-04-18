@@ -46,23 +46,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     }
 
     //-----------------------GET-------------------
-    public User getUser(){
-        User user = new User();
-        user.setUserId(getUserId().intValue());
-        user.setUserType((short) getUserType());
-        user.setName(getUserName());
-        user.setFacultyId(getFaculty());
-        user.setFacultyName(getFacultyName());
-        user.setClassId(getClassId());
-        user.setUserSex((short)getUserSex());
-        user.setLeaveAuthority(getApprpvalStudentAuthority());
-        user.setLeaveTeacherAuthority(getApprpvalTeacherAuthority());
-        user.setUserImage(getUserImageUrl());
-        user.setUserSign(getUserSign());
-        user.setPhone(getUserPhone());
-        user.setBranchId(getUserBranchId());
-        return user;
-    }
+
     public boolean isFirstOpen() {
         return sp.getBoolean(isFirstOpen, true);
     }
@@ -73,6 +57,8 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
     public Number getUserId() {
         return sp.getInt(spUserId, -1);
     }
+
+    public long getLastLeaveTime(){return sp.getLong(spLeaveTime,System.currentTimeMillis());}
 
     public int getUserSex() {
         return sp.getInt(spUserSex, -1);
@@ -207,7 +193,10 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserId, userId.intValue());
         editor.apply();
     }
-
+    public void setLastLeaveTime(long leaveTime) {
+        SharedPreferences.Editor editor = getSpWithEdit().putLong(spLeaveTime, leaveTime);
+        editor.apply();
+    }
     /**
      * 保存List和当前歌曲号
      *

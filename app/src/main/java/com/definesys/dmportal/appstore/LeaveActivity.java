@@ -156,6 +156,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     private ReasonTypeListLayout reasonListView;//请假原因视图
     private ReasonTypeListLayout selectedSubjectView;//查看已选择请假的课程列表视图
     private SubjectTableView subjectTableView;//课表视图
+
     private SubjectTable subjectTableInfo;//课表信息
     private HashMap<Integer,String> hashMap;//选择的课程 xxik 第xx周,星期i，第k节课
 
@@ -459,9 +460,14 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                 return;
             }
         }
-        if(selectTypePosition==2&&(Math.ceil(endDate.getTime()-startDate.getTime())/Constants.oneDay)<=7){
+        if(selectTypePosition==2&&(Math.ceil(endDate.getTime()-startDate.getTime())/Constants.oneDay)<=7){//请假时长检查
             Toast.makeText(this, R.string.time_fail_tip_4,Toast.LENGTH_SHORT).show();
             return;
+        }
+        //限制每次请假后过10分钟才能再次请假
+        int remainTime = (int) ((System.currentTimeMillis() - SharedPreferencesUtil.getInstance().getLastLeaveTime()) /  600000);
+        if (remainTime > 0) {
+            Toast.makeText(this, getString(R.string.time_fail_tip_5,remainTime), Toast.LENGTH_SHORT).show();
         }
         initSubmitDialog();
     }
@@ -479,8 +485,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         String content = "\n  "+ed_reason.getText().toString().trim();
         StringBuilder selectedSubject= new StringBuilder();
         int type = selectTypePosition;
-//        if(selectTypePosition>1&&getString(R.string.shixi).equals(tv_typeReason.getText().toString()))
-//            type=3;
+
         if(type==0) {//课假
             //对hashMap排序
             //这里将map.entrySet()转换成list
@@ -608,6 +613,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             Toast.makeText(this, R.string.submit_success,Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();
             PictureFileUtils.deleteCacheDirFile(this);
+            SharedPreferencesUtil.getInstance().setLastLeaveTime(System.currentTimeMillis());
             //请假人提交请假申请成功
             SmecRxBus.get().post("addMessage",new MyMessage(msg,SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,new Date()));
             finish();
@@ -758,7 +764,6 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @Override
     protected void onStop() {
         super.onStop();
-//        isVisible = ed_reason.isFocused();
         ed_reason.setCursorVisible(ed_reason.isFocused());
     }
 
@@ -767,33 +772,5 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     public LeaveRequestPresenter getPersenter() {
         return new LeaveRequestPresenter(this);
     }
-//    int count=0;
-//    private void buttonBeyondKeyboardLayout(final View root, final View button) {
-//        // 监听根布局的视图变化
-//        root.getViewTreeObserver().addOnGlobalLayoutListener(
-//                () -> {
-//                    Log.d("mydemo","entry"+isScroll);
-//                    if (isScroll) {
-//                        if (ed_reason.isCursorVisible() && isVisible) {
-//                            sc_scroll.scrollTo(0, (int) button.getY());
-//                            new Handler().postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    sc_scroll.scrollTo(0, (int) lg_reason.getY());
-//                                    Log.d("mydemo","scroll_delay");
-//                                }
-//                            }, Constants.scrollDelay);
-//
-//                        } else {
-//                            // 键盘隐藏
-//                            root.scrollTo(0, 0);
-//                            if (!isVisible && ++count > 1) {
-//                                isVisible = true;
-//                            }
-//                        }
-//                    }
-//                });
-//    }
-
 
 }
