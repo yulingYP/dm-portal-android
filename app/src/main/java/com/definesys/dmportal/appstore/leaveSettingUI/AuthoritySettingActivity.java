@@ -63,7 +63,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     LinearLayout lg_appHis;
     @BindView(R.id.apply_history_layout)
     LinearLayout lg_alyHis;
-    @BindView(R.id.tempText)
+    @BindView(R.id.temp_text)
     TextView tv_temp;
     private HashMap<Integer,String> stuMap;//审批请假学生权限Map
     private HashMap<Integer,String> teaMap;//审批请假教师权限Map
