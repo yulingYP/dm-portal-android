@@ -63,6 +63,8 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
     LinearLayout lg_appHis;
     @BindView(R.id.apply_history_layout)
     LinearLayout lg_alyHis;
+    @BindView(R.id.tempText)
+    TextView tv_temp;
     private HashMap<Integer,String> stuMap;//审批请假学生权限Map
     private HashMap<Integer,String> teaMap;//审批请假教师权限Map
     @Override
@@ -87,9 +89,10 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         RxView.clicks(lg_stu)
                 .throttleFirst(Constants.loadAnim, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
-                    if(tv_stu.getVisibility()== View.VISIBLE){//已显权限
+                   if(tv_stu.getVisibility()== View.VISIBLE){//已显权限
                         AnimUtils.setInstance(tv_stu,iv_stu,tv_stu.getMeasuredHeight()).toggle(true);
-                    }else {//未显示权限
+                    }
+                    else {//未显示权限
                        if(stuMap==null&&"".equals(tv_stu.getText().toString())){//还没有获取到详细权限
                             httpPost(0);
                        }else if(stuMap!=null&&"".equals(tv_stu.getText().toString())) {//网络请求已发送但暂未获取到网络请求
@@ -195,18 +198,19 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         int max=0;
         if(type==0){//0.审批学生权限
             stuMap = new HashMap<>();
+
             authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
-            max=8;
+            max= 9;
             approverTypes=getResources().getStringArray(R.array.approverType);
         }else if(type==1){//审批老师权限
             teaMap = new HashMap<>();
             authorityStr=""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
-            max = 2;
+            max = 3;
             approverTypes=getResources().getStringArray(R.array.approverType_2);
         }
 
         List<String> autList = new ArrayList<>();
-        for(int i = 0 ; i <max;i++){
+        for(int i = 0 ; i < max;i++){
             if(authorityStr.contains(""+i)){
                 if(type==0){
                     stuMap.put(i,approverTypes[i]+" ");
@@ -262,8 +266,8 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 Toast.makeText(this, ("".equals(data.getMsg())?getString(R.string.net_work_error):data.getMsg()),Toast.LENGTH_SHORT).show();
             }
             showTextByMap(type);
+//            new Handler().postDelayed(()->{progressHUD.dismiss();},Constants.loadAnim);
             progressHUD.dismiss();
-
         }
     }
     /**
@@ -281,13 +285,13 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                             .append("\n");
                 }
             }
+            //设置文本
+            tv_temp.setText(content.toString().substring(0,content.length()-1));
             tv_stu.setText(content.toString().substring(0,content.length()-1));
-            //测量宽高
-            tv_stu.measure(0,0);
             //获取文本高度
-            tv_stu.post(()->{
-                stuMap.put(-1,""+tv_stu.getMeasuredHeight());
-                AnimUtils.setInstance(tv_stu,iv_stu,tv_stu.getMeasuredHeight()).toggle(true);
+            tv_temp.post(()->{
+                stuMap.put(-1,""+tv_temp.getMeasuredHeight());
+                AnimUtils.setInstance(tv_stu,iv_stu,Integer.valueOf(stuMap.get(-1))).toggle(true);
             });
 
         }else if(type==1){//审批教师
@@ -297,13 +301,13 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                             .append("\n");
                 }
             }
+            //设置文本
+            tv_temp.setText(content.toString().substring(0,content.length()-1));
             tv_tea.setText(content.toString().substring(0,content.length()-1));
-            //测量宽高
-            tv_tea.measure(0,0);
             //获取文本高度
-            tv_tea.post(()->{
-                teaMap.put(-1,""+tv_tea.getMeasuredHeight());
-                AnimUtils.setInstance(tv_tea,iv_tea,tv_tea.getMeasuredHeight()).toggle(true);
+            tv_temp.post(()->{
+                teaMap.put(-1,""+tv_temp.getMeasuredHeight());
+                AnimUtils.setInstance(tv_tea,iv_tea,Integer.valueOf(teaMap.get(-1))).toggle(true);
             });
 
         }

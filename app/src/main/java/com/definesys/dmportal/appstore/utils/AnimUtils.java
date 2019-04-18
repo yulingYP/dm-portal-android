@@ -105,7 +105,7 @@ public class AnimUtils {
         v.setVisibility(View.VISIBLE);
         if(!isVisible){
             v.measure(0,0);
-            mHeight=v.getMeasuredHeight();
+            mHeight = v.getMeasuredHeight();
         }
         ValueAnimator animator = createDropAnimator(v, 0, mHeight);
         animator.start();
