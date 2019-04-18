@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import com.definesys.dmportal.R;
+import com.definesys.dmportal.appstore.utils.Constants;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,6 +68,12 @@ public class MyDatePicker extends LinearLayout {
     }
 
     private void initView(Context context) {
+        Date date = new Date();
+        //可以提交30天以前的请假请求
+        long tempDate = (long) Constants.oneDay*30L;
+        date.setTime(date.getTime()- tempDate);
+        cal.setTime(date);
+
         mContent = context;
         LayoutInflater.from(mContent).inflate(R.layout.view_date_picker, this);
         ButterKnife.bind(this);
@@ -143,7 +150,6 @@ public class MyDatePicker extends LinearLayout {
 
     private String initDate(int year,int month,int day,int hour) {
         return mContent.getString(R.string.date_des,year,month,day,hour);
-//        ""+year+"年"+String.format("%02d",month)+"月"+String.format("%02d",(day))+"日 "+String.format("%02d",(hour))+"时";
     }
 
     public interface onClickEventListener{
@@ -173,7 +179,7 @@ public class MyDatePicker extends LinearLayout {
 
         num_month.setValue(cal.get(Calendar.MONTH)+1);
         num_day.setMaxValue(getDays(year,month));
-        if(day==currentDay&&year==currentYear)
+        if(month==currentMonth&&year==currentYear)
             num_day.setMinValue(currentDay);
         else
             num_day.setMinValue(1);

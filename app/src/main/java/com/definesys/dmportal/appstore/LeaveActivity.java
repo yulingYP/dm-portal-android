@@ -352,17 +352,20 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
                 @Override
                 public void onConfirm(String date) {
                     dateDialog.dismiss();
-                    boolean isBefore = checkDate(isStart, date);
-                    if(!isBefore){
+                    int checkCode = checkDate(isStart, date);
+                    if(checkCode==0){
                         Toast.makeText(LeaveActivity.this, R.string.time_fail_tip, Toast.LENGTH_SHORT).show();
                         return;
-                    }
-                    if(selectTypePosition==1&&(endDate.getTime()-startDate.getTime())/(float)Constants.oneDay>7){//短假不在1-7天以内
+                    }else if(checkCode==2){
                         Toast.makeText(LeaveActivity.this, R.string.time_fail_tip_2, Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if(selectTypePosition==1&&(endDate.getTime()-startDate.getTime())/(float)Constants.oneDay>7){//短假不在1-7天以内
+                        Toast.makeText(LeaveActivity.this, R.string.time_fail_tip_3, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if(selectTypePosition==2&&(endDate.getTime()-startDate.getTime())/(float)Constants.oneDay<=7){
-                        Toast.makeText(LeaveActivity.this, R.string.data_fail, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LeaveActivity.this, R.string.time_fail_tip_4, Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (isStart)
@@ -410,20 +413,20 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
      * 检测选择的时间是否比另一个时间小
      * @param isStart 选择的是否是开始时间
      * @param date 选择的日期
-     * @return isBefore
+     * @return 0.结束时间小于当前时间 1.正常 2.结束时间小于开始时间
      */
-    private boolean checkDate(boolean isStart, String date) {
+    private int checkDate(boolean isStart, String date) {
         startDate = null;
         endDate = null;
         try {
             startDate = isStart?df.parse(date):df.parse(tv_timeStart.getText().toString());
             endDate = isStart?df.parse(tv_timeEnd.getText().toString()):df.parse(date);
             if(endDate.before(new Date()))
-                return false;
-            return startDate.before(endDate);
+                return 0;
+            return startDate.before(endDate)?1:2;
         } catch (ParseException e) {
             e.printStackTrace();
-            return false;
+            return 2;
         }
     }
 
@@ -457,7 +460,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             }
         }
         if(selectTypePosition==2&&(Math.ceil(endDate.getTime()-startDate.getTime())/Constants.oneDay)<=7){
-            Toast.makeText(this, R.string.data_fail,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.time_fail_tip_4,Toast.LENGTH_SHORT).show();
             return;
         }
         initSubmitDialog();

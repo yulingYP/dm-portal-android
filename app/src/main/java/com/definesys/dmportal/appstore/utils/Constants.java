@@ -10,7 +10,7 @@ public interface Constants {
     int loadAnim = 300 ;//加载展示动画的时长
     long clickdelay = 600;
     int requestSize = 5;//每次列表请求的数量大小
-    int oneDay = 1000*60*60*24;//1天
+    int oneDay = 86400000;//1天
     int SIGN_CODE = 1001;//手写签名的回调代码
 
     int aut0 = 0;//寝室长权限

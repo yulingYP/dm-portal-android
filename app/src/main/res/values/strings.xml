@@ -95,7 +95,6 @@
     <string name="no_subject_select">请选择要请假的课程</string>
     <string name="no_reason_des">请假的具体原因不能为空</string>
     <string name="no_reason_des_2">请按要求填写请假的具体原因</string>
-    <string name="data_fail">长假的天数要多于7天</string>
     <string name="confirm_info_tip">请确认信息是否正确,确认无误后点击确定提交申请</string>
     <string name="name_tip">姓名:%s</string>
     <string name="type_tip">请假类型:%s</string>
@@ -112,8 +111,11 @@
     <string name="word_count">%d/150</string>
     <string name="name">姓名</string>
     <string name="type">请假类型</string>
-    <string name="time_fail_tip">结束时间不能小于当前时间或请假开始时间</string>
-    <string name="time_fail_tip_2">短假最多只能请7天假</string>
+    <string name="time_fail_tip">结束时间不能小于当前时间</string>
+    <string name="time_fail_tip_2">结束时间不能小于请假开始时间</string>
+    <string name="time_fail_tip_3">短假最多只能请7天假</string>
+    <string name="time_fail_tip_4">长假的天数要多于7天</string>
+
     <string name="start_time">开始时间</string>
     <string name="end_time">结束时间</string>
     <string name="time_long">时长</string>
