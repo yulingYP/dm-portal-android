@@ -37,6 +37,7 @@ import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
 import com.definesys.dmportal.appstore.leaveSettingUI.AuthoritySettingActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
+import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.MainPresenter;
@@ -259,7 +260,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 hasNotify(myMessage);
             }
             else if(myMessage.getPushResult()==0&&
-                    (myMessage.getMessageType()==2||myMessage.getMessageType()==5)&&myMessage.getMessageExtend2()==4){//未读的审批请求消息
+                    ((myMessage.getMessageType()==2||myMessage.getMessageType()==5)&&myMessage.getMessageExtend2()==4)//未读的审批请求消息
+                    ||myMessage.getMessageType()==6){//未读的权限修改信息
                 setRed(true);
             }
 
@@ -435,7 +437,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 content = getString(R.string.approval_result_tip_7);
             }else if(myMessage.getMessageType()==6){
                 title = getString(R.string.approval_result_5);
-                content = "y".equals(myMessage.getMessageContent().toLowerCase())?getString(R.string.approval_result_tip_8,myMessage.getMessageExtend()):getString(R.string.approval_result_tip_9,myMessage.getMessageExtend());
+                content = "delete".equals(myMessage.getMessageContent().toLowerCase())?getString(R.string.approval_result_tip_8, DensityUtil.getAuthorityName(this,myMessage.getMessageExtend2())):getString(R.string.approval_result_tip_9, DensityUtil.getAuthorityName(this,myMessage.getMessageExtend2()));
             }
             else if(myMessage.getMessageType()==10){//新的请假请求，跳转到列表页面
                 title = getString(R.string.leave_request);
@@ -502,8 +504,14 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("type", myMessage.getMessageExtend2().intValue());
         }else if(myMessage.getMessageType()==6){////权限发生变化
             intent = new Intent(this, AuthoritySettingActivity.class);
-            if("y".equals(myMessage.getMessageContent().toLowerCase()))//权限已被删除，重新获取权限
+            if("delete".equals(myMessage.getMessageContent().toLowerCase()))//权限已被删除，重新获取权限
                 mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+            else if("change".equals(myMessage.getMessageContent().toLowerCase())){//权限已被修改，但用户没有修改后的权限
+                short applyAut  = myMessage.getMessageExtend2();
+                String aut = applyAut<10?""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority():""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
+                if(!aut.contains(""+applyAut%10))
+                    mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+            }
         } else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
             intent = new Intent(this, LeaveListActivity.class);
             intent.putExtra("userId",(int) SharedPreferencesUtil.getInstance().getUserId());

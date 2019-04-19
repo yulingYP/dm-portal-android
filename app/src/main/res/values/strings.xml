@@ -372,8 +372,8 @@
     <string name="approval_result_tip_5">您的权限申请请求已被拒绝</string>
     <string name="approval_result_tip_6">已通过您的权限申请请求</string>
     <string name="approval_result_tip_7">有新的权限申请请求，请去审批</string>
-    <string name="approval_result_tip_8">您的%s已被删除</string>
-    <string name="approval_result_tip_9">您的%s已被修改</string>
+    <string name="approval_result_tip_8">您的%s权限已被删除</string>
+    <string name="approval_result_tip_9">您的%s权限已被修改</string>
     <string name="leave_request">请假请求</string>
     <string name="leave_request_tip_1">有新的请假请求,请去审批</string>
     <string name="leave_request_tip_2">有新的请假请求,请查看</string>
