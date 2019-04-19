@@ -245,6 +245,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         SharedPreferences.Editor editor = getSpWithEdit().putString("url", url);
         editor.apply();
     }
+
     public String getHttpUrl() {
         return sp.getString("url", HttpConst.url);
     }

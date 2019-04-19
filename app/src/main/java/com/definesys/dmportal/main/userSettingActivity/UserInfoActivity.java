@@ -1,12 +1,9 @@
 package com.definesys.dmportal.main.userSettingActivity;
 
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.MyActivityManager;
@@ -20,7 +17,8 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 
-import java.util.Objects;
+import butterknife.ButterKnife;
+
 
 @Route(path = ARouterConstants.UserInfoActivity)
 public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
@@ -32,7 +30,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-        if(Objects.equals(userId, SharedPreferencesUtil.getInstance().getUserId())){//本人信息
+        ButterKnife.bind(this);
+        if(userId.intValue() == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
             user = SharedPreferencesUtil.getInstance().getUserInfo();
             intView();
         }else {

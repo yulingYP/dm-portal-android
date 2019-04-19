@@ -29,10 +29,11 @@
             android:layout_height="wrap_content">
             <TextView
                 android:text="@string/my_authority_des"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:id="@+id/my_aut_des_text"
-                android:layout_marginBottom="2dp"
+                android:paddingBottom="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <RelativeLayout
