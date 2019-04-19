@@ -91,9 +91,8 @@ public class MyFragment extends Fragment {
     @BindView(R.id.feedback_layout)
     LinearLayout lg_fed;
 
-//    @BindView(R.id.bind_phone_layout)
-//    LinearLayout lg_phone;
-
+    @BindView(R.id.person_layout)
+    LinearLayout lg_person;
 
     @BindView(R.id.setting_layout)
     LinearLayout lg_setting;
@@ -153,7 +152,6 @@ public class MyFragment extends Fragment {
         initView();
         requestPermissions();
         refreshUserImage();
-        refreshUserInformation();
     }
 
 
@@ -162,7 +160,7 @@ public class MyFragment extends Fragment {
        updateShowInfo();
 //        top.setOnClickListener((view) ->
 //                ARouter.getInstance().build("/dmportal/usercenter/UserInformationActivity").navigation());
-
+        //点击头像
         RxView.clicks(userImage).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
@@ -172,18 +170,16 @@ public class MyFragment extends Fragment {
                     photoStyles.add(getString(R.string.ui_check_head));
                     show(photoStyles);
                 });
-
-//        //手机绑定
-//        RxView.clicks(lg_phone)
-//                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(o ->
-//                        ARouter.getInstance()
-//                                .build(ARouterConstants.PhoneBindActivity)
-//                                .withBoolean("isBind",!"".equals(SharedPreferencesUtil.getInstance().getUserPhone()))
-//                                .navigation()
-//                );
-//
+        //个人信息
+        RxView.clicks(lg_person)
+                .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o ->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.UserInfoActivity)
+                                .withObject("userId",SharedPreferencesUtil.getInstance().getUserId())
+                                .navigation()
+                );
         //反馈建议
         RxView.clicks(lg_fed)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -217,7 +213,7 @@ public class MyFragment extends Fragment {
     //更新姓名和院系
     public void updateShowInfo() {
         userName.setText(SharedPreferencesUtil.getInstance().getUserName());
-        String des = SharedPreferencesUtil.getInstance().getFacultyName();
+        String des = SharedPreferencesUtil.getInstance().getUserType()==0?SharedPreferencesUtil.getInstance().getFacultyName():SharedPreferencesUtil.getInstance().getUserBranchName();
         welcomeText.setText("".equals(des)?getString(R.string.scool_name):des);
     }
 
@@ -261,26 +257,7 @@ public class MyFragment extends Fragment {
 
 
 
-    /**
-     * 更新完成刷新显示用户其他信息（姓名、称呼）
-     */
-    public void refreshUserInformation() {
-//        userName.setText(SharedPreferencesUtil.getInstance().getUserName());
-//        // 判断性别设置欢迎语
-//        String sex_temp = SharedPreferencesUtil.getInstance().getUserSex();
-//        if (!sex_temp.equals("")) {
-//            if (sex_temp.equals(getString(R.string.sex_male))) {
-//                welcomeText.setText(getString(R.string.uc_hello, getString(R.string.sex_male_call)));
-//            } else {
-//                welcomeText.setText(getString(R.string.uc_hello, getString(R.string.sex_female_call)));
-//            }
-//        } else {
-//            welcomeText.setText(getString(R.string.uc_hello, ""));
-//        }
-
-    }
     private void show(List<String> list) {
-
         BottomDialog bottomDialog = new BottomDialog(getContext(),list);
         bottomDialog.setOnOptionClickListener(position -> {
             if(position==2){//查看头像

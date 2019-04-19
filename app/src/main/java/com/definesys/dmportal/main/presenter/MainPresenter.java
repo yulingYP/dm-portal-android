@@ -27,8 +27,11 @@ public class MainPresenter extends BasePresenter {
     //绑定或解绑手机成功
     public static final String SUCCESSFUL_BIND_PHONE = "SUCCESSFUL_BIND_PHONE";
 
-    //获取用户信息成功
+    //获取用户自己的信息成功
     public static final String SUCCESSFUL_GET_USER_INFO="SUCCESSFUL_GET_USER_INFO";
+
+    //获取指定用户信息成功
+    public static final String SUCCESSFUL_GET_REQUEST_USER_INFO = "SUCCESSFUL_GET_REQUEST_USER_INFO";
 
     //获取用户姓名成功
     public static final String SUCCESSFUL_GET_USER_NAME="SUCCESSFUL_GET_USER_NAME";

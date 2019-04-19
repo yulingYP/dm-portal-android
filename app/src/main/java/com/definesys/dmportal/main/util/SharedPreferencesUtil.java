@@ -47,6 +47,24 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
 
     //-----------------------GET-------------------
 
+    public User getUserInfo(){
+        User user = new User();
+        user.setName(getUserName());//姓名
+        user.setUserId(getUserId().intValue());//用户id
+        user.setUserType((short)getUserType());//用户类型
+        user.setUserSex((short)getUserSex());//用户性别
+        user.setPhone(getUserPhone());//用户手机
+        user.setLeaveTeacherAuthority(getApprpvalTeacherAuthority());//审批教师请假
+        user.setLeaveAuthority(getApprpvalStudentAuthority());//审批学生请假
+        user.setUserImage(getUserImageUrl());//头像
+        user.setUserSign(getUserSign());//签名
+        user.setBranchId(getUserBranchId());//部门id
+        user.setBranchName(getUserBranchName());//部门名称
+        user.setFacultyId(getFaculty());//院系id
+        user.setFacultyName(getFacultyName());//院系名称
+        return user;
+    }
+
     public boolean isFirstOpen() {
         return sp.getBoolean(isFirstOpen, true);
     }
@@ -97,6 +115,8 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
 
     public String getUserBranchId() {   return sp.getString(spBranchId,"");}
 
+    public String getUserBranchName() {   return sp.getString(spBranchName,"");}
+
     public int getUserType() {   return sp.getInt(spUserType,0);}
     public int getApprpvalTeacherAuthority() {   return sp.getInt(spApprovalTeaAut,-1);}
     public int getApprpvalStudentAuthority() {   return sp.getInt(spApprovalStuAut,-1);}
@@ -114,6 +134,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                     .putString(spUserHead,user.getUserImage())//用户头像
                     .putString(spUserSign,user.getUserSign())//用户签名
                     .putString(spBranchId,user.getBranchId())//请假部门id
+                    .putString(spBranchName,user.getBranchName())//请假部门名称
                     .putInt(spApprovalStuAut,user.getLeaveAuthority())//学生请假方面的权限
                     .putInt(spApprovalTeaAut,user.getLeaveTeacherAuthority())//教师请假方面的权限
                     .putString(spUserLocalimg,"");//本地头像
@@ -135,6 +156,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                 .putInt(spUserType,0)//用户类型
                 .putString(spToken,"")//Token
                 .putString(spBranchId,"")//教师请假部门id
+                .putString(spBranchName,"")//教师请假部门名称
                 .putInt(spApprovalStuAut,-1)//请假权限
                 .putInt(spApprovalTeaAut,-1)//请假权限
                 .putString(spUserLocalimg,"");//本地头像路径
@@ -179,10 +201,14 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spUserLocalimg, userurl);
         editor.apply();
     }
-    public SharedPreferences.Editor setBranchId(String branchId) {
+    public void setBranchId(String branchId) {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spBranchId, branchId);
         editor.apply();
-        return editor;
+    }
+
+    public void setBranchName(String branchName) {
+        SharedPreferences.Editor editor = getSpWithEdit().putString(spBranchName, branchName);
+        editor.apply();
     }
     public void setUserSetting(int setCode) {
         SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserSetting+getUserId(), setCode);

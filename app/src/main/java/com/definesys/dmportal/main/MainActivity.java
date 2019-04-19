@@ -25,6 +25,7 @@ import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.BuildConfig;
+import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.AppLyListActivity;
 import com.definesys.dmportal.appstore.ApplyInfoActivity;
@@ -105,7 +106,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         //通知管理
         notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         //获取用户信息
-        mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+        mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
         //获取推送失败和未读的消息
         mPersenter.getPushErrorReadMsg(SharedPreferencesUtil.getInstance().getUserId());
 
@@ -201,7 +202,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         });
 
         RxView.clicks(mTitlebar)
-                .subscribe(obj-> mPersenter.getPushErrorReadMsg(SharedPreferencesUtil.getInstance().getUserId()));
+                .subscribe(obj-> mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId()));
     }
 
     @Override
@@ -235,7 +236,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             @Tag(MainPresenter.SUCCESSFUL_GET_USER_INFO)
     }, thread = EventThread.MAIN_THREAD)
     public void getUserUrl(String str) {
-       if(myFragment!=null) {
+       if( MyActivityManager.getInstance().getCurrentActivity()==this&&myFragment!=null) {
 //           SharedPreferencesUtil.getInstance().setUserLocal("");
            myFragment.refreshUserImage();
            myFragment.updateShowInfo();
@@ -483,21 +484,11 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("leaveId", myMessage.getMessageExtend());
             intent.putExtra("msgId",myMessage.getMessageId());
             intent.putExtra("type", myMessage.getMessageExtend2().intValue());
-//            if(temp!=null) {
-//                intent.putExtra("leaveId", temp.getMessageExtend());
-//                intent.putExtra("type", temp.getMessageExtend2());
-//                intent.putExtra("date", temp.getSendTime());
-//                intent.putExtra("approvalContent", temp.getMessageContent());
-//            }else {
-//                intent.putExtra("leaveId", myMessage.getMessageExtend());
-//                intent.putExtra("msgId",myMessage.getMessageId());
-//                intent.putExtra("type", myMessage.getMessageExtend2());
-//            }
         }else if(myMessage.getMessageType()==4){//申请人申请结果
             intent = new Intent(this, ApplyInfoActivity.class);
             intent.putExtra("applyId", myMessage.getMessageExtend());
             if(myMessage.getMessageExtend2()==1)//权限申请通过，重新获取权限信息
-                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
         }else if(myMessage.getMessageType()==5){//审批人新的审批任务，跳转到详情页
             intent = new Intent(this, ApprovalApplyInfoActivity.class);
             intent.putExtra("applyId", myMessage.getMessageExtend());
@@ -505,12 +496,12 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         }else if(myMessage.getMessageType()==6){////权限发生变化
             intent = new Intent(this, AuthoritySettingActivity.class);
             if("delete".equals(myMessage.getMessageContent().toLowerCase()))//权限已被删除，重新获取权限
-                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
             else if("change".equals(myMessage.getMessageContent().toLowerCase())){//权限已被修改，但用户没有修改后的权限
                 short applyAut  = myMessage.getMessageExtend2();
                 String aut = applyAut<10?""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority():""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
                 if(!aut.contains(""+applyAut%10))
-                    mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+                    mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
             }
         } else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
             intent = new Intent(this, LeaveListActivity.class);

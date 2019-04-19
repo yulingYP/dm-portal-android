@@ -395,7 +395,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         if(MyActivityManager.getInstance().getCurrentActivity()==this){
             Toast.makeText(this, R.string.delete_success, Toast.LENGTH_SHORT).show();
             //重新获取用户权限
-            new UserInfoPresent(this).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType());
+            new UserInfoPresent(this).getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
             finish();
         }
     }

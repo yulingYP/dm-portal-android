@@ -42,6 +42,9 @@ public interface SharedPreferencesParams {
     //sp文件中教师请假部门id
     String spBranchId = "u_branch_id ";
 
+    //sp文件中教师请假部门名称
+    String spBranchName = "u_branch_name ";
+
     //sp文件中院系name
     String spFacultyName = "u_faculty_name";
 

@@ -48,6 +48,8 @@ public class User{
     //《-----教师----》
     private String branchId;//请假部门编号
 
+    private String branchName;//部门名称
+
     private String attribute2;
 
     private String attribute3;
@@ -249,4 +251,11 @@ public class User{
         this.userSign = userSign;
     }
 
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
 }

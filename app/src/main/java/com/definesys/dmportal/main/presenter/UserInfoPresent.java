@@ -29,13 +29,12 @@ public class UserInfoPresent extends BasePresenter {
         super(context);
     }
     //获取用户信息
-    public void getUserInfo(Number id,int userType){
+    public void getUserInfo(Number id){
         //提示单机登陆或账号冻结
         if(MyCongfig.isShowing)
             return;
         Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
-        map.put("userType",userType);
         Log.d("myMap",new Gson().toJson(map));
         ViseHttp.POST(HttpConst.getUserInfo)
                 .tag(HttpConst.getUserInfo)
@@ -45,12 +44,16 @@ public class UserInfoPresent extends BasePresenter {
                     public void onSuccess(BaseResponse<User> data) {
                         switch (data.getCode()) {
                             case "200":
-                                SharedPreferencesUtil.getInstance().setUser(data.getData());
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_USER_INFO, data.getData().getUserImage());
+                                if(data.getData().getUserId()==SharedPreferencesUtil.getInstance().getUserId().intValue()) {//获取的是自己的信息
+                                    SharedPreferencesUtil.getInstance().setUser(data.getData());
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_USER_INFO, data.getData().getUserImage());
+                                }
+                                //获取的是指定的信息
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_REQUEST_USER_INFO, data);
                                 break;
                             default:
 //                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
-                                 getUserInfo(id,userType);//重新获取
+                                 getUserInfo(id);//重新获取
                                 break;
                         }
                     }
@@ -58,7 +61,7 @@ public class UserInfoPresent extends BasePresenter {
                     @Override
                     public void onFail(int errCode, String errMsg) {
 //                        Log.d("mydemo",errMsg);
-                         getUserInfo(id,userType);//重新获取
+                         getUserInfo(id);//重新获取
 //                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
                     }
                 });
