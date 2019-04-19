@@ -49,7 +49,7 @@ public interface SharedPreferencesParams {
     String spFacultyName = "u_faculty_name";
 
     //sp文件中班级id
-    String spClass = "u_class";
+    String spClassId = "u_class";
 
     //sp文件中各类历史的tag 格式 xxx,xxx,xxx
     String spSearchHistory = "u_history";

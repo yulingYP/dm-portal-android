@@ -62,6 +62,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         user.setBranchName(getUserBranchName());//部门名称
         user.setFacultyId(getFaculty());//院系id
         user.setFacultyName(getFacultyName());//院系名称
+        user.setClassId(getClassId());//班级id
         return user;
     }
 
@@ -103,7 +104,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
 
     public String getFacultyName() {   return sp.getString(spFacultyName,"");}
 
-    public String getClassId() {   return sp.getString(spClass,"");}
+    public String getClassId() {   return sp.getString(spClassId,"");}
 
     public String getUserImageUrl() {   return sp.getString(spUserHead,"");}
 
@@ -130,7 +131,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                     .putInt(spUserSex, user.getUserSex())
                     .putString(spFaculty,user.getFacultyId())//院系id
                     .putString(spFacultyName,user.getFacultyName())//院系名称
-                    .putString(spClass,user.getClassId())//班级
+                    .putString(spClassId,user.getClassId())//班级id
                     .putString(spUserHead,user.getUserImage())//用户头像
                     .putString(spUserSign,user.getUserSign())//用户签名
                     .putString(spBranchId,user.getBranchId())//请假部门id
@@ -150,10 +151,10 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                 .putInt(spUserSex, -1)
                 .putString(spFaculty,"")//院系id
                 .putString(spFacultyName,"")//院系名称
-                .putString(spClass,"")//班级
+                .putString(spClassId,"")//班级
                 .putString(spUserHead,"")//用户头像
                 .putString(spUserSign,"")//用户签名
-                .putInt(spUserType,0)//用户类型
+                .putInt(spUserType,-1)//用户类型
                 .putString(spToken,"")//Token
                 .putString(spBranchId,"")//教师请假部门id
                 .putString(spBranchName,"")//教师请假部门名称
