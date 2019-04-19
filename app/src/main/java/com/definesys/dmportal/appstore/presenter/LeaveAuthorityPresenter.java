@@ -194,7 +194,7 @@ public class LeaveAuthorityPresenter extends BasePresenter {
 
                                 for(ApplyInfo applyInfo:applyList){
                                     //向消息页发送权限修改信息
-                                    SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date()), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, applyInfo.getApplyStatus()==-100?"change":"delete", applyInfo.getApplyAuthority().shortValue(), "", new Date()));
+                                    SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date()), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, applyInfo.getApplyStatus()==-100?"change":"delete", applyInfo.getApplyAuthority().shortValue(), applyInfo.getApplyId(), new Date()));
                                 }
                                 break;
                             default:

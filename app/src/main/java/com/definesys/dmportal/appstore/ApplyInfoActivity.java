@@ -97,9 +97,9 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         //姓名
         tv_name.setText(getString(R.string.name_tip,applyInfo.getApplyUserName()));
         //权限类型
-        tv_type.setText(getString(R.string.apply_authority,DensityUtil.getAuthorityName(this,(short)(applyInfo.getApplyAuthority()+applyInfo.getApplyAuthorityType()*10))));
+        tv_type.setText(getString(R.string.apply_authority,DensityUtil.getAuthorityName(this,applyInfo.getApplyAuthorityType()>0?(short)(applyInfo.getApplyAuthority()+applyInfo.getApplyAuthorityType()*10):applyInfo.getApplyAuthority().shortValue())));
         //权限范围
-        tv_region.setText(getString(R.string.authority_region,applyInfo.getApplyRegion()));
+        tv_region.setText(applyInfo.getApplyStatus()>=0?getString(R.string.authority_region,applyInfo.getApplyRegion()):getString(R.string.authority_delete,applyInfo.getApplyRegion()));
         //申请原因
         tv_reason.setText(getString(R.string.authority_reason,applyInfo.getApplyReason()));
         //申请时间
@@ -115,7 +115,8 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
                     progressHUD.show();
                     mPersenter.getApplyRecordById(applyInfo.getApplyId());
                 });
-
+        tv_reason.setVisibility("".equals(applyInfo.getApplyReason())?GONE:VISIBLE);
+        lg_check.setVisibility(applyInfo.getApplyStatus()>=0?VISIBLE:GONE);
     }
     /**
      * 获取权限详细信息失败

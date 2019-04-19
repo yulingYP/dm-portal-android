@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -443,10 +442,9 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         }
         if("".equals(ed_reason.getText().toString())){
             Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(() -> {
-                Log.d("mydemo","Height=="+sc_scroll.getMeasuredHeight());
-                sc_scroll.scrollTo(0,(int)lg_reason.getY());
-            }, Constants.scrollDelay);
+            new Handler().postDelayed(() ->
+                sc_scroll.scrollTo(0,(int)lg_reason.getY())
+            , Constants.scrollDelay);
             ed_reason.setFocusable(true);
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();

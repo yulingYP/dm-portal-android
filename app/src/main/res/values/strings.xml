@@ -141,6 +141,8 @@
     <string name="status_tip_5">已销假</string>
     <string name="status_tip_6">未请假</string>
     <string name="status_tip_7">获取失败</string>
+    <string name="status_tip_8">已修改</string>
+    <string name="status_tip_9">已删除</string>
 
     <string name="group_des">社团</string>
     <string name="ed_search_tip">请输入种类或社团名称</string>
@@ -278,6 +280,9 @@
     <string name="tag_18">教学院长</string>
     <string name="tag_19">部门请假负责人</string>
     <string name="tag_20">部门教学负责人</string>
+    <string name="tag_21">已修改</string>
+    <string name="tag_22">已删除</string>
+
 
     <string name="leave_absence">请假条</string>
     <string name="share_img">分享图片</string>
@@ -348,6 +353,8 @@
     <string name="message_tip_14">您的权限申请请求已提交</string>
     <string name="message_tip_15">您的%s权限已被删除</string>
     <string name="message_tip_16">您的%s权限已被修改</string>
+    <string name="message_tip_17">已删除您的%s权限</string>
+    <string name="message_tip_18">已修改您的%s权限</string>
     <string name="request_date_type">%d-%02d-%02d %02d:%02d:%02d</string>
 
     <string name="user_info">个人信息</string>
@@ -483,6 +490,7 @@
     <string name="apply_detail_info">申请详情</string>
     <string name="apply_authority">类型:\n%s权限</string>
     <string name="authority_region">管理范围:\n%s</string>
+    <string name="authority_delete">删除范围:\n%s</string>
     <string name="apply_region">管理范围:</string>
     <string name="authority_type">权限类型:</string>
     <string name="authority_reason">申请原因:\n%s</string>
@@ -501,6 +509,7 @@
     <string name="my_auhority">我的权限</string>
     <string name="delete_error_tip_1">请先选择要删除的权限</string>
     <string name="delete_error_tip_2">无法删除该选项，请先修改%s权限</string>
+    <string name="delete_error_tip_3">请填写具体原因</string>
     <string name="delete_authority_des">%s权限\n%s</string>
     <string name="delete_success">删除成功</string>
 

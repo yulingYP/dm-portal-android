@@ -159,17 +159,11 @@
     <color name="stroke_text">#cccccc</color>
     <color name="text_noselect">#9f9f9f</color>
     <color name="des_color">#B5B5B6</color>
-    <color name="smec_text">#101010</color>
-    <color name="two_code_des">#385571</color>
-    <color name="text_color_2">#303030</color>
 
     <color name="login_btn">#a1886a</color>
-    <color name="login_btn1">#ebd49f</color>
-    <color name="tab_bar_color">#ebd49f</color>
-    <color name="gold">#ebd49f</color>
+    <color name="aut_change">#e9967a</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="gold_text">#ffc894</color>
     <color name="hint_gray">#8e8e8e</color>
     <color name="title_start_color">#068DD7</color>
     <color name="title_end_color">#87cefa</color>

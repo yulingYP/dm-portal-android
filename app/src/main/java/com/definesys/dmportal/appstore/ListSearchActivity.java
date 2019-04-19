@@ -135,6 +135,8 @@ public class ListSearchActivity extends BaseActivity {
             typeList.add(getString(R.string.tag_4));
             typeList.add(getString(R.string.tag_5));
             typeList.add(getString(R.string.tag_6));
+            typeList.add(getString(R.string.tag_21));
+            typeList.add(getString(R.string.tag_22));
         }else if(type==12) {//历史权限审批记录
             typeList.add(getString(R.string.tag_8));
             typeList.add(getString(R.string.tag_9));
@@ -353,6 +355,10 @@ public class ListSearchActivity extends BaseActivity {
                 return 10;
             else if(getString(R.string.tag_5).equals(trim))//已拒绝
                 return 11;
+            else if(getString(R.string.tag_21).equals(trim))//已修改
+                return 21;
+            else if(getString(R.string.tag_22).equals(trim))//已删除
+                return 22;
         }
 
         return -1;

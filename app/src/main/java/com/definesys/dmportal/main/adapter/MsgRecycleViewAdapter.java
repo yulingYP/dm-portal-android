@@ -106,12 +106,22 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     viewHolder.content.setText(context.getString(R.string.message_tip_13,id));
                 }
             }else if(messages.get(position).getMessageType()==6){//查看权限申请记录
-               if("delete".equals(messages.get(position).getMessageContent().toLowerCase())){//权限被删除
-                   viewHolder.img.setImageResource(R.drawable.ic_aut_delete);
-                   viewHolder.content.setText(context.getString(R.string.message_tip_15, DensityUtil.getAuthorityName(context,messages.get(position).getMessageExtend2())));
+               if("delete".equals(messages.get(position).getMessageContent().toLowerCase())){//权限删除
+                   if("".equals(messages.get(position).getMessageExtend())) {//被动删除
+                       viewHolder.img.setImageResource(R.drawable.ic_ma_delete);
+                       viewHolder.content.setText(context.getString(R.string.message_tip_15, DensityUtil.getAuthorityName(context, messages.get(position).getMessageExtend2())));
+                   }else {//主动删除
+                       viewHolder.img.setImageResource(R.drawable.ic_aut_delete);
+                       viewHolder.content.setText(context.getString(R.string.message_tip_17, DensityUtil.getAuthorityName(context, messages.get(position).getMessageExtend2())));
+                   }
                } else  {//仍保留权限但范围发生变化
-                   viewHolder.img.setImageResource(R.drawable.ic_aut_change);
-                   viewHolder.content.setText(context.getString(R.string.message_tip_16,DensityUtil.getAuthorityName(context,messages.get(position).getMessageExtend2())));
+                   if("".equals(messages.get(position).getMessageExtend())) {//被动修改
+                       viewHolder.img.setImageResource(R.drawable.ic_ma_change);
+                       viewHolder.content.setText(context.getString(R.string.message_tip_16, DensityUtil.getAuthorityName(context, messages.get(position).getMessageExtend2())));
+                   }else {//主动修改
+                       viewHolder.img.setImageResource(R.drawable.ic_aut_change);
+                       viewHolder.content.setText(context.getString(R.string.message_tip_18, DensityUtil.getAuthorityName(context, messages.get(position).getMessageExtend2())));
+                   }
                }
             }
             else if(messages.get(position).getMessageType()==11){//查看权限申请记录
@@ -167,9 +177,16 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                         .navigation();
                             }
                         }else if(messages.get(position).getMessageType()==6){//权限发生改变
-                            ARouter.getInstance()
-                                    .build(ARouterConstants.AuthoritySettingActivity)
-                                    .navigation();
+                            if("".equals(messages.get(position).getMessageExtend())) {
+                                ARouter.getInstance()
+                                        .build(ARouterConstants.AuthoritySettingActivity)
+                                        .navigation();
+                            }else {
+                                ARouter.getInstance()
+                                        .build(ARouterConstants.ApplyInfoActivity)
+                                        .withString("applyId",messages.get(position).getMessageExtend())
+                                        .navigation();
+                            }
                         }
                         else if(messages.get(position).getMessageType()==11){//查看权限申请记录
                             ARouter.getInstance()

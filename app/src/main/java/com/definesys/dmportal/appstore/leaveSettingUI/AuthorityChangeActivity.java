@@ -1,13 +1,20 @@
 package com.definesys.dmportal.appstore.leaveSettingUI;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -26,6 +33,7 @@ import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.UserInfoPresent;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -49,6 +57,13 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     LinearLayout lg_parent;
     @BindView(R.id.no_text)
     TextView tv_no;
+    @BindView(R.id.count_word_text)
+    TextView tv_count;
+    @BindView(R.id.ed_reason)
+    EditText ed_reason;
+
+    @BindView(R.id.scrollView)
+    ScrollView lg_sc;
 
     private HashMap<Integer,String> deleteMap;//用户要删除的权限<权限，范围>
     private HashMap<Integer, String> autMap;//用户的全部权限<权限，范围>
@@ -61,6 +76,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         setContentView(R.layout.activity_authority_change);
         ButterKnife.bind(this);
         initView();
+        initEdit();
     }
     private void initView() {
         titleBar.setTitle(getString(R.string.delete_authority));
@@ -83,7 +99,41 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         //获取权限详情
         getMyAuthorityDetail();
     }
+    //具体原因编辑框设置
+    private void initEdit() {
+        tv_count.setText(getString(R.string.word_count, 0));
+        RxView.clicks(ed_reason)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->
+                        ed_reason.setCursorVisible(true)
+                );
+        //获取焦点
+        ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                ed_reason.setCursorVisible(true);
+            }
+        });
+        /*
+        监听输入框内容 《==》 获取输入长度显示到界面
+         */
+        ed_reason.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        // 防遮挡
+        new HddLayoutHeight().addLayoutListener(this,lg_parent, tv_count,1);
+    }
     //获取辅导员权限中不可删除的班级id列表
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_NOABLE_CLASS_IDS)
@@ -219,7 +269,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             }
             itemView.addView(autView);
         }
-        lg_parent.addView(view);
+        lg_parent.addView(view,lg_parent.getChildCount()-1);
 
     }
 
@@ -273,6 +323,15 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             Toast.makeText(this, R.string.delete_error_tip_1, Toast.LENGTH_SHORT).show();
             return;
         }
+        if("".equals(ed_reason.getText().toString())){
+            Toast.makeText(this, R.string.delete_error_tip_3,Toast.LENGTH_SHORT).show();
+            lg_sc.fullScroll(ScrollView.FOCUS_DOWN);
+            ed_reason.setFocusable(true);
+            ed_reason.setFocusableInTouchMode(true);
+            ed_reason.requestFocus();
+            ed_reason.findFocus();
+            return;
+        }
         List<String> list = new ArrayList<>();
         String[] stuType = getResources().getStringArray(R.array.approverType);
         String[] teaType = getResources().getStringArray(R.array.approverType_2);
@@ -309,7 +368,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
 //            applyDate, Short applyStatus, String applyUserName
                     ApplyInfo applyInfo=new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(date.getTime()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
                             -1, i,deleteMap.get(i).substring(0,deleteMap.get(i).length()-2),deleteMap.get(i).length()<autMap.get(i).length()?(short)-100:-110,SharedPreferencesUtil.getInstance().getUserName());
-                    applyInfo.setApplyReason("");
+                    applyInfo.setApplyReason(ed_reason.getText().toString());
                     //删除权限
                     if(applyInfo.getApplyStatus()==-110){
                         //剩余权限
@@ -341,12 +400,6 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         }
     }
 
-    @Override
-    public LeaveAuthorityPresenter getPersenter() {
-        return new LeaveAuthorityPresenter(this);
-    }
-
-
     //获取删除权限后用户剩余的权限
     public Integer getChangeAuthority(int deleteAut,Integer stuAut,Integer teaAut) {
         Integer oldAut = deleteAut<10?stuAut:teaAut;
@@ -361,5 +414,23 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             oldAut = Integer.valueOf(newAut);
         }
         return oldAut;
+    }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+            if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
+                inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            }
+            ed_reason.setCursorVisible(false);
+//            isVisible = false;
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public LeaveAuthorityPresenter getPersenter() {
+        return new LeaveAuthorityPresenter(this);
     }
 }

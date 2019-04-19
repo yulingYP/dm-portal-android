@@ -95,11 +95,11 @@ public class ApplyInfo implements Serializable {
     }
 
     public String getApplyReason() {
-        return applyReason;
+        return applyReason==null?"":applyReason;
     }
 
     public void setApplyReason(String applyReason) {
-        this.applyReason = applyReason == null ? null : applyReason.trim();
+        this.applyReason = applyReason == null ? "" : applyReason.trim();
     }
 
     public String getApplyDetailContent() {

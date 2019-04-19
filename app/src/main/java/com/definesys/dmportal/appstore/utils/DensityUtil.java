@@ -237,6 +237,10 @@ public class DensityUtil {
             return context.getString(R.string.status_tip_2);
         else if(status==110)
             return context.getString(R.string.status_tip_3);
+        else if(status==-100)
+            return context.getString(R.string.status_tip_8);
+        else if(status==-110)
+            return context.getString(R.string.status_tip_9);
         return context.getString(R.string.status_tip_7);
     }
     /**
@@ -256,6 +260,10 @@ public class DensityUtil {
             tv.setTextColor(context.getResources().getColor(R.color.customOrange));
         else if(context.getString(R.string.status_tip_5).equals(data))
             tv.setTextColor(context.getResources().getColor(R.color.customGreen));
+        else if(context.getString(R.string.status_tip_8).equals(data))
+            tv.setTextColor(context.getResources().getColor(R.color.aut_change));
+        else if(context.getString(R.string.status_tip_9).equals(data))
+            tv.setTextColor(context.getResources().getColor(R.color.red_error));
         else
             tv.setTextColor(context.getResources().getColor(R.color.buttonBlue));
     }

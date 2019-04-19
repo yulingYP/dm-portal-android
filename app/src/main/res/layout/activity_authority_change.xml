@@ -18,11 +18,14 @@
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
     <ScrollView
         android:paddingTop="12dp"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
             android:id="@+id/parent_layout"
             android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -54,7 +57,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp">
             </View>
+            <LinearLayout
+                android:id="@+id/reason_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="start"
+                    android:padding="12dp"
+                    android:layout_weight="1"
+                    android:text="@string/reason_detail_txt"
+                    android:textColor="@color/black" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
 
+                    <EditText
+                        android:id="@+id/ed_reason"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@null"
+                        android:gravity="start|top"
+                        android:hint="@string/reson_detail_tip"
+                        android:maxLength="150"
+                        android:minLines="8"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/config_color_gray_4"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/count_word_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/config_color_gray_4"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -83,7 +83,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
 
     private int requestPage;//请求的页码
     private List<ApplyInfo> applyInfoList;//申请记录列表
-    private List<ApplyRecord> applyRecordList;//申请历史列表
+    private List<ApplyRecord> applyRecordList;//审批历史列表
     private ApplyInfoAdapter applyInfoAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
