@@ -4,13 +4,17 @@ import android.content.Context;
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
+import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -158,6 +162,10 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                             case "200":
                                 data.setExtendInfo(100);
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPLY_LIST_INFO,  data);
+                                for(ApplyInfo applyInfo:applyList){
+                                    //data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
+                                    SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)4,"",(short)4,applyInfo.getApplyId(),new Date()));
+                                }
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
@@ -183,6 +191,11 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                         switch (data.getCode()){
                             case "200":
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_DELETE_AUTHORITIES,  data);
+
+                                for(ApplyInfo applyInfo:applyList){
+                                    //向消息页发送权限修改信息
+                                    SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date()), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, applyInfo.getApplyStatus()==-100?"change":"delete", applyInfo.getApplyAuthority().shortValue(), "", new Date()));
+                                }
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
