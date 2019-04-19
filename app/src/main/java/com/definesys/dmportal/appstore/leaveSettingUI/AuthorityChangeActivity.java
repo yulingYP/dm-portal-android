@@ -301,6 +301,8 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             progressHUD.show();
             List<ApplyInfo> applyInfoList = new ArrayList<>();
             Date date = new Date();
+            Integer stuAut = SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
+            Integer teaAut = SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
             for(int i=0;i<12;i++) {
                 if(deleteMap.get(i)!=null&&!"".equals(deleteMap.get(i))){
 //            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion
@@ -311,8 +313,10 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                     //删除权限
                     if(applyInfo.getApplyStatus()==-110){
                         //剩余权限
-                       int newAuthority = getChangeAuthority(i);
+                       int newAuthority = getChangeAuthority(i,stuAut,teaAut);
                        applyInfo.setAfterDeleteAut(newAuthority);
+                       if(i<10)stuAut = newAuthority;
+                       else teaAut = newAuthority;
                    }
                     applyInfoList.add(applyInfo);
                     date.setTime(date.getTime()+100);
@@ -344,17 +348,12 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
 
 
     //获取删除权限后用户剩余的权限
-    public Integer getChangeAuthority(int deleteAut) {
-        Integer oldAut;
+    public Integer getChangeAuthority(int deleteAut,Integer stuAut,Integer teaAut) {
+        Integer oldAut = deleteAut<10?stuAut:teaAut;
         String newAut;
-        if(deleteAut<10) {//审批学生
-            oldAut = SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();
-        } else{//审批教师
-            oldAut =  SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
-            deleteAut -=10;
-        }
+        deleteAut %= 10;
         newAut = String.valueOf(oldAut).replace(String.valueOf(deleteAut),"");
-        if("".equals(newAut)){
+        if("".equals(newAut)||newAut==null){
             oldAut = -1;
         }else if (newAut.charAt(0)=='0'){//权限0在下标为0的位置
             oldAut = Integer.valueOf(newAut)*10;
