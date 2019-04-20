@@ -32,6 +32,8 @@ public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //设置当前显示的Activity
+        MyActivityManager.getInstance().setCurrentActivity(this);
         super.onCreate(savedInstanceState);
         // 强制竖屏显示
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -71,15 +73,18 @@ public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActi
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MyActivityManager.getInstance().setCurrentActivity(this);
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if( MyActivityManager.getInstance().getCurrentActivity()!=this)
+            //设置当前显示的Activity
+            MyActivityManager.getInstance().setCurrentActivity(this);
     }
 
     public abstract T getPersenter();

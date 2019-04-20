@@ -4,6 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +33,7 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -51,10 +57,6 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
     LinearLayout lg_no;
     @BindView(R.id.layout_scroll)
     ScrollView lg_scoll;
-    @Autowired(name = "applyInfo")
-    ApplyInfo applyInfo;
-    @Autowired(name = "applyId")
-    String applyId;
     @BindView(R.id.aut_type)
     TextView tv_type;
     @BindView(R.id.aut_region)
@@ -67,6 +69,14 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
     TextView tv_status;
     @BindView(R.id.check_approval_layout)
     LinearLayout lg_check;
+    @BindView(R.id.atu_change_tip)
+    TextView tv_tip;
+    @Autowired(name = "applyInfo")
+    ApplyInfo applyInfo;
+    @Autowired(name = "applyId")
+    String applyId;
+    @Autowired(name = "isMsg")
+    boolean isMsg;//是不是从消息页或点击推送进入的
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +127,72 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
                 });
         tv_reason.setVisibility("".equals(applyInfo.getApplyReason())?GONE:VISIBLE);
         lg_check.setVisibility(applyInfo.getApplyStatus()>=0?VISIBLE:GONE);
+        if(isMsg||applyInfo.getApplyStatus()<0){
+            initTip();
+        }
     }
+
+    private void initTip() {
+
+        boolean flag = applyInfo.getApplyUserId() == SharedPreferencesUtil.getInstance().getUserId().intValue();
+        String content=null;
+        int startPosition = -1;
+        int colorId = 0;
+        if(flag){//本人查看
+            if(applyInfo.getApplyStatus() == 100){//添加权限成功
+                content=getString(R.string.change_authority_des_2,DensityUtil.getAuthorityName(this,(short)(applyInfo.getApplyAuthority()+applyInfo.getApplyAuthorityType()*10)),applyInfo.getApplyRegion());
+                startPosition = content.indexOf(getString(R.string.add));
+                colorId= getResources().getColor(R.color.green);
+            }else if(applyInfo.getApplyStatus() == -100){//修改成功
+                content=getString(R.string.change_authority_des_1,DensityUtil.getAuthorityName(this,applyInfo.getApplyAuthority().shortValue()),applyInfo.getApplyRegion());
+                startPosition = content.indexOf(getString(R.string.delete));
+                colorId= getResources().getColor(R.color.red_error);
+            }else if(applyInfo.getApplyStatus() == -110){//删除成功
+                content=getString(R.string.change_authority_des_3,DensityUtil.getAuthorityName(this,applyInfo.getApplyAuthority().shortValue()));
+            }
+        }else {//不是本人查看
+            if(applyInfo.getApplyStatus() == 100 && applyInfo.getApplyAuthorityType() >= 0){//申请人添加权限 则另一个人删除权限
+                content=getString(R.string.change_authority_des_1,DensityUtil.getAuthorityName(this,(short)(applyInfo.getApplyAuthority()+applyInfo.getApplyAuthorityType()*10)),applyInfo.getApplyRegion());
+                startPosition = content.indexOf(getString(R.string.delete));
+                colorId= getResources().getColor(R.color.red_error);
+            }else if(applyInfo.getApplyAuthorityType() == -1){//申请人删除权限 则另外一个人添加权限
+                content=getString(R.string.change_authority_des_2,DensityUtil.getAuthorityName(this,applyInfo.getApplyAuthority().shortValue()),applyInfo.getApplyRegion());
+                startPosition = content.indexOf(getString(R.string.add));
+                colorId= getResources().getColor(R.color.green);
+            }
+        }
+        if(content==null)
+            return;
+        tv_tip.setVisibility(VISIBLE);
+        SpannableStringBuilder style = new SpannableStringBuilder();
+        //设置文字
+        style.append(content);
+
+        //设置部分文字点击事件
+        style.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                ARouter.getInstance().build(ARouterConstants.AuthoritySettingActivity).navigation();
+            }
+        }, style.length() - 7, style.length() - 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv_tip.setText(style);
+
+        //设置部分文字颜色
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.blue));
+        style.setSpan(foregroundColorSpan, style.length() - 7, style.length() - 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //给添加||删除设置字体颜色
+        if(startPosition>=0){
+            ForegroundColorSpan foregroundColorSpan_ = new ForegroundColorSpan(colorId);
+            style.setSpan(foregroundColorSpan_, startPosition, startPosition + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+
+        //配置给TextView
+        tv_tip.setMovementMethod(LinkMovementMethod.getInstance());
+        tv_tip.setText(style);
+    }
+
     /**
      * 获取权限详细信息失败
      * @param msg 失败消息

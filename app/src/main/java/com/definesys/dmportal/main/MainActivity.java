@@ -494,7 +494,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("applyId", myMessage.getMessageExtend());
             intent.putExtra("type", myMessage.getMessageExtend2().intValue());
         }else if(myMessage.getMessageType()==6){////权限发生变化
-            intent = new Intent(this, AuthoritySettingActivity.class);
+            intent = new Intent(this, "".equals(myMessage.getMessageExtend())?AuthoritySettingActivity.class:ApplyInfoActivity.class);
+            intent.putExtra("applyId",myMessage.getMessageExtend());
+            intent.putExtra("isMsg",true);
             if("delete".equals(myMessage.getMessageContent().toLowerCase()))//权限已被删除，重新获取权限
                 mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
             else if("change".equals(myMessage.getMessageContent().toLowerCase())){//权限已被修改，但用户没有修改后的权限

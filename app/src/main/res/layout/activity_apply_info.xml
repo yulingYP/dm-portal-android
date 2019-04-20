@@ -140,6 +140,16 @@
                         android:layout_height="30dp"
                         />
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/atu_change_tip"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:background="@color/white"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:text="@string/change_authority_des_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

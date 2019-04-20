@@ -185,6 +185,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApplyInfoActivity)
                                         .withString("applyId",messages.get(position).getMessageExtend())
+                                        .withBoolean("isMsg",true)
                                         .navigation();
                             }
                         }

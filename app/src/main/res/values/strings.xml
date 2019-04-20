@@ -489,7 +489,7 @@
     <string name="check_approval_apply_title">审批详细信息</string>
     <string name="apply_detail_info">申请详情</string>
     <string name="apply_authority">类型:\n%s权限</string>
-    <string name="authority_region">管理范围:\n%s</string>
+    <string name="authority_region">添加范围:\n%s</string>
     <string name="authority_delete">删除范围:\n%s</string>
     <string name="apply_region">管理范围:</string>
     <string name="authority_type">权限类型:</string>
@@ -499,6 +499,11 @@
     <string name="approval_time_2">审批人ID:%d \n审批时间:%s</string>
     <string name="submit_alyapr_success">审批成功</string>
     <string name="apply_no_info">暂无申请记录</string>
+    <string name="change_authority_des_1">提示:\n您的%s权限已被修改,已在您管理范围中删除了&#x0020;%s&#x0020;中的部分或全部成员，权限详情请去权限设置页查看</string>
+    <string name="change_authority_des_2">提示:\n您的%s权限已被修改,已在您管理范围中添加了&#x0020;%s&#x0020;中的部分或全部成员,权限详情请去权限设置页查看</string>
+    <string name="change_authority_des_3">提示:\n您的%s权限已被删除,已删除您管理范围中的所有成员,权限详情请去权限设置页查看</string>
+    <string name="delete">删除</string>
+    <string name="add">添加</string>
 
     <string name="aut_error_tip_1">您当前没有审批权限</string>
     <string name="authority_tip">类型:%s</string>
