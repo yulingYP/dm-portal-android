@@ -255,6 +255,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();
             ed_reason.findFocus();
+            ed_reason.setCursorVisible(true);
             return;
         }
 

@@ -5,11 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -52,6 +49,7 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -70,6 +68,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
 
@@ -248,21 +247,10 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         /*
         监听输入框内容 《==》 获取输入长度显示到界面
          */
-        ed_reason.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        RxTextView.textChanges(ed_reason)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(charSequence ->
+                        tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length())));
         // 防遮挡
         new HddLayoutHeight().addLayoutListener(this,main, tv_count,1);
     }
@@ -442,13 +430,12 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         }
         if("".equals(ed_reason.getText().toString())){
             Toast.makeText(this, R.string.no_reason_des,Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(() ->
-                sc_scroll.scrollTo(0,(int)lg_reason.getY())
-            , Constants.scrollDelay);
+            sc_scroll.scrollTo(0,(int)lg_reason.getY());
             ed_reason.setFocusable(true);
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();
             ed_reason.findFocus();
+            ed_reason.setCursorVisible(true);
             return;
         }
         if(getString(R.string.shixi).equals(tv_typeReason.getText().toString())){//如果是实习，进行规范性检测

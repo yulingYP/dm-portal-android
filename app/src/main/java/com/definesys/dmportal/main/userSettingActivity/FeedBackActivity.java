@@ -16,7 +16,6 @@ import com.definesys.base.BaseActivity;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.adapter.ReasonImageAdapter;
-import com.definesys.dmportal.appstore.leaveSettingUI.UpdateLeAutActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
@@ -48,7 +47,7 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
     @BindView(R.id.title_bar_att_feedback)
     CustomTitleBar titleBar;
     @BindView(R.id.et_att_feedback)
-    EditText content;
+    EditText ed_content;
     @BindView(R.id.count_word_att_feedback)
     TextView wordCount;
     @BindView(R.id.recycle_view_att_feedback)
@@ -84,15 +83,21 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    if(imm!=null)
-                        imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
-                    String content = this.content.getText().toString();
+                    String content = this.ed_content.getText().toString();
                     // 文字不为空
                     if ("".equals(content)) {
                         Toast.makeText(FeedBackActivity.this, R.string.feedback_word_hint, Toast.LENGTH_SHORT).show();
+                        if(imm!=null&&!imm.isActive())
+                            imm.showSoftInput(this.ed_content,0);
+                        ed_content.setFocusable(true);
+                        ed_content.setFocusableInTouchMode(true);
+                        ed_content.requestFocus();
+                        ed_content.findFocus();
+                        ed_content.setCursorVisible(true);
                         return;
                     }
-
+                    if(imm!=null)
+                        imm.hideSoftInputFromWindow(ed_content.getWindowToken(), 0);
                     progressHUD.show();
                     mPersenter.getRequestResult(new Feedback(String.valueOf(System.currentTimeMillis()), SharedPreferencesUtil.getInstance().getUserId().intValue(),content), selectImages);
                 });
@@ -112,7 +117,7 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
             @Override
             public void onBackgroundClick(int position) {
                 if(imm!=null)
-                    imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
+                    imm.hideSoftInputFromWindow(ed_content.getWindowToken(), 0);
 
                 if(position == 0){
                     //打开相册·拍摄照片
@@ -138,20 +143,20 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
         /*
         监听输入框内容 《==》 获取输入长度显示到界面
          */
-        RxTextView.textChanges(content)
+        RxTextView.textChanges(ed_content)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(charSequence ->
-                        wordCount.setText(getString(R.string.word_count, content.length())));
+                        wordCount.setText(getString(R.string.word_count, ed_content.length())));
         //点击
-        RxView.clicks(content)
+        RxView.clicks(ed_content)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    content.setCursorVisible(true);
-                });
+                .subscribe(obj->
+                    ed_content.setCursorVisible(true)
+                );
         //获取焦点
-        content.setOnFocusChangeListener((v, hasFocus) -> {
+        ed_content.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus){
-                content.setCursorVisible(true);
+                ed_content.setCursorVisible(true);
             }
         });
     }
@@ -215,7 +220,7 @@ public class FeedBackActivity extends BaseActivity<FeedBackPresenter> {
             if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
                 inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
             }
-            content.setCursorVisible(false);
+            ed_content.setCursorVisible(false);
             return true;
         }
         return super.dispatchKeyEvent(event);

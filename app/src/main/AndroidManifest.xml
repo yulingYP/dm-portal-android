@@ -95,7 +95,10 @@
         <activity android:name=".appstore.AppLyListActivity" />
         <activity android:name=".appstore.ApprovalApplyInfoActivity" />
         <activity android:name=".appstore.ApplyInfoActivity" />
-        <activity android:name=".appstore.leaveSettingUI.AuthorityChangeActivity" />
+        <activity android:name=".appstore.leaveSettingUI.AuthorityChangeActivity">
+            <!--android:windowSoftInputMode="stateHidden|adjustPan"-->
+        </activity>
+
         <receiver
             android:name=".appstore.receiver.MyReceiver"
             android:enabled="true"

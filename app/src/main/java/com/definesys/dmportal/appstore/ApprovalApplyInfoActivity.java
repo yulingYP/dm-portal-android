@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,11 +41,15 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -291,6 +293,11 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();
             ed_reason.findFocus();
+            ed_reason.setCursorVisible(true);
+//            InputMethodManager inputMethodManager = ( InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            if(inputMethodManager!=null){
+//                inputMethodManager.showSoftInput(ed_reason,0);
+//            }
             return;
         }
 
@@ -385,21 +392,10 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         /*
         监听输入框内容 《==》 获取输入长度显示到界面
          */
-        ed_reason.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        RxTextView.textChanges(ed_reason)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(charSequence ->
+                        tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length())));
         // 防遮挡
         new HddLayoutHeight().addLayoutListener(this,main, tv_count,1);
     }

@@ -98,30 +98,9 @@ buildscript {
     }
 }
 
-//greendao {
-//    schemaVersion 1  //版本
-//    daoPackage 'com.definesys.dmportal.appstore.dao' // 一般为app包名+生成文件的文件夹名
-//    targetGenDir 'src/main/java' //生成文件路径
-//}
 
-// ATTENTION!!! Must be PLACED AFTER "android{}" to read the applicationId
 apply plugin: 'replugin-host-gradle'
 
-//repluginHostConfig {
-//    /**
-//     * 是否使用 AppCompat 库
-//     * 不需要个性化配置时，无需添加
-//     */
-//    useAppCompat = true
-//    /**
-//     * 背景不透明的坑的数量
-//     * 不需要个性化配置时，无需添加
-//     */
-////    countNotTranslucentStandard = 6
-////    countNotTranslucentSingleTop = 2
-////    countNotTranslucentSingleTask = 3
-////    countNotTranslucentSingleInstance = 2
-//}
 
 dependencies {
 
@@ -198,16 +177,8 @@ dependencies {
     implementation rootProject.ext.dependencies["rxbinding2-recyclerview-v7"]
     implementation 'com.android.support:design:27.1.1'
 
-    //    implementation rootProject.ext.dependencies["greendao"]
-
-    //    implementation rootProject.ext.dependencies["greendao-generator"]
     implementation rootProject.ext.dependencies["update-app"]
     implementation rootProject.ext.dependencies["xedittext"]
 
-    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
-
-    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
-//    implementation files('libs/jcore-android-1.2.7.jar')
-//    implementation files('libs/jpush-android-3.1.8.jar')
     compile project(path: ':JPush')
 }

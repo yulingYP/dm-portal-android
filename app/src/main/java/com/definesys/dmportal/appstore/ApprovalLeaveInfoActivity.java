@@ -10,9 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +53,7 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -68,6 +67,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.definesys.dmportal.appstore.utils.Constants.oneDay;
@@ -343,6 +344,11 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();
             ed_reason.findFocus();
+            ed_reason.setCursorVisible(true);
+//            InputMethodManager inputMethodManager = ( InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            if(inputMethodManager!=null){
+//                inputMethodManager.showSoftInput(ed_reason,0);
+//            }
             return;
         }
         else if(SharedPreferencesUtil.getInstance().getUserSign()==null||"".equals(SharedPreferencesUtil.getInstance().getUserSign())){//签名设置
@@ -448,21 +454,10 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         /*
         监听输入框内容 《==》 获取输入长度显示到界面
          */
-        ed_reason.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        RxTextView.textChanges(ed_reason)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(charSequence ->
+                        tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length())));
         // 防遮挡
         new HddLayoutHeight().addLayoutListener(this,main, tv_count,1);
 

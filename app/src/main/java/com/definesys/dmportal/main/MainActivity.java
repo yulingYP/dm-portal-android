@@ -236,6 +236,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             @Tag(MainPresenter.SUCCESSFUL_GET_USER_INFO)
     }, thread = EventThread.MAIN_THREAD)
     public void getUserUrl(String str) {
+        JPushInterface.setAlias(this,++notifyID,String.valueOf(SharedPreferencesUtil.getInstance().getUserId().intValue()));
        if( MyActivityManager.getInstance().getCurrentActivity()==this&&myFragment!=null) {
 //           SharedPreferencesUtil.getInstance().setUserLocal("");
            myFragment.refreshUserImage();

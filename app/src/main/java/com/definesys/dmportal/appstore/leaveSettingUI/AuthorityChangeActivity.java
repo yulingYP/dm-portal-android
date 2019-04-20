@@ -3,8 +3,6 @@ package com.definesys.dmportal.appstore.leaveSettingUI;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -39,6 +37,8 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @Route(path = ARouterConstants.AuthorityChangeActivity)
 public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresenter> implements Constants{
@@ -61,9 +62,12 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     TextView tv_count;
     @BindView(R.id.ed_reason)
     EditText ed_reason;
-
     @BindView(R.id.scrollView)
     ScrollView lg_sc;
+    @BindView(R.id.reason_layout)
+    LinearLayout lg_reason;
+    @BindView(R.id.main_view)
+    LinearLayout main;
 
     private HashMap<Integer,String> deleteMap;//用户要删除的权限<权限，范围>
     private HashMap<Integer, String> autMap;//用户的全部权限<权限，范围>
@@ -102,11 +106,13 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     //具体原因编辑框设置
     private void initEdit() {
         tv_count.setText(getString(R.string.word_count, 0));
+        //点击
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->
-                        ed_reason.setCursorVisible(true)
-                );
+                .subscribe(obj->{
+                    ed_reason.setCursorVisible(true);
+                });
+
         //获取焦点
         ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus){
@@ -116,23 +122,13 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         /*
         监听输入框内容 《==》 获取输入长度显示到界面
          */
-        ed_reason.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length()));
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        RxTextView.textChanges(ed_reason)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(charSequence ->
+                        tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length())));
         // 防遮挡
-        new HddLayoutHeight().addLayoutListener(this,lg_parent, tv_count,1);
+//        new HddLayoutHeight().addLayoutListener(this,main,tv_count,lg_reason,ed_reason,((LinearLayout.LayoutParams)lg_reason.getLayoutParams()).bottomMargin);
+        new HddLayoutHeight().addLayoutListener(this,main,tv_count,1);
     }
     //获取辅导员权限中不可删除的班级id列表
     @Subscribe(tags = {
@@ -330,6 +326,11 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
             ed_reason.setFocusableInTouchMode(true);
             ed_reason.requestFocus();
             ed_reason.findFocus();
+            ed_reason.setCursorVisible(true);
+//            InputMethodManager inputMethodManager = ( InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//            if(inputMethodManager!=null){
+//                inputMethodManager.showSoftInput(ed_reason,0);
+//            }
             return;
         }
         List<String> list = new ArrayList<>();
@@ -417,8 +418,8 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     }
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
                 inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
             }
