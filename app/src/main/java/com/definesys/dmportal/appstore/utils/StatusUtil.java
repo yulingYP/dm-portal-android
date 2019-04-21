@@ -34,6 +34,7 @@ public class StatusUtil {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
+
     //设置状态栏字体颜色
     public static void setAndroidNativeLightStatusBar(Activity activity, boolean dark) {
         View decor = activity.getWindow().getDecorView();
@@ -44,29 +45,34 @@ public class StatusUtil {
                 decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             }
         }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setStatusBarColor(activity,Color.BLACK);
+            setStatusBarBackGround(activity);
+//            setStatusBarColor(activity,Color.BLACK);
         }
+    }
+    //设置状态栏的背景色
+    private static void setStatusBarBackGround(Activity activity){
+        ViewGroup parent=(ViewGroup)activity.getWindow().getDecorView();
+        View view = new View(activity);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(activity));
+        view.setLayoutParams(layoutParams);
+        view.setBackgroundColor(parent.getContext().getResources().getColor(R.color.transparent_black_5));
+        parent.addView(view);
     }
     private static void setStatusBarColor(Activity activity, int statusColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//21表示5.0
             Window window = activity.getWindow();
             //取消状态栏透明
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //添加Flag把状态栏设为可绘制模式
+
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             //设置状态栏颜色
             window.setStatusBarColor(statusColor);
-
             //设置系统状态栏处于可见状态
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
             //让view不根据系统窗口来调整自己的布局
             ViewGroup mContentView = window.findViewById(Window.ID_ANDROID_CONTENT);
             View mChildView = mContentView.getChildAt(0);
-            if (mChildView != null) {
-                ViewCompat.setFitsSystemWindows(mChildView, false);
-                ViewCompat.requestApplyInsets(mChildView);
-            }
+            ViewCompat.requestApplyInsets(mChildView);
         }
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//19表示4.4
             Window window = activity.getWindow();

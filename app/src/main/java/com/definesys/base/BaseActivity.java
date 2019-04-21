@@ -32,19 +32,19 @@ public abstract class BaseActivity<T extends BasePresenter>extends AppCompatActi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //设置当前显示的Activity
-        MyActivityManager.getInstance().setCurrentActivity(this);
         super.onCreate(savedInstanceState);
         // 强制竖屏显示
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        mPersenter = getPersenter();
         SmecRxBus.get().register(this);
         progressHUD = KProgressHUD.create(this).setLabel("loading...")
 //                .setBackgroundColor(Color.parseColor("#00000000"))//透明背景
                 .setAnimationSpeed(1)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setDimAmount(0.5f);
+        //设置当前显示的Activity
+        MyActivityManager.getInstance().setCurrentActivity(this);
+        mPersenter = getPersenter();
         //隐藏状态栏
         StatusUtil.setStatusBarFullTransparent(this);
     }
