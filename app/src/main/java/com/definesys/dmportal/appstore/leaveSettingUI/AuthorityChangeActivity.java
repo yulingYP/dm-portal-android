@@ -382,6 +382,23 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                     date.setTime(date.getTime()+100);
                 }
             }
+           //设置更新修改后的权限
+            int temp = 0;//0.代表两权限都未设置好 1.代表审批学生的权限已经设置好 2.代表审批老师的权限已经设置好 3.代表全部设置好了
+            for(int i = applyInfoList.size()-1;i>=0;i--){
+                if(applyInfoList.get(i).getApplyStatus()==-110){//待删除权限
+                    if(applyInfoList.get(i).getApplyAuthority()<10&&(temp==0||temp==2)){//审批学生权限
+                        applyInfoList.get(i).setApplyStatus((short)-120);
+                        applyInfoList.get(i).setAfterDeleteAut(stuAut);
+                        temp=temp==0?1:3;
+                    } else if(applyInfoList.get(i).getApplyAuthority()>=10&&(temp==0||temp==1)){//审批教师权限
+                        applyInfoList.get(i).setApplyStatus((short)-120);
+                        applyInfoList.get(i).setAfterDeleteAut(teaAut);
+                        temp= temp==0?2:3;
+                    }
+                    if(temp==3)
+                        break;
+                }
+            }
             mPersenter.deleteAuthorities(applyInfoList);
             applyDialog.dismiss();
         });

@@ -331,10 +331,9 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void updateSuccess(String leaveId) {
         if(submitLeaveInfoList!=null&leaveInfoListAdapter!=null) {
-            for (int i = 0; i < submitLeaveInfoList.size(); i++) {
+            for (int i =  submitLeaveInfoList.size()-1; i >= 0 ; i--) {
                 if (submitLeaveInfoList.get(i).getId().equals(leaveId)) {
                     submitLeaveInfoList.remove(i);
-                    break;
                 }
             }
             leaveInfoListAdapter.notifyDataSetChanged();
@@ -351,13 +350,12 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void cancelSuccess(String leaveId) {
         if(submitLeaveInfoList!=null) {
-            for (int i = 0; i < submitLeaveInfoList.size(); i++) {
+            for (int i =  submitLeaveInfoList.size()-1; i >= 0 ; i--) {
                 if (submitLeaveInfoList.get(i).getId().equals(leaveId)) {
                     if(type!=3&&isAll)//非销假列表 显示全部请假信息的列表
                         submitLeaveInfoList.get(i).setApprovalStatus((short)120);
                     else//销假列表
                         submitLeaveInfoList.remove(i);
-                    break;
                 }
             }
             leaveInfoListAdapter.notifyDataSetChanged();

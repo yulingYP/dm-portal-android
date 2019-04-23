@@ -20,7 +20,7 @@ public class ApplyInfo implements Serializable {
 
     private Date applyDate;//申请日期
 
-    private Short applyStatus;//审批状态 0.未审批 100.已通过 110.已拒绝 -100:修改但不删除权限 -110：删除权限
+    private Short applyStatus;//审批状态 0.未审批 100.已通过 110.已拒绝 -100:修改但不删除权限 -110：删除权限 -120:按该条记录更新修改后的权限
 
     private int type;//提示框种类
 

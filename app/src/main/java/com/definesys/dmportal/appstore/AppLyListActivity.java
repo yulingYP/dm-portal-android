@@ -361,10 +361,9 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void updateSuccess(String applyId) {
         if(applyInfoAdapter!=null&&applyInfoList != null) {
-            for (int i = 0; i < applyInfoList.size(); i++) {
+            for (int i = applyInfoList.size()-1; i >= 0 ; i--) {
                 if (applyInfoList.get(i).getApplyId().equals(applyId)) {
                     applyInfoList.remove(i);
-                    break;
                 }
             }
             applyInfoAdapter.notifyDataSetChanged();
