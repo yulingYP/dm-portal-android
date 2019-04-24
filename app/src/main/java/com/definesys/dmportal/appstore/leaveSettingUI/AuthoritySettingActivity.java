@@ -91,8 +91,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                 .subscribe(obj->{
                    if(tv_stu.getVisibility()== View.VISIBLE){//已显权限
                         AnimUtils.setInstance(tv_stu,iv_stu,tv_stu.getMeasuredHeight()).toggle(true);
-                    }
-                    else {//未显示权限
+                   }else {//未显示权限
                        if(stuMap==null&&"".equals(tv_stu.getText().toString())){//还没有获取到详细权限
                             httpPost(0);
                        }else if(stuMap!=null&&"".equals(tv_stu.getText().toString())) {//网络请求已发送但暂未获取到网络请求
@@ -100,7 +99,7 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
                        }else {
                            AnimUtils.setInstance(tv_stu,iv_stu,Integer.valueOf(stuMap.get(-1))).toggle(true);
                        }
-                    }
+                   }
                 });
 
         //点击审批教师权限箭头 开始动画

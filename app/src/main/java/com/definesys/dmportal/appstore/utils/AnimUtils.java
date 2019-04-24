@@ -83,6 +83,7 @@ public class AnimUtils {
             textView.setSingleLine(false);
             textView.post(()->{
                 if(textView.getLayout()!=null) {
+                    //单行高度----》多行高度
                     animator[0] = createDropAnimator(hideView, mHeight, mHeight + (textView.getLayout().getLineCount() - 1) * textView.getLineHeight());
                     animator[0].start();
                 }
