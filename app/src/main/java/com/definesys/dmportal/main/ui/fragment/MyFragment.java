@@ -213,7 +213,7 @@ public class MyFragment extends Fragment {
     //更新姓名和院系
     public void updateShowInfo() {
         userName.setText(SharedPreferencesUtil.getInstance().getUserName());
-        String des = SharedPreferencesUtil.getInstance().getUserType()==0?SharedPreferencesUtil.getInstance().getFacultyName():SharedPreferencesUtil.getInstance().getUserBranchName();
+        String des = SharedPreferencesUtil.getInstance().getUserType()==0?SharedPreferencesUtil.getInstance().getFacultyName():"";
         welcomeText.setText("".equals(des)?getString(R.string.scool_name):des);
     }
 

@@ -42,6 +42,8 @@ public class User{
 
     private Integer dormitorLeaderId; //寝室长id
 
+    private String className;//班级名称
+
     private String facultyName;//院系名称
 
 
@@ -257,5 +259,13 @@ public class User{
 
     public void setBranchName(String branchName) {
         this.branchName = branchName;
+    }
+
+    public String getClassName() {
+        return this.className == null?"":className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

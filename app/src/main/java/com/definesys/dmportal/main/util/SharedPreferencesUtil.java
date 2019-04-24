@@ -63,6 +63,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         user.setFacultyId(getFaculty());//院系id
         user.setFacultyName(getFacultyName());//院系名称
         user.setClassId(getClassId());//班级id
+        user.setClassName(getClassName());//班级名称
         return user;
     }
 
@@ -106,6 +107,8 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
 
     public String getClassId() {   return sp.getString(spClassId,"");}
 
+    public String getClassName() {   return sp.getString(spClassName,"");}
+
     public String getUserImageUrl() {   return sp.getString(spUserHead,"");}
 
     public String getUserSign() {   return sp.getString(spUserSign,"");}
@@ -128,10 +131,11 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
             SharedPreferences.Editor editor = getSpWithEdit()
                     .putString(spUserName, user.getName())//姓名
                     .putString(spUserPhone, user.getPhone())//电话
-                    .putInt(spUserSex, user.getUserSex())
+                    .putInt(spUserSex, user.getUserSex())//性别
                     .putString(spFaculty,user.getFacultyId())//院系id
                     .putString(spFacultyName,user.getFacultyName())//院系名称
                     .putString(spClassId,user.getClassId())//班级id
+                    .putString(spClassName,user.getClassName())//班级名称
                     .putString(spUserHead,user.getUserImage())//用户头像
                     .putString(spUserSign,user.getUserSign())//用户签名
                     .putString(spBranchId,user.getBranchId())//请假部门id
@@ -151,7 +155,8 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                 .putInt(spUserSex, -1)
                 .putString(spFaculty,"")//院系id
                 .putString(spFacultyName,"")//院系名称
-                .putString(spClassId,"")//班级
+                .putString(spClassId,"")//班级id
+                .putString(spClassName,"")//班级名称
                 .putString(spUserHead,"")//用户头像
                 .putString(spUserSign,"")//用户签名
                 .putInt(spUserType,-1)//用户类型
