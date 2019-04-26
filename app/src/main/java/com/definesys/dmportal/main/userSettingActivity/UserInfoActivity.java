@@ -73,8 +73,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
             .centerCrop()
             .signature(new ObjectKey(UUID.randomUUID().toString()))
             .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .placeholder(R.drawable.my);
+            .skipMemoryCache(true);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +96,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         titleBar.addLeftBackImageButton().setOnClickListener((view) -> finish());
+        refreshUserImage();//刷新头像
         //点击头像
         RxView.clicks(iv_head).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())

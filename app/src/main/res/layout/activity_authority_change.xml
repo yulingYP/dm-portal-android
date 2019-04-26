@@ -26,6 +26,7 @@
             android:id="@+id/parent_layout"
             android:orientation="vertical"
             android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:layout_width="match_parent"
@@ -65,18 +66,19 @@
                     android:layout_weight="1"
                     android:text="@string/reason_detail_txt"
                     android:textColor="@color/black" />
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
+                    android:id="@+id/lg_ed"
                     android:orientation="vertical">
+
                     <EditText
                         android:id="@+id/ed_reason"
                         android:layout_width="match_parent"
-                        android:layout_height="170dp"
-                        android:paddingEnd ="20dp"
-                        android:paddingStart="20dp"
-                        android:paddingBottom="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@null"
                         android:gravity="start|top"
                         android:hint="@string/reson_detail_tip"
@@ -90,13 +92,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
+                        android:textColor="@color/config_color_gray_4"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="5dp"
-                        android:textColor="@color/config_color_gray_4"
-                        android:layout_alignEnd="@+id/ed_reason"
-                        android:layout_alignBottom="@+id/ed_reason"
                         android:textSize="14sp" />
-                </RelativeLayout>
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

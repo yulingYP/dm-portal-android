@@ -101,8 +101,7 @@ public class MyFragment extends Fragment {
             .centerCrop()
             .signature(new ObjectKey(UUID.randomUUID().toString()))
             .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .placeholder(R.drawable.my);
+            .skipMemoryCache(true);
     private int requestCount=0;//重新获取尝试次数
     public MyFragment() {
         // Required empty public constructor
@@ -288,12 +287,14 @@ public class MyFragment extends Fragment {
             @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
     }, thread = EventThread.MAIN_THREAD)
     public void successfulUploadUserImage(String newUrl) {
-        if(MyActivityManager.getInstance().getCurrentActivity()==this.getActivity()) {
+        if(MyActivityManager.getInstance().getCurrentActivity()==this.getActivity()){
             Toast.makeText(getContext(), R.string.msg_success_upload_image, Toast.LENGTH_SHORT).show();
-            Glide.with(this).load(newUrl).apply(option).into(userImage);
             //更新本地头像信息
             SharedPreferencesUtil.getInstance().setUserLocal(newUrl);
         }
+        Glide.with(this).load(newUrl).apply(option).into(userImage);
+
+//        refreshUserImage();
     }
     /**
      * 上传失败

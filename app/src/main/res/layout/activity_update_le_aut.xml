@@ -183,18 +183,16 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/config_color_gray_4"
                         android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/count_word_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:textColor="@color/config_color_gray_4"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="14sp" />
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/count_word_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_below="@+id/lg_ed"
-                    android:textColor="@color/config_color_gray_4"
-                    android:layout_marginEnd="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="14sp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

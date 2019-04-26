@@ -31,7 +31,7 @@ import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.UserInfoPresent;
-import com.definesys.dmportal.main.util.AndroidBug5497Workaround;
+import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -81,7 +81,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         ButterKnife.bind(this);
         initView();
         initEdit();
-        AndroidBug5497Workaround.assistActivity(this);
+//        AndroidBug5497Workaround.assistActivity(this);
     }
     private void initView() {
         titleBar.setTitle(getString(R.string.delete_authority));
@@ -129,7 +129,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                         tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length())));
         // 防遮挡
 //        new HddLayoutHeight().addLayoutListener(this,main,tv_count,lg_reason,ed_reason,((LinearLayout.LayoutParams)lg_reason.getLayoutParams()).bottomMargin);
-//        new HddLayoutHeight().addLayoutListener(this,lg_sc,tv_count,1);
+        new HddLayoutHeight().addLayoutListener(this,lg_parent,tv_count,1);
     }
     //获取辅导员权限中不可删除的班级id列表
     @Subscribe(tags = {
