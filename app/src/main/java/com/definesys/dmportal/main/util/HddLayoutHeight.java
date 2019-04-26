@@ -31,7 +31,6 @@ public class HddLayoutHeight {
                 int srollHeight = location[1] + scroll.getHeight() - rect.bottom;
                 if ( srollHeight > minDp && scrollable[0]) {//滑动高度>最小滑动范围
                     main.scrollTo(0, (int) (srollHeight +  minDp));
-
                     scrollable[0] = false;
                 }
             }else {

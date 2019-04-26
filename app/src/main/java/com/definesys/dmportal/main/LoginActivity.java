@@ -2,6 +2,7 @@ package com.definesys.dmportal.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -125,6 +126,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     public void successfulLogin(String msg) {
         progressHUD.dismiss();
         //Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(this,MainActivity.class);
+//        startActivity(intent);
         ARouter.getInstance().build(ARouterConstants.MainActivity)
                 .navigation(this, new NavCallback() {
                     @Override

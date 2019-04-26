@@ -34,6 +34,7 @@ import com.definesys.dmportal.appstore.utils.AnimUtils;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.util.AndroidBug5497Workaround;
 import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -103,6 +104,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         content=getString(R.string.no_des);
         initView();
         initEdit();//具体原因编辑框
+//        AndroidBug5497Workaround.assistActivity(this);
     }
 
     private void initView() {

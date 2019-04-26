@@ -78,7 +78,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         return sp.getInt(spUserId, -1);
     }
 
-    public long getLastLeaveTime(){return sp.getLong(getUserId().intValue()+spLeaveTime,System.currentTimeMillis());}
+    public long getLastLeaveTime(){return sp.getLong(String.valueOf(getUserId().intValue())+spLeaveTime,System.currentTimeMillis());}
 
     public int getUserSex() {
         return sp.getInt(spUserSex, -1);
@@ -226,7 +226,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         editor.apply();
     }
     public void setLastLeaveTime(long leaveTime) {
-        SharedPreferences.Editor editor = getSpWithEdit().putLong(getUserId().intValue()+spLeaveTime, leaveTime);
+        SharedPreferences.Editor editor = getSpWithEdit().putLong(String.valueOf(getUserId().intValue()) + spLeaveTime, leaveTime);
         editor.apply();
     }
     /**

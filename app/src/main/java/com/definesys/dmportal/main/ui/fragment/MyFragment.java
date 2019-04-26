@@ -158,17 +158,26 @@ public class MyFragment extends Fragment {
     //初始化界面
     private void initView() {
        updateShowInfo();
-//        top.setOnClickListener((view) ->
-//                ARouter.getInstance().build("/dmportal/usercenter/UserInformationActivity").navigation());
-        //点击头像
+
+        //点击头像 显示图片
         RxView.clicks(userImage).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    List<String> photoStyles = new ArrayList<>();
-                    photoStyles.add(getString(R.string.ui_photo));
-                    photoStyles.add(getString(R.string.ui_galary));
-                    photoStyles.add(getString(R.string.ui_check_head));
-                    show(photoStyles);
+                    String path = SharedPreferencesUtil.getInstance().getUserLocal();
+                    boolean isEmpty = "".equals(path);
+                    if(isEmpty){
+                        Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
+                        path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
+                    }
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setPath(path);
+                    localMedia.setPosition(0);
+                    List<LocalMedia> localMedias = new ArrayList<>();
+                    localMedias.add(localMedia);
+                    PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
+                            .openExternalPreview(0, localMedias);
+                    if(isEmpty)
+                        userImage.setImageBitmap(BitmapFactory.decodeFile(path));
                 });
         //个人信息
         RxView.clicks(lg_person)
@@ -253,51 +262,6 @@ public class MyFragment extends Fragment {
                     }
                 });
 
-    }
-
-
-
-    private void show(List<String> list) {
-        BottomDialog bottomDialog = new BottomDialog(getContext(),list);
-        bottomDialog.setOnOptionClickListener(position -> {
-            if(position==2){//查看头像
-                String path = SharedPreferencesUtil.getInstance().getUserLocal();
-                boolean isEmpty = "".equals(path);
-                if(isEmpty){
-                    Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
-                    path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
-                }
-                LocalMedia localMedia = new LocalMedia();
-                localMedia.setPath(path);
-                localMedia.setPosition(0);
-                List<LocalMedia> localMedias = new ArrayList<>();
-                localMedias.add(localMedia);
-                PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
-                        .openExternalPreview(0, localMedias);
-                if(isEmpty)
-                    userImage.setImageBitmap(BitmapFactory.decodeFile(path));
-            }
-            if (position == 1) {//从相册选择
-                PictureSelector.create(this)
-                        .openGallery(PictureMimeType.ofImage())
-                        .maxSelectNum(1).enableCrop(true).compress(true)
-                        .circleDimmedLayer(true)
-                        .rotateEnabled(false)
-                        .withAspectRatio(1, 1)
-                        .forResult(PictureConfig.CHOOSE_REQUEST);
-            }
-            if(position == 0) {//拍照
-                PictureSelector.create(this)
-                        .openCamera(PictureMimeType.ofImage())
-                        .maxSelectNum(1).enableCrop(true).compress(true)
-                        .circleDimmedLayer(true)
-                        .rotateEnabled(false)
-                        .withAspectRatio(1, 1)
-                        .forResult(PictureConfig.CHOOSE_REQUEST);
-            }
-            bottomDialog.dismiss();
-        });
-        bottomDialog.setOnCancelButtonClickListener(view -> bottomDialog.dismiss()).show();
     }
 
     @Override

@@ -31,7 +31,7 @@ import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.UserInfoPresent;
-import com.definesys.dmportal.main.util.HddLayoutHeight;
+import com.definesys.dmportal.main.util.AndroidBug5497Workaround;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -66,8 +66,8 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     ScrollView lg_sc;
     @BindView(R.id.reason_layout)
     LinearLayout lg_reason;
-    @BindView(R.id.main_view)
-    LinearLayout main;
+//    @BindView(R.id.main_view)
+//    LinearLayout main;
 
     private HashMap<Integer,String> deleteMap;//用户要删除的权限<权限，范围>
     private HashMap<Integer, String> autMap;//用户的全部权限<权限，范围>
@@ -81,6 +81,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         ButterKnife.bind(this);
         initView();
         initEdit();
+        AndroidBug5497Workaround.assistActivity(this);
     }
     private void initView() {
         titleBar.setTitle(getString(R.string.delete_authority));
@@ -109,9 +110,9 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
         //点击
         RxView.clicks(ed_reason)
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
-                .subscribe(obj->{
-                    ed_reason.setCursorVisible(true);
-                });
+                .subscribe(obj->
+                    ed_reason.setCursorVisible(true)
+                );
 
         //获取焦点
         ed_reason.setOnFocusChangeListener((v, hasFocus) -> {
@@ -128,7 +129,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                         tv_count.setText(getString(R.string.word_count, ed_reason.getText().toString().length())));
         // 防遮挡
 //        new HddLayoutHeight().addLayoutListener(this,main,tv_count,lg_reason,ed_reason,((LinearLayout.LayoutParams)lg_reason.getLayoutParams()).bottomMargin);
-        new HddLayoutHeight().addLayoutListener(this,main,tv_count,1);
+//        new HddLayoutHeight().addLayoutListener(this,lg_sc,tv_count,1);
     }
     //获取辅导员权限中不可删除的班级id列表
     @Subscribe(tags = {

@@ -156,6 +156,7 @@
     <color name="text_noable">#afafaf</color>
     <color name="news_font">#8e8e8e</color>
     <color name="back_gray">#eaeaea</color>
+    <color name="back_white">#fafafa</color>
     <color name="stroke_text">#cccccc</color>
     <color name="text_noselect">#9f9f9f</color>
     <color name="des_color">#B5B5B6</color>

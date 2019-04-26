@@ -21,6 +21,7 @@
     <ScrollView
         android:id="@+id/layout_scroll"
         android:layout_width="match_parent"
+        android:paddingTop="12dp"
         android:layout_height="match_parent"
         android:background="@color/clearColor"
         >
@@ -30,11 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20dp">
-
-            </View>
             <RelativeLayout
                 android:orientation="vertical"
                 android:id="@+id/info_layout"
