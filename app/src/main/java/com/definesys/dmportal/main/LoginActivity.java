@@ -293,7 +293,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
 //        JPushInterface.requestPermission(this);
         RxPermissions rxPermission = new RxPermissions(this);
         rxPermission
-                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .requestEach(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(permission -> {
                     if (permission.granted) {
                         // 用户已经同意该权限
@@ -307,7 +307,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
                     }
                 });
     }
-
     /*
  点按两次退出
   */

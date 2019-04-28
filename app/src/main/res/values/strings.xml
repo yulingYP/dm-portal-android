@@ -216,7 +216,6 @@
 
     <string name="no_one_tip">您的帐号已在其他设备登录，如非本人操作，请及时修改密码</string>
     <string name="no_use_tip">您的账号已被冻结,请联系管理员解冻</string>
-    <string name="sex_male">男</string>
     <string name="ui_photo">拍照</string>
     <string name="ui_galary">从相册选择</string>
     <string name="ui_check_head">查看当前头像</string>
@@ -517,6 +516,18 @@
     <string name="delete_error_tip_3">请填写具体原因</string>
     <string name="delete_authority_des">%s权限\n%s</string>
     <string name="delete_success">删除成功</string>
+
+    <string name="man">男</string>
+    <string name="woman">女</string>
+    <string name="class_tip">班级</string>
+    <string name="branch_tip">部门</string>
+    <string name="college_name">哈尔滨工业大学(威海)</string>
+    <string name="sex">性别</string>
+    <string name="user_id">学号</string>
+    <string name="facult_name">所属</string>
+    <string name="bound_phone">绑定手机</string>
+    <string name="no_bind">未绑定</string>
+    <string name="checkAut">查看权限</string>
 
 
 </resources>

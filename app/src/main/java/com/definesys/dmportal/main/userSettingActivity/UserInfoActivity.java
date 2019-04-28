@@ -1,6 +1,5 @@
 package com.definesys.dmportal.main.userSettingActivity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,9 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -46,7 +47,6 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.vise.xsnow.permission.RxPermissions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,11 +65,31 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     CustomTitleBar titleBar;
     @BindView(R.id.head_pic)
     RCImageView iv_head;
+    @BindView(R.id.user_name)
+    TextView tv_name;
+    @BindView(R.id.user_id)
+    TextView tv_id;
+    @BindView(R.id.group_name)
+    TextView tv_group;
+    @BindView(R.id.group_tip)
+    TextView tv_groupTip;
+    @BindView(R.id.facult_name)
+    TextView tv_facult;
+    @BindView(R.id.user_sex)
+    TextView tv_sex;
+    @BindView(R.id.phone_number)
+    TextView tv_phone;
+    @BindView(R.id.phone_icon)
+    ImageView iv_phoneIcon;
+    @BindView(R.id.aut_layout)
+    LinearLayout lg_aut;
+    @BindView(R.id.phone_layout)
+    LinearLayout lg_phone;
     @Autowired(name = "userId")
     Number userId;
     private User user;//用户信息
     private int requestCount=0;//重新获取尝试次数
-   private RequestOptions option = new RequestOptions()
+    private RequestOptions option = new RequestOptions()
             .centerCrop()
             .signature(new ObjectKey(UUID.randomUUID().toString()))
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -107,6 +127,55 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
                     photoStyles.add(getString(R.string.ui_check_head));
                     showBottomDialog(photoStyles);
                 });
+        //姓名
+        tv_name.setText(user.getName());
+
+        //id
+        tv_id.setText(user.getUserId());
+
+        //院系/大学
+        tv_facult.setText(user.getUserType() ==0?user.getFacultyName():getString(R.string.college_name));
+
+        //班级/部门
+        tv_group.setText(user.getUserType() ==0?user.getClassName():user.getBranchName());
+        tv_groupTip.setText(user.getUserType() ==0?getString(R.string.class_tip):getString(R.string.branch_tip));
+
+        //性别
+        tv_sex.setText(user.getUserSex()==1?getString(R.string.man):getString(R.string.woman));
+
+        //未绑定手机
+        if("".equals(user.getPhone())){
+            tv_phone.setText(getString(R.string.bound_phone));
+            if(userId.intValue() == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
+                iv_phoneIcon.setVisibility(View.VISIBLE);
+                //点击 绑定手机
+                RxView.clicks(lg_phone)
+                        .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                        .subscribe(o->
+                                ARouter.getInstance().build(ARouterConstants.PhoneBindActivity).withBoolean("isBind",false).navigation()
+                        );
+            }else {
+                iv_phoneIcon.setVisibility(View.GONE);
+            }
+
+        }else {//已绑定
+            tv_phone.setText(user.getPhone());
+            iv_phoneIcon.setVisibility(View.GONE);
+        }
+        //本人且有权限
+        if((user.getLeaveAuthority()>=0||user.getLeaveTeacherAuthority()>=0)&&userId.intValue() == SharedPreferencesUtil.getInstance().getUserId().intValue()){
+            lg_aut.setVisibility(View.VISIBLE);
+            //点击 查看权限
+            RxView.clicks(lg_phone)
+                    .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                    .subscribe(o->
+                            ARouter.getInstance().build(ARouterConstants.AuthoritySettingActivity).navigation()
+                    );
+        }else {//无权限
+            lg_aut.setVisibility(View.GONE);
+        }
+
+
     }
     //显示底部选择框
     private void showBottomDialog(List<String> list) {
@@ -246,7 +315,6 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
                     // 2.media.getCutPath();为裁剪后 path，需判断 media.isCut();是否为 true
                     // 3.media.getCompressPath();为压缩后 path，需判断 media.isCompressed();是否为 true
                     // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
-
                     String pathName = selectImages.get(0).getCompressPath();
                     File file = new File(pathName);
                     new ChangeUserImagePresenter(this).uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"0");

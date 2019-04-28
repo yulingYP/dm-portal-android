@@ -70,7 +70,7 @@ public class User{
     }
 
     public String getName() {
-        return name;
+        return name==null?"":name;
     }
 
     public void setName(String name) {
@@ -150,7 +150,7 @@ public class User{
     }
 
     public String getPhone() {
-        return phone;
+        return phone==null?"":phone;
     }
 
     public void setPhone(String phone) {

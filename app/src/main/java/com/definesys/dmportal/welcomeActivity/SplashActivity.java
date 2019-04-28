@@ -15,7 +15,7 @@ public class SplashActivity extends AppCompatActivity {
 private String message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Main_AppTheme);
+//        setTheme(R.style.Main_AppTheme);
         super.onCreate(savedInstanceState);
         // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_splash);
