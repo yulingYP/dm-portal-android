@@ -190,6 +190,7 @@
     <string name="approval_result_des">审批结果:</string>
     <string name="shixi">实习</string>
     <string name="subject_show_tip">点击查看他的课表及课程成绩</string>
+    <string name="use_Info_show_tip">点击查看他的个人信息</string>
     <string name="leaver_name">请假人姓名:%s</string>
     <string name="green_agree"><![CDATA[<font color=\'#7cb342\'>同意</font>]]></string>
     <string name="red_refuse"><![CDATA[<font color=\'#ff4444\'>不同意</font>]]></string>

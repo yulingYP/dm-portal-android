@@ -138,6 +138,8 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     TextView tv_approvalContent;
     @BindView(R.id.mainview)
     LinearLayout main;
+    @BindView(R.id.user_info_layout)
+    LinearLayout lg_user_info;
 
     @Autowired(name = "leaveInfo")
     LeaveInfo leaveInfo;
@@ -237,6 +239,15 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                           .withInt("checkId", leaveInfo.getUserId().intValue())
                           .withInt("userType", leaveInfo.getUserType())
                           .navigation()
+                );
+        //点击查看个人信息
+        RxView.clicks(lg_user_info)
+                .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
+                .subscribe(obj->
+                        ARouter.getInstance()
+                                .build(ARouterConstants.UserInfoActivity)
+                                .withObject("userId", leaveInfo.getUserId())
+                                .navigation()
                 );
         if(type==4) {
             //点击同意
