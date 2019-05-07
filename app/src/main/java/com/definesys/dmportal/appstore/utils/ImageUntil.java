@@ -6,12 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
@@ -56,39 +54,36 @@ public class ImageUntil {
 
     /**
      * 保存文件的方法
-     * @param code 图片
+     * @param suore 图片
      * @param context c
-     * @param mode 0.保存到缓存 1.保存到相册 2.保存到指定目录 3.保存头像 4.保存到缓存缩放0.9
+     * @param mode 0.保存到缓存且回收bitmap 1.保存到相册且回收bitmap 2.保存到指定目录 3.保存到缓存不回收bitmap
      * @return 路径
      */
-    public static String  saveBitmapFromView(Bitmap code,String picName, Context context,int mode) {
+    public static String saveBitmapFromView(Bitmap suore,String picName, Context context,int mode) {
         String path =null;
         Bitmap bmp = null;
         Bitmap scaleBmp = null;
         try {
-            bmp = code;
+            bmp = suore;
             // 缩小图片
             Matrix matrix = new Matrix();
-            float s = mode==4?1.0f:0.5f;//缩放比例
+            float s = 1.0f;//缩放比例
             matrix.postScale(s, s); //长和宽放大缩小的比例
             scaleBmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
-            bmp = null;
-
             path = saveBitmap(scaleBmp, picName+".jpg", context, mode);
-
-            scaleBmp.recycle();
-            scaleBmp = null;
 
         } catch (Exception e) {
             Log.d("mydemo",e.toString());
         }
         finally {
-            if (bmp != null && !bmp.isRecycled()) {
-                bmp.recycle();
-            }
+            if(mode!=3) {//回收bitmap
+                if (bmp != null && !bmp.isRecycled()) {
+                    bmp.recycle();
+                }
 
-            if (scaleBmp != null && !scaleBmp.isRecycled()) {
-                scaleBmp.recycle();
+                if (scaleBmp != null && !scaleBmp.isRecycled()) {
+                    scaleBmp.recycle();
+                }
             }
         }
 
@@ -132,12 +127,12 @@ public class ImageUntil {
                 // 格式为 JPEG，照相机拍出的图片为JPEG格式的，PNG格式的不能显示在相册中
 //                Bitmap.CompressFormat format=mode==4?Bitmap.CompressFormat.PNG:Bitmap.CompressFormat.JPEG;
                 Bitmap.CompressFormat format=Bitmap.CompressFormat.JPEG;
-                int quality =  mode==4?100:90;
+                int quality =  100;
                 if (bitmap.compress(format,quality , out)) {
                     out.flush();
                     out.close();
                     // 插入图库
-                    if (mode != 0&&mode!=4)
+                    if (mode != 0&&mode!=3)
                         MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), bitName, null);
 
                 }
@@ -145,34 +140,11 @@ public class ImageUntil {
                 e.printStackTrace();
 
             }
-            if (mode != 0&&mode!=4)// 发送广播，通知刷新图库的显示
+            if (mode != 0&&mode!=3)// 发送广播，通知刷新图库的显示
                 context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + fileName)));
 
         }
         return file.getPath();
-    }
-
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        // 取 drawable 的长宽
-        int w = drawable.getIntrinsicWidth();
-        int h = drawable.getIntrinsicHeight();
-
-        // 取 drawable 的颜色格式
-        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                : Bitmap.Config.RGB_565;
-        // 建立对应 bitmap
-        Bitmap bitmap = Bitmap.createBitmap(w, h, config);
-        // 建立对应 bitmap 的画布
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, w, h);
-        // 把 drawable 内容画到画布中
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
-    public static String getUUID(String path){
-        String []temps = path.split("/");
-        return temps[temps.length-1].split("\\.")[0];
     }
 
     /**

@@ -1,18 +1,15 @@
 package com.definesys.dmportal.main.ui.fragment;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +26,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.customViews.BottomDialog;
 import com.definesys.dmportal.appstore.customViews.RCImageView;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
@@ -49,7 +45,6 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
-import com.vise.xsnow.permission.RxPermissions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,12 +156,8 @@ public class MyFragment extends Fragment {
         RxView.clicks(userImage).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    String path = SharedPreferencesUtil.getInstance().getUserLocal();
-                    boolean isEmpty = "".equals(path);
-                    if(isEmpty){
-                        Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
-                        path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),0);
-                    }
+                    Bitmap image = ((BitmapDrawable)userImage.getDrawable()).getBitmap();
+                    String path = ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),getContext(),3);
                     LocalMedia localMedia = new LocalMedia();
                     localMedia.setPath(path);
                     localMedia.setPosition(0);
@@ -174,8 +165,7 @@ public class MyFragment extends Fragment {
                     localMedias.add(localMedia);
                     PictureSelector.create(getActivity()).openGallery(PictureMimeType.ofImage())
                             .openExternalPreview(0, localMedias);
-                    if(isEmpty)
-                        userImage.setImageBitmap(BitmapFactory.decodeFile(path));
+//                    userImage.setImageBitmap(BitmapFactory.decodeFile(path));
                 });
         //个人信息
         RxView.clicks(lg_person)
@@ -234,7 +224,6 @@ public class MyFragment extends Fragment {
         if("".equals(str)){
             str = getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
         }
-
         Glide.with(this)
                 .asBitmap()
                 .load(str)
@@ -243,16 +232,13 @@ public class MyFragment extends Fragment {
                     //得到图片
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),4);
+                        String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),3);
                         SharedPreferencesUtil.getInstance().setUserLocal(path);
-                        userImage.setImageBitmap(BitmapFactory.decodeFile(path));
-
+                        userImage.setImageBitmap(resource);
                     }
 
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
-//                        SharedPreferencesUtil.getInstance().setUserLocal("");
-//                        userImage.setImageResource(R.drawable.my);
                         if(++requestCount<5)
                             refreshUserImage();
                         else

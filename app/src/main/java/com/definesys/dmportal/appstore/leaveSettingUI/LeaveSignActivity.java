@@ -157,7 +157,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     Bitmap image = ((BitmapDrawable)iv_sign.getDrawable()).getBitmap();
-                    String path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),this,4);
+                    String path = ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),this,3);
                     LocalMedia localMedia = new LocalMedia();
                     localMedia.setPath(path);
                     localMedia.setPosition(0);
@@ -165,14 +165,14 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     localMedias.add(localMedia);
                     PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
                             .openExternalPreview(0, localMedias);
-                    iv_sign.setImageBitmap(BitmapFactory.decodeFile(path));
+//                    iv_sign.setImageBitmap(BitmapFactory.decodeFile(path));
                 });
         //点击新建签名 展示新建签名
         RxView.clicks(iv_show)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     Bitmap image = ((BitmapDrawable)iv_show.getDrawable()).getBitmap();
-                    String path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),this,4);
+                    String path=ImageUntil.saveBitmapFromView(image,UUID.randomUUID().toString(),this,3);
                     LocalMedia localMedia = new LocalMedia();
                     localMedia.setPath(path);
                     localMedia.setPosition(0);
@@ -181,7 +181,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
                     PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
                             .openExternalPreview(0, localMedias);
 //                    iv_show.setImageBitmap(null);
-                    iv_show.setImageBitmap(BitmapFactory.decodeFile(path));
+//                    iv_show.setImageBitmap(BitmapFactory.decodeFile(path));
 
                 });
         setSign();//设置签名
@@ -299,7 +299,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
             //千万别忘最后一步
             tv.destroyDrawingCache();
         }
-        String pathName = ImageUntil.saveBitmapFromView(bitmap,UUID.randomUUID().toString(), LeaveSignActivity.this, 4);
+        String pathName = ImageUntil.saveBitmapFromView(bitmap,UUID.randomUUID().toString(), LeaveSignActivity.this, 3);
         File file = new File(pathName);
         mPersenter.uploadUserImage(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()), file,"1");
 

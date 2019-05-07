@@ -62,7 +62,7 @@ public class SignatureActivity extends AppCompatActivity {
                 .subscribe(o -> {
                     if(lg_sign.getTouched()) {
                         Intent intent = new Intent();
-                        intent.putExtra("path", ImageUntil.saveBitmapFromView(lg_sign.clearBlank(lg_sign.reDraw(), 10), UUID.randomUUID().toString(), this, 4));
+                        intent.putExtra("path", ImageUntil.saveBitmapFromView(lg_sign.clearBlank(lg_sign.reDraw(), 10), UUID.randomUUID().toString(), this, 0));
                         setResult(RESULT_OK, intent);
                         finish();
                     }else

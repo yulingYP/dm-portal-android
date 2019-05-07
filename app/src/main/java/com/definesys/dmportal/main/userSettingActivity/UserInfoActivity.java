@@ -182,12 +182,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         BottomDialog bottomDialog = new BottomDialog(this,list);
         bottomDialog.setOnOptionClickListener(position -> {
             if(position==2){//查看头像
-                String path = SharedPreferencesUtil.getInstance().getUserLocal();
-                boolean isEmpty = "".equals(path);
-                if(isEmpty){
-                    Bitmap image = ((BitmapDrawable)iv_head.getDrawable()).getBitmap();
-                    path= ImageUntil.saveBitmapFromView(image, UUID.randomUUID().toString(),this,0);
-                }
+                Bitmap image = ((BitmapDrawable)iv_head.getDrawable()).getBitmap();
+                String path= ImageUntil.saveBitmapFromView(image, UUID.randomUUID().toString(),this,3);
                 LocalMedia localMedia = new LocalMedia();
                 localMedia.setPath(path);
                 localMedia.setPosition(0);
@@ -195,8 +191,6 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
                 localMedias.add(localMedia);
                 PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
                         .openExternalPreview(0, localMedias);
-                if(isEmpty)
-                    iv_head.setImageBitmap(BitmapFactory.decodeFile(path));
             }
             if (position == 1) {//从相册选择
                 PictureSelector.create(this)
@@ -239,10 +233,9 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
                     //得到图片
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),UserInfoActivity.this,4);
+                        String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),UserInfoActivity.this,3);
                         SharedPreferencesUtil.getInstance().setUserLocal(path);
-                        iv_head.setImageBitmap(BitmapFactory.decodeFile(path));
-
+                        iv_head.setImageBitmap(resource);
                     }
 
                     @Override
