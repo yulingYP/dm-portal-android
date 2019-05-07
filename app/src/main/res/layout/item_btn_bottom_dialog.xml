@@ -15,7 +15,7 @@
         android:layout_height="45dp"
         android:background="@null"
         android:gravity="center"
-        android:text="@string/sex_male"
+        android:text="@string/sex"
         android:textColor="@color/config_color_blue"
         android:textSize="20sp"/>
 </LinearLayout>

@@ -37,7 +37,7 @@ public interface SharedPreferencesParams {
     String spUserLocalimg = "u_localimg";
 
     //sp文件中院系id
-    String spFaculty = "u_faculty";
+    String spFacultyId = "u_faculty_id";
 
     //sp文件中教师请假部门id
     String spBranchId = "u_branch_id ";

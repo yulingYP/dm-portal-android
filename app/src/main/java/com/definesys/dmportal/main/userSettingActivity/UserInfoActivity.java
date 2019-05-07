@@ -131,7 +131,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         tv_name.setText(user.getName());
 
         //id
-        tv_id.setText(user.getUserId());
+        tv_id.setText(String.valueOf(user.getUserId()));
 
         //院系/大学
         tv_facult.setText(user.getUserType() ==0?user.getFacultyName():getString(R.string.college_name));

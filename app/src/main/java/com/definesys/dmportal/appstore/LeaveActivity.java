@@ -490,7 +490,8 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         }
 
         //(Number id,String name, String content, String startTime, String endTime, String leaveType, String leaveTitle, String subTime, String selectedSubject)
-        LeaveInfo submitLeaveInfo = new LeaveInfo(id,name,content,startTime,endTime,title,sumTime, selectedSubject.toString(),type,SharedPreferencesUtil.getInstance().getUserType());
+        int userType = SharedPreferencesUtil.getInstance().getUserType();//用户类型
+        LeaveInfo submitLeaveInfo = new LeaveInfo(id,name,content,startTime,endTime,title,sumTime, selectedSubject.toString(),type,userType,userType==0?SharedPreferencesUtil.getInstance().getFacultyId():SharedPreferencesUtil.getInstance().getUserBranchId());
 
         Dialog dialog = new Dialog(this);
         SubmitLeaveInfoView submitLeaveInfoView = new SubmitLeaveInfoView(this);
@@ -613,7 +614,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         if(subjectTableInfo==null){//获取课表信息
             if(isShow)
                 progressHUD.show();
-            new GetTableInfoPresenter(this).getTableInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType(),SharedPreferencesUtil.getInstance().getFaculty());
+            new GetTableInfoPresenter(this).getTableInfo(SharedPreferencesUtil.getInstance().getUserId(),SharedPreferencesUtil.getInstance().getUserType(),SharedPreferencesUtil.getInstance().getFacultyId());
             return;
         }
         if(subjectDialog==null) {

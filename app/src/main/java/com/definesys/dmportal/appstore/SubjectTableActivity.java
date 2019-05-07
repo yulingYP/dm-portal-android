@@ -548,7 +548,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
         if(isScore){
             mPersenter.getCursorScore(checkId);
         }else {
-            mPersenter.getTableInfo(checkId,userType,SharedPreferencesUtil.getInstance().getFaculty());
+            mPersenter.getTableInfo(checkId,userType,SharedPreferencesUtil.getInstance().getFacultyId());
         }
 
     }

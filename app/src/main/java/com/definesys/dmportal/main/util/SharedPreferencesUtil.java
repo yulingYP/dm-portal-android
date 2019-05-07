@@ -60,7 +60,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         user.setUserSign(getUserSign());//签名
         user.setBranchId(getUserBranchId());//部门id
         user.setBranchName(getUserBranchName());//部门名称
-        user.setFacultyId(getFaculty());//院系id
+        user.setFacultyId(getFacultyId());//院系id
         user.setFacultyName(getFacultyName());//院系名称
         user.setClassId(getClassId());//班级id
         user.setClassName(getClassName());//班级名称
@@ -101,7 +101,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
 
     public String getToken() {   return sp.getString(spToken,"");}
 
-    public String getFaculty() {   return sp.getString(spFaculty,"");}
+    public String getFacultyId() {   return sp.getString(spFacultyId,"");}
 
     public String getFacultyName() {   return sp.getString(spFacultyName,"");}
 
@@ -132,7 +132,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                     .putString(spUserName, user.getName())//姓名
                     .putString(spUserPhone, user.getPhone())//电话
                     .putInt(spUserSex, user.getUserSex())//性别
-                    .putString(spFaculty,user.getFacultyId())//院系id
+                    .putString(spFacultyId,user.getFacultyId())//院系id
                     .putString(spFacultyName,user.getFacultyName())//院系名称
                     .putString(spClassId,user.getClassId())//班级id
                     .putString(spClassName,user.getClassName())//班级名称
@@ -153,7 +153,7 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
                 .putString(spUserName, "")//姓名
                 .putString(spUserPhone, getUserPhone())//电话
                 .putInt(spUserSex, -1)
-                .putString(spFaculty,"")//院系id
+                .putString(spFacultyId,"")//院系id
                 .putString(spFacultyName,"")//院系名称
                 .putString(spClassId,"")//班级id
                 .putString(spClassName,"")//班级名称

@@ -28,8 +28,9 @@
             android:layout_marginEnd="8dp"
             app:round_as_circle="true"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
             android:src="@drawable/my"
             />
         <TextView
@@ -37,7 +38,7 @@
             android:textSize="16sp"
             android:text="@string/name"
             android:textColor="@color/black"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/head_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

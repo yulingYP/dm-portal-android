@@ -25,11 +25,12 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
     private String picUrl;//图片url用*号隔开
     private Date updateDate;//更新日期
     private int userType;//用户类型
+    private String groupId;//所属部门或院系的id
 
     public LeaveInfo() {
     }
 
-    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveTitle, String subTime, String selectedSubject, int type,int userType) {
+    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveTitle, String subTime, String selectedSubject, int type,int userType,String groupId) {
         this.userId = id;
         this.userName = name;
         this.leaveReason = content;
@@ -40,6 +41,7 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
         this.selectedSubject = selectedSubject;
         this.type = type;
         this.userType = userType;
+        this.groupId = groupId;
     }
 
 
@@ -179,6 +181,13 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
         this.userType = userType;
     }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     @Override
     public int compareTo(@NonNull LeaveInfo o) {

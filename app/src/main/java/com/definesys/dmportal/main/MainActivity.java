@@ -328,7 +328,6 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }, thread = EventThread.MAIN_THREAD)
     public void singleLogout(Boolean isExit) {
         if (isExit) {
-
             SharedPreferencesUtil.getInstance().clearUser();
             //解绑当前用户
             JPushInterface.deleteAlias(this,++notifyID);

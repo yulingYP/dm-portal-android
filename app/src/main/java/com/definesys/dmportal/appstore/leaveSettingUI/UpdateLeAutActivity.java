@@ -34,7 +34,6 @@ import com.definesys.dmportal.appstore.utils.AnimUtils;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
-import com.definesys.dmportal.main.util.AndroidBug5497Workaround;
 import com.definesys.dmportal.main.util.HddLayoutHeight;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
@@ -314,11 +313,11 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             }
             if(authority==0||authority==1){//寝室长或班长
                     //获取班级名称
-                    if(SharedPreferencesUtil.getInstance().getFaculty()==null||"".equals(SharedPreferencesUtil.getInstance().getFaculty())) {
+                    if(SharedPreferencesUtil.getInstance().getFacultyId()==null||"".equals(SharedPreferencesUtil.getInstance().getFacultyId())) {
                         Toast.makeText(this, R.string.apply_error_tip_3, Toast.LENGTH_SHORT).show();
                         return;
                     }else {
-                        mPersenter.getApplyList(SharedPreferencesUtil.getInstance().getUserId(), SharedPreferencesUtil.getInstance().getFaculty(), authority==0?0:2);
+                        mPersenter.getApplyList(SharedPreferencesUtil.getInstance().getUserId(), SharedPreferencesUtil.getInstance().getFacultyId(), authority==0?0:2);
                     }
             }else if(authority==2||authority==3){//班主任、毕设老师
                 mPersenter.getApplyList(0, "", authority==2?3:5);
