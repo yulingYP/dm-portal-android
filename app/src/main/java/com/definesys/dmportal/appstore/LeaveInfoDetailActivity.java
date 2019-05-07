@@ -40,7 +40,6 @@ import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
-import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -262,7 +261,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                     dialog.dismiss();
                     progressHUD.show();
 //                        String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType,int leaverId
-                    mPersenter.updateApprovalStatusById(new ApprovalRecord(leaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),getString(R.string.status_tip_3),(short)2,-10,SharedPreferencesUtil.getInstance().getUserId().intValue()));
+                    mPersenter.updateApprovalStatusById(new ApprovalRecord(leaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),getString(R.string.status_tip_3),(short)2,-10,SharedPreferencesUtil.getInstance().getUserId().intValue(),SharedPreferencesUtil.getInstance().getUserName()));
                 });
         alertDialog.show();
     }

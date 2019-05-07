@@ -12,6 +12,8 @@ public class ApprovalRecord {
 
     private int approverId;//审批人id
 
+    private String approverName;//审批人姓名
+
     private String approvalContent;//审批意见
 
     private Short approvalResult;//审批结果0.不同意 1.同意
@@ -33,13 +35,14 @@ public class ApprovalRecord {
         this.approvalContent = approvalContent;
         this.approvalTime = approvalTime;
     }
-    public ApprovalRecord(String leaveInfoId, int approverId, String approvalContent, Short approvalResult, int approverType,int leaverId) {
+    public ApprovalRecord(String leaveInfoId, int approverId,String approvalContent, Short approvalResult, int approverType,int leaverId,String approverName) {
         this.leaveInfoId = leaveInfoId;
         this.approverId = approverId;
         this.approvalContent = approvalContent;
         this.approvalResult = approvalResult;
         this.approverType = approverType;
         this.leaverId = leaverId;
+        this.approverName = approverName;
     }
 
     public String getLeaveInfoId() {
@@ -104,5 +107,13 @@ public class ApprovalRecord {
 
     public void setLeaverName(String leaverName) {
         this.leaverName = leaverName;
+    }
+
+    public String getApproverName() {
+        return approverName==null?"":approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
     }
 }

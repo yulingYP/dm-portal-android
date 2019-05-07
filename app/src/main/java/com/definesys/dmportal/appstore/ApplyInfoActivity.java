@@ -249,7 +249,7 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
          for(ApplyRecord data:datas) {
              View itemView=LayoutInflater.from(this).inflate(R.layout.item_approval_record,parent,false);
              //审批人
-             ((TextView) itemView.findViewById(R.id.name_text)).setText(getString(R.string.approver_text, getApprovalerName()));
+             ((TextView) itemView.findViewById(R.id.name_text)).setText(getString(R.string.approver_text, getApprovalerName(data)));
              //审批内容
              ((TextView) itemView.findViewById(R.id.content_text)).setText(getString(R.string.approval_content_text, data.getApplyContent()));
              //审批结果
@@ -271,22 +271,23 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
-    private String getApprovalerName(){
-        if(applyInfo.getApplyAuthorityType()==0){//审批学生权限
-            String[]  arr = getResources().getStringArray(R.array.approverType);
-            if(applyInfo.getApplyAuthority()==0)//寝室长
-                return arr[1];//班长
-            else if(applyInfo.getApplyAuthority()==1)//班长
-                return arr[2];//班主任
-            else if(applyInfo.getApplyAuthority()==2||applyInfo.getApplyAuthority()==3)//班主任 毕设老师权限
-                return arr[4];//辅导员
-            else if(applyInfo.getApplyAuthority()==4||applyInfo.getApplyAuthority()==5||applyInfo.getApplyAuthority()==6||applyInfo.getApplyAuthority()==7)//辅导员/实习/学生/教学负责人
-                return arr[8];//权限审批负责人
+    private String getApprovalerName(ApplyRecord data){
 
-        }else if(applyInfo.getApplyAuthorityType()==1) {//审批教师权限
-            return getResources().getStringArray(R.array.approverType_2)[2];
-        }
-       return "";
+//        if(applyInfo.getApplyAuthorityType()==0){//审批学生权限
+//            String[]  arr = getResources().getStringArray(R.array.approverType);
+//            if(applyInfo.getApplyAuthority()==0)//寝室长
+//                return arr[1];//班长
+//            else if(applyInfo.getApplyAuthority()==1)//班长
+//                return arr[2];//班主任
+//            else if(applyInfo.getApplyAuthority()==2||applyInfo.getApplyAuthority()==3)//班主任 毕设老师权限
+//                return arr[4];//辅导员
+//            else if(applyInfo.getApplyAuthority()==4||applyInfo.getApplyAuthority()==5||applyInfo.getApplyAuthority()==6||applyInfo.getApplyAuthority()==7)//辅导员/实习/学生/教学负责人
+//                return arr[8];//权限审批负责人
+//
+//        }else if(applyInfo.getApplyAuthorityType()==1) {//审批教师权限
+//            return getResources().getStringArray(R.array.approverType_2)[2];
+//        }
+       return "".equals(data.getApproverName())?data.getApproverId().toString():data.getApproverName();
     }
     /**
      * 设置暂无页

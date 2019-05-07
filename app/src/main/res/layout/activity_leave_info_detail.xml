@@ -17,54 +17,57 @@
         app:titlebar_bg_color="@color/customer_title"
         android:layout_height="?attr/titlebar_height">
     </com.definesys.dmportal.commontitlebar.CustomTitleBar>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
             android:id="@+id/layout_scroll"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/clearColor"
-            >
+            android:layout_marginTop="20dp"
+            android:background="@color/clearColor">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:orientation="vertical">
+
                 <RelativeLayout
-                    android:orientation="vertical"
-                    android:background="@color/white"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/name_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="6dp"
-                        android:layout_marginEnd="20dp"
                         android:text="@string/name_tip"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
                     <TextView
-                        android:layout_alignParentEnd="true"
-                        android:layout_width="wrap_content"
                         android:id="@+id/status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="6dp"
-                        android:layout_marginEnd="20dp"
-                        android:textSize="16sp"
                         android:text="@string/status_tip_1"
-                        android:layout_height="wrap_content"
-                        />
+                        android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/type_text"
-                        android:layout_below="@+id/name_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/name_text"
                         android:layout_marginBottom="6dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
@@ -74,44 +77,47 @@
 
                     <TextView
                         android:id="@+id/title_text"
-                        android:layout_below="@id/type_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/type_text"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:text="@string/leave_title"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/sum_time_text"
-                        android:layout_below="@id/title_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/title_text"
                         android:layout_marginBottom="6dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
                         android:text="@string/sum_time_tip"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/start_time_text"
-                        android:layout_below="@id/sum_time_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/sum_time_text"
                         android:layout_marginBottom="6dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
                         android:text="@string/start_time_tip"
-                        android:layout_marginEnd="20dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/end_time_text"
-                        android:layout_below="@id/start_time_text"
-                        android:layout_marginEnd="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/start_time_text"
                         android:layout_marginBottom="6dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
                         android:text="@string/end_time_tip"
                         android:textColor="@color/black"
@@ -119,62 +125,66 @@
 
                     <TextView
                         android:id="@+id/selected_subject_text"
-                        android:layout_below="@id/end_time_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/end_time_text"
                         android:layout_gravity="center"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:text="@string/selected_subject_tip"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/content_text"
-                        android:layout_below="@id/selected_subject_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/selected_subject_text"
                         android:layout_gravity="center"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
                         android:text="@string/content_tip"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                     <RelativeLayout
-                        android:layout_marginBottom="6dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
                         android:id="@+id/img_layout"
-                        android:layout_below="@id/content_text"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/content_text"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp">
+
                         <TextView
                             android:id="@+id/img_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="6dp"
                             android:text="@string/img_tip"
                             android:textColor="@color/black"
-                            android:layout_marginBottom="6dp"
                             android:textSize="16sp" />
+
                         <ImageView
                             android:id="@+id/img_1"
-                            android:src="@color/white"
-                            android:layout_marginEnd="8dp"
-                            android:layout_below="@+id/img_text"
-                            android:layout_toStartOf="@+id/img_2"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                             />
+                            android:layout_below="@+id/img_text"
+                            android:layout_marginEnd="8dp"
+                            android:layout_toStartOf="@+id/img_2"
+                            android:src="@color/white" />
+
                         <ImageView
                             android:id="@+id/img_2"
-                            android:layout_marginEnd="8dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_below="@+id/img_text"
                             android:layout_width="60dp"
-                            android:src="@color/white"
-                            android:layout_height="60dp" />
+                            android:layout_height="60dp"
+                            android:layout_below="@+id/img_text"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginEnd="8dp"
+                            android:src="@color/white" />
+
                         <ImageView
                             android:id="@+id/img_3"
                             android:layout_width="60dp"
@@ -183,123 +193,132 @@
                             android:layout_toEndOf="@+id/img_2"
                             android:src="@color/white" />
                     </RelativeLayout>
+
                     <TextView
                         android:id="@+id/submit_time"
-                        android:layout_below="@+id/img_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/img_layout"
                         android:layout_marginBottom="6dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="6dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/submit_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:text="@string/submit_time" />
                 </RelativeLayout>
 
                 <View
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="18dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="2dp">
                 </View>
                 <LinearLayout
                     android:id="@+id/cancel_layout"
                     android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:background="@color/white"
-
-                    android:gravity="center"
-                    android:layout_height="50dp">
+                    android:gravity="center">
                     <TextView
-                        android:textSize="16sp"
-                        android:layout_marginTop="6dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginBottom="6dp"
                         android:layout_marginStart="20dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_weight="1"
                         android:text="@string/report_back"
-                        android:layout_gravity="center"
                         android:textColor="@color/black"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content" />
+                        android:textSize="16sp" />
+
                     <ImageView
-                        android:layout_marginEnd="12dp"
-                        android:src="@drawable/entry"
                         android:layout_width="20dp"
-                        android:layout_height="30dp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/check_approval_layout"
-                    android:layout_width="match_parent"
-                    android:background="@color/white"
-                    android:layout_marginTop="1dp"
-                    android:gravity="center"
-                    android:layout_height="50dp">
-                    <TextView
-                        android:id="@+id/approval_text"
-                        android:textSize="16sp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="6dp"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/check_approval_record"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content" />
-                    <ImageView
+                        android:layout_height="30dp"
                         android:layout_marginEnd="12dp"
-                        android:src="@drawable/entry"
-                        android:layout_width="20dp"
-                        android:layout_height="30dp" />
+                        android:src="@drawable/entry" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/share_layout"
                     android:layout_width="match_parent"
-                    android:background="@color/white"
+                    android:layout_height="50dp"
                     android:layout_marginTop="1dp"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center"
-                    android:layout_height="50dp">
+                    android:background="@color/white"
+                    android:gravity="center">
+
                     <TextView
                         android:id="@+id/share_text"
-                        android:textSize="16sp"
-                        android:layout_marginTop="6dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginBottom="6dp"
                         android:layout_marginStart="20dp"
-                        android:text="@string/create_absence"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:layout_width="0dp"
+                        android:layout_marginTop="6dp"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content" />
+                        android:text="@string/create_absence"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
                     <ImageView
-                        android:layout_marginEnd="12dp"
-                        android:src="@drawable/entry"
                         android:layout_width="20dp"
-                        android:layout_height="30dp" />
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/entry" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/check_approval_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/white"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/approval_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_weight="1"
+                        android:text="@string/check_approval_record"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/entry" />
                 </LinearLayout>
             </LinearLayout>
 
         </ScrollView>
+
         <LinearLayout
             android:id="@+id/no_layout"
-            android:layout_gravity="center"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/no_img"
-                android:src="@mipmap/no_history"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@mipmap/no_history" />
+
             <TextView
                 android:id="@+id/no_text"
-                android:text="@string/no_current_leave_info"
-                android:gravity="center"
-                android:textSize="14sp"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/no_current_leave_info"
+                android:textSize="14sp" />
         </LinearLayout>
     </FrameLayout>
 

@@ -411,7 +411,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     ApprovalRecord approvalRecord = new ApprovalRecord(leaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),
-                            finalContent,(short)(isAgree?1:0), 1,leaveInfo.getUserId().intValue());
+                            finalContent,(short)(isAgree?1:0), 1,leaveInfo.getUserId().intValue(),SharedPreferencesUtil.getInstance().getUserName());
                     ++requestCount;
                     mPersenter.updateApprovalStatusById(approvalRecord);
                     progressHUD.show();

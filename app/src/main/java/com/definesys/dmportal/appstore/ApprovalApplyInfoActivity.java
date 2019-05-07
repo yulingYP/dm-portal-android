@@ -353,7 +353,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
                 .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                 .subscribe(obj->{
                     ApplyRecord applyRecord = new ApplyRecord(applyInfo.getApplyId(), applyInfo.getApplyUserId(),applyInfo.getApplyUserName(),SharedPreferencesUtil.getInstance().getUserId().intValue(),
-                            (short)(isAgree?1:0),approvalContent.trim());
+                            (short)(isAgree?1:0),approvalContent.trim(),SharedPreferencesUtil.getInstance().getUserName());
                     ++requestCount;
                     mPersenter.submitApplyResult(applyRecord);
                     progressHUD.show();

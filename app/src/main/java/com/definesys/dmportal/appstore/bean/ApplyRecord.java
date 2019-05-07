@@ -6,11 +6,13 @@ import java.util.Date;
 public class ApplyRecord implements Serializable {
     private String applyId;//信息id
 
+    private Integer applyerId;//申请人id
+
     private String applyerName;//申请人姓名
 
     private Integer approverId;//审批人id
 
-    private Integer applyerId;//申请人id
+    private String approverName;//审批人姓名
 
     private Short applyStatus;//审批状态  0.不同意 1.同意
 
@@ -33,13 +35,14 @@ public class ApplyRecord implements Serializable {
     }
     public ApplyRecord(){}
 
-    public ApplyRecord(String applyId,Integer applyerId, String applyerName, Integer approverId,  Short applyStatus, String applyContent) {
+    public ApplyRecord(String applyId,Integer applyerId, String applyerName, Integer approverId,  Short applyStatus, String applyContent,String approverName) {
         this.applyId = applyId;
         this.applyerName = applyerName;
         this.approverId = approverId;
         this.applyerId = applyerId;
         this.applyStatus = applyStatus;
         this.applyContent = applyContent;
+        this.approverName = approverName;
     }
 
     public void setApplyId(String applyId) {
@@ -116,5 +119,13 @@ public class ApplyRecord implements Serializable {
 
     public void setApproverId(Integer approverId) {
         this.approverId = approverId;
+    }
+
+    public String getApproverName() {
+        return approverName==null?"":approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
     }
 }
