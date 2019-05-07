@@ -229,15 +229,16 @@ public class ReasonTypeListLayout extends LinearLayout {
         }
     }
 
+    //容错处理 防止数组越界
     private int setPosition(int approverType) {
         int max= 0;
         while (approverType%10>=0&&approverType>0){
-            System.out.println(""+approverType%10);
+//            System.out.println(""+approverType%10);
             if(max<approverType%10)
-                max=approverType%10;
+                max = approverType%10;
             approverType/=10;
         }
-        if(max>6)
+        if(max>7)
             max=7;
         return max;
     }

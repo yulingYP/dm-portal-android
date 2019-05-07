@@ -2,7 +2,6 @@ package com.definesys.dmportal.main.userSettingActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -137,7 +136,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         tv_facult.setText(user.getUserType() ==0?user.getFacultyName():getString(R.string.college_name));
 
         //班级/部门
-        tv_group.setText(user.getUserType() ==0?user.getClassName():user.getBranchName());
+        String gruopDes = user.getUserType() ==0?user.getClassName():user.getBranchName();
+        tv_group.setText("".equals(gruopDes)?getString(R.string.no_title):gruopDes);
         tv_groupTip.setText(user.getUserType() ==0?getString(R.string.class_tip):getString(R.string.branch_tip));
 
         //性别

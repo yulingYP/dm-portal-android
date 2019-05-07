@@ -373,7 +373,6 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                 return;
             }
             initDialog(data.getData());
-
         }
     }
     /**
