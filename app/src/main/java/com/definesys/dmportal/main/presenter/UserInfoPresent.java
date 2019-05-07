@@ -24,9 +24,11 @@ import java.util.Map;
  */
 
 public class UserInfoPresent extends BasePresenter {
+    private int requestCount;//请求次数
 
     public UserInfoPresent(Context context) {
         super(context);
+        requestCount=0;
     }
     //获取用户信息
     public void getUserInfo(Number id){
@@ -53,6 +55,7 @@ public class UserInfoPresent extends BasePresenter {
                                 break;
                             default:
 //                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+                                if(++requestCount<=5)
                                  getUserInfo(id);//重新获取
                                 break;
                         }
@@ -60,7 +63,7 @@ public class UserInfoPresent extends BasePresenter {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-//                        Log.d("mydemo",errMsg);
+                        if(++requestCount<=5)
                          getUserInfo(id);//重新获取
 //                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
                     }
