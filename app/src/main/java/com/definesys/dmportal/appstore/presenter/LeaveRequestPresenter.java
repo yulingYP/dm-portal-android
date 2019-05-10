@@ -37,13 +37,10 @@ public class LeaveRequestPresenter extends BasePresenter {
      * @param selectImages 选择的图片
      */
     public void getRequestResult (LeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
-        //设置请假id
-        String id = submitLeaveInfo.getUserId().toString() + System.currentTimeMillis();
-        submitLeaveInfo.setId(id);
         //减少传输的数据
         submitLeaveInfo.setSubTime(null);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        RequestBody requestBody=null;
+        final RequestBody[] requestBody = {null};
         //上传图片文件
         if(selectImages!=null&&selectImages.size()>0) {
             for (int i=0;i<selectImages.size();i++) {
@@ -54,16 +51,13 @@ public class LeaveRequestPresenter extends BasePresenter {
                 builder.addFormDataPart("files", fileName, RequestBody.create(type, file));
                 builder.addFormDataPart("uuids", UUID.randomUUID().toString());
             }
-            builder.addFormDataPart("uploadId", submitLeaveInfo.getId());
             builder.addFormDataPart("type","1");
-            requestBody = builder.build();
+
         }
 
-
         //submitLeaveInfo.setSubmitDate(DensityUtil.getFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",new Date()));
-
         Log.d("myMap",new Gson().toJson(submitLeaveInfo));
-        RequestBody finalRequestBody = requestBody;
+
         ViseHttp.POST(HttpConst.submitLeaveRequest)
                 .tag(HttpConst.submitLeaveRequest)
                 .setJson(new Gson().toJson(submitLeaveInfo))
@@ -72,12 +66,15 @@ public class LeaveRequestPresenter extends BasePresenter {
                     public void onSuccess(BaseResponse<String> data) {
                         switch (data.getCode()) {
                             case "200":
-                                if(finalRequestBody == null)//没有图片要上传
+                                if(!(selectImages!=null&&selectImages.size()>0))//没有图片要上传
                                     SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, data.getData());
                                 else //有图片要上传
-                                    updatePictures(finalRequestBody,data.getData());
+                                    builder.addFormDataPart("uploadId", data.getData());
+                                    requestBody[0] = builder.build();
+                                    updatePictures(requestBody[0],data.getData());
                                 break;
                             default:
+
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
                                 break;
                         }
@@ -94,9 +91,9 @@ public class LeaveRequestPresenter extends BasePresenter {
     /**
      * 上传请假图片
      * @param finalRequestBody f
-     * @param msgId 消息id
+     * @param leaveId 请假信息id
      */
-    private void updatePictures(RequestBody finalRequestBody,String msgId) {
+    private void updatePictures(RequestBody finalRequestBody,String leaveId) {
         ViseHttp.POST(HttpConst.uploadPictures)
                 .setRequestBody(finalRequestBody)
                 .tag(HttpConst.uploadPictures)
@@ -105,7 +102,7 @@ public class LeaveRequestPresenter extends BasePresenter {
                     public void onSuccess(BaseResponse<String> data) {
                         switch (data.getCode()) {
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, msgId);
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST,leaveId);
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());

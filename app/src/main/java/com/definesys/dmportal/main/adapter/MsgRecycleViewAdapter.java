@@ -134,7 +134,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         if(messages.get(position).getMessageType()==1){//请假人消息
                             ARouter.getInstance()
                                     .build(ARouterConstants.LeaveInFoDetailActivity)
-                                    .withString("leaveId",messages.get(position).getMessageExtend())
+                                    .withLong("leaveId",Long.getLong(messages.get(position).getMessageExtend()))
                                     .navigation();
                         }else if(messages.get(position).getMessageType()==2){//审批人消息
                             MyMessage myMessage = messages.get(position);
@@ -144,7 +144,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             if(myMessage!=null) {
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApprovalLeaveInfoActivity)
-                                        .withString("leaveId", myMessage.getMessageExtend())
+                                        .withLong("leaveId", Long.getLong(myMessage.getMessageExtend()))
                                         .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withObject("date", myMessage.getSendTime())
                                         .withString("approvalContent", myMessage.getMessageContent())

@@ -6,8 +6,6 @@ import android.util.Log;
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.MyMessage;
-import com.definesys.dmportal.main.bean.DataContent;
-import com.definesys.dmportal.main.bean.Message;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
@@ -57,11 +55,11 @@ public class MessagePresenter extends BasePresenter {
         });
     }
     //更新信息的状态
-    public void updateMsgStatus(Number userId,String messageId){
+    public void updateMsgStatus(Number userId,Long messageId){
         Map<String,Object> map = new HashMap<>();
         map.put("userId",userId.intValue());
         map.put("messageId",messageId);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
         ViseHttp.POST(HttpConst.updateMsgStatus)
                 .tag(HttpConst.getStaticMessage)
                 .setJson(new Gson().toJson(map))

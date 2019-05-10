@@ -9,7 +9,7 @@ import java.util.Date;
  */
 
 public class LeaveInfo implements Comparable<LeaveInfo>{
-    private String id;//请假编号
+    private Long id;//请假编号
     private Number userId;//用户id
     private String userName;//姓名
     private String leaveReason;//具体原因
@@ -141,12 +141,12 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
         this.picUrl = picUrl;
     }
 
-    public String getId() {
-        return id==null?"":id;
+    public Long getId() {
+        return id==null?Long.valueOf(-1):id;
     }
 
-    public void setId(String d) {
-        this.id = d;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Short getApprovalStatus() {

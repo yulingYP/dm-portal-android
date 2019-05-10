@@ -28,8 +28,8 @@ public class GetApprovalRecordPresent extends BasePresenter {
         super(context);
     }
 
-    public void getApprovalRecordList (String leaveId,String isNeed){
-        Map<String,String> map = new HashMap<>();
+    public void getApprovalRecordList (Long leaveId,String isNeed){
+        Map<String,Object> map = new HashMap<>();
         map.put("leaveId",leaveId);
         map.put("isNeed",isNeed);//是否需要排除销假记录
         Log.d("myMap",new Gson().toJson(map));
@@ -56,13 +56,13 @@ public class GetApprovalRecordPresent extends BasePresenter {
                     }
                 });
     }
-    public void getApprovalRecordByMsgId(String msgId,String leaveId){
+    public void getApprovalRecordByMsgId(String msgId,Long leaveId){
         Map<String,String> map =new HashMap<>();
         map.put("msgId",msgId);
-        map.put("leaveId",leaveId);
+        map.put("leaveId",leaveId.toString());
         map.put("userId",String.valueOf(SharedPreferencesUtil.getInstance().getUserId()));
         map.put("type","msg");
-        ViseHttp.POST(HttpConst.getApprovalRecordByDate)
+        ViseHttp.POST(HttpConst.getApprovalRecord)
                 .tag(HttpConst.getApprovalRecordById)
                 .setJson(new Gson().toJson(map))
                 .request(new ACallback<BaseResponse<MyMessage>>() {
@@ -153,8 +153,8 @@ public class GetApprovalRecordPresent extends BasePresenter {
                 });
     }
 
-    public void getLeaveInfoById (String leaveId){
-        Map<String,String> map = new HashMap<>();
+    public void getLeaveInfoById (Long leaveId){
+        Map<String,Long> map = new HashMap<>();
         map.put("leaveId",leaveId);
         Log.d("myMap",new Gson().toJson(map));
         ViseHttp.POST(HttpConst.getLeaveInfoByLeaveId)

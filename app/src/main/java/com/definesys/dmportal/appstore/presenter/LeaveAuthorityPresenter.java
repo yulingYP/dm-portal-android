@@ -164,7 +164,7 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPLY_LIST_INFO,  data);
                                 for(ApplyInfo applyInfo:applyList){
                                     //data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
-                                    SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date().getTime()),SharedPreferencesUtil.getInstance().getUserId(),(short)4,"",(short)4,applyInfo.getApplyId(),new Date()));
+                                    SmecRxBus.get().post("addMessage",new MyMessage(System.currentTimeMillis(),SharedPreferencesUtil.getInstance().getUserId(),(short)4,"",(short)4,applyInfo.getApplyId(),new Date()));
                                 }
                                 break;
                             default:
@@ -194,7 +194,7 @@ public class LeaveAuthorityPresenter extends BasePresenter {
 
                                 for(ApplyInfo applyInfo:applyList){
                                     //向消息页发送权限修改信息
-                                    SmecRxBus.get().post("addMessage",new MyMessage(String.valueOf(new Date()), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, applyInfo.getApplyStatus()==-100?"change":"delete", applyInfo.getApplyAuthority().shortValue(), applyInfo.getApplyId(), new Date()));
+                                    SmecRxBus.get().post("addMessage",new MyMessage(System.currentTimeMillis(), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, applyInfo.getApplyStatus()==-100?"change":"delete", applyInfo.getApplyAuthority().shortValue(), applyInfo.getApplyId(), new Date()));
                                 }
                                 break;
                             default:

@@ -145,7 +145,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     LeaveInfo leaveInfo;
 
     @Autowired(name = "leaveId")
-    String leaveId;//请假id
+    Long leaveId;//请假id
     @Autowired(name = "type")
     int type;//审批的类型 0.拒绝 1.同意 4.未审批
     @Autowired(name = "date")
@@ -170,7 +170,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         if(type==4&& leaveInfo !=null) {//未审批
             initView();
             initEdit();
-        }else if(type==4&&leaveId!=null&&!"".equals(leaveId)){//根据leaveId获取请假信息
+        }else if(type==4&&leaveId!=null&&leaveId!=-1){//根据leaveId获取请假信息
             progressHUD.show();
             ++requestCount;
             mPersenter.getLeaveInfoById(leaveId);
@@ -547,7 +547,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             String content = ed_reason.getText().toString();  //审批意见
             if("".equals(content)&&isAgree)
                 content = getString(R.string.agree_tip);
-            SmecRxBus.get().post("addMessage",new MyMessage(data.getData(), leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) , leaveInfo.getId(),new Date() ));
+            SmecRxBus.get().post("addMessage",new MyMessage(Long.getLong(data.getData()), leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) , leaveInfo.getId().toString(),new Date() ));
             Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -563,7 +563,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             if(--requestCount<=0)
                 progressHUD.dismiss();
-            if("".equals(data.getData().getMessageId())){//没有审批信息
+            if(data.getData().getMessageId() == -1){//没有审批信息
                 //Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
                 if(leaveInfo!=null){
                     initView();

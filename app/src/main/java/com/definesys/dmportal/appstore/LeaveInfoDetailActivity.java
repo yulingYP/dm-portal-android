@@ -110,7 +110,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     @Autowired(name = "leaveInfo")
     LeaveInfo leaveInfo;
     @Autowired(name = "leaveId")
-    String leaveId;
+    Long leaveId;
     @Autowired(name = "title")
     int title;
     private List<LocalMedia> localMediaList;
@@ -124,7 +124,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
         initTitle();
         if(leaveInfo !=null)
             initView();
-        else if(leaveId!=null&&!"".equals(leaveId)){
+        else if(leaveId!=null&&leaveId!=-1){
             mPersenter.getLeaveInfoById(leaveId);
         }else {//进度查询
             progressHUD.show();
@@ -387,7 +387,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             SmecRxBus.get().post("cancelLeaveSuccess", leaveInfo.getId());
             Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             //请假人销假成功
-            SmecRxBus.get().post("addMessage",new MyMessage(data.getData(), leaveInfo.getUserId(), (short) 1, "", (short)3 , leaveInfo.getId(), new Date()));
+            SmecRxBus.get().post("addMessage",new MyMessage(Long.getLong(data.getData()), leaveInfo.getUserId(), (short) 1, "", (short)3 , leaveInfo.getId().toString(), new Date()));
             finish();
         }
     }

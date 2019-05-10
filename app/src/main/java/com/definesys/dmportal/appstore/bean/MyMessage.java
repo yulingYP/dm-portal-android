@@ -9,7 +9,7 @@ import java.util.Date;
  */
 
 public class MyMessage implements Comparable<MyMessage>{
-    private String messageId;// 消息id
+    private Long messageId;// 消息id
 
     private Number userId;// 用户id
 
@@ -39,7 +39,7 @@ public class MyMessage implements Comparable<MyMessage>{
     public MyMessage(){
 
     }
-    public MyMessage(String messageId,Number userId, Short messageType, String messageContent, Short messageExtend2, String messageExtend, Date sendTime) {
+    public MyMessage(Long messageId,Number userId, Short messageType, String messageContent, Short messageExtend2, String messageExtend, Date sendTime) {
         this.messageId =messageId;
         this.userId = userId;
         this.messageType = messageType;
@@ -160,11 +160,11 @@ public class MyMessage implements Comparable<MyMessage>{
                 '}';
     }
 
-    public String getMessageId() {
-        return messageId==null?"":messageId;
+    public Long getMessageId() {
+        return messageId==null?-1:messageId;
     }
 
-    public void setMessageId(String messageId) {
+    public void setMessageId(Long messageId) {
         this.messageId = messageId;
     }
 

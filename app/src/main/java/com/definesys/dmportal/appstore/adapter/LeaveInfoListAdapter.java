@@ -94,7 +94,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
                             ARouter.getInstance()
                                     .build(ARouterPath)//跳转页面
                                     .withObject("date",approvalRecordList.get(position).getApprovalTime())//审批时间
-                                    .withString("leaveId",approvalRecordList.get(position).getLeaveInfoId())//请假id
+                                    .withLong("leaveId",approvalRecordList.get(position).getLeaveInfoId())//请假id
                                     .withInt("type",approvalRecordList.get(position).getApprovalResult())//审批结果
                                     .withString("approvalContent",approvalRecordList.get(position).getApprovalContent())//审批内容
                                     .navigation()

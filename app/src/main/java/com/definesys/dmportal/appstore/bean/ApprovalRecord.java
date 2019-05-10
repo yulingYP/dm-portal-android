@@ -8,7 +8,7 @@ import java.util.Date;
  */
 
 public class ApprovalRecord {
-    private String leaveInfoId;//请假消息id
+    private Long leaveInfoId;//请假消息id
 
     private int approverId;//审批人id
 
@@ -35,7 +35,7 @@ public class ApprovalRecord {
         this.approvalContent = approvalContent;
         this.approvalTime = approvalTime;
     }
-    public ApprovalRecord(String leaveInfoId, int approverId,String approvalContent, Short approvalResult, int approverType,int leaverId,String approverName) {
+    public ApprovalRecord(Long leaveInfoId, int approverId,String approvalContent, Short approvalResult, int approverType,int leaverId,String approverName) {
         this.leaveInfoId = leaveInfoId;
         this.approverId = approverId;
         this.approvalContent = approvalContent;
@@ -45,11 +45,11 @@ public class ApprovalRecord {
         this.approverName = approverName;
     }
 
-    public String getLeaveInfoId() {
-        return leaveInfoId==null?"":leaveInfoId;
+    public Long getLeaveInfoId() {
+        return leaveInfoId==null?Long.valueOf(-1):leaveInfoId;
     }
 
-    public void setLeaveInfoId(String leaveInfoId) {
+    public void setLeaveInfoId(Long leaveInfoId) {
         this.leaveInfoId = leaveInfoId;
     }
 
