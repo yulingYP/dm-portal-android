@@ -189,6 +189,7 @@
     <string name="approval_addvise_tip_6">该记录已被审批</string>
     <string name="approval_result_des">审批结果:</string>
     <string name="shixi">实习</string>
+    <string name="user_info_show_tip">点击查看他的个人信息</string>
     <string name="subject_show_tip">点击查看他的课表及课程成绩</string>
     <string name="use_Info_show_tip">点击查看他的个人信息</string>
     <string name="leaver_name">请假人姓名:%s</string>

@@ -85,8 +85,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     @BindView(R.id.phone_layout)
     LinearLayout lg_phone;
     @Autowired(name = "userId")
-    Number userId;
-    private User user;//用户信息
+    int userId;
+    private User userInfo;//用户信息
     private int requestCount=0;//重新获取尝试次数
     private RequestOptions option = new RequestOptions()
             .centerCrop()
@@ -100,8 +100,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-        if(userId.intValue() == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
-            user = SharedPreferencesUtil.getInstance().getUserInfo();
+        if(userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
+            userInfo = SharedPreferencesUtil.getInstance().getUserInfo();
             intView();
         }else {
             mPersenter.getUserInfo(userId);
@@ -127,26 +127,26 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
                     showBottomDialog(photoStyles);
                 });
         //姓名
-        tv_name.setText(user.getName());
+        tv_name.setText(userInfo.getName());
 
         //id
-        tv_id.setText(String.valueOf(user.getUserId()));
+        tv_id.setText(String.valueOf(userInfo.getUserId()));
 
         //院系/大学
-        tv_facult.setText(user.getUserType() ==0?user.getFacultyName():getString(R.string.college_name));
+        tv_facult.setText(userInfo.getUserType() ==0?userInfo.getFacultyName():getString(R.string.college_name));
 
         //班级/部门
-        String gruopDes = user.getUserType() ==0?user.getClassName():user.getBranchName();
+        String gruopDes = userInfo.getUserType() ==0?userInfo.getClassName():userInfo.getBranchName();
         tv_group.setText("".equals(gruopDes)?getString(R.string.no_title):gruopDes);
-        tv_groupTip.setText(user.getUserType() ==0?getString(R.string.class_tip):getString(R.string.branch_tip));
+        tv_groupTip.setText(userInfo.getUserType() ==0?getString(R.string.class_tip):getString(R.string.branch_tip));
 
         //性别
-        tv_sex.setText(user.getUserSex()==1?getString(R.string.man):getString(R.string.woman));
+        tv_sex.setText(userInfo.getUserSex()==1?getString(R.string.man):getString(R.string.woman));
 
         //未绑定手机
-        if("".equals(user.getPhone())){
+        if("".equals(userInfo.getPhone())){
             tv_phone.setText(getString(R.string.bound_phone));
-            if(userId.intValue() == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
+            if(userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
                 iv_phoneIcon.setVisibility(View.VISIBLE);
                 //点击 绑定手机
                 RxView.clicks(lg_phone)
@@ -159,11 +159,11 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
             }
 
         }else {//已绑定
-            tv_phone.setText(user.getPhone());
+            tv_phone.setText(userInfo.getPhone());
             iv_phoneIcon.setVisibility(View.GONE);
         }
         //本人且有权限
-        if((user.getLeaveAuthority()>=0||user.getLeaveTeacherAuthority()>=0)&&userId.intValue() == SharedPreferencesUtil.getInstance().getUserId().intValue()){
+        if((userInfo.getLeaveAuthority()>=0||userInfo.getLeaveTeacherAuthority()>=0)&&userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){
             lg_aut.setVisibility(View.VISIBLE);
             //点击 查看权限
             RxView.clicks(lg_phone)
@@ -259,7 +259,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     }, thread = EventThread.MAIN_THREAD)
     public void getUserUrl(BaseResponse<User> data) {
        if(MyActivityManager.getInstance().getCurrentActivity()==this){
-           user = data.getData();
+           userInfo = data.getData();
            intView();
         }
     }

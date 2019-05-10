@@ -246,7 +246,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 .subscribe(obj->
                         ARouter.getInstance()
                                 .build(ARouterConstants.UserInfoActivity)
-                                .withObject("userId", leaveInfo.getUserId())
+                                .withInt("userId",leaveInfo.getUserId().intValue())
                                 .navigation()
                 );
         if(type==4) {
@@ -356,10 +356,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             ed_reason.requestFocus();
             ed_reason.findFocus();
             ed_reason.setCursorVisible(true);
-//            InputMethodManager inputMethodManager = ( InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//            if(inputMethodManager!=null){
-//                inputMethodManager.showSoftInput(ed_reason,0);
-//            }
             return;
         }
         else if(SharedPreferencesUtil.getInstance().getUserSign()==null||"".equals(SharedPreferencesUtil.getInstance().getUserSign())){//签名设置

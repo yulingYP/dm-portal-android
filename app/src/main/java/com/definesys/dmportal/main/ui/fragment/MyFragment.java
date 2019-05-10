@@ -174,7 +174,7 @@ public class MyFragment extends Fragment {
                 .subscribe(o ->
                         ARouter.getInstance()
                                 .build(ARouterConstants.UserInfoActivity)
-                                .withObject("userId",SharedPreferencesUtil.getInstance().getUserId())
+                                .withInt("userId",SharedPreferencesUtil.getInstance().getUserId().intValue())
                                 .navigation()
                 );
         //反馈建议

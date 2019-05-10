@@ -261,7 +261,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                     dialog.dismiss();
                     progressHUD.show();
 //                        String leaveInfoId, int approverId, String approvalContent, Short approvalResult, Date approvalTime, int approverType,int leaverId
-                    mPersenter.updateApprovalStatusById(new ApprovalRecord(leaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),getString(R.string.status_tip_3),(short)2,-10,SharedPreferencesUtil.getInstance().getUserId().intValue(),SharedPreferencesUtil.getInstance().getUserName()));
+                    mPersenter.updateApprovalStatusById(new ApprovalRecord(leaveInfo.getId(),SharedPreferencesUtil.getInstance().getUserId().intValue(),getString(R.string.status_tip_4),(short)2,-10,SharedPreferencesUtil.getInstance().getUserId().intValue(),SharedPreferencesUtil.getInstance().getUserName()));
                 });
         alertDialog.show();
     }

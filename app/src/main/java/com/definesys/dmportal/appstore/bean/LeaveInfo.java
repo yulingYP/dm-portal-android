@@ -30,8 +30,8 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
     public LeaveInfo() {
     }
 
-    public LeaveInfo(Number id, String name, String content, String startTime, String endTime, String leaveTitle, String subTime, String selectedSubject, int type,int userType,String groupId) {
-        this.userId = id;
+    public LeaveInfo(Number userId, String name, String content, String startTime, String endTime, String leaveTitle, String subTime, String selectedSubject, int type,int userType,String groupId) {
+        this.userId = userId;
         this.userName = name;
         this.leaveReason = content;
         this.startTime = startTime;
@@ -118,7 +118,7 @@ public class LeaveInfo implements Comparable<LeaveInfo>{
     }
 
     public Number getUserId() {
-        return userId;
+        return userId==null?0:userId;
     }
 
     public void setUserId(Number userId) {
