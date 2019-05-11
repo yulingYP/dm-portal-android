@@ -39,7 +39,7 @@
                 android:layout_height="match_parent">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/history_list_view"
-                    android:layout_marginTop="20dp"
+                    android:paddingTop="12dp"
                     android:overScrollMode="never"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">

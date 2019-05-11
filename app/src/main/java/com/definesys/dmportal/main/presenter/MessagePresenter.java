@@ -21,10 +21,11 @@ public class MessagePresenter extends BasePresenter {
         super(context);
     }
 
-    public void getMsg(Number userId,Number page){
+    //获取信息列表
+    public void getMsgList(Number userId,Number requestId){
         Map<String,Number> msgMap = new HashMap<>();
         msgMap.put("userId",userId);
-        msgMap.put("page",page);
+        msgMap.put("requestId",requestId);
         ViseHttp.CONFIG()
                 //配置读取超时时间，单位秒
                 .readTimeout(5)

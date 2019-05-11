@@ -27,10 +27,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
     }
 
     //请假的全部历史记录
-    public void getAllLeaveInfoList (Number userId,Number page){
+    public void getAllLeaveInfoList (Number userId,Number requestId){
         HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page",page);
+        map.put("requestId",requestId);
         Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
@@ -66,10 +66,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
     }
 
     //待审批处理的全部请假记录
-    public void getAllApprovalList (Number userId,Number page,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType){
+    public void getAllApprovalList (Number userId,Number requestId,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType){
         HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page",page);
+        map.put("requestId",requestId);
         map.put("approvalStuAut",approvalStudentAuthority);
         map.put("approvalTeaAut",approvalTeacherAuthority);
         map.put("userType",userType);
@@ -108,10 +108,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
     }
 
     //审批的全部历史记录
-    public void getAllApprovalHistoryList (Number userId,Number page){
+    public void getAllApprovalHistoryList (Number userId,Number longDate){
         HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page",page);
+        map.put("longDate",longDate.longValue()<=0?null:longDate);
         Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
@@ -148,10 +148,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
 
 
     //根据关键字搜索请假信息或审批记录
-    public void getSearchLeaveInfoList (Number userId,Number page,Number checkCode,Number type,String content){
+    public void getSearchLeaveInfoList (Number userId,Number requestId,Number checkCode,Number type,String content){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page",page);
+        map.put("requestId",requestId);
         map.put("checkCode",checkCode);
         map.put("type",type);
         map.put("content",content);
@@ -196,10 +196,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         super.unsubscribe();
     }
 //    Number userId,Number page,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType
-    public void getSearchApprovalList(Number userId,Number page,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType, Number checkCode, Number type, String content) {
+    public void getSearchApprovalList(Number userId,Number longDate,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType, Number checkCode, Number type, String content) {
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page", page);
+        map.put("longDate", longDate.longValue()<=0?null:longDate);
         map.put("approvalStuAut",approvalStudentAuthority);
         map.put("approvalTeaAut",approvalTeacherAuthority);
         map.put("userType",userType);
@@ -241,10 +241,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
     }
 
     //条件查询已审批的历史记录
-    public void getSearchApprovalHistoryList (Number userId,Number page,Number checkCode ,Number type,String content){
+    public void getSearchApprovalHistoryList (Number userId,Number requestId,Number checkCode ,Number type,String content){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page",page);
+        map.put("requestId",requestId);
         map.put("checkCode",checkCode);
         map.put("type",type);
         map.put("content",content);

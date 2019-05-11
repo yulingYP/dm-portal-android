@@ -1,6 +1,7 @@
 package com.definesys.dmportal.appstore;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -191,8 +192,10 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                     initList();
                 else
                     applyInfoAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
-                if(data.getData().size()<Constants.requestSize)
-                    smartRefreshLayout.setNoMoreData(true);
+                if(data.getData().size()<Constants.requestSize) {
+                    //延时设置防止加载动画错误
+                    new Handler().postDelayed(() -> smartRefreshLayout.setNoMoreData(true), Constants.clickdelay * 2);
+                }
             }
         }
     }

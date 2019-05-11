@@ -1,6 +1,7 @@
 package com.definesys.dmportal.appstore;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -82,7 +83,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     @Autowired(name = "content")
     String content;//编辑框输入内容
 
-    private int requestPage;//请求的页码
+    private long requestId;//list中最后一个数据的id
     private List<LeaveInfo> submitLeaveInfoList;//请假记录列表
     private List<ApprovalRecord>approvalRecordList;//审批记录列表
     private LeaveInfoListAdapter leaveInfoListAdapter;//适配器
@@ -113,7 +114,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 );
         //下拉刷新监听
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
-            requestPage = 1;
+            requestId = -1;
             if(submitLeaveInfoList!=null&&submitLeaveInfoList.size()>0) {
                 submitLeaveInfoList.clear();
                 if(leaveInfoListAdapter!=null)
@@ -127,7 +128,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
         });
         //加载更多
         smartRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            ++requestPage;
+            requestId = setRequestId(type);
             httpPost();
         });
 
@@ -182,24 +183,38 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             return;
         }
         if(isAll) {//查询全部记录
-            if (type == 0)//历史请假记录
-                mPersenter.getAllLeaveInfoList(userId, requestPage);
+            if (type == 0) {//历史请假记录
+                mPersenter.getAllLeaveInfoList(userId, requestId);
+            }
             else if (type == 1)//待审批记录
-                mPersenter.getAllApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(),SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType());
+                mPersenter.getAllApprovalList(userId, requestId, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(),SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType());
             else if (type == 2)//历史审批记录
-                mPersenter.getAllApprovalHistoryList(userId, requestPage);
+                mPersenter.getAllApprovalHistoryList(userId, requestId);
             else if(type==3){//销假
-                mPersenter.getSearchLeaveInfoList(userId, requestPage,30,type,"");
+                mPersenter.getSearchLeaveInfoList(userId, requestId,30,type,"");
             }
         }else {
             if (type == 0||type==3)//历史请假记录||销假
-                mPersenter.getSearchLeaveInfoList(userId,requestPage,checkCode,type,checkCode==-1?content:"");
+                mPersenter.getSearchLeaveInfoList(userId,requestId,checkCode,type,checkCode==-1?content:"");
             else if (type == 1)//待审批记录
-                mPersenter.getSearchApprovalList(userId, requestPage, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(), SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType(),checkCode,type,checkCode==-1?content:"");
+                mPersenter.getSearchApprovalList(userId, requestId, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(), SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType(),checkCode,type,checkCode==-1?content:"");
             else if(type == 2){//历史审批记录
-                mPersenter.getSearchApprovalHistoryList(userId,requestPage,checkCode,type,checkCode==-1?content:"");
+                mPersenter.getSearchApprovalHistoryList(userId,requestId,checkCode,type,checkCode==-1?content:"");
             }
         }
+    }
+
+    /**
+     * 设置requestId
+     * @param type 页面类型0.历史请假记录 1.待处理的请假记录 2.历史审批记录 3.销假
+     * @return requestId
+     */
+    private long setRequestId(int type) {
+        if (submitLeaveInfoList!=null&&submitLeaveInfoList.size()>0&&(type == 0||type==1||type==3))
+           return submitLeaveInfoList.get(submitLeaveInfoList.size() - 1).getId();
+        else if(approvalRecordList!=null&&approvalRecordList.size()>0&&type==2)
+            return approvalRecordList.get(approvalRecordList.size() - 1).getApprovalTime().getTime();
+        return -1;
     }
 
     /**
@@ -229,7 +244,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void getLeaveInfoList(BaseResponse<List<LeaveInfo>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestPage==1) {//下拉刷新
+            if(requestId==-1) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
                 smartRefreshLayout.finishLoadMore(true);
             }
@@ -239,7 +254,6 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 setNoLayout(1);
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
-                --requestPage;
                 smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
@@ -251,7 +265,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 else
                     leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
                 if(data.getData().size()<Constants.requestSize)
-                    smartRefreshLayout.setNoMoreData(true);
+                    new Handler().postDelayed(()-> smartRefreshLayout.setNoMoreData(true),Constants.clickdelay*2);
             }
         }
     }
@@ -264,7 +278,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void getApprovalInfoList(BaseResponse<List<ApprovalRecord>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestPage==1) {//下拉刷新
+            if(requestId==-1) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
                 smartRefreshLayout.finishLoadMore(true);
             }
@@ -274,7 +288,6 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 setNoLayout(1);
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
-                --requestPage;
                 smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
@@ -285,8 +298,11 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                     initList();
                 else
                     leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
-                if(data.getData().size()<Constants.requestSize)
-                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                if(data.getData().size()<Constants.requestSize) {
+                    //延时设置防止加载动画错误
+                    new Handler().postDelayed(() -> smartRefreshLayout.setNoMoreData(true), Constants.clickdelay * 2);
+                }
+
             }
         }
     }
