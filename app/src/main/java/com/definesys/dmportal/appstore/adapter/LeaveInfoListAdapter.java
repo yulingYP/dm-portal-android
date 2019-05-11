@@ -15,6 +15,8 @@ import com.definesys.dmportal.appstore.bean.LeaveInfo;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.jakewharton.rxbinding2.view.RxView;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
@@ -53,7 +55,7 @@ public class LeaveInfoListAdapter extends RecyclerView.Adapter<LeaveInfoListAdap
     public void onBindViewHolder(@NonNull LeaveInfoListAdapter.ViewHolder holder, int position) {
 //        submitLeaveInfoList.get(position)
 
-        if(type==1||type==0||type==3) {//请假信息
+        if(type==0||type==1||type==3) {//请假信息
 
             //点击事件
             RxView.clicks(holder.itemView)

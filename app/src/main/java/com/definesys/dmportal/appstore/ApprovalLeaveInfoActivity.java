@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -141,25 +142,29 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     @BindView(R.id.user_info_layout)
     LinearLayout lg_user_info;
 
+//    private LeaveInfo leaveInfo;//请假信息
+//    private Long leaveId;//请假id
+//    int type;//审批的类型 0.拒绝 1.同意 4.未审批
+//    private Date approvalDate;//审批时间
+//    private String approvalContent;//审批内容
+//    private Long msgId;//消息id
     @Autowired(name = "leaveInfo")
     LeaveInfo leaveInfo;
-
     @Autowired(name = "leaveId")
-    Long leaveId;//请假id
+    long leaveId;//请假id
     @Autowired(name = "type")
     int type;//审批的类型 0.拒绝 1.同意 4.未审批
     @Autowired(name = "date")
     Date approvalDate;//审批时间
     @Autowired(name = "approvalContent")
     String approvalContent;//审批内容
-
     @Autowired(name = "msgId")
-    String msgId;
+    long msgId;
 
     private List<LocalMedia> localMediaList;
     private boolean isAgree = true;//是否同意
     private ApprovalRecord approvalRecord;
-    private int requestCount=0;//请求的数量
+    private int requestCount = 0;//请求的数量
     private boolean isInit=false;//是否初始化界面
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,14 +172,19 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         setContentView(R.layout.activity_approval_leave_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
+        //获取数据
+//        setData();
+        //初始化标题
+        initTitle();
+
         if(type==4&& leaveInfo !=null) {//未审批
             initView();
             initEdit();
-        }else if(type==4&&leaveId!=null&&leaveId!=-1){//根据leaveId获取请假信息
+        }else if(type==4&&leaveId>100){//根据leaveId获取请假信息
             progressHUD.show();
             ++requestCount;
             mPersenter.getLeaveInfoById(leaveId);
-            if(null!=msgId&&!"".equals(msgId)) {//msgId不为空，去查询是否有审批记录
+            if(msgId>100) {//msgId不为空，去查询是否有审批记录
                 ++requestCount;
                 mPersenter.getApprovalRecordByMsgId(msgId, leaveId);
             }
@@ -193,9 +203,10 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             }
 
         }
-        initTitle();
     }
 
+
+    //初始化标题
     private void initTitle() {
         titleBar.setTitle(type==4?getString(R.string.approval_leave_info):getString(R.string.approval_leave_info_2));
         titleBar.setBackgroundDividerEnabled(false);
@@ -493,7 +504,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         img.setImageBitmap(resource);
                         String path;
-                        path= ImageUntil.saveBitmapFromView(resource,picUrl,ApprovalLeaveInfoActivity.this,0);
+                        path= ImageUntil.saveBitmapFromView(resource,picUrl,ApprovalLeaveInfoActivity.this,3);
                         localMediaList.get(position).setPosition(position);
                         localMediaList.get(position).setPath(path);
                         //  LocalMedia localMedia1 = new LocalMedia(resource.);
@@ -547,7 +558,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             String content = ed_reason.getText().toString();  //审批意见
             if("".equals(content)&&isAgree)
                 content = getString(R.string.agree_tip);
-            SmecRxBus.get().post("addMessage",new MyMessage(Long.getLong(data.getData()), leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) , leaveInfo.getId().toString(),new Date() ));
+            SmecRxBus.get().post("addMessage",new MyMessage(Long.parseLong(data.getData()), leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) , String.valueOf(leaveInfo.getId()),new Date() ));
             Toast.makeText(ApprovalLeaveInfoActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -574,7 +585,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             }else {
                 MyMessage myMessage = data.getData();
                 approvalRecord = new ApprovalRecord(myMessage.getMessageContent(),myMessage.getSendTime());
-                type =myMessage.getMessageExtend2();
+                type = myMessage.getMessageExtend2();
                 isAgree = type==1;
                 initTitle();
                 if(leaveInfo !=null){
@@ -605,7 +616,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     initView();
                     initEditUnable();
                 }
-                else if(type==4&&((msgId==null||"".equals(msgId))||isInit)){
+                else if(type==4&&(msgId>100||isInit)){
                     initView();
                     initEdit();
                 }

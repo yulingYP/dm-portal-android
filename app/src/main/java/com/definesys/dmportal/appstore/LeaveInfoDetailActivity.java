@@ -106,22 +106,24 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
 
     @BindView(R.id.layout_scroll)
     ScrollView lg_scoll;
-
     @Autowired(name = "leaveInfo")
-    LeaveInfo leaveInfo;
+    LeaveInfo leaveInfo;//请假信息
     @Autowired(name = "leaveId")
-    Long leaveId;
+    Long leaveId;//请假id
     @Autowired(name = "title")
-    int title;
+    int title;//标题
+//    private LeaveInfo leaveInfo;
+//    private Long leaveId;
+//    private int title;
     private List<LocalMedia> localMediaList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_info_detail);
         ButterKnife.bind(this);
-        ARouter.getInstance().inject(this);
+
         setNoLayout(true);//显示暂无页
-        initTitle();
+        initTitle();//初始化标题
         if(leaveInfo !=null)
             initView();
         else if(leaveId!=null&&leaveId!=-1){
@@ -387,7 +389,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
             SmecRxBus.get().post("cancelLeaveSuccess", leaveInfo.getId());
             Toast.makeText(LeaveInfoDetailActivity.this, data.getMsg(),Toast.LENGTH_SHORT).show();
             //请假人销假成功
-            SmecRxBus.get().post("addMessage",new MyMessage(Long.getLong(data.getData()), leaveInfo.getUserId(), (short) 1, "", (short)3 , leaveInfo.getId().toString(), new Date()));
+            SmecRxBus.get().post("addMessage",new MyMessage(Long.getLong(data.getData()), leaveInfo.getUserId(), (short) 1, "", (short)3 , String.valueOf(leaveInfo.getId()), new Date()));
             finish();
         }
     }

@@ -54,9 +54,11 @@ public class UserInfoPresent extends BasePresenter {
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_REQUEST_USER_INFO, data);
                                 break;
                             default:
-//                                SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, data.getMsg());
+
                                 if(++requestCount<=5)
                                  getUserInfo(id);//重新获取
+                                else
+                                    SmecRxBus.get().post(MainPresenter.FAIL_GET_REQUEST_USER_INFO, data.getMsg());
                                 break;
                         }
                     }
@@ -65,7 +67,8 @@ public class UserInfoPresent extends BasePresenter {
                     public void onFail(int errCode, String errMsg) {
                         if(++requestCount<=5)
                          getUserInfo(id);//重新获取
-//                        SmecRxBus.get().post(MainPresenter.ERROR_NETWORK, errMsg);
+                        else
+                        SmecRxBus.get().post(MainPresenter. FAIL_GET_REQUEST_USER_INFO, errMsg);
                     }
                 });
 

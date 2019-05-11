@@ -3,10 +3,10 @@ package com.definesys.dmportal.main.presenter;
 import android.content.Context;
 
 import com.definesys.base.BasePresenter;
-import com.google.gson.Gson;
 import com.vise.xsnow.http.ViseHttp;
 
 /**
+ *
  * Created by mobile on 2018/8/20.
  */
 
@@ -32,6 +32,9 @@ public class MainPresenter extends BasePresenter {
 
     //获取指定用户信息成功
     public static final String SUCCESSFUL_GET_REQUEST_USER_INFO = "SUCCESSFUL_GET_REQUEST_USER_INFO";
+
+    //获取指定用户信息成功
+    public static final String FAIL_GET_REQUEST_USER_INFO = "FAIL_GET_REQUEST_USER_INFO";
 
     //获取用户姓名成功
     public static final String SUCCESSFUL_GET_USER_NAME="SUCCESSFUL_GET_USER_NAME";

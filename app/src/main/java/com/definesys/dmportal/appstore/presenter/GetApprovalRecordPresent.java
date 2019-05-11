@@ -56,9 +56,9 @@ public class GetApprovalRecordPresent extends BasePresenter {
                     }
                 });
     }
-    public void getApprovalRecordByMsgId(String msgId,Long leaveId){
+    public void getApprovalRecordByMsgId(Long msgId,Long leaveId){
         Map<String,String> map =new HashMap<>();
-        map.put("msgId",msgId);
+        map.put("msgId",msgId.toString());
         map.put("leaveId",leaveId.toString());
         map.put("userId",String.valueOf(SharedPreferencesUtil.getInstance().getUserId()));
         map.put("type","msg");

@@ -70,7 +70,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             }else if(messages.get(position).getMessageType()==2){//审批人消息
                 String id = messages.get(position).getMessageExtend();
-                id=id.length()>9?id.substring(0,9):id;
+                id = id.length()>9?id.substring(0,9):id;
                 if(messages.get(position).getMessageExtend2()==0) {//拒绝
                     viewHolder.img.setImageResource(R.drawable.ic_leave_refuse);
                     viewHolder.content.setText(context.getString(R.string.message_tip_5,id));
@@ -128,23 +128,27 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 viewHolder.img.setImageResource(R.drawable.review);
                 viewHolder.content.setText(R.string.message_tip_14);
             }
+
             RxView.clicks(viewHolder.layout)
                     .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                     .subscribe(obj->{
                         if(messages.get(position).getMessageType()==1){//请假人消息
                             ARouter.getInstance()
                                     .build(ARouterConstants.LeaveInFoDetailActivity)
-                                    .withLong("leaveId",Long.getLong(messages.get(position).getMessageExtend()))
+                                    .withLong("leaveId",Long.parseLong(messages.get(position).getMessageExtend()))
                                     .navigation();
                         }else if(messages.get(position).getMessageType()==2){//审批人消息
                             MyMessage myMessage = messages.get(position);
                             if(messages.get(position).getMessageExtend2()==4){//未审批
-                                myMessage= checkDate(position);
+                                myMessage = checkDate(position);
                             }
                             if(myMessage!=null) {
+                                //获取请假记录的id
+                                String infoId = myMessage.getMessageExtend();
+                                infoId = infoId.length()>9?infoId.substring(9):infoId;
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApprovalLeaveInfoActivity)
-                                        .withLong("leaveId", Long.getLong(myMessage.getMessageExtend()))
+                                        .withLong("leaveId", Long.parseLong(infoId))
                                         .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withObject("date", myMessage.getSendTime())
                                         .withString("approvalContent", myMessage.getMessageContent())

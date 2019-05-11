@@ -329,14 +329,16 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     @Subscribe(tags = {
             @Tag("updateSuccess")
     }, thread = EventThread.MAIN_THREAD)
-    public void updateSuccess(String leaveId) {
-        if(submitLeaveInfoList!=null&leaveInfoListAdapter!=null) {
+    public void updateSuccess(Long leaveId) {
+        if(submitLeaveInfoList!=null&&leaveInfoListAdapter!=null) {
             for (int i =  submitLeaveInfoList.size()-1; i >= 0 ; i--) {
-                if (submitLeaveInfoList.get(i).getId().equals(leaveId)) {
+                if (submitLeaveInfoList.get(i).getId()==(leaveId)) {
                     submitLeaveInfoList.remove(i);
                 }
             }
             leaveInfoListAdapter.notifyDataSetChanged();
+            if(submitLeaveInfoList.size()==0)
+                setNoLayout(1);
         }
     }
 
@@ -348,10 +350,10 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     @Subscribe(tags = {
             @Tag("cancelLeaveSuccess")
     }, thread = EventThread.MAIN_THREAD)
-    public void cancelSuccess(String leaveId) {
-        if(submitLeaveInfoList!=null) {
+    public void cancelSuccess(Long leaveId) {
+        if(submitLeaveInfoList!=null&&leaveInfoListAdapter!=null) {
             for (int i =  submitLeaveInfoList.size()-1; i >= 0 ; i--) {
-                if (submitLeaveInfoList.get(i).getId().equals(leaveId)) {
+                if (submitLeaveInfoList.get(i).getId()==leaveId) {
                     if(type!=3&&isAll)//非销假列表 显示全部请假信息的列表
                         submitLeaveInfoList.get(i).setApprovalStatus((short)120);
                     else//销假列表
@@ -359,6 +361,8 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 }
             }
             leaveInfoListAdapter.notifyDataSetChanged();
+            if(submitLeaveInfoList.size()==0)
+                setNoLayout(1);
         }
     }
     @Override

@@ -530,6 +530,7 @@
     <string name="bound_phone">绑定手机</string>
     <string name="no_bind">未绑定</string>
     <string name="checkAut">查看权限</string>
+    <string name="no_user_info">暂无信息</string>
 
 
 </resources>

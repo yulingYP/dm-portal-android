@@ -453,6 +453,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
         int remainTime = (int) ((System.currentTimeMillis() - SharedPreferencesUtil.getInstance().getLastLeaveTime()) /  600000);
         if (remainTime > 0&&remainTime<=10) {
             Toast.makeText(this, getString(R.string.time_fail_tip_5,remainTime), Toast.LENGTH_SHORT).show();
+//            return;
         }
         initSubmitDialog();
     }
@@ -601,7 +602,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             PictureFileUtils.deleteCacheDirFile(this);
             SharedPreferencesUtil.getInstance().setLastLeaveTime(System.currentTimeMillis());
             //请假人提交请假申请成功
-            SmecRxBus.get().post("addMessage",new MyMessage(Long.getLong(msg),SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,new Date()));
+            SmecRxBus.get().post("addMessage",new MyMessage(Long.parseLong(msg),SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,new Date()));
             finish();
 
         }

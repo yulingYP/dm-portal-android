@@ -84,6 +84,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     LinearLayout lg_aut;
     @BindView(R.id.phone_layout)
     LinearLayout lg_phone;
+    @BindView(R.id.no_layout)
+    LinearLayout lg_no;
     @Autowired(name = "userId")
     int userId;
     private User userInfo;//用户信息
@@ -100,6 +102,8 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
+        //初始化标题
+        initTitle();
         if(userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
             userInfo = SharedPreferencesUtil.getInstance().getUserInfo();
             intView();
@@ -108,13 +112,16 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         }
 
     }
-
-    private void intView() {
+    //初始化标题
+    private void initTitle() {
         titleBar.setTitle(getString(R.string.user_info));
         titleBar.setBackgroundDividerEnabled(false);
         titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
         titleBar.addLeftBackImageButton().setOnClickListener((view) -> finish());
+    }
+    private void intView() {
+        lg_no.setVisibility(View.GONE);
         refreshUserImage();//刷新头像
         //点击头像
         RxView.clicks(iv_head).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
@@ -257,10 +264,23 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_REQUEST_USER_INFO)
     }, thread = EventThread.MAIN_THREAD)
-    public void getUserUrl(BaseResponse<User> data) {
+    public void getUserInfo(BaseResponse<User> data) {
        if(MyActivityManager.getInstance().getCurrentActivity()==this){
            userInfo = data.getData();
            intView();
+        }
+    }
+    /**
+     * 获取用户信息失败
+     * @param msg 信息
+     */
+    @Subscribe(tags = {
+            @Tag(MainPresenter.FAIL_GET_REQUEST_USER_INFO)
+    }, thread = EventThread.MAIN_THREAD)
+    public void getUserFail(String msg) {
+        if(MyActivityManager.getInstance().getCurrentActivity()==this){
+            Toast.makeText(this, ("".equals(msg) ? getString(R.string.no_user_info) : msg), Toast.LENGTH_SHORT).show();
+            lg_no.setVisibility(View.VISIBLE);
         }
     }
 

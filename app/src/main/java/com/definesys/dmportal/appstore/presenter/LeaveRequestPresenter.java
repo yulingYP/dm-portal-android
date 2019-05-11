@@ -68,10 +68,11 @@ public class LeaveRequestPresenter extends BasePresenter {
                             case "200":
                                 if(!(selectImages!=null&&selectImages.size()>0))//没有图片要上传
                                     SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST, data.getData());
-                                else //有图片要上传
+                                else { //有图片要上传
                                     builder.addFormDataPart("uploadId", data.getData());
                                     requestBody[0] = builder.build();
-                                    updatePictures(requestBody[0],data.getData());
+                                    updatePictures(requestBody[0], data.getData());
+                                }
                                 break;
                             default:
 
