@@ -519,7 +519,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                                 });
                     }
 
-
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
                         img.setImageResource(R.drawable.error);
@@ -616,7 +615,7 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     initView();
                     initEditUnable();
                 }
-                else if(type==4&&(msgId>100||isInit)){
+                else if(type==4&&(msgId<=100||isInit)){
                     initView();
                     initEdit();
                 }

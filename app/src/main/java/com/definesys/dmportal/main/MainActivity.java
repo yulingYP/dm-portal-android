@@ -479,9 +479,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent = new Intent(this, LeaveInfoDetailActivity.class);
             intent.putExtra("leaveId",Long.parseLong(myMessage.getMessageExtend()));
         }else if(myMessage.getMessageType()==2){//审批人新的审批任务，跳转到详情页
-//            MyMessage temp = contactFragment.getMsgAdapter().getMessage(myMessage);
+            String infoId = myMessage.getMessageExtend();
+            infoId = infoId.length()>9?infoId.substring(9):infoId;
             intent = new Intent(this, ApprovalLeaveInfoActivity.class);
-            intent.putExtra("leaveId", Long.parseLong(myMessage.getMessageExtend()));
+            intent.putExtra("leaveId", Long.parseLong(infoId));
             intent.putExtra("msgId",myMessage.getMessageId());
             intent.putExtra("type", myMessage.getMessageExtend2().intValue());
         }else if(myMessage.getMessageType()==4){//申请人申请结果

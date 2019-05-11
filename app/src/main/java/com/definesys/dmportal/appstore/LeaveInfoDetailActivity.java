@@ -109,24 +109,22 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
     @Autowired(name = "leaveInfo")
     LeaveInfo leaveInfo;//请假信息
     @Autowired(name = "leaveId")
-    Long leaveId;//请假id
+    long leaveId;//请假id
     @Autowired(name = "title")
     int title;//标题
-//    private LeaveInfo leaveInfo;
-//    private Long leaveId;
-//    private int title;
+
     private List<LocalMedia> localMediaList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_info_detail);
         ButterKnife.bind(this);
-
+        ARouter.getInstance().inject(this);
         setNoLayout(true);//显示暂无页
         initTitle();//初始化标题
         if(leaveInfo !=null)
             initView();
-        else if(leaveId!=null&&leaveId!=-1){
+        else if(leaveId>100){
             mPersenter.getLeaveInfoById(leaveId);
         }else {//进度查询
             progressHUD.show();
@@ -301,7 +299,7 @@ public class LeaveInfoDetailActivity extends BaseActivity<GetApprovalRecordPrese
                  public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                      img.setImageBitmap(resource);
                      String path;
-                     path=ImageUntil.saveBitmapFromView(resource,picUrl,LeaveInfoDetailActivity.this,0);
+                     path=ImageUntil.saveBitmapFromView(resource,picUrl,LeaveInfoDetailActivity.this,3);
                      localMediaList.get(position).setPosition(position);
                      localMediaList.get(position).setPath(path);
                    //  LocalMedia localMedia1 = new LocalMedia(resource.);

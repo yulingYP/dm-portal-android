@@ -61,10 +61,6 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout smartRefreshLayout;
 
-    private List<LeaveInfo> submitLeaveInfoList;//请假记录列表
-    private List<ApprovalRecord>approvalRecordList;//审批记录列表
-    private LeaveInfoListAdapter leaveInfoListAdapter;//适配器
-
     @Autowired(name = "userId")
     int userId;//要查询的id
 
@@ -87,6 +83,9 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     String content;//编辑框输入内容
 
     private int requestPage;//请求的页码
+    private List<LeaveInfo> submitLeaveInfoList;//请假记录列表
+    private List<ApprovalRecord>approvalRecordList;//审批记录列表
+    private LeaveInfoListAdapter leaveInfoListAdapter;//适配器
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

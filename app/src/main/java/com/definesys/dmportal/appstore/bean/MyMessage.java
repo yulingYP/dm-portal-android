@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by 羽翎 on 2019/2/20.
  */
 
-public class MyMessage implements Comparable<MyMessage>{
+public class MyMessage {
     private Long messageId;// 消息id
 
     private Number userId;// 用户id
@@ -136,12 +136,6 @@ public class MyMessage implements Comparable<MyMessage>{
     public void setAttribute5(String attribute5) {
         this.attribute5 = attribute5 == null ? null : attribute5.trim();
     }
-
-    @Override
-    public int compareTo(@NonNull MyMessage o) {
-        return  o.getMessageId().compareTo(this.getMessageId());
-    }
-
 
     @Override
     public String toString() {

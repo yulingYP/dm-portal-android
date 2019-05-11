@@ -144,8 +144,6 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
         else {//有数据
             int currentSize = messageList.size();
             List<MyMessage> myMessages = data.getData();
-            //排序
-            Collections.sort(myMessages);
             messageList.addAll(myMessages);
             if(myAdapter==null)
                 initList();
