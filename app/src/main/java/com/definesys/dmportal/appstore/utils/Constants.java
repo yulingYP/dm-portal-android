@@ -11,6 +11,7 @@ public interface Constants {
     long clickdelay = 600;
     int requestSize = 5;//每次列表请求的数量大小
     int oneDay = 86400000;//1天
+    int oneMin = 60000;//1分钟
     int SIGN_CODE = 1001;//手写签名的回调代码
 
     int aut0 = 0;//寝室长权限

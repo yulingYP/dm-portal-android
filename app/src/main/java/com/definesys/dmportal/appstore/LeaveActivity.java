@@ -450,9 +450,9 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             return;
         }
         //限制每次请假后过10分钟才能再次请假
-        int remainTime = (int) ((System.currentTimeMillis() - SharedPreferencesUtil.getInstance().getLastLeaveTime()) /  600000);
-        if (remainTime > 0&&remainTime<=10) {
-            Toast.makeText(this, getString(R.string.time_fail_tip_5,remainTime), Toast.LENGTH_SHORT).show();
+        int remainTime = (int) ((System.currentTimeMillis() - SharedPreferencesUtil.getInstance().getLastLeaveTime()) /  Constants.oneMin);
+        if (remainTime >= 0&&remainTime<=10) {
+            Toast.makeText(this, getString(R.string.time_fail_tip_5,10-remainTime), Toast.LENGTH_SHORT).show();
 //            return;
         }
         initSubmitDialog();

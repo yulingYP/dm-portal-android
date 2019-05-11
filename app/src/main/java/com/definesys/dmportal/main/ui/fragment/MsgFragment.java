@@ -27,7 +27,6 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -143,16 +142,15 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
         }
         else {//有数据
             int currentSize = messageList.size();
-            List<MyMessage> myMessages = data.getData();
-            messageList.addAll(myMessages);
+            messageList.addAll(data.getData());
             if(myAdapter==null)
                 initList();
             else {
                 myAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
             }
             if(data.getData().size()< Constants.requestSize)
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            show();
+                refreshLayout.setNoMoreData(true);
+             show();
              mPersenter.updateMsgStatus(SharedPreferencesUtil.getInstance().getUserId(),null);
         }
         SmecRxBus.get().post("setRed",false);

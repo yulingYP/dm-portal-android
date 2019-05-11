@@ -192,7 +192,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 else
                     applyInfoAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
                 if(data.getData().size()<Constants.requestSize)
-                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    smartRefreshLayout.setNoMoreData(true);
             }
         }
     }

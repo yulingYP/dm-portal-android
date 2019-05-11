@@ -312,6 +312,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             if(contactFragment!=null){
                 contactFragment.freshMsgFragment();
             }
+            return;
         }
         else if(message.contains("{")){
             myMessage= new Gson().fromJson(message, new TypeToken<MyMessage>() {
@@ -469,8 +470,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     //设置跳转的intent
     public Intent setResultIntent(MyMessage myMessage) {
         Intent intent = null;
-        if(myMessage==null) {//跳转到消息页
-            intent=new Intent(this, MainActivity.class);
+        if(myMessage == null) {//跳转到消息页
+            intent= new Intent(this, MainActivity.class);
             intent.putExtra("message","showMessage");
             return intent;
         }

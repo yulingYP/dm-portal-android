@@ -137,6 +137,7 @@ public class MyMessage {
         this.attribute5 = attribute5 == null ? null : attribute5.trim();
     }
 
+
     @Override
     public String toString() {
         return "MyMessage{" +

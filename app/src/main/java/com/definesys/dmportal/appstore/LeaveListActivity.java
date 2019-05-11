@@ -251,7 +251,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
                 else
                     leaveInfoListAdapter.notifyItemRangeChanged(currentSize, data.getData().size());
                 if(data.getData().size()<Constants.requestSize)
-                    smartRefreshLayout.finishLoadMoreWithNoMoreData();
+                    smartRefreshLayout.setNoMoreData(true);
             }
         }
     }

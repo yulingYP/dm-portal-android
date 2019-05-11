@@ -172,8 +172,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         setContentView(R.layout.activity_approval_leave_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
-        //获取数据
-//        setData();
         //初始化标题
         initTitle();
 
