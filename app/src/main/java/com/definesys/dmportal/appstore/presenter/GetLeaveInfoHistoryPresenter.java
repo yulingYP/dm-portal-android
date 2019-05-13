@@ -111,7 +111,7 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
     public void getAllApprovalHistoryList (Number userId,Number longDate){
         HashMap<String,Number> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("longDate",longDate.longValue()<=0?null:longDate);
+        map.put("longDate",longDate.longValue()<=0?System.currentTimeMillis():longDate);
         Log.d("myMap",new Gson().toJson(map));
 
         ViseHttp.CONFIG()
@@ -196,10 +196,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
         super.unsubscribe();
     }
 //    Number userId,Number page,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType
-    public void getSearchApprovalList(Number userId,Number longDate,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType, Number checkCode, Number type, String content) {
+    public void getSearchApprovalList(Number userId,Number requestId,Number approvalStudentAuthority,Number approvalTeacherAuthority,Number userType, Number checkCode, Number type, String content) {
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("longDate", longDate.longValue()<=0?null:longDate);
+        map.put("requestId", requestId);
         map.put("approvalStuAut",approvalStudentAuthority);
         map.put("approvalTeaAut",approvalTeacherAuthority);
         map.put("userType",userType);
@@ -241,10 +241,10 @@ public class GetLeaveInfoHistoryPresenter extends BasePresenter {
     }
 
     //条件查询已审批的历史记录
-    public void getSearchApprovalHistoryList (Number userId,Number requestId,Number checkCode ,Number type,String content){
+    public void getSearchApprovalHistoryList (Number userId,Number longDate,Number checkCode ,Number type,String content){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("requestId",requestId);
+        map.put("requestId",longDate.longValue()<=0?System.currentTimeMillis():longDate);
         map.put("checkCode",checkCode);
         map.put("type",type);
         map.put("content",content);
