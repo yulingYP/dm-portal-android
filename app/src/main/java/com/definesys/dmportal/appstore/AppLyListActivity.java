@@ -82,7 +82,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     @Autowired(name = "ARouterPath")
     String ARouterPath;
 
-    private int requestPage;//请求的页码
+    private long requestId;//list中最后一个数据的id
     private List<ApplyInfo> applyInfoList;//申请记录列表
     private List<ApplyRecord> applyRecordList;//审批历史列表
     private ApplyInfoAdapter applyInfoAdapter;
@@ -122,7 +122,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 );
         //下拉刷新监听
         smartRefreshLayout.setOnRefreshListener(refreshLayout -> {
-            requestPage = 1;
+            requestId = -1;
             if(applyInfoList!=null&&applyInfoList.size()>0) {
                 applyInfoList.clear();
                 if(applyInfoAdapter!=null)
@@ -136,7 +136,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
         });
         //加载更多
         smartRefreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            ++requestPage;
+            requestId = setRequestId(type);
             httpPost();
         });
 
@@ -171,7 +171,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void getLeaveInfoList(BaseResponse<List<ApplyInfo>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestPage==1) {//下拉刷新
+            if(requestId<0) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
                 smartRefreshLayout.finishLoadMore(true);
             }
@@ -181,7 +181,6 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 setNoLayout(1);
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
-                --requestPage;
                 smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
@@ -208,7 +207,7 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     }, thread = EventThread.MAIN_THREAD)
     public void getApprovalInfoList(BaseResponse<List<ApplyRecord>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestPage==1) {//下拉刷新
+            if(requestId < 0) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
                 smartRefreshLayout.finishLoadMore(true);
             }
@@ -218,7 +217,6 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 setNoLayout(1);
             else if(data.getData()==null||data.getData().size()==0){//已经到最后一页
                 Toast.makeText(this,data.getMsg(),Toast.LENGTH_SHORT).show();
-                --requestPage;
                 smartRefreshLayout.finishLoadMoreWithNoMoreData();
             }
             else {//有数据
@@ -280,32 +278,30 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 Integer stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
                 Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批老师权限
                 if (checkAuthority(stuAut,teaAut)) {
-                    mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), stuAut, teaAut, type,requestPage);
+                    mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), stuAut, teaAut, type,requestId);
                 }else{
                     smartRefreshLayout.finishRefresh(true);
                     Toast.makeText(this, R.string.aut_error_tip_1, Toast.LENGTH_SHORT).show();
                     setNoLayout(3);
                 }
             } else if (type == 1) {//历史申请记录
-                mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), null, null, type, requestPage);
+                mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), null, null, type, requestId);
             } else if (type == 2) {//历史审批记录
-                mPersenter.getHistoryApprovalApplyList(SharedPreferencesUtil.getInstance().getUserId(), requestPage);
+                mPersenter.getHistoryApprovalApplyList(SharedPreferencesUtil.getInstance().getUserId(), requestId);
             }
         }else {
             if(type==0){//待审批内容
                 Integer stuAut=SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority();//审批学生权限
                 Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批老师权限
                 if(checkAuthority(stuAut, teaAut))
-                    mPersenter.getSearchApplyList(type,userId,checkCode,content,requestPage,stuAut,teaAut);
+                    mPersenter.getSearchApplyList(type,userId,checkCode,content,requestId,stuAut,teaAut);
                 else {
                     smartRefreshLayout.finishRefresh(true);
                     Toast.makeText(this, R.string.aut_error_tip_1, Toast.LENGTH_SHORT).show();
                     setNoLayout(3);
                 }
-            }else if(type==1){//历史申请记录
-                mPersenter.getSearchApplyList(type,userId,checkCode,content,requestPage, null, null);
-            }else if(type==2){//历史审批记录
-                mPersenter.getSearchApplyList(type,userId,checkCode,content,requestPage,null, null);
+            }else if(type==1||type==2){//1.历史申请记录 2.历史审批记录
+                mPersenter.getSearchApplyList(type,userId,checkCode,content,requestId, null, null);
             }else {
                 smartRefreshLayout.finishRefresh(true);
                 setNoLayout(0);
@@ -377,5 +373,18 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     @Override
     public ApplyInfoPresenter getPersenter() {
         return new ApplyInfoPresenter(this);
+    }
+
+    /**
+     * 设置requestId
+     * @param type 页面类型 0.权限审批 1.历史申请记录 2.历史审批记录
+     * return requestId
+     */
+    public long setRequestId(int type) {
+        if ((type == 0||type==1)&&applyInfoList!=null&&applyInfoList.size()>0)
+            return applyInfoList.get(applyInfoList.size() - 1).getApplyId();
+        else if(type==2&&applyRecordList!=null&&applyRecordList.size()>0)
+            return applyRecordList.get(applyRecordList.size() - 1).getApplyId();
+        return -1;
     }
 }

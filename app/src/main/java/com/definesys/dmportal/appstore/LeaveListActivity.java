@@ -244,7 +244,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void getLeaveInfoList(BaseResponse<List<LeaveInfo>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestId==-1) {//下拉刷新
+            if(requestId <0 ) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
                 smartRefreshLayout.finishLoadMore(true);
             }
@@ -278,7 +278,7 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
     }, thread = EventThread.MAIN_THREAD)
     public void getApprovalInfoList(BaseResponse<List<ApprovalRecord>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
-            if(requestId==-1) {//下拉刷新
+            if(requestId<0) {//下拉刷新
                 smartRefreshLayout.finishRefresh(true);
                 smartRefreshLayout.finishLoadMore(true);
             }

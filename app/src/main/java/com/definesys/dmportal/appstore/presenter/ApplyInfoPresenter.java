@@ -9,7 +9,6 @@ import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.bean.ApplyRecord;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
-import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
 import com.vise.xsnow.http.ViseHttp;
@@ -116,13 +115,14 @@ public class ApplyInfoPresenter extends BasePresenter {
      * @param stuAut 审批学生的权限
      * @param teaAut 审批教师的权限
      * @param type 1.未审批申请 2.已审批
+     * @param requestId list中最后一个数据的id
      */
-    public void getApplyInfoList(Number userId,Number stuAut,Number teaAut,Number type,Number page){
+    public void getApplyInfoList(Number userId,Number stuAut,Number teaAut,Number type,Number requestId){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
         map.put("stuAut",stuAut);
         map.put("teaAut",teaAut);
-        map.put("page", page);
+        map.put("requestId", requestId);
         map.put("type",type);
         ViseHttp.POST(HttpConst.getRequestApplyList)
                 .tag(HttpConst.getApplyInfoById)
@@ -152,10 +152,10 @@ public class ApplyInfoPresenter extends BasePresenter {
      * 获取历史审批记录
      * @param userId 用户id
      */
-    public void getHistoryApprovalApplyList(Number userId,Number page){
+    public void getHistoryApprovalApplyList(Number userId,Number requestId){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page",page);
+        map.put("requestId",requestId);
         map.put("type",2);
         ViseHttp.POST(HttpConst.getRequestApplyList)
                 .tag(HttpConst.getApplyInfoById)
@@ -180,10 +180,10 @@ public class ApplyInfoPresenter extends BasePresenter {
                 });
     }
 
-    public void getSearchApplyList(int type, Number userId, int checkCode, String content, int page, Integer stuAut, Integer teaAut){
+    public void getSearchApplyList(int type, Number userId, int checkCode, String content, long requestId, Integer stuAut, Integer teaAut){
         HashMap<String,Object> map = new HashMap<>();
         map.put("userId",userId);
-        map.put("page", page);
+        map.put("requestId", requestId);
         map.put("checkCode",checkCode);
         map.put("type",type);
         map.put("content",content);

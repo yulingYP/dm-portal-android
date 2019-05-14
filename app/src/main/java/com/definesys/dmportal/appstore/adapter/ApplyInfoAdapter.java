@@ -76,7 +76,8 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
             }
 
             //权限类型
-            String type=DensityUtil.getAuthorityName(mContext,(short)(applyInfoList.get(position).getApplyAuthorityType().shortValue()*10+applyInfoList.get(position).getApplyAuthority().shortValue()));
+            int aut = applyInfoList.get(position).getApplyAuthorityType()<0?applyInfoList.get(position).getApplyAuthority():applyInfoList.get(position).getApplyAuthorityType()*10+applyInfoList.get(position).getApplyAuthority();
+            String type=DensityUtil.getAuthorityName(mContext,(short)aut);
             holder.tv_type.setText(mContext.getString(R.string.authority_tip,type));
             //权限范围
             holder.tv_title.setText(mContext.getString(R.string.region_tip,applyInfoList.get(position).getApplyRegion()));
