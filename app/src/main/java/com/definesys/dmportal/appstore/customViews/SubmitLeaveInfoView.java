@@ -53,6 +53,8 @@ public class SubmitLeaveInfoView extends LinearLayout {
     TextView tv_selectedSubject;
     @BindView(R.id.content_text)
     TextView tv_content;
+    @BindView(R.id.submit_tip)
+    TextView tv_tip;
     @BindView(R.id.img_layout)
     RelativeLayout lg_img;
     @BindView(R.id.img_1)
@@ -104,6 +106,7 @@ public class SubmitLeaveInfoView extends LinearLayout {
      *
      */
     public void setDate(LeaveInfo submitLeaveInfo, List<LocalMedia> selectImages){
+        tv_tip.setText(mContext.getString(R.string.confirm_info_tip,Constants.leaveInterval));
         tv_name.setText(mContext.getString(R.string.name_tip,submitLeaveInfo.getName()));
         tv_type.setText(mContext.getString(R.string.type_tip,submitLeaveInfo.getLeaveType()));
         tv_title.setText(mContext.getString(R.string.leave_title,submitLeaveInfo.getLeaveTitle()));

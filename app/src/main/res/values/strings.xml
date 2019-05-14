@@ -95,7 +95,7 @@
     <string name="no_subject_select">请选择要请假的课程</string>
     <string name="no_reason_des">请假的具体原因不能为空</string>
     <string name="no_reason_des_2">请按要求填写请假的具体原因</string>
-    <string name="confirm_info_tip">请确认信息是否正确,确认无误后点击确定提交申请</string>
+    <string name="confirm_info_tip">本次申请%d分钟后才能再次提交申请,您确定要提交该请假申请吗</string>
     <string name="name_tip">姓名:%s</string>
     <string name="type_tip">请假类型:%s</string>
     <string name="leave_title">请假原因:%s</string>
@@ -463,6 +463,7 @@
     <string name="apply_error_tip_12">请先选择院系</string>
     <string name="apply_error_tip_13">班主任权限每次只能申请同一年级的班级</string>
     <string name="apply_error_tip_14">您已经拥有%s所申请的范围权限</string>
+    <string name="apply_error_tip_15">%d分钟后才能再次申请</string>
     <string name="apply_dialog_des_1">请选择班级(单选)</string>
     <string name="apply_dialog_des_2">请选择寝室成员(多选)</string>
     <string name="apply_dialog_des_3">请选择班级(单选)</string>
@@ -475,7 +476,7 @@
     <string name="apply_dialog_des_10">请选择班级(多选)</string>
     <string name="apply_dialog_des_11">请选择院系(单选)</string>
     <string name="apply_dialog_des_12">请选择部门(单选)</string>
-    <string name="apply_dialog_des_13">您确定要提交以下权限申请吗</string>
+    <string name="apply_dialog_des_13">%d分钟以后才能再次申请，您确定要提交以下权限申请吗</string>
     <string name="apply_dialog_des_14">您确定要删除以下权限吗</string>
     <string name="input_apply_reason">点击确定提交申请</string>
     <string name="hint_apply_reason">请填写申请原因(0&#8211;150字)</string>

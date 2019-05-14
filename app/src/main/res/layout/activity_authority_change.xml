@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/back_gray"
-    tools:context="com.definesys.dmportal.appstore.leaveSettingUI.AuthorityChangeActivity">
+    tools:context="com.definesys.dmportal.appstore.leaveSettingUI.AuthorityDeleteActivity">
     <include layout="@layout/title_top_temp">
     </include>
     <com.definesys.dmportal.commontitlebar.CustomTitleBar

@@ -63,4 +63,7 @@ public interface SharedPreferencesParams {
     //sp文件中上次请假的时间
     String spLeaveTime= "u_leave_time";
 
+    //sp文件中上次权限申请的时间
+    String spApplyTime= "u_apply_time";
+
 }

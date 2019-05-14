@@ -122,14 +122,14 @@ public class AuthoritySettingActivity extends BaseActivity<LeaveAuthorityPresent
         RxView.clicks(lg_apply)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
-                    ARouter.getInstance().build(ARouterConstants.UpdateLeAutActivity)
+                    ARouter.getInstance().build(ARouterConstants.ApplyLeAutActivity)
                             .navigation()
                 );
         //删除权限
         RxView.clicks(lg_delete)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
-                    ARouter.getInstance().build(ARouterConstants.AuthorityChangeActivity)
+                    ARouter.getInstance().build(ARouterConstants.AuthorityDeleteActivity)
                             .navigation()
                 );
         //权限审批

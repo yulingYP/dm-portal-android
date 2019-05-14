@@ -14,6 +14,9 @@ public interface Constants {
     int oneMin = 60000;//1分钟
     int SIGN_CODE = 1001;//手写签名的回调代码
 
+    int leaveInterval = 10;//请假间隔
+    int applyInterval = 5;//权限申请间隔
+
     int aut0 = 0;//寝室长权限
     int aut1 = 1;//班长权限
     int aut2 = 2;//班主任权限

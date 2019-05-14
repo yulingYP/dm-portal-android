@@ -217,13 +217,13 @@ public class ListSearchActivity extends BaseActivity {
         else if(type==1) //待处理的请假审批记录
             ed_search.setHint(R.string.history_hint_1);
         else if(type==2)//历史请假审批记录
-            ed_search.setHint(R.string.history_hint_2);
+            ed_search.setHint(R.string.history_hint_1);
         else if(type==10)//权限审批
             ed_search.setHint(R.string.history_hint_1);
         else if(type==11)//历史权限申请
             ed_search.setHint(R.string.history_hint_3);
         else if(type==12)//历史权限审批
-            ed_search.setHint(R.string.history_hint_4);
+            ed_search.setHint(R.string.history_hint_1);
         //获取搜索框焦点
         ed_search.setFocusable(true);
         ed_search.setFocusableInTouchMode(true);

@@ -114,7 +114,7 @@ public class ApplyDialog extends Dialog {
             ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_12);
         } else  if(type==100){
             tv_select.setVisibility(GONE);
-            ((TextView)view.findViewById(R.id.title_text)).setText(R.string.apply_dialog_des_13);
+            ((TextView)view.findViewById(R.id.title_text)).setText(context.getString(R.string.apply_dialog_des_13,Constants.applyInterval));
             ((TextView)view.findViewById(R.id.title_text)).setTextColor(context.getResources().getColor(R.color.blue));
         }else if(type==101){
             tv_select.setVisibility(GONE);

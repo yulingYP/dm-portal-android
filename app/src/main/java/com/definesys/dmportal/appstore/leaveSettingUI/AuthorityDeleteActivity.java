@@ -50,8 +50,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-@Route(path = ARouterConstants.AuthorityChangeActivity)
-public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresenter> implements Constants{
+@Route(path = ARouterConstants.AuthorityDeleteActivity)
+public class AuthorityDeleteActivity extends BaseActivity<LeaveAuthorityPresenter> implements Constants{
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
     @BindView(R.id.parent_layout)

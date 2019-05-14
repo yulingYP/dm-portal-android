@@ -50,8 +50,8 @@ import butterknife.ButterKnife;
 
 
 //更新请假权限
-@Route(path = ARouterConstants.UpdateLeAutActivity)
-public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
+@Route(path = ARouterConstants.ApplyLeAutActivity)
+public class ApplyLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
     @BindView(R.id.tea_layout)
@@ -189,7 +189,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             progressHUD.dismiss();
             if(data.getExtendInfo()==100) {
                 finish();
-
+                SharedPreferencesUtil.getInstance().setLastApplyTime(System.currentTimeMillis());
                 Toast.makeText(this, R.string.submit_success, Toast.LENGTH_SHORT).show();
             }
             else
@@ -259,13 +259,18 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
             return;
         }
 
+        //限制每次申请后过10分钟才能再次申请
+        int remainTime = (int) ((System.currentTimeMillis() - SharedPreferencesUtil.getInstance().getLastApplyTime()) /  Constants.oneMin);
+        if (remainTime >= 0&&remainTime<=Constants.applyInterval) {
+            Toast.makeText(this, getString(R.string.apply_error_tip_15,Constants.applyInterval-remainTime), Toast.LENGTH_SHORT).show();
+//            return;
+        }
 
         List<String> list = new ArrayList<>();
         for(int i = 0 ;i <applyList.size();i++){
             list.add(applyList.get(i).getApplyDetailContent());
         }
         initDialog(list,100);
-//       showReasonDialog();
     }
     /**
      * 初始化学生和教师权限列表
@@ -386,7 +391,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         applyDialog.setOnConfirmClickListener(() -> {
             if (type == 0||type==6) {//寝室长权限
                 if(getString(R.string.no_des).equals(content)){//未填写内容
-                    Toast.makeText(UpdateLeAutActivity.this, type == 0?R.string.apply_error_tip_4:R.string.apply_error_tip_10,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ApplyLeAutActivity.this, type == 0?R.string.apply_error_tip_4:R.string.apply_error_tip_10,Toast.LENGTH_SHORT).show();
                 }else{
                     tv_show.setText(checkApplyAuthority(type,content.substring(0,content.length()-2)));
                     reSetTextLayoutParams(tv_show);
@@ -413,11 +418,11 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
                     applyDialog.dismiss();
                 }else {
                     if(type==2)
-                        Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ApplyLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
                     else if(type==10||type==11||type==12)
-                        Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_12, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ApplyLeAutActivity.this, R.string.apply_error_tip_12, Toast.LENGTH_SHORT).show();
                     else
-                        Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_7, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ApplyLeAutActivity.this, R.string.apply_error_tip_7, Toast.LENGTH_SHORT).show();
                 }
             }else if(type==100){//权限提交
                 applyDialog.dismiss();
@@ -465,9 +470,9 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         }
         if(!flag){
             if(type==4)
-                Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
-            else if(type==7)  Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_11, Toast.LENGTH_SHORT).show();
-            else if(type==9)  Toast.makeText(UpdateLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ApplyLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
+            else if(type==7)  Toast.makeText(ApplyLeAutActivity.this, R.string.apply_error_tip_11, Toast.LENGTH_SHORT).show();
+            else if(type==9)  Toast.makeText(ApplyLeAutActivity.this, R.string.apply_error_tip_5, Toast.LENGTH_SHORT).show();
             else  Toast.makeText(this, R.string.apply_error_tip_1,Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -501,16 +506,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         else if(type==20)checkStr = getString(R.string.apply_tag_9);//部门请假负责人权限
         else if(type==21)checkStr = getString(R.string.apply_tag_10);//部门教学负责人权限
         addItem(type,content,checkStr);
-//        for(int i=0;i<applyList.size();i++ ){
-//            if(applyList.get(i).getType()==type) {//已加入过，则重写这部分内容
-//                applyList.get(i).setContent(checkStr + content);
-//                flag = true;
-//                break;
-//            }
-//        }
-//        if(!flag){//没有重写过
-//            applyList.get(applyList.size()-1).setContent(checkStr + content);
-//        }
+
         StringBuilder result = new StringBuilder();
         for(int i=0;i<applyList.size();i++ ){
             result.append(applyList.get(i).getApplyDetailContent());
@@ -636,7 +632,7 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
             if(inputMethodManager!=null&&inputMethodManager.isActive()&&this.getCurrentFocus()!=null){
-                inputMethodManager.hideSoftInputFromWindow(UpdateLeAutActivity.this.getCurrentFocus().getWindowToken(), 0);
+                inputMethodManager.hideSoftInputFromWindow(ApplyLeAutActivity.this.getCurrentFocus().getWindowToken(), 0);
             }
             ed_reason.setCursorVisible(false);
             return true;

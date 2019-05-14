@@ -92,11 +92,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape" />
         <activity android:name=".appstore.leaveSettingUI.AuthoritySettingActivity" />
-        <activity android:name=".appstore.leaveSettingUI.UpdateLeAutActivity" />
+        <activity android:name=".appstore.leaveSettingUI.ApplyLeAutActivity" />
         <activity android:name=".appstore.AppLyListActivity" />
         <activity android:name=".appstore.ApprovalApplyInfoActivity" />
         <activity android:name=".appstore.ApplyInfoActivity" />
-        <activity android:name=".appstore.leaveSettingUI.AuthorityChangeActivity" android:windowSoftInputMode="stateHidden|adjustResize">
+        <activity android:name=".appstore.leaveSettingUI.AuthorityDeleteActivity" android:windowSoftInputMode="stateHidden|adjustResize">
             <!--android:windowSoftInputMode="stateHidden|adjustPan"-->
         </activity>
 
