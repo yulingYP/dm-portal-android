@@ -115,6 +115,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
         setContentView(R.layout.activity_approval_apply_info);
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
+        initTitle();
         if(type==4&&applyInfo!=null){//未审批
             initEdit();
             initView();
@@ -235,8 +236,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
             finish();
         }
     }
-    private void initView() {
-        titleBar.setTitle(type==4?getString(R.string.approval_apply_title):getString(R.string.check_approval_apply_title));
+    private void initTitle(){
         titleBar.setBackgroundDividerEnabled(false);
         titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
@@ -247,6 +247,9 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
                     setResult(RESULT_CANCELED,intent);
                     finish();
                 });
+    }
+    private void initView() {
+        titleBar.setTitle(type==4?getString(R.string.approval_apply_title):getString(R.string.check_approval_apply_title));
         //编号
         tv_id.setText(String.valueOf(applyInfo.getApplyUserId()));
         //姓名

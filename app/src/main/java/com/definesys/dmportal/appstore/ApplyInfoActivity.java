@@ -84,17 +84,16 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         ButterKnife.bind(this);
         ARouter.getInstance().inject(this);
         setNoLayout(true);
+        initTitle();
         if(applyInfo!=null)
             initView();
         else if(applyId>0){
             progressHUD.show();
             mPersenter.getApplyInfoById(applyId);
         }
-
     }
 
-    private void initView() {
-        setNoLayout(false);
+    private void initTitle(){
         titleBar.setTitle(getString(R.string.apply_detail_info));
         titleBar.setBackgroundDividerEnabled(false);
         titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
@@ -102,8 +101,11 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         RxView.clicks(titleBar.addLeftBackImageButton())
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .subscribe(obj->
-                    finish()
+                        finish()
                 );
+    }
+    private void initView() {
+        setNoLayout(false);
         //姓名
         tv_name.setText(getString(R.string.name_tip,applyInfo.getApplyUserName()));
         //权限类型
@@ -220,7 +222,7 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             applyInfo=data.getData();
             progressHUD.dismiss();
-            if(applyInfo!=null)
+            if(applyInfo!=null&&applyInfo.getApplyId()>0&&applyInfo.getApplyUserId()!=null)
                 initView();
             else
                 setNoLayout(false);

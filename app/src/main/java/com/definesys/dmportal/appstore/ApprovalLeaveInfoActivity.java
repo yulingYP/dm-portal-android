@@ -142,12 +142,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
     @BindView(R.id.user_info_layout)
     LinearLayout lg_user_info;
 
-//    private LeaveInfo leaveInfo;//请假信息
-//    private Long leaveId;//请假id
-//    int type;//审批的类型 0.拒绝 1.同意 4.未审批
-//    private Date approvalDate;//审批时间
-//    private String approvalContent;//审批内容
-//    private Long msgId;//消息id
     @Autowired(name = "leaveInfo")
     LeaveInfo leaveInfo;
     @Autowired(name = "leaveId")
@@ -174,7 +168,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         ARouter.getInstance().inject(this);
         //初始化标题
         initTitle();
-
         if(type==4&& leaveInfo !=null) {//未审批
             initView();
             initEdit();
@@ -206,7 +199,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
 
     //初始化标题
     private void initTitle() {
-        titleBar.setTitle(type==4?getString(R.string.approval_leave_info):getString(R.string.approval_leave_info_2));
         titleBar.setBackgroundDividerEnabled(false);
         titleBar.setBackground(getResources().getDrawable(R.drawable.title_bg));
         //退出
@@ -217,6 +209,11 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     setResult(RESULT_CANCELED,intent);
                     finish();
                 });
+
+    }
+
+    private void initView() {
+        titleBar.setTitle(type==4?getString(R.string.approval_leave_info):getString(R.string.approval_leave_info_2));
         if(type==4) {
             titleBar.removeAllRightViews();
             Button button = titleBar.addRightTextButton(getString(R.string.submit), R.layout.activity_approval_leave_info);
@@ -228,11 +225,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
         }else {
             titleBar.removeAllRightViews();
         }
-
-
-    }
-
-    private void initView() {
         //点击更多 加载动画
         RxView.clicks(lg_info)
                 .throttleFirst(Constants.loadAnim,TimeUnit.MILLISECONDS)
@@ -584,7 +576,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                 approvalRecord = new ApprovalRecord(myMessage.getMessageContent(),myMessage.getSendTime());
                 type = myMessage.getMessageExtend2();
                 isAgree = type==1;
-                initTitle();
                 if(leaveInfo !=null){
                     initView();
                     initEditUnable();
