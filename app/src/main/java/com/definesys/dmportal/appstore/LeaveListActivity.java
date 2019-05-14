@@ -210,9 +210,9 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
      * @return requestId
      */
     private long setRequestId(int type) {
-        if (submitLeaveInfoList!=null&&submitLeaveInfoList.size()>0&&(type == 0||type==1||type==3))
+        if ((type == 0||type==1||type==3)&&submitLeaveInfoList!=null&&submitLeaveInfoList.size()>0)
            return submitLeaveInfoList.get(submitLeaveInfoList.size() - 1).getId();
-        else if(approvalRecordList!=null&&approvalRecordList.size()>0&&type==2)
+        else if(type==2&&approvalRecordList!=null&&approvalRecordList.size()>0)
             return approvalRecordList.get(approvalRecordList.size() - 1).getApprovalTime().getTime();
         return -1;
     }

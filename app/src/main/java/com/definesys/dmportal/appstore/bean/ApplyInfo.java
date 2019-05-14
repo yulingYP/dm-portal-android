@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ApplyInfo implements Serializable {
-    private String applyId;//信息id
+    private long applyId;//信息id
 
     private Integer applyUserId;//申请人id
 
@@ -42,8 +42,7 @@ public class ApplyInfo implements Serializable {
     public ApplyInfo(){
 
     }
-    public ApplyInfo(String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, int type) {
-        this.applyId = applyId;
+    public ApplyInfo( Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, int type) {
         this.applyUserId = applyUserId;
         this.applyAuthorityType = applyAuthorityType;
         this.applyAuthority = applyAuthority;
@@ -51,9 +50,7 @@ public class ApplyInfo implements Serializable {
         this.applyStatus = 0;
         this.type = type;
     }
-
-    public ApplyInfo(String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, Short applyStatus, String applyUserName) {
-        this.applyId = applyId;
+    public ApplyInfo( Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion, Short applyStatus, String applyUserName) {
         this.applyUserId = applyUserId;
         this.applyAuthorityType = applyAuthorityType;
         this.applyAuthority = applyAuthority;
@@ -62,12 +59,12 @@ public class ApplyInfo implements Serializable {
         this.applyUserName = applyUserName;
     }
 
-    public String getApplyId() {
+    public long getApplyId() {
         return applyId;
     }
 
-    public void setApplyId(String applyId) {
-        this.applyId = applyId == null ? null : applyId.trim();
+    public void setApplyId(long applyId) {
+        this.applyId = applyId;
     }
 
     public Integer getApplyUserId() {

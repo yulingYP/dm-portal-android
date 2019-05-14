@@ -29,8 +29,8 @@ public class ApplyInfoPresenter extends BasePresenter {
     }
 
     //获取 applyId对应的信息实体
-    public void getApplyInfoById(String applyId){
-        Map<String,String>map = new HashMap<>();
+    public void getApplyInfoById(long applyId){
+        Map<String,Object>map = new HashMap<>();
         map.put("applyId",applyId);
         map.put("type","info");
         ViseHttp.POST(HttpConst.getApplyInfoById)
@@ -57,8 +57,8 @@ public class ApplyInfoPresenter extends BasePresenter {
 
     }
     //获取 applyId对应的信息实体
-    public void getApplyRecordById(String applyId){
-        Map<String,String>map = new HashMap<>();
+    public void getApplyRecordById(long applyId){
+        Map<String,Object>map = new HashMap<>();
         map.put("applyId",applyId);
         map.put("type","record");
         ViseHttp.POST(HttpConst.getApplyInfoById)

@@ -162,9 +162,11 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                             case "200":
                                 data.setExtendInfo(100);
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_GET_APPLY_LIST_INFO,  data);
-                                for(ApplyInfo applyInfo:applyList){
-                                    //data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
-                                    SmecRxBus.get().post("addMessage",new MyMessage(System.currentTimeMillis(),SharedPreferencesUtil.getInstance().getUserId(),(short)4,"",(short)4,applyInfo.getApplyId(),new Date()));
+                                for(String applyId:data.getData()){
+                                    if(!"success".equals(applyId)) {
+                                        //data.getData(),leaveInfo.getUserId(), (short) 2, content, (short)(isAgree?1:0) ,leaveInfo.getId(),null,new Date() )
+                                        SmecRxBus.get().post("addMessage", new MyMessage(System.currentTimeMillis(), SharedPreferencesUtil.getInstance().getUserId(), (short) 4, "", (short) 4, applyId, new Date()));
+                                    }
                                 }
                                 break;
                             default:
@@ -185,16 +187,23 @@ public class LeaveAuthorityPresenter extends BasePresenter {
         ViseHttp.POST(HttpConst.deleteAuthorities)
                 .tag(HttpConst.getAuthorityDetailInfo)
                 .setJson(new Gson().toJson(applyList))
-                .request(new ACallback<BaseResponse<String>>() {
+                .request(new ACallback<BaseResponse<List<String>>>() {
                     @Override
-                    public void onSuccess(BaseResponse<String> data) {
+                    public void onSuccess(BaseResponse<List<String>> data) {
                         switch (data.getCode()){
                             case "200":
                                 SmecRxBus.get().post(MainPresenter.SUCCESSFUL_DELETE_AUTHORITIES,  data);
-
+                                int size = applyList.size();
+                                List<String> applyIds = data.getData();
+                                int applyListSize = applyIds.size()==0?1:applyIds.size();
+                                for(int i = 0;i<size;i++){
+                                    String id = applyIds.get(i%applyListSize);
+                                    if(!"success".contains(id))
+                                        applyList.get(i).setApplyId(Long.parseLong(id));
+                                }
                                 for(ApplyInfo applyInfo:applyList){
                                     //向消息页发送权限修改信息
-                                    SmecRxBus.get().post("addMessage",new MyMessage(System.currentTimeMillis(), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, applyInfo.getApplyStatus()==-100?"change":"delete", applyInfo.getApplyAuthority().shortValue(), applyInfo.getApplyId(), new Date()));
+                                    SmecRxBus.get().post("addMessage", new MyMessage(System.currentTimeMillis(), SharedPreferencesUtil.getInstance().getUserId(), (short) 6, applyInfo.getApplyStatus() == -100 ? "change" : "delete", applyInfo.getApplyAuthority().shortValue(), String.valueOf(applyInfo.getApplyId()), new Date()));
                                 }
                                 break;
                             default:

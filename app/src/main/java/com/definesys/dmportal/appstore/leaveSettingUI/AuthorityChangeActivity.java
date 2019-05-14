@@ -368,7 +368,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
                 if(deleteMap.get(i)!=null&&!"".equals(deleteMap.get(i))){
 //            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority, String applyRegion
 //            applyDate, Short applyStatus, String applyUserName
-                    ApplyInfo applyInfo=new ApplyInfo(String.valueOf(SharedPreferencesUtil.getInstance().getUserId()) + String.valueOf(date.getTime()), SharedPreferencesUtil.getInstance().getUserId().intValue(),
+                    ApplyInfo applyInfo=new ApplyInfo( SharedPreferencesUtil.getInstance().getUserId().intValue(),
                             -1, i,deleteMap.get(i).substring(0,deleteMap.get(i).length()-2),deleteMap.get(i).length()<autMap.get(i).length()?(short)-100:-110,SharedPreferencesUtil.getInstance().getUserName());
                     applyInfo.setApplyReason(ed_reason.getText().toString());
                     //删除权限
@@ -410,7 +410,7 @@ public class AuthorityChangeActivity extends BaseActivity<LeaveAuthorityPresente
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_DELETE_AUTHORITIES)
     }, thread = EventThread.MAIN_THREAD)
-    public void deleteAuthorities(BaseResponse<String> data){
+    public void deleteAuthorities(BaseResponse<List<String>> data){
         if(MyActivityManager.getInstance().getCurrentActivity()==this){
             Toast.makeText(this, R.string.delete_success, Toast.LENGTH_SHORT).show();
             //重新获取用户权限

@@ -74,7 +74,7 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
     @Autowired(name = "applyInfo")
     ApplyInfo applyInfo;
     @Autowired(name = "applyId")
-    String applyId;
+    long applyId;
     @Autowired(name = "isMsg")
     boolean isMsg;//是不是从消息页或点击推送进入的
     @Override
@@ -86,7 +86,7 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
         setNoLayout(true);
         if(applyInfo!=null)
             initView();
-        else if(applyId!=null&&!"".equals(applyId)){
+        else if(applyId>0){
             progressHUD.show();
             mPersenter.getApplyInfoById(applyId);
         }
@@ -149,6 +149,8 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
                 colorId= getResources().getColor(R.color.red_error);
             }else if(applyInfo.getApplyStatus() == -110){//删除成功
                 content=getString(R.string.change_authority_des_3,DensityUtil.getAuthorityName(this,applyInfo.getApplyAuthority().shortValue()));
+                startPosition = content.indexOf(getString(R.string.delete));
+                colorId = getResources().getColor(R.color.red_error);
             }
         }else {//不是本人查看
             if(applyInfo.getApplyStatus() == 100 && applyInfo.getApplyAuthorityType() >= 0){//申请人添加权限 则另一个人删除权限

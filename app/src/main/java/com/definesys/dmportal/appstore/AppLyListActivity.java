@@ -362,14 +362,16 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
     @Subscribe(tags = {
             @Tag("updateList")
     }, thread = EventThread.MAIN_THREAD)
-    public void updateSuccess(String applyId) {
+    public void updateSuccess(Long applyId) {
         if(applyInfoAdapter!=null&&applyInfoList != null) {
             for (int i = applyInfoList.size()-1; i >= 0 ; i--) {
-                if (applyInfoList.get(i).getApplyId().equals(applyId)) {
+                if (applyInfoList.get(i).getApplyId()== applyId) {
                     applyInfoList.remove(i);
                 }
             }
             applyInfoAdapter.notifyDataSetChanged();
+            if(applyInfoList.size()==0)
+                setNoLayout(1);
         }
     }
     @Override

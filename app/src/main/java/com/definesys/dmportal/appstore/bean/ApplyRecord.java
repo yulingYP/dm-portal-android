@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ApplyRecord implements Serializable {
-    private String applyId;//信息id
+    private long applyId;//信息id
 
     private Integer applyerId;//申请人id
 
@@ -30,12 +30,12 @@ public class ApplyRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getApplyId() {
+    public long getApplyId() {
         return applyId;
     }
     public ApplyRecord(){}
 
-    public ApplyRecord(String applyId,Integer applyerId, String applyerName, Integer approverId,  Short applyStatus, String applyContent,String approverName) {
+    public ApplyRecord(long applyId,Integer applyerId, String applyerName, Integer approverId,  Short applyStatus, String applyContent,String approverName) {
         this.applyId = applyId;
         this.applyerName = applyerName;
         this.approverId = approverId;
@@ -45,8 +45,8 @@ public class ApplyRecord implements Serializable {
         this.approverName = approverName;
     }
 
-    public void setApplyId(String applyId) {
-        this.applyId = applyId == null ? null : applyId.trim();
+    public void setApplyId(long applyId) {
+        this.applyId = applyId;
     }
 
     public Integer  getApplyerId() {

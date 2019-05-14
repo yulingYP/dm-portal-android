@@ -157,7 +157,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         }else if(messages.get(position).getMessageType()==4){//申请人消息
                             ARouter.getInstance()
                                     .build(ARouterConstants.ApplyInfoActivity)
-                                    .withString("applyId",messages.get(position).getMessageExtend())
+                                    .withLong("applyId",Long.parseLong(messages.get(position).getMessageExtend()))
                                     .navigation();
                         }else if(messages.get(position).getMessageType()==5){//审批人消息
                             MyMessage myMessage = messages.get(position);
@@ -165,35 +165,30 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 myMessage= checkDate(position);
                             }
                             if(myMessage!=null) {
+                                String infoId = myMessage.getMessageExtend();
+                                infoId = infoId.length()>9?infoId.substring(9):infoId;
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApprovalApplyInfoActivity)
-                                        .withString("applyId", myMessage.getMessageExtend())
+                                        .withLong("applyId", Long.parseLong(infoId) )
                                         .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withString("content",myMessage.getMessageContent())
                                         .withInt("approverId",myMessage.getUserId().intValue())
                                         .withObject("date",myMessage.getSendTime())
                                         .navigation();
-                            }else {
-                                ARouter.getInstance()
-                                        .build(ARouterConstants.ApprovalApplyInfoActivity)
-                                        .withString("applyId",  messages.get(position).getMessageExtend())
-                                        .withInt("type", 4)
-                                        .navigation();
                             }
                         }else if(messages.get(position).getMessageType()==6){//权限发生改变
-                            if("".equals(messages.get(position).getMessageExtend())) {
+                            if("".equals(messages.get(position).getMessageExtend())) {//容错处理
                                 ARouter.getInstance()
                                         .build(ARouterConstants.AuthoritySettingActivity)
                                         .navigation();
                             }else {
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApplyInfoActivity)
-                                        .withString("applyId",messages.get(position).getMessageExtend())
+                                        .withLong("applyId",Long.parseLong(messages.get(position).getMessageExtend()))
                                         .withBoolean("isMsg",true)
                                         .navigation();
                             }
-                        }
-                        else if(messages.get(position).getMessageType()==11){//查看权限申请记录
+                        } else if(messages.get(position).getMessageType()==11){//查看权限申请记录
                             ARouter.getInstance()
                                     .build(ARouterConstants.AppLyListActivity)
                                     .withObject("ARouterPath",ARouterConstants.ApplyInfoActivity)
@@ -215,7 +210,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return  null;
         MyMessage myMessage = messages.get(position);
         int i;
-        for( i= position-1 ; i >=0;i--){
+        for( i  = position-1 ; i >= 0; i--){
             if(messages.get(i).getMessageExtend().equals(myMessage.getMessageExtend())&&//是不是同一条请假信息
                     messages.get(i).getMessageExtend2()!=4&&//是不是已经给出请假结果
                     (messages.get(i).getMessageType()==5|| messages.get(i).getMessageType()==2)&&//是不是审批人消息

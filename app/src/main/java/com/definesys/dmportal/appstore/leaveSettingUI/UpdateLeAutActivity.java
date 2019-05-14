@@ -41,7 +41,6 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.jakewharton.rxbinding2.view.RxView;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -534,38 +533,34 @@ public class UpdateLeAutActivity extends BaseActivity<LeaveAuthorityPresenter> {
         for(position = 0;position<applyList.size();position++){
             if(applyList.get(position).getType()==type) {//已加入过，则重写这部分内容
                 applyList.get(position).setApplyDetailContent( title + content);
-//                if(type==0||type==4||type==6||type==9)
-                    applyList.get(position).setApplyRegion(content);
-//                else
-//                    applyList.get(position).setSignId(content);
+                applyList.get(position).setApplyRegion(content);
                 flag = true;
                 break;
             }
         }
         if(!flag) {//没有添加过
-            String applyId = ""+SharedPreferencesUtil.getInstance().getUserId()+ new Date().getTime();
 //            String applyId, Integer applyUserId, Integer applyAuthorityType, Integer applyAuthority,
 //            String applyRegion, Short applyStatus, int type
             if (type == 0)
-                applyInfo = new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,0,content,type);//寝室长权限 寝室成员:
+                applyInfo = new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,0,content,type);//寝室长权限 寝室成员:
             else if (type == 2)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,1,content,type);//班长权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,1,content,type);//班长权限
             else if (type == 4)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,2,content,type);//班主任权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,2,content,type);//班主任权限
             else if (type == 6)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,3,content,type);//毕设老师权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,3,content,type);//毕设老师权限
             else if (type == 9)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,4,content,type);//辅导员权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,4,content,type);//辅导员权限
             else if (type == 10)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,5,content,type);//实习负责人权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,5,content,type);//实习负责人权限
             else if (type == 11)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,6,content,type);//学生工作负责人权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,6,content,type);//学生工作负责人权限
             else if (type == 12)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),0,7,content,type);//教学院长权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),0,7,content,type);//教学院长权限
             else if (type == 20)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,0,content,type);//部门请假负责人权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),1,0,content,type);//部门请假负责人权限
             else if (type == 21)
-                applyInfo =  new ApplyInfo(applyId,SharedPreferencesUtil.getInstance().getUserId().intValue(),1,1,content,type);//部门教学负责人权限
+                applyInfo =  new ApplyInfo(SharedPreferencesUtil.getInstance().getUserId().intValue(),1,1,content,type);//部门教学负责人权限
             if(applyInfo!=null) {
                 applyInfo.setApplyDetailContent(title + content);
                 applyInfo.setApplyUserName(SharedPreferencesUtil.getInstance().getUserName());

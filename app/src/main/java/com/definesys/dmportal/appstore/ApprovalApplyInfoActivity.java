@@ -95,7 +95,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     ApplyInfo applyInfo;
 
     @Autowired(name = "applyId")
-    String applyId;
+    long applyId;
     @Autowired(name = "approverId")
     int approverId;//审批人id
     @Autowired(name = "type")
@@ -227,7 +227,7 @@ public class ApprovalApplyInfoActivity extends BaseActivity<ApplyInfoPresenter> 
     public void submitSuccess(BaseResponse<String> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             Toast.makeText(this, R.string.submit_alyapr_success,Toast.LENGTH_SHORT).show();
-            SmecRxBus.get().post("addMessage",new MyMessage(System.currentTimeMillis(),SharedPreferencesUtil.getInstance().getUserId(),(short)5,approvalContent,(short)(isAgree?1:0),applyInfo.getApplyId(),new Date()));
+            SmecRxBus.get().post("addMessage",new MyMessage(System.currentTimeMillis(),SharedPreferencesUtil.getInstance().getUserId(),(short)5,approvalContent,(short)(isAgree?1:0),String.valueOf(applyInfo.getApplyId()),new Date()));
             SmecRxBus.get().post("updateList", applyInfo.getApplyId());
             if(--requestCount<=0){
                 progressHUD.dismiss();

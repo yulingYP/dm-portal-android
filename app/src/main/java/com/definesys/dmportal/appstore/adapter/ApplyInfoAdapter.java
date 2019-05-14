@@ -76,7 +76,7 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
             }
 
             //权限类型
-            String type=DensityUtil.getAuthorityName(mContext,applyInfoList.get(position).getApplyAuthority().shortValue());
+            String type=DensityUtil.getAuthorityName(mContext,(short)(applyInfoList.get(position).getApplyAuthorityType().shortValue()*10+applyInfoList.get(position).getApplyAuthority().shortValue()));
             holder.tv_type.setText(mContext.getString(R.string.authority_tip,type));
             //权限范围
             holder.tv_title.setText(mContext.getString(R.string.region_tip,applyInfoList.get(position).getApplyRegion()));
@@ -101,7 +101,7 @@ public class ApplyInfoAdapter extends RecyclerView.Adapter<ApplyInfoAdapter.View
                             ARouter.getInstance()
                                     .build(ARouterPath)//跳转页面
                                     .withObject("date",applyRecordList.get(position).getApprovalDate())//审批时间
-                                    .withString("applyId",applyRecordList.get(position).getApplyId())//申请id
+                                    .withLong("applyId",applyRecordList.get(position).getApplyId())//申请id
                                     .withInt("type",applyRecordList.get(position).getApplyStatus())//审批结果
                                     .withInt("approverId",applyRecordList.get(position).getApproverId())//审批人id
                                     .withString("content",applyRecordList.get(position).getApplyContent())//审批内容

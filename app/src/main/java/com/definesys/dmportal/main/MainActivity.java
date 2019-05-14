@@ -488,16 +488,18 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("type", myMessage.getMessageExtend2().intValue());
         }else if(myMessage.getMessageType()==4){//申请人申请结果
             intent = new Intent(this, ApplyInfoActivity.class);
-            intent.putExtra("applyId", myMessage.getMessageExtend());
+            intent.putExtra("applyId", Long.parseLong(myMessage.getMessageExtend()));
             if(myMessage.getMessageExtend2()==1)//权限申请通过，重新获取权限信息
                 mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
         }else if(myMessage.getMessageType()==5){//审批人新的审批任务，跳转到详情页
+            String infoId = myMessage.getMessageExtend();
+            infoId = infoId.length()>9?infoId.substring(9):infoId;
             intent = new Intent(this, ApprovalApplyInfoActivity.class);
-            intent.putExtra("applyId", myMessage.getMessageExtend());
+            intent.putExtra("applyId", Long.parseLong(infoId));
             intent.putExtra("type", myMessage.getMessageExtend2().intValue());
-        }else if(myMessage.getMessageType()==6){////权限发生变化
+        }else if(myMessage.getMessageType()==6){//权限发生变化
             intent = new Intent(this, "".equals(myMessage.getMessageExtend())?AuthoritySettingActivity.class:ApplyInfoActivity.class);
-            intent.putExtra("applyId",myMessage.getMessageExtend());
+            intent.putExtra("applyId",Long.parseLong(myMessage.getMessageExtend()));
             intent.putExtra("isMsg",true);
             if("delete".equals(myMessage.getMessageContent().toLowerCase()))//权限已被删除，重新获取权限
                 mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
