@@ -17,7 +17,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -34,7 +33,6 @@ import com.definesys.dmportal.appstore.ApprovalLeaveInfoActivity;
 import com.definesys.dmportal.appstore.LeaveInfoDetailActivity;
 import com.definesys.dmportal.appstore.LeaveListActivity;
 import com.definesys.dmportal.appstore.bean.MyMessage;
-import com.definesys.dmportal.appstore.customViews.CustomTitleIndicator;
 import com.definesys.dmportal.appstore.customViews.NoScrollViewPager;
 import com.definesys.dmportal.appstore.leaveSettingUI.AuthoritySettingActivity;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
@@ -43,8 +41,8 @@ import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.presenter.UserInfoPresent;
-import com.definesys.dmportal.main.ui.fragment.ContactFragment;
 import com.definesys.dmportal.appstore.ui.fragment.HomeAppFragment;
+import com.definesys.dmportal.main.ui.fragment.MsgFragment;
 import com.definesys.dmportal.main.ui.fragment.MyFragment;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
@@ -77,10 +75,10 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     @Autowired(name = "message")
     String splashMessage;//从跳转页得到的消息，可能是json化的Message实例
 
-    private CustomTitleIndicator titleIndicator;
-    private int currentPosition=1;
+//    private CustomTitleIndicator titleIndicator;
+    private int currentPosition = 1;
 
-    private ContactFragment contactFragment ;
+    private MsgFragment msgFragment ;
     private HomeAppFragment homeAppFragment ;
     private MyFragment myFragment ;
     public static int screenWith;//手机屏幕的宽度
@@ -137,7 +135,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 currentPosition = position;
                 mViewPager.setCurrentItem(position, false);
                 if(position==0&& (mTabbar.getTabAtPosition(position).isBadgeShow()||isFirst)){
-                    contactFragment.freshMsgFragment();
+                    msgFragment.reFresh();
                     isFirst = false;
                 }
             }
@@ -150,11 +148,11 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         });
 
         myFragment = MyFragment.newInstance("","");
-        contactFragment = ContactFragment.newInstance("","");
+        msgFragment = MsgFragment.newInstance("","");
        // groupFragment= GroupFragment.newInstance("","");
         homeAppFragment = HomeAppFragment.newInstance();
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(contactFragment);
+        fragmentList.add(msgFragment);
         fragmentList.add(homeAppFragment);
         //fragmentList.add(groupFragment);
         fragmentList.add(myFragment);
@@ -165,11 +163,11 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         mViewPager.setCurrentItem(currentPosition, true);
         if(mViewPager.getAdapter()!=null)mViewPager.getAdapter().notifyDataSetChanged();
 
-        titleIndicator = new CustomTitleIndicator(this, null);
-        titleIndicator.setOnTitleClickListener(position -> {
-            titleIndicator.setFocus(position);
-            contactFragment.getmViewpager().setCurrentItem(position);
-        });
+//        titleIndicator = new CustomTitleIndicator(this, null);
+//        titleIndicator.setOnTitleClickListener(position -> {
+//            titleIndicator.setFocus(position);
+//            msgFragment.getmViewpager().setCurrentItem(position);
+//        });
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -179,19 +177,23 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             @Override
             public void onPageSelected(int position) {
                 currentPosition = position;
+//                if (position == 0) {
+//                    mTitlebar.setTitle(getString(R.string.message));
+//                    mTitlebar.setCenterView(titleIndicator);
+//                    titleIndicator.setVisibility(View.VISIBLE);
+//                    titleIndicator.setTitle1Text(getString(R.string.message));
+//                    titleIndicator.setTitle2Text(getString(R.string.trends));
+//                    titleIndicator.setFocus(titleIndicator.getSelectItem());
+//                } else {
+//                    titleIndicator.setVisibility(View.GONE);
+//                    mTitlebar.showTitleView(true);
+//                    if(position==1)mTitlebar.setTitle(R.string.tab2);
+//                    else if(position==2)mTitlebar.setTitle(R.string.tab3);
+//                }
                 if (position == 0) {
-                    mTitlebar.setTitle("");
-                    mTitlebar.setCenterView(titleIndicator);
-                    titleIndicator.setVisibility(View.VISIBLE);
-                    titleIndicator.setTitle1Text(getString(R.string.message));
-                    titleIndicator.setTitle2Text(getString(R.string.trends));
-                    titleIndicator.setFocus(titleIndicator.getSelectItem());
-                } else {
-                    titleIndicator.setVisibility(View.GONE);
-                    mTitlebar.showTitleView(true);
-                    if(position==1)mTitlebar.setTitle(R.string.tab2);
-                    else if(position==2)mTitlebar.setTitle(R.string.tab3);
-                }
+                    mTitlebar.setTitle(getString(R.string.message)); 
+                }else if(position==1)mTitlebar.setTitle(R.string.tab2);
+                else if(position==2)mTitlebar.setTitle(R.string.tab3);
 
             }
 
@@ -211,23 +213,23 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
     }
 
 
-    @Subscribe(tags = {
-            @Tag("scrolling")
-    }, thread = EventThread.MAIN_THREAD)
-    public void slidingResponse(String msg) {
-        String[] m = msg.split(",");
-        int position = Integer.parseInt(m[0]);
-        float positionOffset = Float.parseFloat(m[1]);
-        titleIndicator.setIndicatorFeatures(position, positionOffset);
-    }
+//    @Subscribe(tags = {
+//            @Tag("scrolling")
+//    }, thread = EventThread.MAIN_THREAD)
+//    public void slidingResponse(String msg) {
+//        String[] m = msg.split(",");
+//        int position = Integer.parseInt(m[0]);
+//        float positionOffset = Float.parseFloat(m[1]);
+//        titleIndicator.setIndicatorFeatures(position, positionOffset);
+//    }
 
-    @Subscribe(tags = {
-            @Tag("selected")
-    }, thread = EventThread.MAIN_THREAD)
-    public void selectResponse(String position) {
-        titleIndicator.setSelectItem(Integer.valueOf(position));
-        titleIndicator.setFocus(Integer.valueOf(position));
-    }
+//    @Subscribe(tags = {
+//            @Tag("selected")
+//    }, thread = EventThread.MAIN_THREAD)
+//    public void selectResponse(String position) {
+//        titleIndicator.setSelectItem(Integer.valueOf(position));
+//        titleIndicator.setFocus(Integer.valueOf(position));
+//    }
     /**
      * 获取网络头像成功
      * @param str s
@@ -309,8 +311,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         if(message.equals("showMessage")){//跳转到消息也
             isFirst = false;
              mTabbar.setSelectTab(0);
-            if(contactFragment!=null){
-                contactFragment.freshMsgFragment();
+            if(msgFragment!=null){
+                msgFragment.reFresh();
             }
             return;
         }
@@ -349,9 +351,9 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             @Tag("addMessage")
     }, thread = EventThread.MAIN_THREAD)
     public void addMessage(MyMessage message) {
-        if(currentPosition==0&&contactFragment.getCurrentitem()==0){//在消息页面
+        if(currentPosition==0){//在消息页面
             if(message!=null) {
-                contactFragment.getMsgFragment().addMsg(message);
+                msgFragment.addMsg(message);
             }
         }
         else {//显示红点
@@ -377,7 +379,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             mTabbar.getTabAtPosition(0).showCirclePointBadge();
         }
         else {
-            if(currentPosition==0&&contactFragment.getCurrentitem()==0)//在消息页面
+            if(currentPosition==0)//在消息页面
                 mTabbar.getTabAtPosition(0).hiddenBadge();
         }
     }
