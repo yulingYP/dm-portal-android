@@ -80,7 +80,7 @@ public class HomeAppFragment extends BaseFragment<HomeAppPresenter> {
         List<MainIcon> mainIconList = new ArrayList<>();
         mainIconList.add(new MainIcon(getString(R.string.leave_off),R.drawable.leave_icon,ARouterConstants.LeaveMainActivity));
         mainIconList.add(new MainIcon(getString(R.string.subject_table),R.drawable.table_icon,ARouterConstants.SubjectTableActivity));
-        mainIconList.add(new MainIcon(getString(R.string.group_des),R.drawable.group_icon,ARouterConstants.GroupMainActivity));
+        mainIconList.add(new MainIcon(getString(R.string.seat),R.drawable.group_icon,ARouterConstants.NoPath ));
         MainIconAdapter mainIconAdapter = new MainIconAdapter(getContext(), mainIconList, true, R.layout.item_main_icon);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);

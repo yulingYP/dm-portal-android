@@ -18,7 +18,8 @@
     <string name="tab2">主页</string>
     <string name="tab3">我的</string>
     <string name="message">消息</string>
-    <string name="trends">动态</string>
+    <string name="seat">占位</string>
+    <string name="coming_soon">敬请期待</string>
     <string name="exit_en">exit</string>
     <!--TUT倒计时提示文字-->
     <string name="tut_toast_text_time">已发送(%1$ds)</string>

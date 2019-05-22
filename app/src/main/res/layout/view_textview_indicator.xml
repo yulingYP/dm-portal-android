@@ -30,7 +30,7 @@
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
             android:gravity="center"
-            android:text="@string/trends"
+            android:text="@string/message"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/title1_view_ti" />

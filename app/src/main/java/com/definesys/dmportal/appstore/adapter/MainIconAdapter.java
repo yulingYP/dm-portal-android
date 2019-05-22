@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.MainIcon;
+import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.main.MainActivity;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -52,11 +54,15 @@ public class MainIconAdapter extends RecyclerView.Adapter<MainIconAdapter.ViewHo
         holder.tv_name.setText(mainIconList.get(position).getName());
         RxView.clicks(holder.itemView)
                 .throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .subscribe(obj->
+                .subscribe(obj-> {
+                    if (ARouterConstants.NoPath.equals(mainIconList.get(position).getaRounterPath())){//占位图
+                        Toast.makeText(mContext,mContext.getString(R.string.coming_soon),Toast.LENGTH_SHORT).show();
+                    }else {//有跳转路径
                         ARouter.getInstance()
                                 .build(mainIconList.get(position).getaRounterPath())
-                                .navigation()
-                );
+                                .navigation();
+                    }
+                });
         if(isMain) {//主页图标
             //宽高一致
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();

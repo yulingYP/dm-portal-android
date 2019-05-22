@@ -6,6 +6,7 @@ package com.definesys.dmportal.appstore.utils;
  */
 
 public interface ARouterConstants {
+    String NoPath = "/dmportal/appstore/ui/NoPath";//暂无
     String SplashActivity = "/dmportal/appstore/SplashActivity";//倒计时页
     String LoginAcitvity = "/dmportal/appstore/LoginAcitvity";//登录页
     String UserSettingActivity = "/dmportal/appstore/UserSettingActivity ";//用户设置页
