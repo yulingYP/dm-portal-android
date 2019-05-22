@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.definesys.dmportal.R;
-import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.SmecRxBus;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +88,18 @@ public class ContactFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         SmecRxBus.get().register(this);
         initView();
+    }
+
+    private void initView() {
+
+        newsFragment = new NewsFragment();
+        msgFragment = new MsgFragment();
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(msgFragment);
+        fragments.add(newsFragment);
+        if(getActivity()!=null)
+            mViewpager.setAdapter(new MainFragmentPagerAdapter(getActivity().getSupportFragmentManager(), fragments));
+        mViewpager.setCurrentItem(0, true);
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             /**
              * 滑动时，发送消息，改变字体大小和左边距
@@ -114,18 +125,6 @@ public class ContactFragment extends Fragment {
                 }
             }
         });
-    }
-
-    private void initView() {
-
-        newsFragment = new NewsFragment();
-        msgFragment = new MsgFragment();
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(msgFragment);
-        fragments.add(newsFragment);
-        if(getActivity()!=null)
-            mViewpager.setAdapter(new MainFragmentPagerAdapter(getActivity().getSupportFragmentManager(), fragments));
-        mViewpager.setCurrentItem(0, true);
     }
 
 

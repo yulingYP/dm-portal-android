@@ -97,7 +97,6 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
-//        refreshLayout.autoRefresh();
     }
 
     @Override
@@ -111,9 +110,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
     }
 
     private void initView() {
-//        tvNomessage.setTextSize(DensityUtil.px2sp(getActivity(),28));
         messageList = new ArrayList<>();
-
         //下拉刷新
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             requestId = -1;
@@ -186,7 +183,6 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
     }
 
     /**
-     * 传入消息
      * Toast通知用户消息内容
      * 设置刷新失败
      *
