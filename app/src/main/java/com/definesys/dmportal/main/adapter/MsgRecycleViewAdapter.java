@@ -135,7 +135,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         if(messages.get(position).getMessageType()==1){//请假人消息
                             ARouter.getInstance()
                                     .build(ARouterConstants.LeaveInFoDetailActivity)
-                                    .withLong("leaveId",Long.parseLong(messages.get(position).getMessageExtend()))
+                                    .withLong("leaveId",DensityUtil.string2Long(messages.get(position).getMessageExtend()))
                                     .navigation();
                         }else if(messages.get(position).getMessageType()==2){//审批人消息
                             MyMessage myMessage = messages.get(position);
@@ -148,7 +148,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 infoId = infoId.length()>9?infoId.substring(9):infoId;
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApprovalLeaveInfoActivity)
-                                        .withLong("leaveId", Long.parseLong(infoId))
+                                        .withLong("leaveId", DensityUtil.string2Long(infoId))
                                         .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withObject("date", myMessage.getSendTime())
                                         .withString("approvalContent", myMessage.getMessageContent())
@@ -157,7 +157,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         }else if(messages.get(position).getMessageType()==4){//申请人消息
                             ARouter.getInstance()
                                     .build(ARouterConstants.ApplyInfoActivity)
-                                    .withLong("applyId",Long.parseLong(messages.get(position).getMessageExtend()))
+                                    .withLong("applyId",DensityUtil.string2Long(messages.get(position).getMessageExtend()))
                                     .navigation();
                         }else if(messages.get(position).getMessageType()==5){//审批人消息
                             MyMessage myMessage = messages.get(position);
@@ -169,7 +169,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 infoId = infoId.length()>9?infoId.substring(9):infoId;
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApprovalApplyInfoActivity)
-                                        .withLong("applyId", Long.parseLong(infoId) )
+                                        .withLong("applyId", DensityUtil.string2Long(infoId) )
                                         .withInt("type", myMessage.getMessageExtend2().intValue())
                                         .withString("content",myMessage.getMessageContent())
                                         .withInt("approverId",myMessage.getUserId().intValue())
@@ -184,7 +184,7 @@ public class MsgRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             }else {
                                 ARouter.getInstance()
                                         .build(ARouterConstants.ApplyInfoActivity)
-                                        .withLong("applyId",Long.parseLong(messages.get(position).getMessageExtend()))
+                                        .withLong("applyId",DensityUtil.string2Long(messages.get(position).getMessageExtend()))
                                         .withBoolean("isMsg",true)
                                         .navigation();
                             }

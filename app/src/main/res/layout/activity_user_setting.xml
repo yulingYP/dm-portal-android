@@ -143,6 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:gravity="center"
+                android:layout_marginTop="1dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
                 <ImageView

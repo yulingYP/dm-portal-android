@@ -47,10 +47,11 @@ public class ExampleUnitTest {
 //        }catch (Exception e){
 //            result = "error";
 //        }
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        System.out.println(calendar.get(Calendar.YEAR));
+//        Date date = new Date();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+        String str = "sfsdf1111";
+        System.out.println(DensityUtil.string2Long(str));
        assertEquals(4, 2 + 2);
     }
 

@@ -127,11 +127,23 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         RxView.clicks(iv_head).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    List<String> photoStyles = new ArrayList<>();
-                    photoStyles.add(getString(R.string.ui_photo));
-                    photoStyles.add(getString(R.string.ui_galary));
-                    photoStyles.add(getString(R.string.ui_check_head));
-                    showBottomDialog(photoStyles);
+                    if(userId == SharedPreferencesUtil.getInstance().getUserId().intValue()) {//本人
+                        List<String> photoStyles = new ArrayList<>();
+                        photoStyles.add(getString(R.string.ui_photo));
+                        photoStyles.add(getString(R.string.ui_galary));
+                        photoStyles.add(getString(R.string.ui_check_head));
+                        showBottomDialog(photoStyles);
+                    }else {//非本人 查看头像
+                        Bitmap image = ((BitmapDrawable)iv_head.getDrawable()).getBitmap();
+                        String path= ImageUntil.saveBitmapFromView(image, UUID.randomUUID().toString(),this,3);
+                        LocalMedia localMedia = new LocalMedia();
+                        localMedia.setPath(path);
+                        localMedia.setPosition(0);
+                        List<LocalMedia> localMedias = new ArrayList<>();
+                        localMedias.add(localMedia);
+                        PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
+                                .openExternalPreview(0, localMedias);
+                    }
                 });
         //姓名
         tv_name.setText(userInfo.getName());
@@ -336,6 +348,12 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @Override
     public UserInfoPresent getPersenter() {
         return new UserInfoPresent(this);

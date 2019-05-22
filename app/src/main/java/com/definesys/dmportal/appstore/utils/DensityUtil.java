@@ -351,13 +351,23 @@ public class DensityUtil {
         int temp;//容错范围
         if(aut<10) {//审批学生
             arr = context.getResources().getStringArray(R.array.approverType);
-            temp = 9;
         }
         else {//审批老师
             aut-=10;
             arr = context.getResources().getStringArray(R.array.approverType_2);
-            temp = 3;
         }
+        temp = arr.length-1;
         return arr[aut%temp];
     }
+
+    public static long string2Long(String longValue){
+        long value;
+        try {
+            value = Long.parseLong(longValue);
+        }catch (Exception e){
+            value = -1;
+        }
+        return value;
+    }
+
 }

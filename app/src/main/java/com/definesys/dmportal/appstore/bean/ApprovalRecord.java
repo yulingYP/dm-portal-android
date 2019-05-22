@@ -46,7 +46,7 @@ public class ApprovalRecord {
     }
 
     public Long getLeaveInfoId() {
-        return leaveInfoId==null?Long.valueOf(-1):leaveInfoId;
+        return leaveInfoId == null ? Long.valueOf(-1) : leaveInfoId;
     }
 
     public void setLeaveInfoId(Long leaveInfoId) {

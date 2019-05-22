@@ -602,7 +602,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
             PictureFileUtils.deleteCacheDirFile(this);
             SharedPreferencesUtil.getInstance().setLastLeaveTime(System.currentTimeMillis());
             //请假人提交请假申请成功
-            SmecRxBus.get().post("addMessage",new MyMessage(Long.parseLong(msg),SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,new Date()));
+            SmecRxBus.get().post("addMessage",new MyMessage(DensityUtil.string2Long(msg),SharedPreferencesUtil.getInstance().getUserId(), (short) 1, "", (short)2, msg,new Date()));
             finish();
 
         }

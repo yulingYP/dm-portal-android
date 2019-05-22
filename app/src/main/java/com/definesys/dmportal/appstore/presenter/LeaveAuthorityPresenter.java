@@ -6,6 +6,7 @@ import com.definesys.base.BaseResponse;
 import com.definesys.dmportal.appstore.bean.ApplyInfo;
 import com.definesys.dmportal.appstore.bean.MyMessage;
 import com.definesys.dmportal.appstore.tempEntity.AuthorityDetail;
+import com.definesys.dmportal.appstore.utils.DensityUtil;
 import com.definesys.dmportal.main.presenter.HttpConst;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
@@ -199,7 +200,7 @@ public class LeaveAuthorityPresenter extends BasePresenter {
                                 for(int i = 0;i<size;i++){
                                     String id = applyIds.get(i%applyListSize);
                                     if(!"success".contains(id))
-                                        applyList.get(i).setApplyId(Long.parseLong(id));
+                                        applyList.get(i).setApplyId(DensityUtil.string2Long(id));
                                 }
                                 for(ApplyInfo applyInfo:applyList){
                                     //向消息页发送权限修改信息
