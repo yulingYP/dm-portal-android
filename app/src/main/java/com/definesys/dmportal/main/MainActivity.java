@@ -252,16 +252,27 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             @Tag(MainPresenter.SUCCESSFUL_GET_PUSH_ERROR_MSG)
     }, thread = EventThread.MAIN_THREAD)
     public void getPushErrorMsg(ArrayList<MyMessage> data) {
+        boolean isHas10=false;//是否已提示过新的请假请求
+        boolean isHas11=false;//是否已提示过新的权限申请请求
         for(MyMessage myMessage:data){
             if((myMessage.getPushResult()==2)||
                     (myMessage.getPushResult()==0&&(myMessage.getMessageType()==1||myMessage.getMessageType()==4)
-                    &&(myMessage.getMessageExtend2()==0||myMessage.getMessageExtend2()==1))){//推送失败和未读的请假、权限申请结果消息
+                    &&(myMessage.getMessageExtend2()==0||myMessage.getMessageExtend2()==1))|| //推送失败和未读的请假、权限申请结果消息
+                    (myMessage.getPushResult()==0&&(myMessage.getMessageType()==2||myMessage.getMessageType()==5) &&myMessage.getMessageExtend2()==4)){//推送失败和未读的请假、权限申请消息
                 if(myMessage.getMessageType()==2&&myMessage.getMessageExtend2()==4){//新的请假请求
                     myMessage.setMessageType((short)10);
-                }else if(myMessage.getMessageType()==5&&myMessage.getMessageExtend2()==4){
+                }else if(myMessage.getMessageType()==5&&myMessage.getMessageExtend2()==4){//新的权限申请请求
                     myMessage.setMessageType((short)11);
                 }
-                hasNotify(myMessage);
+                if(myMessage.getMessageType()!=10&&myMessage.getMessageType()!=11)
+                    hasNotify(myMessage);
+                else if(myMessage.getMessageType()==10&&!isHas10) {//未提示过新的请假请求
+                    hasNotify(myMessage);
+                    isHas10 = true;
+                }else if(myMessage.getMessageType()==11&&!isHas11){//未提示过新的权限申请请求
+                    hasNotify(myMessage);
+                    isHas11 = true;
+                }
             }
             else if(myMessage.getPushResult()==0&&
                     ((myMessage.getMessageType()==2||myMessage.getMessageType()==5)&&myMessage.getMessageExtend2()==4)//未读的审批请求消息
@@ -395,7 +406,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         if(System.currentTimeMillis()-currentTime>=1000*5||(myMessage!=null&&myMessage.getMessageType()!=msgType)) {//信息特别多时 在5秒内获得的相同类型的信息只提示1次
             MyCongfig.checkMode(this);
             currentTime = System.currentTimeMillis();
-            msgType=myMessage.getMessageType();
+            msgType = myMessage.getMessageType();
         }
         addMessage(myMessage);//添加消息
 
@@ -524,8 +535,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("isAll",true);
             intent.putExtra("isSearch",false);
             intent.putExtra("type",0);
-        }
-        if(intent == null) {//跳转到消息页
+        } else  {//跳转到消息页
             intent = new Intent(this, MainActivity.class);
             intent.putExtra("message","showMessage");
         }

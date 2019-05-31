@@ -177,7 +177,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
                 new Handler().postDelayed(()-> refreshLayout.setNoMoreData(true),Constants.clickdelay*2);
             }
              show();
-             mPersenter.updateMsgStatus(SharedPreferencesUtil.getInstance().getUserId(),null);
+             mPersenter.updateMsgStatus(SharedPreferencesUtil.getInstance().getUserId(),null,null);
         }
         SmecRxBus.get().post("setRed",false);
     }
@@ -229,7 +229,7 @@ public class MsgFragment extends BaseFragment<MessagePresenter> {
     public void addMsg(MyMessage myMessage){
      messageList.add(0,myMessage);
      //改为已读状态
-     mPersenter.updateMsgStatus(myMessage.getUserId(), myMessage.getMessageId());
+     mPersenter.updateMsgStatus(myMessage.getUserId(), myMessage.getMessageId(),null);
      if(myAdapter==null)
          initList();
      else {

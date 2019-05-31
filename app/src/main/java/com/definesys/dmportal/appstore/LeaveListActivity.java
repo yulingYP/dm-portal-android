@@ -26,6 +26,7 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.presenter.MessagePresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -186,8 +187,11 @@ public class LeaveListActivity extends BaseActivity<GetLeaveInfoHistoryPresenter
             if (type == 0) {//历史请假记录
                 mPersenter.getAllLeaveInfoList(userId, requestId);
             }
-            else if (type == 1)//待审批记录
-                mPersenter.getAllApprovalList(userId, requestId, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(),SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType());
+            else if (type == 1) {//待审批记录
+                mPersenter.getAllApprovalList(userId, requestId, SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority(), SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority(), SharedPreferencesUtil.getInstance().getUserType());
+                if(requestId<=0)
+                 new MessagePresenter(this).updateMsgStatus(userId,null,2);
+            }
             else if (type == 2)//历史审批记录
                 mPersenter.getAllApprovalHistoryList(userId, requestId);
             else if(type==3){//销假

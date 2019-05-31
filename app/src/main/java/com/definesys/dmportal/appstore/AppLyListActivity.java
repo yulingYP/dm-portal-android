@@ -25,6 +25,7 @@ import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.main.presenter.MainPresenter;
+import com.definesys.dmportal.main.presenter.MessagePresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -279,6 +280,8 @@ public class AppLyListActivity extends BaseActivity<ApplyInfoPresenter> {
                 Integer teaAut=SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();//审批老师权限
                 if (checkAuthority(stuAut,teaAut)) {
                     mPersenter.getApplyInfoList(SharedPreferencesUtil.getInstance().getUserId(), stuAut, teaAut, type,requestId);
+                    if(requestId<=0)
+                        new MessagePresenter(this).updateMsgStatus(userId,null,5);
                 }else{
                     smartRefreshLayout.finishRefresh(true);
                     Toast.makeText(this, R.string.aut_error_tip_1, Toast.LENGTH_SHORT).show();
