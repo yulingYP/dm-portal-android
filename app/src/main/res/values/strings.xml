@@ -204,6 +204,7 @@
     <string name="send_code_err">请先获取验证码</string>
     <string name="login_text_code">短信验证码登录</string>
     <string name="copyright">哈尔滨工业大学(威海) 版权所有</string>
+    <string name="user_protocol_agree">登录即代表同意我们提供的《用户协议》</string>
     <string name="msg_pls_input_userId">输入学号或工号</string>
     <string name="msg_pls_input_psw">输入密码</string>
     <string name="login_text_pwd">账号密码登录</string>

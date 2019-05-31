@@ -179,7 +179,6 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
                 ARouter.getInstance().build(ARouterConstants.AuthoritySettingActivity).navigation();
             }
         }, style.length() - 7, style.length() - 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tv_tip.setText(style);
 
         //设置部分文字颜色
         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.blue));
@@ -190,7 +189,6 @@ public class ApplyInfoActivity extends BaseActivity<ApplyInfoPresenter>{
             ForegroundColorSpan foregroundColorSpan_ = new ForegroundColorSpan(colorId);
             style.setSpan(foregroundColorSpan_, startPosition, startPosition + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-
 
         //配置给TextView
         tv_tip.setMovementMethod(LinkMovementMethod.getInstance());

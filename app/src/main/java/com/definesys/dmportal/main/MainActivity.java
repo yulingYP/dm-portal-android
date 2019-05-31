@@ -275,8 +275,8 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
                 }
             }
             else if(myMessage.getPushResult()==0&&
-                    ((myMessage.getMessageType()==2||myMessage.getMessageType()==5)&&myMessage.getMessageExtend2()==4)//未读的审批请求消息
-                    ||myMessage.getMessageType()==6){//未读的权限修改信息
+//                    ((myMessage.getMessageType()==2||myMessage.getMessageType()==5)&&myMessage.getMessageExtend2()==4)//未读的审批请求消息
+                    myMessage.getMessageType()==6){//未读的权限修改信息
                 setRed(true);
             }
 

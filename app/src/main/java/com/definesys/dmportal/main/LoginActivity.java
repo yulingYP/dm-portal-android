@@ -12,6 +12,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -59,6 +64,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
     TextView textForget;
     @BindView(R.id.text_log_att_log)
     TextView textLogin;
+    @BindView(R.id.copyrt_att_log)
+    TextView text_bottom_des;
     @BindView(R.id.login_btn_att_log)
     Button btn;
 
@@ -238,26 +245,45 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         userId = SharedPreferencesUtil.getInstance().getUserId();
         inputTel.setText(userId.intValue()>0?""+userId:"");
         inputPwd.getSendVerifyCodeButton().setTextBackNull();
+
+        //设置底部文字
+        SpannableStringBuilder style = new SpannableStringBuilder(getString(R.string.user_protocol_agree));
+        //设置底部部分文字点击事件
+        style.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                ARouter.getInstance().build(ARouterConstants.WebViewActivity)
+                        .withString("url", getString(R.string.us_protocol_url)).navigation();
+            }
+        }, style.length() - 6, style.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //设置底部部分文字颜色
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getResources().getColor(R.color.blue));
+        style.setSpan(foregroundColorSpan, style.length() - 6, style.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        text_bottom_des.setMovementMethod(LinkMovementMethod.getInstance());
+        text_bottom_des.setText(style);
+
         // 防遮挡
         new HddLayoutHeight().addLayoutListener(this,main, textForget,2);
     }
 
     //TODO 为方便调试设置的点击自动登录
-    @OnClick(R.id.copyrt_att_log)
+    @OnClick(R.id.app_name_att_login)
     public void onClick() {
         this.inputTel.setText("151110401");
         this.inputPwd.setText("123456");
         this.btn.callOnClick();
     }
     //TODO 为方便调试设置的点击自动登录
-    @OnLongClick(R.id.copyrt_att_log)
+    @OnLongClick(R.id.app_name_att_login)
     public boolean onLongClick() {
         this.inputTel.setText("100000001");
         this.inputPwd.setText("123456");
         this.btn.callOnClick();
         return true;
     }
-    //TODO 为方便调试设置的点击自动登录
+    //TODO 为方便调试设置的点击更换服务器地址
     @OnClick(R.id.app_img_att_login)
     public void onIconClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
