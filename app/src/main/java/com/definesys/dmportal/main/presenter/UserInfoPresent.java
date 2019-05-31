@@ -30,13 +30,18 @@ public class UserInfoPresent extends BasePresenter {
         super(context);
         requestCount=0;
     }
-    //获取用户信息
-    public void getUserInfo(Number id){
+    /**
+     * 获取用户信息
+     * @param id 用户id
+     * @param isUpdate 是否更新登录时间 0.不更新 1.更新
+     */
+    public void getUserInfo(Number id,Number isUpdate){
         //提示单机登陆或账号冻结
         if(MyCongfig.isShowing)
             return;
         Map<String,Number> map = new HashMap<>();
         map.put("userId",id);
+        map.put("isUpdate",isUpdate);
         Log.d("myMap",new Gson().toJson(map));
         ViseHttp.POST(HttpConst.getUserInfo)
                 .tag(HttpConst.getUserInfo)
@@ -56,7 +61,7 @@ public class UserInfoPresent extends BasePresenter {
                             default:
 
                                 if(++requestCount<=5)
-                                 getUserInfo(id);//重新获取
+                                 getUserInfo(id,isUpdate);//重新获取
                                 else
                                     SmecRxBus.get().post(MainPresenter.FAIL_GET_REQUEST_USER_INFO, data.getMsg());
                                 break;
@@ -66,7 +71,7 @@ public class UserInfoPresent extends BasePresenter {
                     @Override
                     public void onFail(int errCode, String errMsg) {
                         if(++requestCount<=5)
-                         getUserInfo(id);//重新获取
+                         getUserInfo(id,isUpdate);//重新获取
                         else
                         SmecRxBus.get().post(MainPresenter. FAIL_GET_REQUEST_USER_INFO, errMsg);
                     }

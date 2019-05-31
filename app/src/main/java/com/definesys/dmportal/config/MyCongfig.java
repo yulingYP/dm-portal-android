@@ -60,8 +60,8 @@ public  class MyCongfig {
         builder.setMessage(msgId)
                 .setCancelable(false)
                 .setPositiveButton(R.string.confirm, (dialog, id) -> {
-                    ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean("exit", true).navigation(MyActivityManager.getInstance().getCurrentActivity());
                     dialog.dismiss();
+                    ARouter.getInstance().build(ARouterConstants.MainActivity).withBoolean("exit", true).navigation(MyActivityManager.getInstance().getCurrentActivity());
                     isShowing = false;
                 });
 

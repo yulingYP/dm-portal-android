@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -216,29 +217,40 @@ public class MyFragment extends Fragment {
     public void refreshUserImage() {
         //提示单机登陆或账号冻结
         if(MyCongfig.isShowing) return;
-        String str = SharedPreferencesUtil.getInstance().getUserLocal();
-        if("".equals(str)){
-            str = getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
-        }
+        final String[] str = {getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(), SharedPreferencesUtil.getInstance().getUserImageUrl(), 1)};
         Glide.with(this)
                 .asBitmap()
-                .load(str)
+                .load(str[0])
                 .apply(option)
                 .into(new SimpleTarget<Bitmap>() {
                     //得到图片
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        //获取成功 保存到本地
                         String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),3);
                         SharedPreferencesUtil.getInstance().setUserLocal(path);
+                        //设置头像
                         userImage.setImageBitmap(resource);
                     }
 
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                        if(++requestCount<5)
+                        //获取失败
+                        if(++requestCount<5) {//尝试次数小于5
                             refreshUserImage();
-                        else
-                            userImage.setImageResource(R.drawable.my);
+                        }
+                        else {//尝试5次失败
+                            //获取本地保存头像的路径
+                            str[0] = SharedPreferencesUtil.getInstance().getUserLocal();
+                            if (!"".equals(str[0])) {//有本地保存路径
+                                Bitmap localImage = BitmapFactory.decodeFile(str[0]);//获取本地图片
+                                if (localImage != null) userImage.setImageBitmap(localImage);
+                                else userImage.setImageResource(R.drawable.my);
+                            } else {//无本地保存路径
+                                userImage.setImageResource(R.drawable.my);
+                            }
+
+                        }
                     }
                 });
 

@@ -414,7 +414,7 @@ public class AuthorityDeleteActivity extends BaseActivity<LeaveAuthorityPresente
         if(MyActivityManager.getInstance().getCurrentActivity()==this){
             Toast.makeText(this, R.string.delete_success, Toast.LENGTH_SHORT).show();
             //重新获取用户权限
-            new UserInfoPresent(this).getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
+            new UserInfoPresent(this).getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),0);
             finish();
         }
     }

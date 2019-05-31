@@ -26,6 +26,9 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 尽可能早，推荐在Application中初始化
+        ARouter.openDebug();
+        ARouter.init(this);
 
         JPushInterface.init(this);
         SharedPreferencesUtil.setContext(this);
@@ -85,8 +88,7 @@ public class MainApplication extends Application {
                     return response;
                 });
 
-        // 尽可能早，推荐在Application中初始化
-        ARouter.init(this);
+
 
     }
 

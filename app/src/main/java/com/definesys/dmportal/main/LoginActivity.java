@@ -85,10 +85,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> {
         setContentView(R.layout.activity_login);
         ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
-        StatusUtil.setStatusBarFullTransparent(this);
         if(isFirst)//第一次使用APP？
             requestPermissions();
         MyCongfig.isShowing = false;
+        //隐藏状态栏
+        StatusUtil.setStatusBarFullTransparent(this);
         //设置状态栏字体颜色为黑色
         StatusUtil.setAndroidNativeLightStatusBar(this,true);
         initView();

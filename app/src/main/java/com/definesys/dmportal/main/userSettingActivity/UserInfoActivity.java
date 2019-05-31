@@ -108,7 +108,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
             userInfo = SharedPreferencesUtil.getInstance().getUserInfo();
             intView();
         }else {
-            mPersenter.getUserInfo(userId);
+            mPersenter.getUserInfo(userId,0);
         }
 
     }
@@ -239,10 +239,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     public void refreshUserImage() {
         //提示单机登陆或账号冻结
         if(MyCongfig.isShowing) return;
-        String str = SharedPreferencesUtil.getInstance().getUserLocal();
-        if("".equals(str)){
-            str = getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),SharedPreferencesUtil.getInstance().getUserImageUrl(),1);
-        }
+        String str = getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),userInfo.getUserId()+".png",1);
 
         Glide.with(this)
                 .asBitmap()
@@ -252,8 +249,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
                     //得到图片
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),UserInfoActivity.this,3);
-                        SharedPreferencesUtil.getInstance().setUserLocal(path);
+
                         iv_head.setImageBitmap(resource);
                     }
 

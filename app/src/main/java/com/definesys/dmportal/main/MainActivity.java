@@ -104,7 +104,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         //通知管理
         notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         //获取用户信息
-        mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
+        mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),1);
         //获取推送失败和未读的消息
         mPersenter.getPushErrorReadMsg(SharedPreferencesUtil.getInstance().getUserId());
 
@@ -204,7 +204,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
         });
 
         RxView.clicks(mTitlebar)
-                .subscribe(obj-> mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId()));
+                .subscribe(obj-> mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),1));
     }
 
     @Override
@@ -503,7 +503,7 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent = new Intent(this, ApplyInfoActivity.class);
             intent.putExtra("applyId", DensityUtil.string2Long(myMessage.getMessageExtend()));
             if(myMessage.getMessageExtend2()==1)//权限申请通过，重新获取权限信息
-                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
+                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),0);
         }else if(myMessage.getMessageType()==5){//审批人新的审批任务，跳转到详情页
             String infoId = myMessage.getMessageExtend();
             infoId = infoId.length()>9?infoId.substring(9):infoId;
@@ -515,12 +515,12 @@ public class MainActivity extends BaseActivity<UserInfoPresent> {
             intent.putExtra("applyId",DensityUtil.string2Long(myMessage.getMessageExtend()));
             intent.putExtra("isMsg",true);
             if("delete".equals(myMessage.getMessageContent().toLowerCase()))//权限已被删除，重新获取权限
-                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
+                mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),0);
             else if("change".equals(myMessage.getMessageContent().toLowerCase())){//权限已被修改，但用户没有修改后的权限
                 short applyAut  = myMessage.getMessageExtend2();
                 String aut = applyAut<10?""+SharedPreferencesUtil.getInstance().getApprpvalStudentAuthority():""+SharedPreferencesUtil.getInstance().getApprpvalTeacherAuthority();
                 if(!aut.contains(""+applyAut%10))
-                    mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId());
+                    mPersenter.getUserInfo(SharedPreferencesUtil.getInstance().getUserId(),0);
             }
         } else if(myMessage.getMessageType()==10){//推送失败时收到的请假请求消息 跳转到审批列表页
             intent = new Intent(this, LeaveListActivity.class);
