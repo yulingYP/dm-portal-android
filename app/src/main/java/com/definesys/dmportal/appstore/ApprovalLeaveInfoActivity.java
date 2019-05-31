@@ -349,16 +349,6 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
             Toast.makeText(this, R.string.approval_addvise_tip_6, Toast.LENGTH_SHORT).show();
             return;
         }
-        else if("".equals(ed_reason.getText().toString())&&!isAgree) {//不同意且未输入审批意见
-            Toast.makeText(this, R.string.approval_addvise_tip_2, Toast.LENGTH_SHORT).show();
-            lg_scroll.fullScroll(ScrollView.FOCUS_DOWN);
-            ed_reason.setFocusable(true);
-            ed_reason.setFocusableInTouchMode(true);
-            ed_reason.requestFocus();
-            ed_reason.findFocus();
-            ed_reason.setCursorVisible(true);
-            return;
-        }
         else if(SharedPreferencesUtil.getInstance().getUserSign()==null||"".equals(SharedPreferencesUtil.getInstance().getUserSign())){//签名设置
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.sign_setting)
@@ -367,6 +357,16 @@ public class ApprovalLeaveInfoActivity extends  BaseActivity<GetApprovalRecordPr
                     .setPositiveButton(R.string.confirm, (dialog, which) -> ARouter.getInstance().build(ARouterConstants.LeaveSignActivity).navigation())
                     .create()
                     .show();
+            return;
+        }
+        else if("".equals(ed_reason.getText().toString())&&!isAgree) {//不同意且未输入审批意见
+            Toast.makeText(this, R.string.approval_addvise_tip_2, Toast.LENGTH_SHORT).show();
+            lg_scroll.fullScroll(ScrollView.FOCUS_DOWN);
+            ed_reason.setFocusable(true);
+            ed_reason.setFocusableInTouchMode(true);
+            ed_reason.requestFocus();
+            ed_reason.findFocus();
+            ed_reason.setCursorVisible(true);
             return;
         }
         initResultDialog();

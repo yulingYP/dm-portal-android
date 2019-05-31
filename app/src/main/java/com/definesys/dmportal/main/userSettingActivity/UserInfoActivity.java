@@ -2,6 +2,7 @@ package com.definesys.dmportal.main.userSettingActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -56,6 +57,8 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static com.vise.xsnow.http.ViseHttp.getContext;
 
 
 @Route(path = ARouterConstants.UserInfoActivity)
@@ -164,7 +167,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
 
         //未绑定手机
         if("".equals(userInfo.getPhone())){
-            tv_phone.setText(getString(R.string.bound_phone));
+//            tv_phone.setText(getString(R.string.bound_phone));
             if(userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
                 iv_phoneIcon.setVisibility(View.VISIBLE);
                 //点击 绑定手机
@@ -185,7 +188,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
         if((userInfo.getLeaveAuthority()>=0||userInfo.getLeaveTeacherAuthority()>=0)&&userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){
             lg_aut.setVisibility(View.VISIBLE);
             //点击 查看权限
-            RxView.clicks(lg_phone)
+            RxView.clicks(lg_aut)
                     .throttleFirst(Constants.clickdelay,TimeUnit.MILLISECONDS)
                     .subscribe(o->
                             ARouter.getInstance().build(ARouterConstants.AuthoritySettingActivity).navigation()
@@ -239,28 +242,42 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     public void refreshUserImage() {
         //提示单机登陆或账号冻结
         if(MyCongfig.isShowing) return;
-        String str = getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(),userInfo.getUserId()+".png",1);
+        final String[] str = {getString(R.string.get_image, SharedPreferencesUtil.getInstance().getHttpUrl(), userInfo.getUserImage(), 1)};
 
         Glide.with(this)
                 .asBitmap()
-                .load(str)
+                .load(str[0])
                 .apply(option)
                 .into(new SimpleTarget<Bitmap>() {
                     //得到图片
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-
+                        if(userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
+                            //获取成功 保存到本地
+                            String path = ImageUntil.saveBitmapFromView(resource,UUID.randomUUID().toString(),getContext(),3);
+                            SharedPreferencesUtil.getInstance().setUserLocal(path);
+                        }
                         iv_head.setImageBitmap(resource);
                     }
 
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
-//                        SharedPreferencesUtil.getInstance().setUserLocal("");
-//                        userImage.setImageResource(R.drawable.my);
                         if(++requestCount<5)
                             refreshUserImage();
-                        else
-                            iv_head.setImageResource(R.drawable.my);
+                        else {
+                            if(userId == SharedPreferencesUtil.getInstance().getUserId().intValue()){//本人信息
+                                //获取本地保存头像的路径
+                                str[0] = SharedPreferencesUtil.getInstance().getUserLocal();
+                                if (!"".equals(str[0])) {//有本地保存路径
+                                    Bitmap localImage = BitmapFactory.decodeFile(str[0]);//获取本地图片
+                                    if (localImage != null) iv_head.setImageBitmap(localImage);
+                                    else iv_head.setImageResource(R.drawable.my);
+                                } else {//无本地保存路径
+                                    iv_head.setImageResource(R.drawable.my);
+                                }
+                            }else//非本人信息
+                                iv_head.setImageResource(R.drawable.my);
+                        }
                     }
                 });
 

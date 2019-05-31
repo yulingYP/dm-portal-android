@@ -231,6 +231,7 @@ public class MyFragment extends Fragment {
                         SharedPreferencesUtil.getInstance().setUserLocal(path);
                         //设置头像
                         userImage.setImageBitmap(resource);
+
                     }
 
                     @Override
@@ -240,7 +241,7 @@ public class MyFragment extends Fragment {
                             refreshUserImage();
                         }
                         else {//尝试5次失败
-                            //获取本地保存头像的路径
+                            // 获取本地保存头像的路径
                             str[0] = SharedPreferencesUtil.getInstance().getUserLocal();
                             if (!"".equals(str[0])) {//有本地保存路径
                                 Bitmap localImage = BitmapFactory.decodeFile(str[0]);//获取本地图片
@@ -249,7 +250,6 @@ public class MyFragment extends Fragment {
                             } else {//无本地保存路径
                                 userImage.setImageResource(R.drawable.my);
                             }
-
                         }
                     }
                 });
@@ -272,10 +272,10 @@ public class MyFragment extends Fragment {
         SmecRxBus.get().unregister(this);
         super.onDestroyView();
     }
-
+    
     /*
-      修改头像成功
-      */
+          修改头像成功
+          */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
     }, thread = EventThread.MAIN_THREAD)

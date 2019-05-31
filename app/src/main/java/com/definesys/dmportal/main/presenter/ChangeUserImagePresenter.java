@@ -36,12 +36,12 @@ public class ChangeUserImagePresenter extends BasePresenter {
                 .addFormDataPart("file", fileName,RequestBody.create(type,file));
 
         ViseHttp.POST(HttpConst.uploadUserPicture).setRequestBody(builder.build())
-                .tag(HttpConst.uploadUserPicture).request(new ACallback<BaseResponse>() {
+                .tag(HttpConst.uploadUserPicture).request(new ACallback<BaseResponse<String>>() {
                     @Override
-                    public void onSuccess(BaseResponse data) {
+                    public void onSuccess(BaseResponse<String> data) {
                         switch (data.getCode()) {
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE, file.getPath());
+                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE, "0".equals(updateType)?file.getPath():data.getData());
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK,data.getMsg());

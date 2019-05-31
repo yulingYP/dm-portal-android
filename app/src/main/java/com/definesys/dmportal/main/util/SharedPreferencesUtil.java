@@ -218,6 +218,10 @@ public class SharedPreferencesUtil implements SharedPreferencesParams {
         SharedPreferences.Editor editor = getSpWithEdit().putString(spBranchName, branchName);
         editor.apply();
     }
+    public void setUserSign(String userSign) {
+        SharedPreferences.Editor editor = getSpWithEdit().putString(spUserSign, userSign);
+        editor.apply();
+    }
     public void setUserSetting(int setCode) {
         SharedPreferences.Editor editor = getSpWithEdit().putInt(spUserSetting+getUserId(), setCode);
         editor.apply();

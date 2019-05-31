@@ -305,7 +305,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
 
     }
     /*
-         修改头像成功
+         上传签名成功
          */
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
@@ -313,7 +313,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
     public void successfulUploadUserImage(String newUrl) {
         Toast.makeText(this, R.string.sign_update_success, Toast.LENGTH_SHORT).show();
 
-//        SharedPreferencesUtil.getInstance().setUserSign(newUrl);
+        SharedPreferencesUtil.getInstance().setUserSign(newUrl);
         PictureFileUtils.deleteCacheDirFile(this);
         progressHUD.dismiss();
         finish();
