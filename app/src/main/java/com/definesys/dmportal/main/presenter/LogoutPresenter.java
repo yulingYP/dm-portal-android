@@ -18,7 +18,7 @@ public class LogoutPresenter extends BasePresenter {
     }
 
     public void logout(Number userId) {
-        Map map = new HashMap<>();
+        HashMap<String,Number> map = new HashMap<>();
         map.put("userId", userId);
         ViseHttp.POST(HttpConst.userLogout)
                 .setJson(new Gson().toJson(map)).tag(HttpConst.userLogout)

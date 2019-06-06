@@ -43,7 +43,7 @@ public class ChangePswPresenter extends BasePresenter {
             changePswMap.put("newPassword", MD5Util.string2MD5(newPwd));
             changePswMap.put("changeType", changeType);
         }
-        Log.d("myMap",new Gson().toJson(changePswMap).toString());
+        Log.d("myMap",new Gson().toJson(changePswMap));
         PostRequest postRequest = ViseHttp.POST(HttpConst.changePassword)
                 .setJson(new Gson().toJson(changePswMap)).tag(HttpConst.changePassword);
         postRequest.request(new ACallback<BaseResponse<String>>() {

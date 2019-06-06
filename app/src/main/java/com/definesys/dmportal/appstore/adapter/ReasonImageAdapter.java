@@ -97,8 +97,8 @@ public class ReasonImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public interface OnClickListener {
-        public void onBackgroundClick(int position);
+        void onBackgroundClick(int position);
 
-        public void onForegroundClick(int position);
+        void onForegroundClick(int position);
     }
 }

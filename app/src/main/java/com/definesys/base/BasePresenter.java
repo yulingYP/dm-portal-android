@@ -4,9 +4,7 @@ import android.content.Context;
 
 import java.io.Serializable;
 
-/**
- * Created by apple on 2016/10/23.
- */
+
 public abstract class BasePresenter implements Serializable{
 
 

@@ -289,7 +289,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_REQUEST_USER_INFO)
     }, thread = EventThread.MAIN_THREAD)
-    public void getUserInfo(BaseResponse<User> data) {
+    public void getUserInfoSuccess(BaseResponse<User> data) {
        if(MyActivityManager.getInstance().getCurrentActivity()==this){
            userInfo = data.getData();
            intView();
@@ -315,7 +315,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
     }, thread = EventThread.MAIN_THREAD)
-    public void successfulUploadUserImage(String newUrl) {
+    public void uploadheadSuccess(String newUrl) {
         if(MyActivityManager.getInstance().getCurrentActivity()==this) {
             Toast.makeText(this, R.string.msg_success_upload_image, Toast.LENGTH_SHORT).show();
             Glide.with(this).load(newUrl).apply(option).into(iv_head);

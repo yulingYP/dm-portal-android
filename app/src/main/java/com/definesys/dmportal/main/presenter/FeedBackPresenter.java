@@ -2,10 +2,8 @@ package com.definesys.dmportal.main.presenter;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.definesys.base.BasePresenter;
 import com.definesys.base.BaseResponse;
-import com.definesys.dmportal.appstore.bean.LeaveInfo;
 import com.definesys.dmportal.main.bean.Feedback;
 import com.google.gson.Gson;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -22,6 +20,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
+ *
  * Created by 羽翎 on 2019/2/26.
  */
 
@@ -56,7 +55,7 @@ public class FeedBackPresenter extends BasePresenter {
 
         //submitLeaveInfo.setSubmitDate(DensityUtil.getFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",new Date()));
 
-        Log.d("myMap",new Gson().toJson(feedback).toString());
+        Log.d("myMap",new Gson().toJson(feedback));
         RequestBody finalRequestBody = requestBody;
         ViseHttp.POST(HttpConst.submitFeedBack)
                 .tag(HttpConst.submitFeedBack)
@@ -87,7 +86,7 @@ public class FeedBackPresenter extends BasePresenter {
 
     /**
      * 上传请假图片
-     * @param finalRequestBody
+     * @param finalRequestBody f
      * @param msgId 消息id
      */
     private void updatePictures(RequestBody finalRequestBody,String msgId) {

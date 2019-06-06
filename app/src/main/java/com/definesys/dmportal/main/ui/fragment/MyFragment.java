@@ -279,7 +279,7 @@ public class MyFragment extends Fragment {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
     }, thread = EventThread.MAIN_THREAD)
-    public void successfulUploadUserImage(String newUrl) {
+    public void successfulUploadHead(String newUrl) {
         if(MyActivityManager.getInstance().getCurrentActivity()==this.getActivity()){
             Toast.makeText(getContext(), R.string.msg_success_upload_image, Toast.LENGTH_SHORT).show();
             //更新本地头像信息

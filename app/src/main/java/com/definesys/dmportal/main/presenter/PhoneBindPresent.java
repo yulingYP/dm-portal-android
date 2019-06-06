@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * Created by 羽翎 on 2019/1/29.
  */
 
@@ -27,7 +28,7 @@ public class PhoneBindPresent extends BasePresenter {
         map.put("phone",phone);
         map.put("code",code);
         map.put("isBind",isBind);
-        Log.d("myMap",new Gson().toJson(map).toString());
+        Log.d("myMap",new Gson().toJson(map));
         ViseHttp.POST(HttpConst.bindPhone)
                 .tag(HttpConst.bindPhone)
                 .setJson(new Gson().toJson(map))
