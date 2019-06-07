@@ -595,7 +595,7 @@ public class LeaveActivity extends BaseActivity<LeaveRequestPresenter> {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_LEAVE_REQUEST)
     }, thread = EventThread.MAIN_THREAD)
-    public void getLeaveRequest(String msg) {
+    public void submitSuccess(String msg) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             Toast.makeText(this, R.string.submit_success,Toast.LENGTH_SHORT).show();
             progressHUD.dismiss();

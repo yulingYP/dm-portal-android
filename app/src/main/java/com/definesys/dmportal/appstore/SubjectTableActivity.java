@@ -303,7 +303,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_SCORE_INFO)
     }, thread = EventThread.MAIN_THREAD)
-    public void getScoreInfo(BaseResponse<List<CursorArg>> data) {
+    public void getScoreInfoSuccess(BaseResponse<List<CursorArg>> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             setLayoutVisable(false);
             progressHUD.dismiss();
@@ -319,7 +319,7 @@ public class SubjectTableActivity extends BaseActivity<GetTableInfoPresenter> {
     @Subscribe(tags = {
             @Tag(MainPresenter.SUCCESSFUL_GET_TABLE_INFO)
     }, thread = EventThread.MAIN_THREAD)
-    public void getTableInfo(BaseResponse<SubjectTable> data) {
+    public void getTableInfoSuccess(BaseResponse<SubjectTable> data) {
         if(MyActivityManager.getInstance().getCurrentActivity() == this){
             setLayoutVisable(true);
             subjectTable = data.getData();
