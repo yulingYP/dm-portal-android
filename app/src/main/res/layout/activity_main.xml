@@ -7,21 +7,21 @@
     xmlns:jp="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:fitsSystemWindows="false"
-    tools:context="com.definesys.dmportal.main.MainActivity">
+    tools:context="com.example.dmportal.main.MainActivity">
     <include layout="@layout/title_top_temp">
     </include>
-    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+    <com.example.dmportal.commontitlebar.CustomTitleBar
         android:gravity="top"
         android:id="@+id/mTitlebar"
         android:layout_width="match_parent"
         android:layout_height="?attr/titlebar_height">
-    </com.definesys.dmportal.commontitlebar.CustomTitleBar>
-    <com.definesys.dmportal.appstore.customViews.NoScrollViewPager
+    </com.example.dmportal.commontitlebar.CustomTitleBar>
+    <com.example.dmportal.appstore.customViews.NoScrollViewPager
         android:id="@+id/mViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-    </com.definesys.dmportal.appstore.customViews.NoScrollViewPager>
+    </com.example.dmportal.appstore.customViews.NoScrollViewPager>
     <com.jpeng.jptabbar.JPTabBar
         android:gravity="bottom"
         android:id="@+id/mTabbar"

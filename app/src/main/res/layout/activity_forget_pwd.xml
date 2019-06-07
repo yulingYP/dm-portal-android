@@ -8,7 +8,7 @@
     android:orientation="vertical">
     <include layout="@layout/title_top_temp">
     </include>
-    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+    <com.example.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar_att_forget"
         android:layout_width="match_parent"
         app:titlebar_bg_color="@color/customer_title"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.definesys.dmportal.appstore.customViews.EditDeleteText
+            <com.example.dmportal.appstore.customViews.EditDeleteText
                 android:id="@+id/phone_att_forget"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="8dp"
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_height_50dp"/>
 
-            <com.definesys.dmportal.appstore.customViews.EditSendText
+            <com.example.dmportal.appstore.customViews.EditSendText
                 android:id="@+id/code_att_forget"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_height_50dp"/>
 
-            <com.definesys.dmportal.appstore.customViews.EditDeleteText
+            <com.example.dmportal.appstore.customViews.EditDeleteText
                 android:id="@+id/pwd_att_forget"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/item_height_50dp"/>
 
-            <com.definesys.dmportal.appstore.customViews.EditDeleteText
+            <com.example.dmportal.appstore.customViews.EditDeleteText
                 android:id="@+id/pwd2_att_forget"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"

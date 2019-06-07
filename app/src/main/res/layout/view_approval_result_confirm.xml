@@ -7,7 +7,7 @@
     android:background="@color/clearColor"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.definesys.dmportal.appstore.customViews.RCLinearLayout
+    <com.example.dmportal.appstore.customViews.RCLinearLayout
         android:orientation="vertical"
         app:round_corner="12dp"
         android:layout_width="match_parent"
@@ -102,5 +102,5 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-    </com.definesys.dmportal.appstore.customViews.RCLinearLayout>
+    </com.example.dmportal.appstore.customViews.RCLinearLayout>
 </ScrollView>

@@ -24,7 +24,7 @@
             android:background="@drawable/masking_back"
             android:layout_height="wrap_content">
 
-            <com.definesys.dmportal.appstore.customViews.RCImageView
+            <com.example.dmportal.appstore.customViews.RCImageView
                 android:id="@+id/app_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

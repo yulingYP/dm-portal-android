@@ -38,17 +38,17 @@
         android:layout_weight="1"
 
         android:layout_height="0dp">
-        <com.definesys.dmportal.appstore.customViews.RCLinearLayout
+        <com.example.dmportal.appstore.customViews.RCLinearLayout
             android:layout_width="match_parent"
             app:round_corner="8dp"
             android:layout_margin="8dp"
             android:layout_height="match_parent">
-            <com.definesys.dmportal.appstore.customViews.LinePathView
+            <com.example.dmportal.appstore.customViews.LinePathView
                 android:id="@+id/sign_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#FFFFFF" />
-        </com.definesys.dmportal.appstore.customViews.RCLinearLayout>
+        </com.example.dmportal.appstore.customViews.RCLinearLayout>
         <View
             android:background="@drawable/sign_text_back"
             android:layout_width="match_parent"

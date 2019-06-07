@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.definesys.dmportal.appstore.customViews.RCLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.dmportal.appstore.customViews.RCLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:round_corner="12dp"
@@ -63,4 +63,4 @@
            android:layout_height="wrap_content" />
    </LinearLayout>
 
-</com.definesys.dmportal.appstore.customViews.RCLinearLayout>
+</com.example.dmportal.appstore.customViews.RCLinearLayout>

@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="false"
-    tools:context="com.definesys.dmportal.webview.ui.WebViewActivity">
+    tools:context="com.example.dmportal.webview.ui.WebViewActivity">
     <include layout="@layout/title_top_temp">
     </include>
-    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+    <com.example.dmportal.commontitlebar.CustomTitleBar
         android:gravity="top"
         android:id="@+id/mTitlebar"
         android:layout_width="match_parent"

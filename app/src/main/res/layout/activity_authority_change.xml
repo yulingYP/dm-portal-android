@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/back_gray"
-    tools:context="com.definesys.dmportal.appstore.leaveSettingUI.AuthorityDeleteActivity">
+    tools:context="com.example.dmportal.appstore.leaveSettingUI.AuthorityDeleteActivity">
     <include layout="@layout/title_top_temp">
     </include>
-    <com.definesys.dmportal.commontitlebar.CustomTitleBar
+    <com.example.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         app:titlebar_bg_color="@color/customer_title"
         android:layout_height="?attr/titlebar_height">
-    </com.definesys.dmportal.commontitlebar.CustomTitleBar>
+    </com.example.dmportal.commontitlebar.CustomTitleBar>
       <ScrollView
           android:id="@+id/scrollView"
           android:scrollbars="none"
