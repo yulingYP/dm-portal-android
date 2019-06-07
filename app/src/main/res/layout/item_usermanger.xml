@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="25dp">
 
-    <com.example.dmportal.appstore.customViews.RCImageView
+    <com.definesys.dmportal.appstore.customViews.RCImageView
         android:id="@+id/head_item_uc"
         android:layout_width="@dimen/user_main_img_size"
         android:layout_height="80dp"

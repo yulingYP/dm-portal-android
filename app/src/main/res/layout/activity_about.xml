@@ -17,7 +17,7 @@
             app:layout_constraintTop_toTopOf="parent"
             >
         </include>
-        <com.example.dmportal.commontitlebar.CustomTitleBar
+        <com.definesys.dmportal.commontitlebar.CustomTitleBar
             android:background="?attr/colorPrimaryDark"
             android:id="@+id/title_bar_att_about"
             app:layout_constraintTop_toBottomOf="@+id/status_bar"

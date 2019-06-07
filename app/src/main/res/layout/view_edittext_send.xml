@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toStartOf="@id/tut_send_view_send"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.dmportal.appstore.customViews.TextViewUniversalToast
+    <com.definesys.dmportal.appstore.customViews.TextViewUniversalToast
         android:id="@+id/tut_send_view_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

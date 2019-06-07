@@ -15,13 +15,13 @@
         android:padding="4dp"
         android:background="@drawable/title_bg"
         android:orientation="horizontal">
-        <com.example.dmportal.appstore.customViews.SearchBox
+        <com.definesys.dmportal.appstore.customViews.SearchBox
             android:id="@+id/search_box"
             android:background="@null"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-        </com.example.dmportal.appstore.customViews.SearchBox>
+        </com.definesys.dmportal.appstore.customViews.SearchBox>
         <TextView
             android:id="@+id/cancel_text"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_marginBottom="1dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <com.example.dmportal.appstore.customViews.FlowLayout
+            <com.definesys.dmportal.appstore.customViews.FlowLayout
                 android:id="@+id/type_view"
                 android:background="@color/white"
                 android:paddingStart="8dp"
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginBottom="8dp"
                 android:layout_height="wrap_content">
-            </com.example.dmportal.appstore.customViews.FlowLayout>
+            </com.definesys.dmportal.appstore.customViews.FlowLayout>
             <LinearLayout
                 android:id="@+id/history_layout"
                 android:orientation="vertical"
@@ -76,7 +76,7 @@
                     android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-                <com.example.dmportal.appstore.customViews.FlowLayout
+                <com.definesys.dmportal.appstore.customViews.FlowLayout
                     android:id="@+id/history_view"
                     android:layout_marginBottom="1dp"
                     android:layout_width="match_parent"
@@ -87,7 +87,7 @@
                     android:paddingBottom="8dp"
                     android:layout_height="wrap_content">
 
-                </com.example.dmportal.appstore.customViews.FlowLayout>
+                </com.definesys.dmportal.appstore.customViews.FlowLayout>
                 <TextView
                     android:id="@+id/delete_text"
                     android:text="@string/delete_history"

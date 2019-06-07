@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_centerInParent="true"
         android:layout_height="wrap_content">
-        <com.example.dmportal.appstore.customViews.EditDeleteText
+        <com.definesys.dmportal.appstore.customViews.EditDeleteText
             android:id="@+id/tel_edit_att_login"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height_50dp"
@@ -44,14 +44,14 @@
             android:maxLength="@integer/max_phone_length"
             />
 
-        <com.example.dmportal.appstore.customViews.EditSendText
+        <com.definesys.dmportal.appstore.customViews.EditSendText
             android:id="@+id/pwd_edit_att_login"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height_50dp"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp" >
-        </com.example.dmportal.appstore.customViews.EditSendText>
+        </com.definesys.dmportal.appstore.customViews.EditSendText>
 
         <RelativeLayout
             android:layout_width="match_parent"

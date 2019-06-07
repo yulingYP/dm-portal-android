@@ -7,7 +7,7 @@
     android:orientation="vertical">
     <include layout="@layout/title_top_temp">
     </include>
-    <com.example.dmportal.commontitlebar.CustomTitleBar
+    <com.definesys.dmportal.commontitlebar.CustomTitleBar
         android:id="@+id/title_bar_att_feedback"
         android:layout_width="match_parent"
         android:layout_height="?attr/titlebar_height" />

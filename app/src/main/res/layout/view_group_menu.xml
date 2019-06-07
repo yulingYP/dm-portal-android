@@ -12,7 +12,7 @@
         android:layout_gravity="end"
         android:layout_width="20dp"
         android:layout_height="20dp" />
-    <com.example.dmportal.appstore.customViews.RCLinearLayout
+    <com.definesys.dmportal.appstore.customViews.RCLinearLayout
         android:layout_width="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="-8dp"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
-    </com.example.dmportal.appstore.customViews.RCLinearLayout>
+    </com.definesys.dmportal.appstore.customViews.RCLinearLayout>
 
 
 </LinearLayout>

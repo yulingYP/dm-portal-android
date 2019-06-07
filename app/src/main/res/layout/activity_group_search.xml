@@ -15,13 +15,13 @@
         android:padding="4dp"
         android:background="@drawable/title_bg"
         android:orientation="horizontal">
-        <com.example.dmportal.appstore.customViews.SearchBox
+        <com.definesys.dmportal.appstore.customViews.SearchBox
             android:id="@+id/search_box"
             android:background="@null"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-        </com.example.dmportal.appstore.customViews.SearchBox>
+        </com.definesys.dmportal.appstore.customViews.SearchBox>
         <TextView
             android:id="@+id/cancel_text"
             android:layout_width="wrap_content"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.example.dmportal.appstore.customViews.RCLinearLayout
+<com.definesys.dmportal.appstore.customViews.RCLinearLayout
     android:orientation="vertical"
     app:round_corner="8dp"
     android:background="@color/white"
@@ -40,4 +40,4 @@
             android:layout_marginEnd="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </com.example.dmportal.appstore.customViews.RCLinearLayout>
+    </com.definesys.dmportal.appstore.customViews.RCLinearLayout>
