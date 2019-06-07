@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
+import com.definesys.dmportal.appstore.utils.StatusUtil;
 import com.definesys.dmportal.commontitlebar.CustomTitleBar;
 import com.definesys.dmportal.webview.jsinterface.JsInterface;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -48,7 +49,8 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-
+        //隐藏状态栏
+        StatusUtil.setStatusBarFullTransparent(this);
         ARouter.getInstance().inject(this);
         ButterKnife.bind(this);
 

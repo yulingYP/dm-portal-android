@@ -308,7 +308,7 @@ public class LeaveSignActivity extends BaseActivity<ChangeUserImagePresenter> {
          上传签名成功
          */
     @Subscribe(tags = {
-            @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE)
+            @Tag(MainPresenter.SUCCESSFUL_UPLOAD_USER_SIGN)
     }, thread = EventThread.MAIN_THREAD)
     public void successfulUploadUserImage(String newUrl) {
         Toast.makeText(this, R.string.sign_update_success, Toast.LENGTH_SHORT).show();

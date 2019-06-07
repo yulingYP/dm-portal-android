@@ -41,7 +41,10 @@ public class ChangeUserImagePresenter extends BasePresenter {
                     public void onSuccess(BaseResponse<String> data) {
                         switch (data.getCode()) {
                             case "200":
-                                SmecRxBus.get().post(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE, "0".equals(updateType)?file.getPath():data.getData());
+                                if("0".equals(updateType))//上传头像
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_UPLOAD_USER_IMAGE, file.getPath());
+                                else//上传签名
+                                    SmecRxBus.get().post(MainPresenter.SUCCESSFUL_UPLOAD_USER_SIGN, data.getData());
                                 break;
                             default:
                                 SmecRxBus.get().post(MainPresenter.ERROR_NETWORK,data.getMsg());

@@ -42,6 +42,9 @@ public class MainPresenter extends BasePresenter {
     //修改头像成功
     public static final String SUCCESSFUL_UPLOAD_USER_IMAGE="SUCCESSFUL_UPLOAD_USER_IMAGE";
 
+    //修改签名成功
+    public static final String SUCCESSFUL_UPLOAD_USER_SIGN ="SUCCESSFUL_UPLOAD_USER_SIGN";
+
     //获取课表信息成功
     public static final String SUCCESSFUL_GET_TABLE_INFO="SUCCESSFUL_GET_TABLE_INFO";
 

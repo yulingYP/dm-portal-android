@@ -1,6 +1,5 @@
 package com.definesys.dmportal.main.ui.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -34,7 +32,6 @@ import com.definesys.dmportal.appstore.utils.ImageUntil;
 import com.definesys.dmportal.appstore.utils.PermissionsUtil;
 import com.definesys.dmportal.config.MyCongfig;
 import com.definesys.dmportal.main.presenter.ChangeUserImagePresenter;
-import com.definesys.dmportal.main.presenter.LogoutPresenter;
 import com.definesys.dmportal.main.presenter.MainPresenter;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 import com.hwangjr.rxbus.SmecRxBus;
@@ -81,8 +78,8 @@ public class MyFragment extends Fragment {
     @BindView(R.id.hello_item_uc)
     TextView welcomeText;
 
-    @BindView(R.id.logout_layout)
-    LinearLayout lg_logout;
+//    @BindView(R.id.logout_layout)
+//    LinearLayout lg_logout;
 
     @BindView(R.id.feedback_layout)
     LinearLayout lg_fed;
@@ -188,19 +185,19 @@ public class MyFragment extends Fragment {
                 .subscribe(o ->
                         ARouter.getInstance().build(ARouterConstants.UserSettingActivity).navigation()
                 );
-        //退出
-        RxView.clicks(lg_logout).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o ->
-                        new AlertDialog.Builder(getContext())
-                        .setMessage(R.string.logout_msg)
-                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                        .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
-                            new LogoutPresenter(getContext()).logout( SharedPreferencesUtil.getInstance().getUserId());
-                            SmecRxBus.get().post("exitActivity",true);
-
-                        }).create().show()
-                );
+//        //退出
+//        RxView.clicks(lg_logout).throttleFirst(Constants.clickdelay, TimeUnit.MILLISECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(o ->
+//                        new AlertDialog.Builder(getContext())
+//                        .setMessage(R.string.logout_msg)
+//                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+//                        .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
+//                            new LogoutPresenter(getContext()).logout( SharedPreferencesUtil.getInstance().getUserId());
+//                            SmecRxBus.get().post("exitActivity",true);
+//
+//                        }).create().show()
+//                );
 
 
     }
