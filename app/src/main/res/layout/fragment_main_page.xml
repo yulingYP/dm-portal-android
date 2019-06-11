@@ -24,7 +24,7 @@
             android:background="@drawable/masking_back"
             android:layout_height="wrap_content">
 
-            <com.definesys.dmportal.appstore.customViews.RCImageView
+            <ImageView
                 android:id="@+id/app_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -32,7 +32,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp"
-                app:round_as_circle="true"
                 android:src="@mipmap/app_icon" />
             <LinearLayout
                 android:orientation="vertical"

@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
-import com.definesys.dmportal.appstore.customViews.RCImageView;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
@@ -72,7 +72,7 @@ public class MyFragment extends Fragment {
     private Unbinder unbinder;
 
     @BindView(R.id.head_item_uc)
-    RCImageView userImage;
+    ImageView userImage;
     @BindView(R.id.name_item_uc)
     TextView userName;
     @BindView(R.id.hello_item_uc)
@@ -89,9 +89,8 @@ public class MyFragment extends Fragment {
 
     @BindView(R.id.setting_layout)
     LinearLayout lg_setting;
-
     RequestOptions option = new RequestOptions()
-            .centerCrop()
+            .circleCrop()
             .signature(new ObjectKey(UUID.randomUUID().toString()))
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true);

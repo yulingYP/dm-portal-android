@@ -1,6 +1,5 @@
 package com.definesys.dmportal.welcomeActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.alibaba.android.arouter.facade.Postcard;
@@ -9,8 +8,6 @@ import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
-import com.definesys.dmportal.main.LoginActivity;
-import com.definesys.dmportal.main.MainActivity;
 import com.definesys.dmportal.main.util.SharedPreferencesUtil;
 
 @Route(path = ARouterConstants.SplashActivity)

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,19 +23,18 @@
             android:id="@+id/head_layout"
             android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
-            <com.definesys.dmportal.appstore.customViews.RCImageView
+            <ImageView
                 android:id="@+id/head_pic"
                 android:layout_width="@dimen/user_main_img_size"
                 android:layout_height="@dimen/user_main_img_size"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
-                app:round_as_circle="true"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
                 android:layout_centerVertical="true"
                 android:src="@drawable/my"
-                />
+                tools:ignore="ContentDescription" />
             <TextView
                 android:id="@+id/user_name"
                 android:textSize="16sp"

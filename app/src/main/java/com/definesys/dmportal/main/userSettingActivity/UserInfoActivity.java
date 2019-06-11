@@ -28,7 +28,6 @@ import com.definesys.dmportal.MyActivityManager;
 import com.definesys.dmportal.R;
 import com.definesys.dmportal.appstore.bean.User;
 import com.definesys.dmportal.appstore.customViews.BottomDialog;
-import com.definesys.dmportal.appstore.customViews.RCImageView;
 import com.definesys.dmportal.appstore.utils.ARouterConstants;
 import com.definesys.dmportal.appstore.utils.Constants;
 import com.definesys.dmportal.appstore.utils.ImageUntil;
@@ -66,7 +65,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     @BindView(R.id.title_bar_att_us)
     CustomTitleBar titleBar;
     @BindView(R.id.head_pic)
-    RCImageView iv_head;
+    ImageView iv_head;
     @BindView(R.id.user_name)
     TextView tv_name;
     @BindView(R.id.user_id)
@@ -94,7 +93,7 @@ public class UserInfoActivity extends BaseActivity<UserInfoPresent> {
     private User userInfo;//用户信息
     private int requestCount=0;//重新获取尝试次数
     private RequestOptions option = new RequestOptions()
-            .centerCrop()
+            .circleCrop()
             .signature(new ObjectKey(UUID.randomUUID().toString()))
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true);
